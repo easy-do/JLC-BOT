@@ -1,19 +1,17 @@
 package plus.easydo.bot.service;
 
-import cn.dev33.satoken.stp.SaLoginConfig;
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.crypto.SecureUtil;
-import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.config.SystemConfig;
+import plus.easydo.bot.constant.SystemConstant;
 import plus.easydo.bot.dto.LoginDto;
+import plus.easydo.bot.entity.SystemConf;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.vo.CurrentUser;
 
-import java.util.List;
+import java.util.Collections;
 import java.util.Objects;
 
 
@@ -27,14 +25,9 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class LoginService {
 
-
-    private final IDaRoleService roleService;
-
-    private final IDaResourceService resourceService;
-
     private final SystemConfig systemConfig;
 
-    private final CaptchaService captchaService;
+    private final SystemConfService systemConfService;
 
 
     /**
@@ -46,20 +39,15 @@ public class LoginService {
      * @date 2023/10/14
      */
     public String login(LoginDto loginDto) {
-        if (!captchaService.verify(loginDto.getCaptchaKey(),loginDto.getVerificationCode())) {
-            throw new BaseException("验证码错误。");
+        SystemConf userNameConf = systemConfService.getByConfKey(SystemConstant.USER_NAME);
+        SystemConf passwordConf = systemConfService.getByConfKey(SystemConstant.PASSWORD);
+        if(Objects.isNull(userNameConf) || Objects.isNull(passwordConf)){
+            throw new BaseException("没有找到用户名和密码配置");
         }
-
-//        if (Objects.isNull(accounts)) {
-//            throw new BaseException("账号不存在或密码错误");
-//        }
-//        String md5Password = SecureUtil.md5().digestHex(loginDto.getPassword());
-//        if (CharSequenceUtil.equals(md5Password, accounts.getPassword())) {
-//
-//            StpUtil.login(1, SaLoginConfig
-//                    .setExtra("userInfo", JSONUtil.toJsonPrettyStr(accounts)));
-//            return StpUtil.getTokenValue();
-//        }
+        if (CharSequenceUtil.equals(loginDto.getUserName(),userNameConf.getConfData()) && CharSequenceUtil.equals(loginDto.getPassword(),passwordConf.getConfData())) {
+            StpUtil.login(1);
+            return StpUtil.getTokenValue();
+        }
         throw new BaseException("账号不存在或密码错误");
     }
 
@@ -76,14 +64,13 @@ public class LoginService {
 
 
     public CurrentUser currentUser() {
-        Object userInfo = StpUtil.getExtra("userInfo");
-        JSONObject userJson = JSONUtil.parseObj(userInfo);
-        userJson.remove("password");
-        userJson.set("mode",systemConfig.getMode());
-        userJson.set("menu",resourceService.userResource());
-        userJson.set("role",roleService.userRoleCodes());
-        userJson.set("resource",resourceService.userResourceCodes());
-        return JSONUtil.toBean(userJson, CurrentUser.class);
+        StpUtil.checkLogin();
+        CurrentUser currentUser = new CurrentUser();
+        currentUser.setMode(systemConfig.getMode());
+        currentUser.setUserName(systemConfService.getByConfKey(SystemConstant.USER_NAME).getConfData());
+        currentUser.setMenu(Collections.emptyList());
+        currentUser.setResource(Collections.emptyList());
+        return currentUser;
     }
 
 

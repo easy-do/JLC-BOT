@@ -13,7 +13,7 @@ import lombok.Data;
  * @since 1.0
  */
 @Data
-@Table(value = "da_bot_event_script")
+@Table(value = "bot_script")
 public class DaBotEventScript {
 
     /**

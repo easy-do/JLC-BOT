@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "da_bot_conf")
+@Table(value = "bot_conf")
 public class DaBotConf {
 
     /**

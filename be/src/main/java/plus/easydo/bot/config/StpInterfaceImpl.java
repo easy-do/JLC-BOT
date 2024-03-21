@@ -3,9 +3,8 @@ package plus.easydo.bot.config;
 import cn.dev33.satoken.stp.StpInterface;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
-import plus.easydo.bot.service.IDaResourceService;
-import plus.easydo.bot.service.IDaRoleService;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -18,18 +17,14 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StpInterfaceImpl implements StpInterface {
 
-    private final IDaResourceService resourceService;
-
-    private final IDaRoleService roleService;
-
 
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        return resourceService.userResource(Long.valueOf(loginId.toString()));
+        return Collections.emptyList();
     }
 
     @Override
     public List<String> getRoleList(Object loginId, String loginType) {
-        return roleService.userRoleCodes(Long.valueOf(loginId.toString()));
+        return Collections.emptyList();
     }
 }

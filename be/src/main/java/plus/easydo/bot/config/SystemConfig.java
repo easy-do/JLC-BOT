@@ -4,7 +4,6 @@ import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-import java.util.List;
 
 /**
  * @author yuzhanfeng
@@ -13,11 +12,9 @@ import java.util.List;
  */
 @Data
 @Configuration
-@ConfigurationProperties(prefix = "da")
+@ConfigurationProperties(prefix = "jcl")
 public class SystemConfig {
 
-    private String adminUser;
-    private String adminRole = "admin";
     private String currentVersion;
     private String mode;
 }

@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
-import plus.easydo.bot.entity.DaGameConfig;
+import plus.easydo.bot.entity.SystemConf;
 import plus.easydo.bot.qo.DaGameConfigQo;
-import plus.easydo.bot.service.IDaGameConfigService;
+import plus.easydo.bot.service.SystemConfService;
 
 import java.io.Serializable;
 import java.util.List;
@@ -30,7 +30,7 @@ import java.util.List;
 @RequestMapping("/api/conf")
 public class DaSystemConfController {
 
-    private final IDaGameConfigService daGameConfigService;
+    private final SystemConfService daGameConfigService;
 
 
     /**
@@ -42,7 +42,7 @@ public class DaSystemConfController {
     @Operation(summary = "分页")
     @SaCheckPermission("conf")
     @PostMapping("/page")
-    public R<List<DaGameConfig>> pageConf(@RequestBody DaGameConfigQo gameConfigQo) {
+    public R<List<SystemConf>> pageConf(@RequestBody DaGameConfigQo gameConfigQo) {
         return DataResult.ok(daGameConfigService.confPage(gameConfigQo));
     }
 
@@ -55,33 +55,33 @@ public class DaSystemConfController {
     @Operation(summary = "详情")
     @SaCheckLogin
     @GetMapping("/info/{id}")
-    public R<DaGameConfig> getConfInfo(@PathVariable Serializable id) {
+    public R<SystemConf> getConfInfo(@PathVariable Serializable id) {
         return DataResult.ok(daGameConfigService.getById(id));
     }
 
     /**
      * 添加 游戏配置
      *
-     * @param daGameConfig 游戏配置
+     * @param systemConf 游戏配置
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @Operation(summary = "添加")
     @SaCheckPermission("conf.save")
     @PostMapping("/save")
-    public R<Object> saveConf(@RequestBody DaGameConfig daGameConfig) {
-        return DataResult.ok(daGameConfigService.saveConf(daGameConfig));
+    public R<Object> saveConf(@RequestBody SystemConf systemConf) {
+        return DataResult.ok(daGameConfigService.saveConf(systemConf));
     }
 
     /**
      * 更新
-     * @param daGameConfig 游戏配置
+     * @param systemConf 游戏配置
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @Operation(summary = "更新")
     @SaCheckPermission("conf.update")
     @PostMapping("/update")
-    public R<Object> updateConf(@RequestBody DaGameConfig daGameConfig) {
-        return DataResult.ok(daGameConfigService.updateConf(daGameConfig));
+    public R<Object> updateConf(@RequestBody SystemConf systemConf) {
+        return DataResult.ok(daGameConfigService.updateConf(systemConf));
     }
 
 

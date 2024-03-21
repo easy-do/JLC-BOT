@@ -19,7 +19,7 @@ import com.mybatisflex.annotation.Table;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "da_low_code_sys_node")
+@Table(value = "low_code_sys_node")
 public class DaLowCodeSysNode {
 
     @Id(keyType = KeyType.Auto)

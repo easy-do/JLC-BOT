@@ -15,8 +15,8 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-@Table(value = "da_game_config")
-public class DaGameConfig {
+@Table(value = "system_conf")
+public class SystemConf {
 
     /**
      * id

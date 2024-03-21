@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "da_bot_message")
+@Table(value = "bot_message")
 public class DaBotMessage {
 
     /**

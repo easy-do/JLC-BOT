@@ -16,12 +16,8 @@ import java.util.List;
 @Data
 public class CurrentUser {
 
-    private Integer uid;
-    private String accountname;
-    private String qq;
-    private Boolean isAdmin;
+    private String userName;
     private List<Object> menu;
-    private List<String> role;
     private List<String> resource;
     private String mode;
 }

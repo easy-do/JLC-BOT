@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.dto.LoginDto;
+import plus.easydo.bot.vo.CurrentUser;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
-import plus.easydo.bot.service.IDaResourceService;
 import plus.easydo.bot.service.LoginService;
 
 import java.util.List;
@@ -33,7 +33,6 @@ public class UserController {
     private final LoginService loginService;
 
 
-    private final IDaResourceService resourceService;
 
     @Operation(summary = "登录")
     @SaIgnore
@@ -49,12 +48,11 @@ public class UserController {
         return DataResult.ok();
     }
 
-    @Operation(summary = "获取当前用户资源信息")
+    @Operation(summary = "获取当前用户信息")
     @SaCheckLogin
-    @GetMapping("/userResource")
-    public R<List<Tree<Long>>> userResource(){
-        return DataResult.ok(resourceService.userResource());
+    @GetMapping("/currentUser")
+    public R<CurrentUser> currentUser(){
+        return DataResult.ok(loginService.currentUser());
     }
-
 }
 

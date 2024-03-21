@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "da_low_code_node_conf")
+@Table(value = "low_code_node_conf")
 public class DaLowCodeNodeConf {
 
     @Id(keyType = KeyType.Auto)

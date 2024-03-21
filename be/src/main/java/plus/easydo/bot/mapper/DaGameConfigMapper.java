@@ -2,7 +2,7 @@ package plus.easydo.bot.mapper;
 
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import plus.easydo.bot.entity.DaGameConfig;
+import plus.easydo.bot.entity.SystemConf;
 
 /**
  * 游戏配置 映射层。
@@ -11,7 +11,7 @@ import plus.easydo.bot.entity.DaGameConfig;
  * @since 1.0
  */
 @Mapper
-public interface DaGameConfigMapper extends BaseMapper<DaGameConfig> {
+public interface DaGameConfigMapper extends BaseMapper<SystemConf> {
 
 
 }

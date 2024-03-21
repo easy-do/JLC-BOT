@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "da_bot_script_bot")
+@Table(value = "bot_script_bot")
 public class DaBotScriptBot {
 
     /**

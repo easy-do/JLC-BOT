@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "da_low_code_bot_node")
+@Table(value = "low_code_bot_node")
 public class DaLowCodeBotNode {
 
     /**

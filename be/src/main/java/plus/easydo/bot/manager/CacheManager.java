@@ -3,7 +3,7 @@ package plus.easydo.bot.manager;
 
 import plus.easydo.bot.entity.DaBotEventScript;
 import plus.easydo.bot.entity.DaBotInfo;
-import plus.easydo.bot.entity.DaGameConfig;
+import plus.easydo.bot.entity.SystemConf;
 import plus.easydo.bot.entity.DaLowCodeNodeConf;
 
 import java.util.ArrayList;
@@ -23,9 +23,9 @@ public class CacheManager {
 
 
     /** 所有系统游戏配置缓存 */
-    public static final List<DaGameConfig> GAME_CONF_LIST = new ArrayList<>();
+    public static final List<SystemConf> GAME_CONF_LIST = new ArrayList<>();
     /** 系统游戏配置Map缓存 */
-    public static final Map<String,DaGameConfig> GAME_CONF_MAP = new HashMap<>();
+    public static final Map<String, SystemConf> GAME_CONF_MAP = new HashMap<>();
     /** 机器人缓存 */
     public static final Map<String, DaBotInfo> BOT_CACHE = new HashMap<>();
     /** 机器人配置缓存 */

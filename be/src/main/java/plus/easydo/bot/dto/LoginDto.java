@@ -18,8 +18,4 @@ public class LoginDto {
     @NotBlank(message = "密码不能为空")
     private String password;
 
-    private String verificationCode;
-
-    private String captchaKey;
-
 }
