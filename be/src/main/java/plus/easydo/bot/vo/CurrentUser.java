@@ -18,6 +18,6 @@ public class CurrentUser {
 
     private String userName;
     private List<Object> menu;
-    private List<String> resource;
+    private List<Object> resource;
     private String mode;
 }

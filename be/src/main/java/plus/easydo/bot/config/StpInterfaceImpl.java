@@ -1,8 +1,13 @@
 package plus.easydo.bot.config;
 
 import cn.dev33.satoken.stp.StpInterface;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import plus.easydo.bot.constant.SystemConstant;
+import plus.easydo.bot.entity.SystemConf;
+import plus.easydo.bot.service.SystemConfService;
 
 import java.util.Collections;
 import java.util.List;
@@ -17,10 +22,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class StpInterfaceImpl implements StpInterface {
 
+    private final SystemConfService systemConfService;
 
     @Override
     public List<String> getPermissionList(Object loginId, String loginType) {
-        return Collections.emptyList();
+        SystemConf resourceConf = systemConfService.getByConfKey(SystemConstant.RESOURCE);
+        JSONArray resArray = JSONUtil.parseArray(resourceConf.getConfData());
+        return resArray.stream().map(String::valueOf).toList();
     }
 
     @Override

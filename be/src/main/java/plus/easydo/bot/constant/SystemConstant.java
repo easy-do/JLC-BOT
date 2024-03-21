@@ -11,6 +11,8 @@ public class SystemConstant {
     public static final String CAPTCHA_KEY = "captcha_key";
     public static final String USER_NAME = "user_name";
     public static final String PASSWORD = "password";
+    public static final String MENU = "menu";
+    public static final String RESOURCE = "resource";
 
     private SystemConstant() {
     }

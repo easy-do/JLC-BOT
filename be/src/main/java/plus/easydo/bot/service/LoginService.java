@@ -2,6 +2,8 @@ package plus.easydo.bot.service;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.json.JSONArray;
+import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.config.SystemConfig;
@@ -68,8 +70,8 @@ public class LoginService {
         CurrentUser currentUser = new CurrentUser();
         currentUser.setMode(systemConfig.getMode());
         currentUser.setUserName(systemConfService.getByConfKey(SystemConstant.USER_NAME).getConfData());
-        currentUser.setMenu(Collections.emptyList());
-        currentUser.setResource(Collections.emptyList());
+        currentUser.setMenu((JSONUtil.parseArray(systemConfService.getByConfKey(SystemConstant.MENU).getConfData())));
+        currentUser.setResource(JSONUtil.parseArray(systemConfService.getByConfKey(SystemConstant.RESOURCE).getConfData()));
         return currentUser;
     }
 

@@ -29,7 +29,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/lowcode")
 @RequiredArgsConstructor
-public class DaLowCodeController {
+public class LowCodeController {
 
     private final DaLowCodeService daLowCodeService;
 

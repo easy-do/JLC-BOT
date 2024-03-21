@@ -1,6 +1,5 @@
 package plus.easydo.bot;
 
-import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.RuntimeUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.mybatis.spring.annotation.MapperScan;
@@ -8,8 +7,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.scheduling.annotation.EnableScheduling;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 /**
  * @author yuzhanfeng

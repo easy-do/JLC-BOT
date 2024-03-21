@@ -34,7 +34,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/bot")
-public class DaBotController {
+public class BotController {
 
     private final BotService botService;
 

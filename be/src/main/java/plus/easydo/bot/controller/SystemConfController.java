@@ -28,7 +28,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/conf")
-public class DaSystemConfController {
+public class SystemConfController {
 
     private final SystemConfService daGameConfigService;
 

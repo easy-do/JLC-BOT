@@ -28,7 +28,7 @@ import java.util.Map;
 @RestController
 @RequestMapping("/api/sysNode")
 @RequiredArgsConstructor
-public class DaLowCodeSysNodeController {
+public class LowCodeSysNodeController {
 
     private final DaLowCodeSysNodeService daLowCodeSysNodeService;
 

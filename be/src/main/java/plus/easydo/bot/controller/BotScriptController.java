@@ -22,7 +22,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/botScript")
-public class DaBotScriptController {
+public class BotScriptController {
 
     private final BotScriptService botScriptService;
 

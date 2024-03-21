@@ -464,8 +464,10 @@
         }
     }
 ]', 0);
-            INSERT INTO system_conf (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('账号', 1, '123456789', 'user_name', '系统登录用户名', 0);
-            INSERT INTO system_conf (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('密码', 1, '123456789', 'password', '系统登录密码', 0);
+            INSERT INTO system_conf (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('账号', 1, '123456789', 'user_name', '系统登录用户名', 1);
+            INSERT INTO system_conf (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('密码', 1, '123456789', 'password', '系统登录密码', 1);
+            INSERT INTO system_conf (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('菜单', 4, '[{"id":1,"parentId":0,"name":"首页","weight":0,"path":"/home"},{"id":19,"parentId":0,"name":"系统配置","weight":0,"path":"/conf"},{"id":56,"parentId":0,"name":"机器人管理","weight":0,"path":"/botManager","children":[{"id":57,"parentId":56,"name":"机器人","weight":0,"path":"/platformBot"},{"id":61,"parentId":56,"name":"机器人脚本","weight":0,"path":"/botScript"},{"id":65,"parentId":56,"name":"消息记录","weight":0,"path":"/botMessage"},{"id":66,"parentId":56,"name":"请求记录","weight":0,"path":"/botRequest"},{"id":67,"parentId":56,"name":"通知记录","weight":0,"path":"/botNotice"}]},{"id":10000,"parentId":0,"name":"系统节点","weight":0,"path":"/sysNode"},{"id":10001,"parentId":0,"name":"节点配置","weight":0,"path":"/nodeConf"}]', 'menu', '系统菜单', 1);
+            INSERT INTO system_conf (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('资源信息', 4, '["home","conf","conf.save","conf.update","botManager","platformBot","platformBot.add","platformBot.update","platformBot.remove","botScript","botScript.add","botScript.update","botScript.remove","botMessage","botRequest","botNotice","sysNode","nodeConf"]', 'resource', '资源信息', 1);
         </sql>
     </changeSet>
 
