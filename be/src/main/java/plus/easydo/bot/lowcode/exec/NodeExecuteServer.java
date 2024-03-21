@@ -163,7 +163,7 @@ public class NodeExecuteServer {
                             .executeTime(System.currentTimeMillis() - nodeStartTime)
                             .build());
                 }
-                if (!error && currentNodeExecuteSuccess) {
+                if(!error){
                     result.add(NodeExecuteResult.builder()
                             .nodeId(currentNode.getId())
                             .nodeName(currentNode.getLabel())
@@ -173,6 +173,8 @@ public class NodeExecuteServer {
                             .message(res.getMessage())
                             .executeTime(System.currentTimeMillis() - nodeStartTime)
                             .build());
+                }
+                if (!error && currentNodeExecuteSuccess) {
                     if (isElseNode) {
                         // 如果是条件判断节点则根据结果处理连线
                         String portGroup = (Boolean) res.getData() ? "left" : "right";
