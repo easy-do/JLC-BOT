@@ -89,7 +89,7 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) {
-        log.info("接收到客户端消息:" + message.getPayload());
+        log.debug("接收到客户端消息:" + message.getPayload());
         JSONObject messageJson = JSONUtil.parseObj(message.getPayload());
         if(Objects.nonNull(messageJson.getObj(OneBotConstants.POST_TYPE))){
             getOneBotService().handlerPost(messageJson);
@@ -173,7 +173,7 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-        log.info("机器人客户端断开连接:{},断开编码：{}" , session.getId(),closeStatus.getCode());
+        log.warn("机器人客户端断开连接:{},断开编码：{}" , session.getId(),closeStatus.getCode());
         removeSession(session);
 
     }

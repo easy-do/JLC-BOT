@@ -169,7 +169,7 @@ public class NodeExecuteServer {
                             .nodeName(currentNode.getLabel())
                             .nodeCode(currentNode.getShape())
                             .data(res.getData())
-                            .status(res.isSuccess() ? 1 : 0)
+                            .status(currentNodeExecuteSuccess ? 1 : 0)
                             .message(res.getMessage())
                             .executeTime(System.currentTimeMillis() - nodeStartTime)
                             .build());

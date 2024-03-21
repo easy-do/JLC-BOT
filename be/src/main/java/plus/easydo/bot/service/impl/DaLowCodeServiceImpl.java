@@ -120,9 +120,17 @@ public class DaLowCodeServiceImpl implements DaLowCodeService {
         }
         List<Long> confIdList = setBotNodeDto.getConfIdList();
         if(Objects.isNull(confIdList) || confIdList.isEmpty()){
-          return lowCodeBotNodeManager.clearBotConf(botId);
+            boolean res = lowCodeBotNodeManager.clearBotConf(botId);
+            if(res){
+                initLowCodeNodeCache();
+            }
+            return res;
         }
-        return lowCodeBotNodeManager.saveBotConf(botId,confIdList);
+        boolean res =  lowCodeBotNodeManager.saveBotConf(botId,confIdList);
+        if(res){
+            initLowCodeNodeCache();
+        }
+        return res;
     }
 
     @Override
