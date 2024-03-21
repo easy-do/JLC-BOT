@@ -16,6 +16,8 @@ import plus.easydo.bot.lowcode.model.NodeExecuteResult;
 import plus.easydo.bot.lowcode.model.ExecuteResult;
 import plus.easydo.bot.lowcode.model.Node;
 import plus.easydo.bot.manager.CacheManager;
+import plus.easydo.bot.util.OneBotUtils;
+import plus.easydo.bot.websocket.model.OneBotMessageParse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,6 +66,11 @@ public class NodeExecuteServer {
         if (Objects.nonNull(botNumber)) {
             paramsJson.set("botNumber", botNumber);
             paramsJson.set("bot_conf", CacheManager.BOT_CONF_CACHE.get(botNumber));
+        }
+        String message = paramsJson.getStr(OneBotConstants.MESSAGE);
+        if(Objects.nonNull(message)){
+            OneBotMessageParse messageParse = OneBotUtils.parseMessage(message);
+            paramsJson.set(OneBotConstants.MESSAGE,messageParse);
         }
         String nodeStr = daLowCodeNodeConf.getNodeData();
         JSONObject nodeStrJson = JSONUtil.parseObj(nodeStr);
