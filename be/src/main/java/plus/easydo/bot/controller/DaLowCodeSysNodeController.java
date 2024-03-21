@@ -1,0 +1,110 @@
+package plus.easydo.bot.controller;
+
+import com.mybatisflex.core.paginate.Page;
+import io.swagger.v3.oas.annotations.Operation;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import plus.easydo.bot.entity.DaLowCodeSysNode;
+import plus.easydo.bot.service.DaLowCodeSysNodeService;
+import plus.easydo.bot.vo.DataResult;
+import plus.easydo.bot.vo.R;
+import org.springframework.web.bind.annotation.RestController;
+import plus.easydo.bot.qo.PageQo;
+
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
+/**
+ * 系统节点信息 控制层。
+ *
+ * @author mybatis-flex-helper automatic generation
+ * @since 1.0
+ */
+@RestController
+@RequestMapping("/api/sysNode")
+@RequiredArgsConstructor
+public class DaLowCodeSysNodeController {
+
+    private final DaLowCodeSysNodeService daLowCodeSysNodeService;
+
+    /**
+     * 添加 系统节点信息
+     *
+     * @param daLowCodeSysNode 系统节点信息
+     * @return {@code true} 添加成功，{@code false} 添加失败
+     */
+    @Operation(summary = "添加")
+    @PostMapping("/save")
+    public R<Boolean> saveSysNode(@RequestBody DaLowCodeSysNode daLowCodeSysNode) {
+        return DataResult.ok(daLowCodeSysNodeService.save(daLowCodeSysNode));
+    }
+
+
+    /**
+     * 根据主键删除系统节点信息
+     *
+     * @param id 主键
+     * @return {@code true} 删除成功，{@code false} 删除失败
+     */
+    @Operation(summary = "删除")
+    @GetMapping("/remove/{id}")
+    public R<Boolean> removeSysNode(@PathVariable Serializable id) {
+        return DataResult.ok(daLowCodeSysNodeService.removeById(id));
+    }
+
+
+    /**
+     * 根据主键更新系统节点信息
+     *
+     * @param daLowCodeSysNode 系统节点信息
+     * @return {@code true} 更新成功，{@code false} 更新失败
+     */
+    @Operation(summary = "更新")
+    @PostMapping("/update")
+    public R<Boolean> updateSysNode(@RequestBody DaLowCodeSysNode daLowCodeSysNode) {
+        return DataResult.ok(daLowCodeSysNodeService.updateById(daLowCodeSysNode));
+    }
+
+
+    /**
+     * 查询所有系统节点信息
+     *
+     * @return 所有数据
+     */
+    @Operation(summary = "所有数据")
+    @GetMapping("/list")
+    public R<Map<String,List<DaLowCodeSysNode>>> listSysNode() {
+        return DataResult.ok(daLowCodeSysNodeService.listSysNode());
+    }
+
+
+    /**
+     * 根据系统节点信息主键获取详细信息。
+     *
+     * @param id daLowCodeSysNode主键
+     * @return 系统节点信息详情
+     */
+    @Operation(summary = "详细信息")
+    @GetMapping("/info/{id}")
+    public R<DaLowCodeSysNode> getSysNodeInfo(@PathVariable Serializable id) {
+        return DataResult.ok(daLowCodeSysNodeService.getById(id));
+    }
+
+
+    /**
+     * 分页查询系统节点信息
+     *
+     * @param pageQo 分页对象
+     * @return 分页对象
+     */
+    @Operation(summary = "分页")
+    @PostMapping("/page")
+    public R<List<DaLowCodeSysNode>> pageSysNode(@RequestBody PageQo pageQo) {
+        return DataResult.ok(daLowCodeSysNodeService.page(new Page<>(pageQo.getCurrent(),pageQo.getPageSize())));
+    }
+}
