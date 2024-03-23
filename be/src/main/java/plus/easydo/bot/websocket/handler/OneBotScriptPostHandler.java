@@ -9,9 +9,9 @@ import com.googlecode.aviator.Expression;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.constant.OneBotConstants;
+import plus.easydo.bot.entity.BotEventScript;
 import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.util.AviatorScriptUtil;
-import plus.easydo.bot.entity.DaBotEventScript;
 import plus.easydo.bot.manager.CacheManager;
 
 import java.util.ArrayList;
@@ -41,7 +41,7 @@ public class OneBotScriptPostHandler {
                 }
             });
             execFunIds.forEach(functionId->{
-                DaBotEventScript function = CacheManager.EVENT_SCRIPT_CACHE.get(functionId);
+                BotEventScript function = CacheManager.EVENT_SCRIPT_CACHE.get(functionId);
                 if(Objects.nonNull(function) && CharSequenceUtil.isNotBlank(function.getScriptContent())){
                     log.info("执行脚本===============");
                     try {

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import plus.easydo.bot.manager.DaBotNoticeManager;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.util.OneBotUtils;
-import plus.easydo.bot.entity.DaBotNotice;
+import plus.easydo.bot.entity.BotNotice;
 
 /**
  * @author laoyu
@@ -30,7 +30,7 @@ public class OneBotPostNoticeHandler implements OneBotPostHandler{
         String selfId = postData.getStr(OneBotConstants.SELF_ID);
         Object userId = postData.get(OneBotConstants.USER_ID);
         long time = OneBotUtils.getPostTime(postData);
-        DaBotNotice botNotice = DaBotNotice.builder()
+        BotNotice botNotice = BotNotice.builder()
                 .noticeType(noticeType)
                 .subType(subType)
                 .selfUser(selfId)

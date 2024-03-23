@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import plus.easydo.bot.entity.DaLowCodeNodeConf;
+import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.dto.DebugBotNodeDto;
 import plus.easydo.bot.lowcode.model.NodeExecuteResult;
@@ -44,20 +44,20 @@ public class LowCodeController {
      */
     @Operation(summary = "分页查询节点配置")
     @PostMapping("/pageNodeConf")
-    public R<List<DaLowCodeNodeConf>> pageNodeConf(@RequestBody PageQo pageQo) {
+    public R<List<LowCodeNodeConf>> pageNodeConf(@RequestBody PageQo pageQo) {
         return DataResult.ok(daLowCodeService.pageNodeConf(pageQo));
     }
 
     /**
      * 所有节点配置
      *
-     * @return vo.plus.easydo.lowcode.bot.R<java.util.List<entity.bot.lowcode.plus.easydo.lowcode.bot.DaLowCodeNodeConf>>
+     * @return vo.plus.easydo.lowcode.bot.R<java.util.List<entity.bot.lowcode.plus.easydo.lowcode.bot.LowCodeNodeConf>>
      * @author laoyu
      * @date 2024-03-07
      */
     @Operation(summary = "所有节点配置")
     @PostMapping("/listNodeConf")
-    public R<List<DaLowCodeNodeConf>> listNodeConf() {
+    public R<List<LowCodeNodeConf>> listNodeConf() {
         return DataResult.ok(daLowCodeService.listNodeConf());
     }
 

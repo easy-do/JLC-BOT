@@ -1,7 +1,7 @@
 package plus.easydo.bot.service;
 
 import com.mybatisflex.core.paginate.Page;
-import plus.easydo.bot.entity.DaBotEventScript;
+import plus.easydo.bot.entity.BotEventScript;
 import plus.easydo.bot.qo.DaBotEventScriptQo;
 
 import java.util.List;
@@ -14,17 +14,17 @@ import java.util.List;
  */
 
 public interface BotScriptService {
-    Page<DaBotEventScript> pageBotScript(DaBotEventScriptQo daBotEventScriptQo);
+    Page<BotEventScript> pageBotScript(DaBotEventScriptQo daBotEventScriptQo);
 
-    Boolean addBotScript(DaBotEventScript daBotEventScript);
+    Boolean addBotScript(BotEventScript botEventScript);
 
-    boolean updateBotScript(DaBotEventScript daBotEventScript);
+    boolean updateBotScript(BotEventScript botEventScript);
 
     boolean removeBotScript(List<String> ids);
 
-    DaBotEventScript infoBotScript(Long id);
+    BotEventScript infoBotScript(Long id);
 
     void initBotEventScriptCache();
 
-    List<DaBotEventScript> botScriptList();
+    List<BotEventScript> botScriptList();
 }

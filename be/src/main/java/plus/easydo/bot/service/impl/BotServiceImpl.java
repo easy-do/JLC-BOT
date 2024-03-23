@@ -47,14 +47,14 @@ public class BotServiceImpl implements BotService {
     private final BotScriptService botScriptService;
 
     @Override
-    public Page<DaBotInfo> pageBot(DaBotQo daBotQo) {
+    public Page<BotInfo> pageBot(DaBotQo daBotQo) {
         return daBotInfoManager.page(new Page<>(daBotQo.getCurrent(), daBotQo.getPageSize()));
     }
 
     @Override
-    public Boolean addBot(DaBotInfo daBotInfo) {
-        daBotInfo.setBotSecret(UUID.fastUUID().toString(true));
-        boolean res = daBotInfoManager.save(daBotInfo);
+    public Boolean addBot(BotInfo botInfo) {
+        botInfo.setBotSecret(UUID.fastUUID().toString(true));
+        boolean res = daBotInfoManager.save(botInfo);
         if (res) {
             initBotCache();
         }
@@ -62,8 +62,8 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
-    public boolean updateBot(DaBotInfo daBotInfo) {
-        boolean res = daBotInfoManager.updateById(daBotInfo);
+    public boolean updateBot(BotInfo botInfo) {
+        boolean res = daBotInfoManager.updateById(botInfo);
         if (res) {
             initBotCache();
         }
@@ -82,48 +82,48 @@ public class BotServiceImpl implements BotService {
     @PostConstruct
     @Override
     public void initBotCache() {
-        Map<String, DaBotInfo> map = daBotInfoManager.list().stream().collect(Collectors.toMap(DaBotInfo::getBotNumber, (c) -> c));
+        Map<String, BotInfo> map = daBotInfoManager.list().stream().collect(Collectors.toMap(BotInfo::getBotNumber, (c) -> c));
         CacheManager.BOT_CACHE.putAll(map);
     }
 
     @PostConstruct
     @Override
     public void initBotConfCache() {
-        List<DaBotConf> allConf = daBotConfManager.list();
+        List<BotConf> allConf = daBotConfManager.list();
         Map<String,Map<String,String>> cacheMap = new HashMap<>();
-        Map<String, List<DaBotConf>> botNumberMap = allConf.stream().collect(Collectors.groupingBy(DaBotConf::getBotNumber));
-        for (Map.Entry<String, List<DaBotConf>> entry :botNumberMap.entrySet()){
+        Map<String, List<BotConf>> botNumberMap = allConf.stream().collect(Collectors.groupingBy(BotConf::getBotNumber));
+        for (Map.Entry<String, List<BotConf>> entry :botNumberMap.entrySet()){
             String platformBotNumber = entry.getKey();
-            List<DaBotConf> values = entry.getValue();
-            Map<String, String> confMap = values.stream().collect(Collectors.toMap(DaBotConf::getConfKey, DaBotConf::getConfValue));
+            List<BotConf> values = entry.getValue();
+            Map<String, String> confMap = values.stream().collect(Collectors.toMap(BotConf::getConfKey, BotConf::getConfValue));
             cacheMap.put(platformBotNumber,confMap);
         }
        CacheManager.BOT_CONF_CACHE.putAll(cacheMap);
     }
 
     @Override
-    public Page<DaBotMessage> pageBotMessage(DaBotMessageQo daBotMessageQo) {
+    public Page<BotMessage> pageBotMessage(DaBotMessageQo daBotMessageQo) {
         return daBotMessageManager.page(new Page<>(daBotMessageQo.getCurrent(), daBotMessageQo.getPageSize()));
     }
 
     @Override
-    public Page<DaBotRequest> pageBotRequest(DaBotRequestQo daBotRequestQo) {
+    public Page<BotRequest> pageBotRequest(DaBotRequestQo daBotRequestQo) {
         return daBotRequestManager.page(new Page<>(daBotRequestQo.getCurrent(), daBotRequestQo.getPageSize()));
     }
 
     @Override
-    public Page<DaBotNotice> pageBotNotice(DaBotNoticeQo daBotNoticeQo) {
+    public Page<BotNotice> pageBotNotice(DaBotNoticeQo daBotNoticeQo) {
         return daBotNoticeManager.page(new Page<>(daBotNoticeQo.getCurrent(), daBotNoticeQo.getPageSize()));
     }
 
     @Override
-    public List<DaBotConf> getBotConf(String botNumber) {
+    public List<BotConf> getBotConf(String botNumber) {
         return daBotConfManager.getByBotNumber(botNumber);
     }
 
     @Override
-    public boolean updateBotConf(DaBotConf daBotConf) {
-        boolean res = daBotConfManager.updateById(daBotConf);
+    public boolean updateBotConf(BotConf botConf) {
+        boolean res = daBotConfManager.updateById(botConf);
         if(res){
             initBotConfCache();
         }
@@ -131,15 +131,15 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
-    public boolean addBotConf(DaBotConf daBotConf) {
-        DaBotConf dbConf = daBotConfManager.getByBotNumberAndKey(daBotConf.getBotNumber(), daBotConf.getConfKey());
+    public boolean addBotConf(BotConf botConf) {
+        BotConf dbConf = daBotConfManager.getByBotNumberAndKey(botConf.getBotNumber(), botConf.getConfKey());
         if(Objects.nonNull(dbConf)){
-            daBotConf.setId(dbConf.getId());
-            daBotConf.setConfValue(daBotConf.getConfValue());
-            return updateBotConf(daBotConf);
+            botConf.setId(dbConf.getId());
+            botConf.setConfValue(botConf.getConfValue());
+            return updateBotConf(botConf);
         }
 
-        boolean res = daBotConfManager.save(daBotConf);
+        boolean res = daBotConfManager.save(botConf);
         if(res){
             initBotConfCache();
         }
@@ -165,22 +165,22 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
-    public DaBotConf getByBotNumberAndKey(String botNumber, String key) {
+    public BotConf getByBotNumberAndKey(String botNumber, String key) {
         return daBotConfManager.getByBotNumberAndKey(botNumber,key);
     }
 
     @Override
     public List<Long> getEnableBotScript(Long id) {
-        DaBotInfo botInfo = daBotInfoManager.getById(id);
+        BotInfo botInfo = daBotInfoManager.getById(id);
         if(Objects.isNull(botInfo)){
             throw new BaseException("机器人不存在");
         }
-        return daBotScriptBotManager.getBotScript(botInfo.getBotNumber()).stream().map(DaBotScriptBot::getScriptId).toList();
+        return daBotScriptBotManager.getBotScript(botInfo.getBotNumber()).stream().map(BotScriptBot::getScriptId).toList();
     }
 
     @Override
     public boolean enableBotScript(EnableBotScriptDto enableBotScriptDto) {
-        DaBotInfo botInfo = daBotInfoManager.getById(enableBotScriptDto.getBotId());
+        BotInfo botInfo = daBotInfoManager.getById(enableBotScriptDto.getBotId());
         boolean res;
         if(Objects.isNull(botInfo)){
             throw new BaseException("机器人不存在");
@@ -205,7 +205,7 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
-    public DaBotInfo infoBot(Long id) {
+    public BotInfo infoBot(Long id) {
         return daBotInfoManager.getById(id);
     }
 }

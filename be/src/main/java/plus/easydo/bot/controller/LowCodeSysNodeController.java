@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import plus.easydo.bot.entity.DaLowCodeSysNode;
+import plus.easydo.bot.entity.LowCodeSysNode;
 import plus.easydo.bot.service.DaLowCodeSysNodeService;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
@@ -35,13 +35,13 @@ public class LowCodeSysNodeController {
     /**
      * 添加 系统节点信息
      *
-     * @param daLowCodeSysNode 系统节点信息
+     * @param lowCodeSysNode 系统节点信息
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
     @Operation(summary = "添加")
     @PostMapping("/save")
-    public R<Boolean> saveSysNode(@RequestBody DaLowCodeSysNode daLowCodeSysNode) {
-        return DataResult.ok(daLowCodeSysNodeService.save(daLowCodeSysNode));
+    public R<Boolean> saveSysNode(@RequestBody LowCodeSysNode lowCodeSysNode) {
+        return DataResult.ok(daLowCodeSysNodeService.save(lowCodeSysNode));
     }
 
 
@@ -61,13 +61,13 @@ public class LowCodeSysNodeController {
     /**
      * 根据主键更新系统节点信息
      *
-     * @param daLowCodeSysNode 系统节点信息
+     * @param lowCodeSysNode 系统节点信息
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @Operation(summary = "更新")
     @PostMapping("/update")
-    public R<Boolean> updateSysNode(@RequestBody DaLowCodeSysNode daLowCodeSysNode) {
-        return DataResult.ok(daLowCodeSysNodeService.updateById(daLowCodeSysNode));
+    public R<Boolean> updateSysNode(@RequestBody LowCodeSysNode lowCodeSysNode) {
+        return DataResult.ok(daLowCodeSysNodeService.updateById(lowCodeSysNode));
     }
 
 
@@ -78,7 +78,7 @@ public class LowCodeSysNodeController {
      */
     @Operation(summary = "所有数据")
     @GetMapping("/list")
-    public R<Map<String,List<DaLowCodeSysNode>>> listSysNode() {
+    public R<Map<String,List<LowCodeSysNode>>> listSysNode() {
         return DataResult.ok(daLowCodeSysNodeService.listSysNode());
     }
 
@@ -91,7 +91,7 @@ public class LowCodeSysNodeController {
      */
     @Operation(summary = "详细信息")
     @GetMapping("/info/{id}")
-    public R<DaLowCodeSysNode> getSysNodeInfo(@PathVariable Serializable id) {
+    public R<LowCodeSysNode> getSysNodeInfo(@PathVariable Serializable id) {
         return DataResult.ok(daLowCodeSysNodeService.getById(id));
     }
 
@@ -104,7 +104,7 @@ public class LowCodeSysNodeController {
      */
     @Operation(summary = "分页")
     @PostMapping("/page")
-    public R<List<DaLowCodeSysNode>> pageSysNode(@RequestBody PageQo pageQo) {
+    public R<List<LowCodeSysNode>> pageSysNode(@RequestBody PageQo pageQo) {
         return DataResult.ok(daLowCodeSysNodeService.page(new Page<>(pageQo.getCurrent(),pageQo.getPageSize())));
     }
 }

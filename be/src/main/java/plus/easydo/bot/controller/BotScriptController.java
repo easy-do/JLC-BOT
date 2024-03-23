@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
-import plus.easydo.bot.entity.DaBotEventScript;
+import plus.easydo.bot.entity.BotEventScript;
 import plus.easydo.bot.qo.DaBotEventScriptQo;
 import plus.easydo.bot.service.BotScriptService;
 
@@ -35,21 +35,21 @@ public class BotScriptController {
     @Operation(summary = "分页查询")
     @SaCheckPermission("botScript")
     @PostMapping("/page")
-    public R<List<DaBotEventScript>> pageBotScript(@RequestBody DaBotEventScriptQo daBotEventScriptQo) {
+    public R<List<BotEventScript>> pageBotScript(@RequestBody DaBotEventScriptQo daBotEventScriptQo) {
         return DataResult.ok(botScriptService.pageBotScript(daBotEventScriptQo));
     }
 
     /**
      * 所有脚本列表
      *
-     * @return vo.plus.easydo.lowcode.bot.R<java.util.List<plus.easydo.bot.entity.DaBotEventScript>>
+     * @return vo.plus.easydo.lowcode.bot.R<java.util.List<plus.easydo.bot.entity.BotEventScript>>
      * @author laoyu
      * @date 2024/2/24
      */
     @Operation(summary = "所有脚本列表")
     @SaCheckPermission(mode=SaMode.OR,value = {"botScript","platformBot"})
     @GetMapping("/botScriptList")
-    public R<List<DaBotEventScript>> botScriptList() {
+    public R<List<BotEventScript>> botScriptList() {
         return DataResult.ok(botScriptService.botScriptList());
     }
 
@@ -64,34 +64,34 @@ public class BotScriptController {
     @Operation(summary = "机器人脚本详情")
     @SaCheckPermission("botScript")
     @PostMapping("/info/{id}")
-    public R<DaBotEventScript> infoBotScript(@PathVariable("id") Long id) {
+    public R<BotEventScript> infoBotScript(@PathVariable("id") Long id) {
         return DataResult.ok(botScriptService.infoBotScript(id));
     }
 
     /**
      * 添加机器人脚本配置
      *
-     * @param daBotEventScript daCdk
+     * @param botEventScript daCdk
      * @return 分页对象
      */
     @Operation(summary = "添加机器人脚本配置")
     @SaCheckPermission("botScript.add")
     @PostMapping("/add")
-    public R<Boolean> addBotScript(@RequestBody DaBotEventScript daBotEventScript) {
-        return DataResult.ok(botScriptService.addBotScript(daBotEventScript));
+    public R<Boolean> addBotScript(@RequestBody BotEventScript botEventScript) {
+        return DataResult.ok(botScriptService.addBotScript(botEventScript));
     }
 
     /**
      * 添加机器人脚本配置
      *
-     * @param daBotEventScript daCdk
+     * @param botEventScript daCdk
      * @return 分页对象
      */
     @Operation(summary = "更新机器人脚本配置")
     @SaCheckPermission("botScript.update")
     @PostMapping("/update")
-    public R<Boolean> updateBotScript(@RequestBody DaBotEventScript daBotEventScript) {
-        return DataResult.ok(botScriptService.updateBotScript(daBotEventScript));
+    public R<Boolean> updateBotScript(@RequestBody BotEventScript botEventScript) {
+        return DataResult.ok(botScriptService.updateBotScript(botEventScript));
     }
 
 

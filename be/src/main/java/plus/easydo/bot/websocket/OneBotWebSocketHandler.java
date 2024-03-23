@@ -15,9 +15,9 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
+import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.constant.OneBotConstants;
-import plus.easydo.bot.entity.DaBotInfo;
 import plus.easydo.bot.manager.CacheManager;
 
 import java.io.IOException;
@@ -59,7 +59,7 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
         HttpHeaders handshakeHeaders = session.getHandshakeHeaders();
         List<String> selfId = handshakeHeaders.get(OneBotConstants.HEADER_SELF_ID);
         if(Objects.nonNull(selfId) && !selfId.isEmpty()){
-            DaBotInfo botInfo = CacheManager.BOT_CACHE.get(selfId.get(0));
+            BotInfo botInfo = CacheManager.BOT_CACHE.get(selfId.get(0));
             if(Objects.nonNull(botInfo)){
                 String botSecret = botInfo.getBotSecret();
                 if(CharSequenceUtil.isNotBlank(botSecret)){
@@ -96,7 +96,7 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
         }
     }
 
-    private void saveSession(WebSocketSession session, DaBotInfo botInfo){
+    private void saveSession(WebSocketSession session, BotInfo botInfo){
         CONCURRENT_LINKED_DEQUE.add(session);
         SESSION_MAP.put(session.getId(),session);
         SESSION_BOT_MAP.put(session.getId(),botInfo.getBotNumber());

@@ -1,6 +1,6 @@
 package plus.easydo.bot.mapper;
 
-import plus.easydo.bot.entity.DaLowCodeBotNode;
+import plus.easydo.bot.entity.LowCodeBotNode;
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 1.0
  */
 @Mapper
-public interface DaLowCodeBotNodeMapper extends BaseMapper<DaLowCodeBotNode> {
+public interface DaLowCodeBotNodeMapper extends BaseMapper<LowCodeBotNode> {
 
 
 }

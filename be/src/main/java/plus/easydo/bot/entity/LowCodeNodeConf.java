@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(value = "low_code_node_conf")
-public class DaLowCodeNodeConf {
+public class LowCodeNodeConf {
 
     @Id(keyType = KeyType.Auto)
     private Long id;

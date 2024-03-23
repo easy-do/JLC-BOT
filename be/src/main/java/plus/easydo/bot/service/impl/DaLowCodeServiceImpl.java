@@ -6,9 +6,9 @@ import com.mybatisflex.core.paginate.Page;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.exception.BaseException;
-import plus.easydo.bot.entity.DaLowCodeBotNode;
-import plus.easydo.bot.entity.DaLowCodeNodeConf;
+import plus.easydo.bot.entity.LowCodeBotNode;
 import plus.easydo.bot.lowcode.exec.NodeExecuteServer;
 import plus.easydo.bot.manager.DaLowCodeBotNodeManager;
 import plus.easydo.bot.manager.DaLowCodeNodeConfManager;
@@ -43,23 +43,23 @@ public class DaLowCodeServiceImpl implements DaLowCodeService {
 
     @Override
     public Long saveNodeConf(BotNodeDto botNodeDto) {
-        DaLowCodeNodeConf daLowCodeNodeConf = DaLowCodeNodeConf.builder()
+        LowCodeNodeConf lowCodeNodeConf = LowCodeNodeConf.builder()
                 .confName(botNodeDto.getConfName())
                 .eventType(botNodeDto.getEventType())
                 .nodeData(JSONUtil.toJsonPrettyStr(botNodeDto.getNodes()))
                 .confData(JSONUtil.toJsonPrettyStr(botNodeDto.getNodeConf()))
                 .createTime(LocalDateTimeUtil.now())
                 .build();
-        boolean res = lowCodeNodeConfManager.save(daLowCodeNodeConf);
+        boolean res = lowCodeNodeConfManager.save(lowCodeNodeConf);
         if(res){
             initLowCodeNodeCache();
         }
-        return daLowCodeNodeConf.getId();
+        return lowCodeNodeConf.getId();
     }
 
     @Override
     public boolean updateNodeConf(BotNodeDto botNodeDto) {
-        DaLowCodeNodeConf daLowCodeNodeConf = DaLowCodeNodeConf.builder()
+        LowCodeNodeConf lowCodeNodeConf = LowCodeNodeConf.builder()
                 .id(botNodeDto.getId())
                 .eventType(botNodeDto.getEventType())
                 .confName(botNodeDto.getConfName())
@@ -67,7 +67,7 @@ public class DaLowCodeServiceImpl implements DaLowCodeService {
                 .confData(JSONUtil.toJsonPrettyStr(botNodeDto.getNodeConf()))
                 .updateTime(LocalDateTimeUtil.now())
                 .build();
-        boolean res = lowCodeNodeConfManager.updateById(daLowCodeNodeConf);
+        boolean res = lowCodeNodeConfManager.updateById(lowCodeNodeConf);
         if(res){
             initLowCodeNodeCache();
         }
@@ -76,7 +76,7 @@ public class DaLowCodeServiceImpl implements DaLowCodeService {
 
     @Override
     public BotNodeDto getNodeConf(Long id) {
-        DaLowCodeNodeConf conf = lowCodeNodeConfManager.getById(id);
+        LowCodeNodeConf conf = lowCodeNodeConfManager.getById(id);
         if(Objects.isNull(conf)){
             throw new BaseException("配置不存在");
         }
@@ -90,7 +90,7 @@ public class DaLowCodeServiceImpl implements DaLowCodeService {
     }
 
     @Override
-    public Page<DaLowCodeNodeConf> pageNodeConf(PageQo pageQo) {
+    public Page<LowCodeNodeConf> pageNodeConf(PageQo pageQo) {
         return lowCodeNodeConfManager.pageNodeConf(pageQo);
     }
 
@@ -105,7 +105,7 @@ public class DaLowCodeServiceImpl implements DaLowCodeService {
 
     @Override
     public List<NodeExecuteResult> debugNodeConf(DebugBotNodeDto debugBotNodeDto) {
-        DaLowCodeNodeConf conf = lowCodeNodeConfManager.getById(debugBotNodeDto.getId());
+        LowCodeNodeConf conf = lowCodeNodeConfManager.getById(debugBotNodeDto.getId());
         if(Objects.isNull(conf)){
             throw new BaseException("配置不存在");
         }
@@ -134,28 +134,28 @@ public class DaLowCodeServiceImpl implements DaLowCodeService {
     }
 
     @Override
-    public List<DaLowCodeNodeConf> listNodeConf() {
+    public List<LowCodeNodeConf> listNodeConf() {
         return lowCodeNodeConfManager.listNodeConf();
     }
 
     @Override
     public List<Long> getBotNode(Long botId) {
-        List<DaLowCodeBotNode> list = lowCodeBotNodeManager.lowCodeBotNodeManager(botId);
-        return list.stream().map(DaLowCodeBotNode::getConfId).toList();
+        List<LowCodeBotNode> list = lowCodeBotNodeManager.lowCodeBotNodeManager(botId);
+        return list.stream().map(LowCodeBotNode::getConfId).toList();
     }
 
     @PostConstruct
     @Override
     public void initLowCodeNodeCache() {
         //缓存节点配置缓存
-        List<DaLowCodeNodeConf> confList = lowCodeNodeConfManager.list();
+        List<LowCodeNodeConf> confList = lowCodeNodeConfManager.list();
         CacheManager.NODE_CONF_CACHE.clear();
         confList.forEach(conf-> CacheManager.NODE_CONF_CACHE.put(conf.getId(),conf));
         //缓存机器人与节点关联缓存
-        List<DaLowCodeBotNode> list = lowCodeBotNodeManager.list();
-        Map<Long, List<DaLowCodeBotNode>> groupMap = list.stream().collect(Collectors.groupingBy(DaLowCodeBotNode::getBotId));
+        List<LowCodeBotNode> list = lowCodeBotNodeManager.list();
+        Map<Long, List<LowCodeBotNode>> groupMap = list.stream().collect(Collectors.groupingBy(LowCodeBotNode::getBotId));
         CacheManager.BOT_NODE_CONF_CACHE.clear();
-        groupMap.forEach((key,value)-> CacheManager.BOT_NODE_CONF_CACHE.put(key,value.stream().map(DaLowCodeBotNode::getConfId).toList()));
+        groupMap.forEach((key,value)-> CacheManager.BOT_NODE_CONF_CACHE.put(key,value.stream().map(LowCodeBotNode::getConfId).toList()));
     }
 
 

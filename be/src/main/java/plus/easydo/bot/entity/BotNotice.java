@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 消息记录 实体类。
+ * 通知记录 实体类。
  *
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
@@ -22,20 +22,32 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "bot_message")
-public class DaBotMessage {
+@Table(value = "bot_notice")
+public class BotNotice {
 
     /**
-     * 自增主键
+     * 自增id
      */
     @Id(keyType = KeyType.Auto)
     private Long id;
 
     /**
-     * 消息id
+     * 通知类型
      */
-    @Column(value = "message_id")
-    private String messageId;
+    @Column(value = "notice_type")
+    private String noticeType;
+
+    /**
+     * 子类型
+     */
+    @Column(value = "sub_type")
+    private String subType;
+
+    /**
+     * 接收用户
+     */
+    @Column(value = "self_user")
+    private String selfUser;
 
     /**
      * 群组id
@@ -44,28 +56,29 @@ public class DaBotMessage {
     private String groupId;
 
     /**
-     * 发送用户
+     * 操作人
      */
-    @Column(value = "send_user")
-    private String sendUser;
-    /**
-     * 接收用户
-     */
-    @Column(value = "self_user")
-    private String selfUser;
+    @Column(value = "operator_id")
+    private String operatorId;
 
     /**
-     * 接收到的时间
+     * 发生变动人
+     */
+    @Column(value = "user_id")
+    private String userId;
+
+    /**
+     * 接收时间
      */
     @Column(value = "self_time")
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime selfTime;
 
     /**
-     * 消息内容
+     * 消息id
      */
-    @Column(value = "message")
-    private String message;
+    @Column(value = "message_id")
+    private String messageId;
 
 
 }

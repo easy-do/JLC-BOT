@@ -7,10 +7,10 @@ import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.manager.DaBotInfoManager;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.util.OneBotUtils;
-import plus.easydo.bot.entity.DaBotInfo;
 
 import java.util.concurrent.CompletableFuture;
 
@@ -35,12 +35,12 @@ public class OneBotPostMetaEventHandler implements OneBotPostHandler{
             JSONObject statusJson = postData.getJSONObject(OneBotConstants.STATUS);
             JSONObject extData = JSONUtil.createObj();
             extData.set(OneBotConstants.HEARTBEAT,statusJson);
-            DaBotInfo daBotInfo = DaBotInfo.builder()
+            BotInfo botInfo = BotInfo.builder()
                     .botNumber(selfId)
                     .lastHeartbeatTime(LocalDateTimeUtil.of(time))
                     .extData(extData.toStringPretty())
                     .build();
-            CompletableFuture.runAsync(()->daBotInfoManager.updateBybotNumber(daBotInfo));
+            CompletableFuture.runAsync(()->daBotInfoManager.updateBybotNumber(botInfo));
         }
     }
 }

@@ -5,12 +5,12 @@ import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.enums.onebot.OneBotMessageTypeEnum;
 import plus.easydo.bot.websocket.model.OneBotLoginInfo;
 import plus.easydo.bot.websocket.model.OneBotMessage;
-import plus.easydo.bot.entity.DaBotInfo;
 import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.websocket.model.OneBotMessageParse;
 import plus.easydo.bot.websocket.OneBotWebSocketHandler;
@@ -30,7 +30,7 @@ public class OneBotUtils {
     }
 
     private static String getRequest(String botNumber, String path) {
-        DaBotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
+        BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
         if (Objects.isNull(bot)) {
             throw new BaseException("没有找到机器人[" + botNumber + "]信息");
         }
@@ -40,7 +40,7 @@ public class OneBotUtils {
     }
 
     private static String postRequest(String botNumber, String path, JSONObject body) {
-        DaBotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
+        BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
         if (Objects.isNull(bot)) {
             throw new BaseException("没有找到机器人[" + botNumber + "]信息");
         }
@@ -51,7 +51,7 @@ public class OneBotUtils {
     }
 
     private static String sendSocketAwait(String botNumber, String action, JSONObject params){
-        DaBotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
+        BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
         if (Objects.isNull(bot)) {
             throw new BaseException("没有找到机器人[" + botNumber + "]信息");
         }
@@ -66,7 +66,7 @@ public class OneBotUtils {
     }
 
     private static void sendSocket(String botNumber, String action, JSONObject params){
-        DaBotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
+        BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
         if (Objects.isNull(bot)) {
             throw new BaseException("没有找到机器人[" + botNumber + "]信息");
         }

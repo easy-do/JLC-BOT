@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 实体类。
+ * 消息记录 实体类。
  *
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
@@ -22,20 +22,20 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "bot_request")
-public class DaBotRequest {
+@Table(value = "bot_message")
+public class BotMessage {
 
     /**
-     * 自增id
+     * 自增主键
      */
     @Id(keyType = KeyType.Auto)
     private Long id;
 
     /**
-     * 请求类型
+     * 消息id
      */
-    @Column(value = "request_type")
-    private String requestType;
+    @Column(value = "message_id")
+    private String messageId;
 
     /**
      * 群组id
@@ -48,7 +48,6 @@ public class DaBotRequest {
      */
     @Column(value = "send_user")
     private String sendUser;
-
     /**
      * 接收用户
      */
@@ -56,23 +55,17 @@ public class DaBotRequest {
     private String selfUser;
 
     /**
-     * 接收时间
+     * 接收到的时间
      */
     @Column(value = "self_time")
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime selfTime;
 
     /**
-     * 验证信息
+     * 消息内容
      */
-    @Column(value = "comment")
-    private String comment;
-
-    /**
-     * 请求标识
-     */
-    @Column(value = "flag")
-    private String flag;
+    @Column(value = "message")
+    private String message;
 
 
 }

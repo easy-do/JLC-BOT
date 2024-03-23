@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(value = "low_code_bot_node")
-public class DaLowCodeBotNode {
+public class LowCodeBotNode {
 
     /**
      * 机器人id

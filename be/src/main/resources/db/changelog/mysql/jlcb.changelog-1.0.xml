@@ -470,5 +470,30 @@
             INSERT INTO system_conf (conf_name, conf_type, conf_data, conf_key, remark, is_system_conf) VALUES('资源信息', 4, '["home","conf","conf.save","conf.update","botManager","platformBot","platformBot.add","platformBot.update","platformBot.remove","botScript","botScript.add","botScript.update","botScript.remove","botMessage","botRequest","botNotice","sysNode","nodeConf"]', 'resource', '资源信息', 1);
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240323" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            CREATE TABLE `low_code_bot_node_conf_execute_log`
+            (
+                `conf_id`      bigint(20)  DEFAULT NULL COMMENT '配置id',
+                `conf_name`    varchar(32) DEFAULT NULL COMMENT '节点名',
+                `execute_time` bigint(20)  DEFAULT NULL COMMENT '执行时间',
+                `create_time` datetime DEFAULT NULL,
+                KEY `low_code_bot_node_execute_log_conf_id_IDX` (`conf_id`) USING BTREE
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='节点配置执行日志';
 
+            CREATE TABLE `low_code_bot_node_execute_log`
+            (
+                `conf_id`   bigint(20)  DEFAULT NULL COMMENT '配置id',
+                `conf_name` varchar(32) DEFAULT NULL COMMENT '节点名',
+                `node_code` varchar(32) DEFAULT NULL COMMENT '节点编码',
+                `node_name` varchar(12) DEFAULT NULL COMMENT '节点名',
+                `execute_time` bigint(20)  DEFAULT NULL COMMENT '执行时间',
+                `create_time` datetime DEFAULT NULL,
+                KEY `bot_node_exec_log_node_code_IDX` (`node_code`) USING BTREE,
+                KEY `low_code_bot_node_execute_log_conf_id_IDX` (`conf_id`) USING BTREE
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='节点执行日志';
+        </sql>
+    </changeSet>
 </databaseChangeLog>

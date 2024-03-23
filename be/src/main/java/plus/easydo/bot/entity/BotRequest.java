@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 /**
- * 机器人信息 实体类。
+ * 实体类。
  *
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
@@ -22,51 +22,57 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(value = "bot_info")
-public class DaBotInfo {
+@Table(value = "bot_request")
+public class BotRequest {
 
     /**
-     * 自增ID
+     * 自增id
      */
     @Id(keyType = KeyType.Auto)
     private Long id;
 
     /**
-     * 机器人编码
+     * 请求类型
      */
-    @Column(value = "bot_number")
-    private String botNumber;
+    @Column(value = "request_type")
+    private String requestType;
 
     /**
-     * 机器人秘钥
+     * 群组id
      */
-    @Column(value = "bot_secret")
-    private String botSecret;
+    @Column(value = "group_id")
+    private String groupId;
 
     /**
-     * 备注
+     * 发送用户
      */
-    @Column(value = "remark")
-    private String remark;
+    @Column(value = "send_user")
+    private String sendUser;
 
     /**
-     * 机器人通讯地址
+     * 接收用户
      */
-    @Column(value = "bot_url")
-    private String botUrl;
-
+    @Column(value = "self_user")
+    private String selfUser;
 
     /**
-     * 最后心跳时间
+     * 接收时间
      */
-    @Column(value = "last_heartbeat_time")
+    @Column(value = "self_time")
     @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
-    private LocalDateTime lastHeartbeatTime;
+    private LocalDateTime selfTime;
 
     /**
-     * 拓展数据
+     * 验证信息
      */
-    @Column(value = "ext_data")
-    private String extData;
+    @Column(value = "comment")
+    private String comment;
+
+    /**
+     * 请求标识
+     */
+    @Column(value = "flag")
+    private String flag;
+
 
 }

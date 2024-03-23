@@ -13,7 +13,7 @@ import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
 import plus.easydo.bot.websocket.model.OneBotMessageParse;
 import plus.easydo.bot.websocket.model.OneBotSender;
 import plus.easydo.bot.util.OneBotUtils;
-import plus.easydo.bot.entity.DaBotMessage;
+import plus.easydo.bot.entity.BotMessage;
 import plus.easydo.bot.websocket.handler.message.OneBotGroupMessageHandler;
 import plus.easydo.bot.websocket.handler.message.OneBotGroupPrivateMessageHandler;
 import plus.easydo.bot.websocket.handler.message.OneBotPrivateMessageHandler;
@@ -53,7 +53,7 @@ public class OneBotPostMessageHandler implements OneBotPostHandler{
         OneBotSender sender = JSONUtil.toBean(senderJson, OneBotSender.class);
         OneBotMessageParse oneBotMessageParse = OneBotUtils.parseMessage(message);
         if(oneBotMessageParse.getSegmentSize() != 0){
-            DaBotMessage daBotMessage = DaBotMessage.builder()
+            BotMessage botMessage = BotMessage.builder()
                     .sendUser(String.valueOf(sender.getUserId()))
                     .selfUser(selfId)
                     .selfTime(LocalDateTimeUtil.of(time))
@@ -63,17 +63,17 @@ public class OneBotPostMessageHandler implements OneBotPostHandler{
             if (CharSequenceUtil.equals(messageType,OneBotPostMessageTypeEnum.PRIVATE.getType())){
                 //群内发起的私聊
                 if(Objects.nonNull(groupId)){
-                    daBotMessage.setGroupId(String.valueOf(groupId));
+                    botMessage.setGroupId(String.valueOf(groupId));
                     groupPrivateMessageHandler.handlerMessage(String.valueOf(groupId), sender, message);
                 }else {
                     //直接私聊
                     privateMessageHandler.handlerMessage(sender, message);
                 }
             }else {
-                daBotMessage.setGroupId(String.valueOf(groupId));
+                botMessage.setGroupId(String.valueOf(groupId));
                 groupMessageHandler.handlerMessage(selfId, String.valueOf(groupId), sender, message);
             }
-            CompletableFuture.runAsync(()->daBotMessageManager.save(daBotMessage));
+            CompletableFuture.runAsync(()->daBotMessageManager.save(botMessage));
         }
     }
 }

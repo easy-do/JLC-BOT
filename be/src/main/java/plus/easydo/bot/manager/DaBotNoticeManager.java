@@ -3,7 +3,7 @@ package plus.easydo.bot.manager;
 
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
-import plus.easydo.bot.entity.DaBotNotice;
+import plus.easydo.bot.entity.BotNotice;
 import plus.easydo.bot.mapper.DaBotNoticeMapper;
 
 /**
@@ -13,6 +13,6 @@ import plus.easydo.bot.mapper.DaBotNoticeMapper;
  * @since 1.0
  */
 @Component
-public class DaBotNoticeManager extends ServiceImpl<DaBotNoticeMapper, DaBotNotice> {
+public class DaBotNoticeManager extends ServiceImpl<DaBotNoticeMapper, BotNotice> {
 
 }

@@ -18,7 +18,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(value = "bot_script_bot")
-public class DaBotScriptBot {
+public class BotScriptBot {
 
     /**
      * 脚本id

@@ -1,7 +1,7 @@
 package plus.easydo.bot.service;
 
 
-import plus.easydo.bot.entity.DaLowCodeSysNode;
+import plus.easydo.bot.entity.LowCodeSysNode;
 import com.mybatisflex.core.service.IService;
 
 import java.util.List;
@@ -13,8 +13,8 @@ import java.util.Map;
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
  */
-public interface DaLowCodeSysNodeService extends IService<DaLowCodeSysNode> {
+public interface DaLowCodeSysNodeService extends IService<LowCodeSysNode> {
 
-    Map<String, List<DaLowCodeSysNode>> listSysNode();
+    Map<String, List<LowCodeSysNode>> listSysNode();
 
 }

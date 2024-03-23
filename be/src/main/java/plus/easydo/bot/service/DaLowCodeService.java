@@ -1,7 +1,7 @@
 package plus.easydo.bot.service;
 
 import com.mybatisflex.core.paginate.Page;
-import plus.easydo.bot.entity.DaLowCodeNodeConf;
+import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.dto.DebugBotNodeDto;
 import plus.easydo.bot.lowcode.model.NodeExecuteResult;
@@ -26,7 +26,7 @@ public interface DaLowCodeService {
 
     BotNodeDto getNodeConf(Long id);
 
-    Page<DaLowCodeNodeConf> pageNodeConf(PageQo pageQo);
+    Page<LowCodeNodeConf> pageNodeConf(PageQo pageQo);
 
     boolean removeNodeConf(Long id);
 
@@ -36,7 +36,7 @@ public interface DaLowCodeService {
 
     boolean setBotNode(SetBotNodeDto setBotNodeDto);
 
-    List<DaLowCodeNodeConf> listNodeConf();
+    List<LowCodeNodeConf> listNodeConf();
 
     List<Long> getBotNode(Long botId);
 }

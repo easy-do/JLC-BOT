@@ -14,7 +14,7 @@ import lombok.Data;
  */
 @Data
 @Table(value = "bot_script")
-public class DaBotEventScript {
+public class BotEventScript {
 
     /**
      * 自增id

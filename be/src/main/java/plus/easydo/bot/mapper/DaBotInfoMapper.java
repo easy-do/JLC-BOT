@@ -1,6 +1,6 @@
 package plus.easydo.bot.mapper;
 
-import plus.easydo.bot.entity.DaBotInfo;
+import plus.easydo.bot.entity.BotInfo;
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 1.0
  */
 @Mapper
-public interface DaBotInfoMapper extends BaseMapper<DaBotInfo> {
+public interface DaBotInfoMapper extends BaseMapper<BotInfo> {
 
 
 }

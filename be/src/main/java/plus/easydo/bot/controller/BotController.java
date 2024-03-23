@@ -9,13 +9,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import plus.easydo.bot.dto.EnableBotScriptDto;
+import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
-import plus.easydo.bot.entity.DaBotConf;
-import plus.easydo.bot.entity.DaBotInfo;
-import plus.easydo.bot.entity.DaBotMessage;
-import plus.easydo.bot.entity.DaBotNotice;
-import plus.easydo.bot.entity.DaBotRequest;
+import plus.easydo.bot.entity.BotConf;
+import plus.easydo.bot.entity.BotMessage;
+import plus.easydo.bot.entity.BotNotice;
+import plus.easydo.bot.entity.BotRequest;
 import plus.easydo.bot.qo.DaBotMessageQo;
 import plus.easydo.bot.qo.DaBotNoticeQo;
 import plus.easydo.bot.qo.DaBotQo;
@@ -47,7 +47,7 @@ public class BotController {
     @Operation(summary = "分页查询")
     @SaCheckPermission("platformBot")
     @PostMapping("/page")
-    public R<List<DaBotInfo>> pageBot(@RequestBody DaBotQo daBotQo) {
+    public R<List<BotInfo>> pageBot(@RequestBody DaBotQo daBotQo) {
         return DataResult.ok(botService.pageBot(daBotQo));
     }
 
@@ -62,34 +62,34 @@ public class BotController {
     @Operation(summary = "机器人详情")
     @SaCheckPermission("platformBot")
     @PostMapping("/info/{id}")
-    public R<DaBotInfo> infoBot(@PathVariable("id") Long id) {
+    public R<BotInfo> infoBot(@PathVariable("id") Long id) {
         return DataResult.ok(botService.infoBot(id));
     }
 
     /**
      * 添加机器人配置
      *
-     * @param daBotInfo daCdk
+     * @param botInfo daCdk
      * @return 分页对象
      */
     @Operation(summary = "添加机器人配置")
     @SaCheckPermission("platformBot.add")
     @PostMapping("/add")
-    public R<Boolean> addBot(@RequestBody DaBotInfo daBotInfo) {
-        return DataResult.ok(botService.addBot(daBotInfo));
+    public R<Boolean> addBot(@RequestBody BotInfo botInfo) {
+        return DataResult.ok(botService.addBot(botInfo));
     }
 
     /**
      * 添加机器人配置
      *
-     * @param daBotInfo daCdk
+     * @param botInfo daCdk
      * @return 分页对象
      */
     @Operation(summary = "更新机器人配置")
     @SaCheckPermission("platformBot.update")
     @PostMapping("/update")
-    public R<Boolean> updateBot(@RequestBody DaBotInfo daBotInfo) {
-        return DataResult.ok(botService.updateBot(daBotInfo));
+    public R<Boolean> updateBot(@RequestBody BotInfo botInfo) {
+        return DataResult.ok(botService.updateBot(botInfo));
     }
 
 
@@ -110,29 +110,29 @@ public class BotController {
      * 获取机器人配置
      *
      * @param botNumber botNumber
-     * @return vo.plus.easydo.lowcode.bot.R<plus.easydo.bot.entity.DaBotInfo>
+     * @return vo.plus.easydo.lowcode.bot.R<plus.easydo.bot.entity.BotInfo>
      * @author laoyu
      * @date 2024-02-23
      */
     @Operation(summary = "获取机器人配置")
     @SaCheckPermission("platformBot")
     @GetMapping("/getBotConf/{botNumber}")
-    public R<List<DaBotConf>> getBotConf(@PathVariable("botNumber") String botNumber) {
+    public R<List<BotConf>> getBotConf(@PathVariable("botNumber") String botNumber) {
         return DataResult.ok(botService.getBotConf(botNumber));
     }
 
     @Operation(summary = "添加机器人配置")
     @SaCheckPermission("platformBot.update")
     @PostMapping("/addBotConf")
-    public R<Boolean> addBotConf(@RequestBody DaBotConf daBotConf) {
-        return DataResult.ok(botService.addBotConf(daBotConf));
+    public R<Boolean> addBotConf(@RequestBody BotConf botConf) {
+        return DataResult.ok(botService.addBotConf(botConf));
     }
 
     @Operation(summary = "更新机器人配置")
     @SaCheckPermission("platformBot.update")
     @PostMapping("/updateBotConf")
-    public R<Boolean> updateBotConf(@RequestBody DaBotConf daBotConf) {
-        return DataResult.ok(botService.updateBotConf(daBotConf));
+    public R<Boolean> updateBotConf(@RequestBody BotConf botConf) {
+        return DataResult.ok(botService.updateBotConf(botConf));
     }
 
     @Operation(summary = "删除机器人配置")
@@ -151,7 +151,7 @@ public class BotController {
     @Operation(summary = "分页查询消息记录")
     @SaCheckPermission("botMessage")
     @PostMapping("/pageBotMessage")
-    public R<List<DaBotMessage>> pageBotMessage(@RequestBody DaBotMessageQo daBotMessageQo) {
+    public R<List<BotMessage>> pageBotMessage(@RequestBody DaBotMessageQo daBotMessageQo) {
         return DataResult.ok(botService.pageBotMessage(daBotMessageQo));
     }
 
@@ -164,7 +164,7 @@ public class BotController {
     @Operation(summary = "分页查询请求记录")
     @SaCheckPermission("botRequest")
     @PostMapping("/pageBotRequest")
-    public R<List<DaBotRequest>> pageBotRequest(@RequestBody DaBotRequestQo daBotRequestQo) {
+    public R<List<BotRequest>> pageBotRequest(@RequestBody DaBotRequestQo daBotRequestQo) {
         return DataResult.ok(botService.pageBotRequest(daBotRequestQo));
     }
 
@@ -177,7 +177,7 @@ public class BotController {
     @Operation(summary = "分页查询通知记录")
     @SaCheckPermission("botNotice")
     @PostMapping("/pageBotNotice")
-    public R<List<DaBotNotice>> pageBotNotice(@RequestBody DaBotNoticeQo daBotNoticeQo) {
+    public R<List<BotNotice>> pageBotNotice(@RequestBody DaBotNoticeQo daBotNoticeQo) {
         return DataResult.ok(botService.pageBotNotice(daBotNoticeQo));
     }
 

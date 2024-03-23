@@ -1,20 +1,26 @@
 package plus.easydo.bot.lowcode.exec;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import plus.easydo.bot.entity.BotNodeConfExecuteLog;
+import plus.easydo.bot.entity.BotNodeExecuteLog;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.constant.LowCodeConstants;
 import plus.easydo.bot.constant.OneBotConstants;
-import plus.easydo.bot.entity.DaLowCodeNodeConf;
+import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.lowcode.model.NodeExecuteResult;
 import plus.easydo.bot.lowcode.model.ExecuteResult;
 import plus.easydo.bot.lowcode.model.Node;
+import plus.easydo.bot.manager.BotNodeConfExecuteLogManager;
+import plus.easydo.bot.manager.BotNodeExecuteLogManager;
 import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.websocket.model.OneBotMessageParse;
@@ -24,6 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.stream.Collectors;
 
 /**
@@ -33,10 +40,16 @@ import java.util.stream.Collectors;
  */
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class NodeExecuteServer {
 
     @Autowired
     private Map<String, NodeExecute> nodeExecMap;
+
+    private final BotNodeExecuteLogManager nodeExecuteLogManager;
+
+    private final BotNodeConfExecuteLogManager nodeConfExecuteLogManager;
+
 
     private static String getStartNextNodeId(List<Node> startEdgeNodeList) {
         if (Objects.isNull(startEdgeNodeList)) {
@@ -54,8 +67,8 @@ public class NodeExecuteServer {
         return startEdgeTarget.getCell();
     }
 
-    public List<NodeExecuteResult> execute(DaLowCodeNodeConf daLowCodeNodeConf, Object params) {
-        log.debug("========== 节点配置[{}]开始执行 ==========", daLowCodeNodeConf.getConfName());
+    public List<NodeExecuteResult> execute(LowCodeNodeConf lowCodeNodeConf, Object params) {
+        log.debug("========== 节点配置[{}]开始执行 ==========", lowCodeNodeConf.getConfName());
         long startTime = System.currentTimeMillis();
         List<NodeExecuteResult> result = new ArrayList<>();
         JSONObject paramsJson = JSONUtil.createObj();
@@ -68,13 +81,13 @@ public class NodeExecuteServer {
             paramsJson.set("bot_conf", CacheManager.BOT_CONF_CACHE.get(botNumber));
         }
         String message = paramsJson.getStr(OneBotConstants.MESSAGE);
-        if(Objects.nonNull(message)){
+        if (Objects.nonNull(message)) {
             OneBotMessageParse messageParse = OneBotUtils.parseMessage(message);
-            paramsJson.set(OneBotConstants.MESSAGE,messageParse);
+            paramsJson.set(OneBotConstants.MESSAGE, messageParse);
         }
-        String nodeStr = daLowCodeNodeConf.getNodeData();
+        String nodeStr = lowCodeNodeConf.getNodeData();
         JSONObject nodeStrJson = JSONUtil.parseObj(nodeStr);
-        String confStr = daLowCodeNodeConf.getConfData();
+        String confStr = lowCodeNodeConf.getConfData();
         JSONObject confJson = JSONUtil.parseObj(confStr);
         JSONArray nodeObjArray = nodeStrJson.getJSONArray("cells");
         //所有node集合
@@ -126,6 +139,7 @@ public class NodeExecuteServer {
         Node currentNode = startNextNode;
         boolean error = false;
         boolean currentNodeExecuteSuccess = false;
+        long execTime;
         do {
             currentShape = currentNode.getShape();
             NodeExecute nodeExecute = nodeExecMap.get(currentShape);
@@ -170,7 +184,8 @@ public class NodeExecuteServer {
                             .executeTime(System.currentTimeMillis() - nodeStartTime)
                             .build());
                 }
-                if(!error){
+                if (!error) {
+                    execTime = System.currentTimeMillis() - nodeStartTime;
                     result.add(NodeExecuteResult.builder()
                             .nodeId(currentNode.getId())
                             .nodeName(currentNode.getLabel())
@@ -180,6 +195,9 @@ public class NodeExecuteServer {
                             .message(res.getMessage())
                             .executeTime(System.currentTimeMillis() - nodeStartTime)
                             .build());
+                    Node finalCurrentNode = currentNode;
+                    long finalExecTime = execTime;
+                    CompletableFuture.runAsync(() -> saveNodeExecLog(lowCodeNodeConf, finalCurrentNode, finalExecTime));
                 }
                 if (!error && currentNodeExecuteSuccess) {
                     if (isElseNode) {
@@ -219,9 +237,31 @@ public class NodeExecuteServer {
         if (CharSequenceUtil.equals(currentNode.getShape(), LowCodeConstants.END_NODE) && !error && currentNodeExecuteSuccess) {
             result.add(NodeExecuteResult.builder().nodeId(endNode.getId()).nodeName(endNode.getLabel()).nodeCode(endNode.getShape()).executeTime(0L).build());
         }
-        log.debug("========== 节点配置[{}]处理器执行结束,耗时{}ms ==========", daLowCodeNodeConf.getConfName(), System.currentTimeMillis() - startTime);
+        execTime = System.currentTimeMillis() - startTime;
+        long finalExecTime1 = execTime;
+        CompletableFuture.runAsync(() -> saveNodeConfExecLog(lowCodeNodeConf, finalExecTime1));
+        log.debug("========== 节点配置[{}]处理器执行结束,耗时{}ms ==========", lowCodeNodeConf.getConfName(), execTime);
         return result;
     }
 
+    private void saveNodeConfExecLog(LowCodeNodeConf lowCodeNodeConf, long execTime) {
+        nodeConfExecuteLogManager.save(BotNodeConfExecuteLog.builder()
+                .confId(lowCodeNodeConf.getId())
+                .confName(lowCodeNodeConf.getConfName())
+                .executeTime(execTime)
+                .createTime(LocalDateTimeUtil.now())
+                .build());
+    }
+
+    private void saveNodeExecLog(LowCodeNodeConf lowCodeNodeConf, Node currentNode, long execTime) {
+        nodeExecuteLogManager.save(BotNodeExecuteLog.builder()
+                .confId(lowCodeNodeConf.getId())
+                .confName(lowCodeNodeConf.getConfName())
+                .nodeCode(currentNode.getShape())
+                .nodeName(currentNode.getLabel())
+                .executeTime(execTime)
+                .createTime(LocalDateTimeUtil.now())
+                .build());
+    }
 
 }

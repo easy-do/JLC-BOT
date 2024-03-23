@@ -10,7 +10,7 @@ import plus.easydo.bot.manager.DaBotRequestManager;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.enums.onebot.OneBotPostRequestTypeEnum;
 import plus.easydo.bot.util.OneBotUtils;
-import plus.easydo.bot.entity.DaBotRequest;
+import plus.easydo.bot.entity.BotRequest;
 import plus.easydo.bot.websocket.handler.request.OneBotFriendRequestHandler;
 import plus.easydo.bot.websocket.handler.request.OneBotGroupRequestHandler;
 
@@ -41,7 +41,7 @@ public class OneBotPostRequestHandler implements OneBotPostHandler{
         String comment = postData.getStr(OneBotConstants.COMMENT);
         String flag = postData.getStr(OneBotConstants.FLAG);
         String userId  = String.valueOf(postData.get(OneBotConstants.USER_ID));
-        DaBotRequest daBotRequest = DaBotRequest.builder()
+        BotRequest botRequest = BotRequest.builder()
                 .requestType(requestType)
                 .sendUser(userId)
                 .selfUser(String.valueOf(selfId))
@@ -52,11 +52,11 @@ public class OneBotPostRequestHandler implements OneBotPostHandler{
         log.debug("接收到请求消息,类型:{},验证信息:{}", OneBotPostRequestTypeEnum.getDescByType(requestType), comment);
         if(CharSequenceUtil.equals(requestType, OneBotPostRequestTypeEnum.GROUP.getType())){
             Object groupId = postData.get(OneBotConstants.GROUP_ID);
-            daBotRequest.setGroupId(String.valueOf(groupId));
+            botRequest.setGroupId(String.valueOf(groupId));
             groupRequestHandler.handlerRequest(userId, String.valueOf(groupId), comment, flag);
         }else {
             friendRequestHandler.handlerRequest(userId,comment,flag);
         }
-        CompletableFuture.runAsync(()->daBotRequestManager.save(daBotRequest));
+        CompletableFuture.runAsync(()->daBotRequestManager.save(botRequest));
     }
 }

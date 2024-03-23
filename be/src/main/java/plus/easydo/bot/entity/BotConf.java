@@ -20,7 +20,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(value = "bot_conf")
-public class DaBotConf {
+public class BotConf {
 
     /**
      * 自增ID

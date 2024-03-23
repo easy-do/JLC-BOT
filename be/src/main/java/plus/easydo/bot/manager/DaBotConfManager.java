@@ -4,12 +4,12 @@ package plus.easydo.bot.manager;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
-import plus.easydo.bot.entity.DaBotConf;
+import plus.easydo.bot.entity.BotConf;
 import plus.easydo.bot.mapper.DaBotConfMapper;
 
 import java.util.List;
 
-import static plus.easydo.bot.entity.table.DaBotConfTableDef.DA_BOT_CONF;
+import static plus.easydo.bot.entity.table.BotConfTableDef.BOT_CONF;
 
 /**
  * 机器人配置 服务层实现。
@@ -18,16 +18,16 @@ import static plus.easydo.bot.entity.table.DaBotConfTableDef.DA_BOT_CONF;
  * @since 1.0
  */
 @Component
-public class DaBotConfManager extends ServiceImpl<DaBotConfMapper, DaBotConf> {
+public class DaBotConfManager extends ServiceImpl<DaBotConfMapper, BotConf> {
 
-    public List<DaBotConf> getByBotNumber(String botNumber) {
-        QueryWrapper queryWrapper = query().and(DA_BOT_CONF.BOT_NUMBER.eq(botNumber));
+    public List<BotConf> getByBotNumber(String botNumber) {
+        QueryWrapper queryWrapper = query().and(BOT_CONF.BOT_NUMBER.eq(botNumber));
         return list(queryWrapper);
     }
 
-    public DaBotConf getByBotNumberAndKey(String botNumber, String key) {
-        QueryWrapper queryWrapper = query().and(DA_BOT_CONF.BOT_NUMBER.eq(botNumber)).and(DA_BOT_CONF.CONF_KEY.eq(key));
-        List<DaBotConf> res = list(queryWrapper);
+    public BotConf getByBotNumberAndKey(String botNumber, String key) {
+        QueryWrapper queryWrapper = query().and(BOT_CONF.BOT_NUMBER.eq(botNumber)).and(BOT_CONF.CONF_KEY.eq(key));
+        List<BotConf> res = list(queryWrapper);
         if(!res.isEmpty()){
             return res.get(0);
         }
@@ -35,12 +35,12 @@ public class DaBotConfManager extends ServiceImpl<DaBotConfMapper, DaBotConf> {
     }
 
     public boolean removeBotConf(String botNumber, String key) {
-        QueryWrapper queryWrapper = query().and(DA_BOT_CONF.BOT_NUMBER.eq(botNumber)).and(DA_BOT_CONF.CONF_KEY.eq(key));
+        QueryWrapper queryWrapper = query().and(BOT_CONF.BOT_NUMBER.eq(botNumber)).and(BOT_CONF.CONF_KEY.eq(key));
         return remove(queryWrapper);
     }
 
     public boolean removeBotConfLike(String botNumber, String key) {
-        QueryWrapper queryWrapper = query().and(DA_BOT_CONF.BOT_NUMBER.eq(botNumber)).and(DA_BOT_CONF.CONF_KEY.like(key));
+        QueryWrapper queryWrapper = query().and(BOT_CONF.BOT_NUMBER.eq(botNumber)).and(BOT_CONF.CONF_KEY.like(key));
         return remove(queryWrapper);
     }
 

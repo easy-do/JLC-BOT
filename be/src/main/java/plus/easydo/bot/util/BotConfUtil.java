@@ -2,7 +2,7 @@ package plus.easydo.bot.util;
 
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.extra.spring.SpringUtil;
-import plus.easydo.bot.entity.DaBotConf;
+import plus.easydo.bot.entity.BotConf;
 import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.service.BotService;
 
@@ -42,21 +42,21 @@ public class BotConfUtil {
     }
 
     public static boolean saveBotConf(String botNumber,String key, String value){
-        DaBotConf botConf = DaBotConf.builder().botNumber(botNumber).confKey(key).confValue(value).build();
+        BotConf botConf = BotConf.builder().botNumber(botNumber).confKey(key).confValue(value).build();
         return getBotService().addBotConf(botConf);
     }
 
     public static boolean saveBotConf(String botNumber,String key, String value,String remark){
-        DaBotConf botConf = DaBotConf.builder().botNumber(botNumber).confKey(key).confValue(value).remark(remark).build();
+        BotConf botConf = BotConf.builder().botNumber(botNumber).confKey(key).confValue(value).remark(remark).build();
         return getBotService().addBotConf(botConf);
     }
 
     public static boolean updateBotConf(String botNumber,String key, String value){
-        DaBotConf botConf = getBotService().getByBotNumberAndKey(botNumber,key);
+        BotConf botConf = getBotService().getByBotNumberAndKey(botNumber,key);
         if(Objects.isNull(botConf)){
             return saveBotConf(botNumber,key,value);
         }
-        botConf = DaBotConf.builder().id(botConf.getId()).confValue(value).build();
+        botConf = BotConf.builder().id(botConf.getId()).confValue(value).build();
         return getBotService().updateBotConf(botConf);
     }
 
