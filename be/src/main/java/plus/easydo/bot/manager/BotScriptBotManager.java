@@ -4,7 +4,7 @@ package plus.easydo.bot.manager;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.entity.BotScriptBot;
-import plus.easydo.bot.mapper.DaBotScriptBotMapper;
+import plus.easydo.bot.mapper.BotScriptBotMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +18,7 @@ import static plus.easydo.bot.entity.table.BotScriptBotTableDef.BOT_SCRIPT_BOT;
  * @since 1.0
  */
 @Component
-public class DaBotScriptBotManager extends ServiceImpl<DaBotScriptBotMapper, BotScriptBot> {
+public class BotScriptBotManager extends ServiceImpl<BotScriptBotMapper, BotScriptBot> {
 
     public boolean clearBotScript(String botNumber) {
         return remove(query().and(BOT_SCRIPT_BOT.BOT_NUMBER.eq(botNumber)));

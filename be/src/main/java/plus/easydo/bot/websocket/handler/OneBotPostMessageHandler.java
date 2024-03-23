@@ -7,7 +7,7 @@ import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import plus.easydo.bot.manager.DaBotMessageManager;
+import plus.easydo.bot.manager.BotMessageManager;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
 import plus.easydo.bot.websocket.model.OneBotMessageParse;
@@ -38,7 +38,7 @@ public class OneBotPostMessageHandler implements OneBotPostHandler{
 
     private final OneBotGroupPrivateMessageHandler groupPrivateMessageHandler;
 
-    private final DaBotMessageManager daBotMessageManager;
+    private final BotMessageManager botMessageManager;
 
     @Override
     public void handlerPost(JSONObject postData) {
@@ -73,7 +73,7 @@ public class OneBotPostMessageHandler implements OneBotPostHandler{
                 botMessage.setGroupId(String.valueOf(groupId));
                 groupMessageHandler.handlerMessage(selfId, String.valueOf(groupId), sender, message);
             }
-            CompletableFuture.runAsync(()->daBotMessageManager.save(botMessage));
+            CompletableFuture.runAsync(()-> botMessageManager.save(botMessage));
         }
     }
 }

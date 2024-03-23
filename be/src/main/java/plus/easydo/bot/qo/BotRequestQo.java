@@ -5,7 +5,7 @@ import lombok.*;
 import java.time.LocalDateTime;
 
 /**
- * 消息记录 实体类。
+ * 实体类。
  *
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
@@ -13,13 +13,13 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class DaBotMessageQo extends PageQo{
+public class BotRequestQo extends PageQo{
 
 
     /**
-     * 消息id
+     * 请求类型
      */
-    private String messageId;
+    private String requestType;
 
 
     /**
@@ -31,20 +31,26 @@ public class DaBotMessageQo extends PageQo{
      * 发送用户
      */
     private String sendUser;
+
     /**
      * 接收用户
      */
     private String selfUser;
 
     /**
-     * 接收到的时间
+     * 接收时间
      */
     private LocalDateTime selfTime;
 
     /**
-     * 消息内容
+     * 验证信息
      */
-    private String message;
+    private String comment;
+
+    /**
+     * 请求标识
+     */
+    private String flag;
 
 
 }

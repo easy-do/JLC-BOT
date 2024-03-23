@@ -16,10 +16,10 @@ import plus.easydo.bot.entity.BotConf;
 import plus.easydo.bot.entity.BotMessage;
 import plus.easydo.bot.entity.BotNotice;
 import plus.easydo.bot.entity.BotRequest;
-import plus.easydo.bot.qo.DaBotMessageQo;
-import plus.easydo.bot.qo.DaBotNoticeQo;
-import plus.easydo.bot.qo.DaBotQo;
-import plus.easydo.bot.qo.DaBotRequestQo;
+import plus.easydo.bot.qo.BotMessageQo;
+import plus.easydo.bot.qo.BotNoticeQo;
+import plus.easydo.bot.qo.BotQo;
+import plus.easydo.bot.qo.BotRequestQo;
 import plus.easydo.bot.service.BotService;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -41,14 +41,14 @@ public class BotController {
     /**
      * 分页查询机器人
      *
-     * @param daBotQo 分页对象
+     * @param botQo 分页对象
      * @return 分页对象
      */
     @Operation(summary = "分页查询")
     @SaCheckPermission("platformBot")
     @PostMapping("/page")
-    public R<List<BotInfo>> pageBot(@RequestBody DaBotQo daBotQo) {
-        return DataResult.ok(botService.pageBot(daBotQo));
+    public R<List<BotInfo>> pageBot(@RequestBody BotQo botQo) {
+        return DataResult.ok(botService.pageBot(botQo));
     }
 
     /**
@@ -145,40 +145,40 @@ public class BotController {
     /**
      * 分页查询消息记录
      *
-     * @param daBotMessageQo 分页对象
+     * @param botMessageQo 分页对象
      * @return 分页对象
      */
     @Operation(summary = "分页查询消息记录")
     @SaCheckPermission("botMessage")
     @PostMapping("/pageBotMessage")
-    public R<List<BotMessage>> pageBotMessage(@RequestBody DaBotMessageQo daBotMessageQo) {
-        return DataResult.ok(botService.pageBotMessage(daBotMessageQo));
+    public R<List<BotMessage>> pageBotMessage(@RequestBody BotMessageQo botMessageQo) {
+        return DataResult.ok(botService.pageBotMessage(botMessageQo));
     }
 
     /**
      * 分页查询请求记录
      *
-     * @param daBotRequestQo 分页对象
+     * @param botRequestQo 分页对象
      * @return 分页对象
      */
     @Operation(summary = "分页查询请求记录")
     @SaCheckPermission("botRequest")
     @PostMapping("/pageBotRequest")
-    public R<List<BotRequest>> pageBotRequest(@RequestBody DaBotRequestQo daBotRequestQo) {
-        return DataResult.ok(botService.pageBotRequest(daBotRequestQo));
+    public R<List<BotRequest>> pageBotRequest(@RequestBody BotRequestQo botRequestQo) {
+        return DataResult.ok(botService.pageBotRequest(botRequestQo));
     }
 
     /**
      * 分页查询通知记录
      *
-     * @param daBotNoticeQo 分页对象
+     * @param botNoticeQo 分页对象
      * @return 分页对象
      */
     @Operation(summary = "分页查询通知记录")
     @SaCheckPermission("botNotice")
     @PostMapping("/pageBotNotice")
-    public R<List<BotNotice>> pageBotNotice(@RequestBody DaBotNoticeQo daBotNoticeQo) {
-        return DataResult.ok(botService.pageBotNotice(daBotNoticeQo));
+    public R<List<BotNotice>> pageBotNotice(@RequestBody BotNoticeQo botNoticeQo) {
+        return DataResult.ok(botService.pageBotNotice(botNoticeQo));
     }
 
     /**

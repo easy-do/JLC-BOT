@@ -10,8 +10,8 @@ import org.springframework.stereotype.Service;
 import plus.easydo.bot.service.SystemConfService;
 import plus.easydo.bot.entity.SystemConf;
 import plus.easydo.bot.manager.CacheManager;
-import plus.easydo.bot.mapper.DaGameConfigMapper;
-import plus.easydo.bot.qo.DaGameConfigQo;
+import plus.easydo.bot.mapper.GameConfigMapper;
+import plus.easydo.bot.qo.SystemConfigQo;
 
 import java.util.List;
 
@@ -27,12 +27,12 @@ import static plus.easydo.bot.entity.table.SystemConfTableDef.SYSTEM_CONF;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class SystemConfServiceImpl extends ServiceImpl<DaGameConfigMapper, SystemConf> implements SystemConfService {
+public class SystemConfServiceImpl extends ServiceImpl<GameConfigMapper, SystemConf> implements SystemConfService {
 
 
 
     @Override
-    public Page<SystemConf> confPage(DaGameConfigQo gameConfigQo) {
+    public Page<SystemConf> confPage(SystemConfigQo gameConfigQo) {
         QueryWrapper query = query()
                 .and(SYSTEM_CONF.CONF_NAME.like(gameConfigQo.getConfName())
                         .and(SYSTEM_CONF.CONF_KEY.like(gameConfigQo.getConfKey())));

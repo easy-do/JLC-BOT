@@ -5,7 +5,7 @@ import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.entity.BotConf;
-import plus.easydo.bot.mapper.DaBotConfMapper;
+import plus.easydo.bot.mapper.BotConfMapper;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import static plus.easydo.bot.entity.table.BotConfTableDef.BOT_CONF;
  * @since 1.0
  */
 @Component
-public class DaBotConfManager extends ServiceImpl<DaBotConfMapper, BotConf> {
+public class BotConfManager extends ServiceImpl<BotConfMapper, BotConf> {
 
     public List<BotConf> getByBotNumber(String botNumber) {
         QueryWrapper queryWrapper = query().and(BOT_CONF.BOT_NUMBER.eq(botNumber));

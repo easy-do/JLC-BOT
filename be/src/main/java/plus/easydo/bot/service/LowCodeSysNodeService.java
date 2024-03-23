@@ -13,7 +13,7 @@ import java.util.Map;
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
  */
-public interface DaLowCodeSysNodeService extends IService<LowCodeSysNode> {
+public interface LowCodeSysNodeService extends IService<LowCodeSysNode> {
 
     Map<String, List<LowCodeSysNode>> listSysNode();
 

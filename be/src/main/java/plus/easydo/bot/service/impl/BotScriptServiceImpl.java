@@ -6,12 +6,12 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.entity.BotEventScript;
+import plus.easydo.bot.qo.BotEventScriptQo;
 import plus.easydo.bot.service.BotScriptService;
 import plus.easydo.bot.entity.BotScriptBot;
 import plus.easydo.bot.manager.CacheManager;
-import plus.easydo.bot.manager.DaBotEventScriptManager;
-import plus.easydo.bot.manager.DaBotScriptBotManager;
-import plus.easydo.bot.qo.DaBotEventScriptQo;
+import plus.easydo.bot.manager.BotEventScriptManager;
+import plus.easydo.bot.manager.BotScriptBotManager;
 
 import java.util.HashMap;
 import java.util.List;
@@ -29,15 +29,15 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class BotScriptServiceImpl implements BotScriptService {
 
-    private final DaBotEventScriptManager botEventScriptManager;
+    private final BotEventScriptManager botEventScriptManager;
 
-    private final DaBotEventScriptManager daBotEventScriptManager;
+    private final BotEventScriptManager botEventScriptManager;
 
-    private final DaBotScriptBotManager daBotScriptBotManager;
+    private final BotScriptBotManager botScriptBotManager;
 
     @Override
-    public Page<BotEventScript> pageBotScript(DaBotEventScriptQo daBotEventScriptQo) {
-        return botEventScriptManager.pageBotScript(daBotEventScriptQo);
+    public Page<BotEventScript> pageBotScript(BotEventScriptQo botEventScriptQo) {
+        return botEventScriptManager.pageBotScript(botEventScriptQo);
     }
 
     @Override
@@ -68,7 +68,7 @@ public class BotScriptServiceImpl implements BotScriptService {
     @Override
     public void initBotEventScriptCache() {
         //缓存脚本
-        List<BotEventScript> list = daBotEventScriptManager.list();
+        List<BotEventScript> list = botEventScriptManager.list();
         //按事件类型分组
         Map<String, List<BotEventScript>> eventScriptGroup = list.stream().collect(Collectors.groupingBy(BotEventScript::getEventType));
         //事件与脚本id关联关系
@@ -76,7 +76,7 @@ public class BotScriptServiceImpl implements BotScriptService {
         eventScriptGroup.forEach((key,value)-> eventScriptIdMap.put(key,value.stream().map(BotEventScript::getId).toList()));
         CacheManager.EVENT_SCRIPT_ID_CACHE.putAll(eventScriptIdMap);
         //bot的所有脚本
-        List<BotScriptBot> allBf = daBotScriptBotManager.list();
+        List<BotScriptBot> allBf = botScriptBotManager.list();
         //按机器人编号分组
         Map<String, List<BotScriptBot>> botScriptGroup = allBf.stream().collect(Collectors.groupingBy(BotScriptBot::getBotNumber));
         //机器人与脚本的对应关系

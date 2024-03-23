@@ -18,7 +18,7 @@ import java.util.List;
  * @date 2024/3/5
  */
 
-public interface DaLowCodeService {
+public interface LowCodeService {
 
     Long saveNodeConf(BotNodeDto botNodeDto);
 

@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 游戏配置 实体类。
+ * 机器人脚本 实体类。
  *
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
@@ -13,21 +13,28 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class DaGameConfigQo extends PageQo{
+public class BotEventScriptQo extends PageQo{
+
 
     /**
-     * 配置名称
+     * 脚本名称
      */
-    private String confName;
+    private String scriptName;
 
     /**
-     * 配置类型
+     * 事件类型
      */
-    private Integer confType;
+    private String eventType;
 
     /**
-     * 配置标签
+     * 脚本类型
      */
-    private String confKey;
+    private String scriptType;
+
+    /**
+     * 备注
+     */
+    private String remark;
+
 
 }

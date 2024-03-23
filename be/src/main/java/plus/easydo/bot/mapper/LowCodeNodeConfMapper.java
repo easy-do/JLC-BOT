@@ -11,7 +11,7 @@ import org.apache.ibatis.annotations.Mapper;
  * @since 1.0
  */
 @Mapper
-public interface DaLowCodeNodeConfMapper extends BaseMapper<LowCodeNodeConf> {
+public interface LowCodeNodeConfMapper extends BaseMapper<LowCodeNodeConf> {
 
 
 }

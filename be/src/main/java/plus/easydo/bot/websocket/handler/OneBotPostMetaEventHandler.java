@@ -8,7 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.entity.BotInfo;
-import plus.easydo.bot.manager.DaBotInfoManager;
+import plus.easydo.bot.manager.BotInfoManager;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.util.OneBotUtils;
 
@@ -25,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class OneBotPostMetaEventHandler implements OneBotPostHandler{
 
-    private final DaBotInfoManager daBotInfoManager;
+    private final BotInfoManager botInfoManager;
     @Override
     public void handlerPost(JSONObject postData) {
         long time = OneBotUtils.getPostTime(postData);
@@ -40,7 +40,7 @@ public class OneBotPostMetaEventHandler implements OneBotPostHandler{
                     .lastHeartbeatTime(LocalDateTimeUtil.of(time))
                     .extData(extData.toStringPretty())
                     .build();
-            CompletableFuture.runAsync(()->daBotInfoManager.updateBybotNumber(botInfo));
+            CompletableFuture.runAsync(()-> botInfoManager.updateBybotNumber(botInfo));
         }
     }
 }

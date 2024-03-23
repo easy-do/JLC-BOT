@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 机器人脚本 实体类。
+ * 机器人信息 实体类。
  *
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
@@ -13,28 +13,29 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class DaBotEventScriptQo extends PageQo{
+public class BotQo extends PageQo{
 
 
     /**
-     * 脚本名称
+     * 机器人编码
      */
-    private String scriptName;
+    private String botNumber;
 
-    /**
-     * 事件类型
-     */
-    private String eventType;
-
-    /**
-     * 脚本类型
-     */
-    private String scriptType;
 
     /**
      * 备注
      */
     private String remark;
+
+    /**
+     * 机器人类型
+     */
+    private String botType;
+
+    /**
+     * 机器人通讯地址
+     */
+    private String botUrl;
 
 
 }

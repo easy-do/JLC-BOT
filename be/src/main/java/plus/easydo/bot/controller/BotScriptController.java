@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
 import plus.easydo.bot.entity.BotEventScript;
-import plus.easydo.bot.qo.DaBotEventScriptQo;
+import plus.easydo.bot.qo.BotEventScriptQo;
 import plus.easydo.bot.service.BotScriptService;
 
 import java.util.List;
@@ -29,14 +29,14 @@ public class BotScriptController {
     /**
      * 分页查询机器人脚本
      *
-     * @param daBotEventScriptQo daBotEventScriptQo
+     * @param botEventScriptQo botEventScriptQo
      * @return 分页对象
      */
     @Operation(summary = "分页查询")
     @SaCheckPermission("botScript")
     @PostMapping("/page")
-    public R<List<BotEventScript>> pageBotScript(@RequestBody DaBotEventScriptQo daBotEventScriptQo) {
-        return DataResult.ok(botScriptService.pageBotScript(daBotEventScriptQo));
+    public R<List<BotEventScript>> pageBotScript(@RequestBody BotEventScriptQo botEventScriptQo) {
+        return DataResult.ok(botScriptService.pageBotScript(botEventScriptQo));
     }
 
     /**

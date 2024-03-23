@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
 import plus.easydo.bot.entity.SystemConf;
-import plus.easydo.bot.qo.DaGameConfigQo;
+import plus.easydo.bot.qo.SystemConfigQo;
 import plus.easydo.bot.service.SystemConfService;
 
 import java.io.Serializable;
@@ -42,7 +42,7 @@ public class SystemConfController {
     @Operation(summary = "分页")
     @SaCheckPermission("conf")
     @PostMapping("/page")
-    public R<List<SystemConf>> pageConf(@RequestBody DaGameConfigQo gameConfigQo) {
+    public R<List<SystemConf>> pageConf(@RequestBody SystemConfigQo gameConfigQo) {
         return DataResult.ok(daGameConfigService.confPage(gameConfigQo));
     }
 

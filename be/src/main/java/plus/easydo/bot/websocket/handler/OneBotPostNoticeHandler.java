@@ -5,7 +5,7 @@ import cn.hutool.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import plus.easydo.bot.manager.DaBotNoticeManager;
+import plus.easydo.bot.manager.BotNoticeManager;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.entity.BotNotice;
@@ -21,7 +21,7 @@ import plus.easydo.bot.entity.BotNotice;
 @RequiredArgsConstructor
 public class OneBotPostNoticeHandler implements OneBotPostHandler{
 
-    private final DaBotNoticeManager daBotNoticeManager;
+    private final BotNoticeManager botNoticeManager;
 
     @Override
     public void handlerPost(JSONObject postData) {
@@ -37,6 +37,6 @@ public class OneBotPostNoticeHandler implements OneBotPostHandler{
                 .userId(String.valueOf(userId))
                 .selfTime(LocalDateTimeUtil.of(time))
                 .build();
-        daBotNoticeManager.save(botNotice);
+        botNoticeManager.save(botNotice);
     }
 }

@@ -13,7 +13,7 @@ import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.dto.DebugBotNodeDto;
 import plus.easydo.bot.lowcode.model.NodeExecuteResult;
 import plus.easydo.bot.dto.SetBotNodeDto;
-import plus.easydo.bot.service.DaLowCodeService;
+import plus.easydo.bot.service.LowCodeService;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
 import plus.easydo.bot.qo.PageQo;
@@ -31,7 +31,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class LowCodeController {
 
-    private final DaLowCodeService daLowCodeService;
+    private final LowCodeService lowCodeService;
 
 
     /**
@@ -45,7 +45,7 @@ public class LowCodeController {
     @Operation(summary = "分页查询节点配置")
     @PostMapping("/pageNodeConf")
     public R<List<LowCodeNodeConf>> pageNodeConf(@RequestBody PageQo pageQo) {
-        return DataResult.ok(daLowCodeService.pageNodeConf(pageQo));
+        return DataResult.ok(lowCodeService.pageNodeConf(pageQo));
     }
 
     /**
@@ -58,7 +58,7 @@ public class LowCodeController {
     @Operation(summary = "所有节点配置")
     @PostMapping("/listNodeConf")
     public R<List<LowCodeNodeConf>> listNodeConf() {
-        return DataResult.ok(daLowCodeService.listNodeConf());
+        return DataResult.ok(lowCodeService.listNodeConf());
     }
 
 
@@ -73,7 +73,7 @@ public class LowCodeController {
     @Operation(summary = "获取节点配置")
     @GetMapping("/getNodeConf/{id}")
     public R<BotNodeDto> getNodeConf(@PathVariable("id") Long id) {
-        return DataResult.ok(daLowCodeService.getNodeConf(id));
+        return DataResult.ok(lowCodeService.getNodeConf(id));
     }
 
     /**
@@ -87,7 +87,7 @@ public class LowCodeController {
     @Operation(summary = "获取机器人的节点配置")
     @GetMapping("/getBotNode/{id}")
     public R<List<Long>> getBotNode(@PathVariable("id") Long botId) {
-        return DataResult.ok(daLowCodeService.getBotNode(botId));
+        return DataResult.ok(lowCodeService.getBotNode(botId));
     }
 
     /**
@@ -101,7 +101,7 @@ public class LowCodeController {
     @Operation(summary = "保存节点配置")
     @PostMapping("/saveNodeConf")
     public R<Long> saveNodeConf(@RequestBody BotNodeDto botNodeDto) {
-        return DataResult.ok(daLowCodeService.saveNodeConf(botNodeDto));
+        return DataResult.ok(lowCodeService.saveNodeConf(botNodeDto));
     }
 
     /**
@@ -115,7 +115,7 @@ public class LowCodeController {
     @Operation(summary = "更新节点配置")
     @PostMapping("/updateNodeConf")
     public R<Boolean> updateNodeConf(@RequestBody BotNodeDto botNodeDto) {
-        return DataResult.ok(daLowCodeService.updateNodeConf(botNodeDto));
+        return DataResult.ok(lowCodeService.updateNodeConf(botNodeDto));
     }
 
     /**
@@ -129,7 +129,7 @@ public class LowCodeController {
     @Operation(summary = "删除节点配置")
     @GetMapping("/removeNodeConf/{id}")
     public R<Boolean> removeNodeConf(@PathVariable("id") Long id) {
-        return DataResult.ok(daLowCodeService.removeNodeConf(id));
+        return DataResult.ok(lowCodeService.removeNodeConf(id));
     }
 
     /**
@@ -143,7 +143,7 @@ public class LowCodeController {
     @Operation(summary = "调试节点配置")
     @PostMapping("/debugNodeConf")
     public R<List<NodeExecuteResult>> debugNodeConf(@RequestBody DebugBotNodeDto debugBotNodeDto) {
-        return DataResult.ok(daLowCodeService.debugNodeConf(debugBotNodeDto));
+        return DataResult.ok(lowCodeService.debugNodeConf(debugBotNodeDto));
     }
 
     /**
@@ -157,6 +157,6 @@ public class LowCodeController {
     @Operation(summary = "设置机器人与节点配置关联关系")
     @PostMapping("/setBotNode")
     public R<Boolean> setBotNode(@RequestBody SetBotNodeDto setBotNodeDto) {
-        return DataResult.ok(daLowCodeService.setBotNode(setBotNodeDto));
+        return DataResult.ok(lowCodeService.setBotNode(setBotNodeDto));
     }
 }

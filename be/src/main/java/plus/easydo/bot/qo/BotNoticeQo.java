@@ -13,7 +13,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class DaBotNoticeQo extends PageQo{
+public class BotNoticeQo extends PageQo{
 
 
     /**

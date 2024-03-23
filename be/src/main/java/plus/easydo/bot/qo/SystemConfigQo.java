@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 机器人信息 实体类。
+ * 游戏配置 实体类。
  *
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
@@ -13,29 +13,21 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class DaBotQo extends PageQo{
-
-
-    /**
-     * 机器人编码
-     */
-    private String botNumber;
-
+public class SystemConfigQo extends PageQo{
 
     /**
-     * 备注
+     * 配置名称
      */
-    private String remark;
+    private String confName;
 
     /**
-     * 机器人类型
+     * 配置类型
      */
-    private String botType;
+    private Integer confType;
 
     /**
-     * 机器人通讯地址
+     * 配置标签
      */
-    private String botUrl;
-
+    private String confKey;
 
 }

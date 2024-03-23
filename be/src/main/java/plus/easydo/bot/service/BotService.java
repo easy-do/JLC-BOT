@@ -7,10 +7,10 @@ import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.BotMessage;
 import plus.easydo.bot.entity.BotNotice;
 import plus.easydo.bot.entity.BotRequest;
-import plus.easydo.bot.qo.DaBotMessageQo;
-import plus.easydo.bot.qo.DaBotNoticeQo;
-import plus.easydo.bot.qo.DaBotQo;
-import plus.easydo.bot.qo.DaBotRequestQo;
+import plus.easydo.bot.qo.BotMessageQo;
+import plus.easydo.bot.qo.BotNoticeQo;
+import plus.easydo.bot.qo.BotQo;
+import plus.easydo.bot.qo.BotRequestQo;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ import java.util.List;
  */
 
 public interface BotService {
-    Page<BotInfo> pageBot(DaBotQo daBotQo);
+    Page<BotInfo> pageBot(BotQo botQo);
 
     Boolean addBot(BotInfo botInfo);
 
@@ -36,11 +36,11 @@ public interface BotService {
 
     void initBotConfCache();
 
-    Page<BotMessage> pageBotMessage(DaBotMessageQo daBotMessageQo);
+    Page<BotMessage> pageBotMessage(BotMessageQo botMessageQo);
 
-    Page<BotRequest> pageBotRequest(DaBotRequestQo daBotRequestQo);
+    Page<BotRequest> pageBotRequest(BotRequestQo botRequestQo);
 
-    Page<BotNotice> pageBotNotice(DaBotNoticeQo daBotNoticeQo);
+    Page<BotNotice> pageBotNotice(BotNoticeQo botNoticeQo);
 
     List<BotConf> getBotConf(String botNumber);
 
