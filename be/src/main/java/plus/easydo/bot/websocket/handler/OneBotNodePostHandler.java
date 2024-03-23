@@ -33,7 +33,7 @@ public class OneBotNodePostHandler {
         if(Objects.nonNull(botInfo)){
             List<Long> nodeIdList = CacheManager.BOT_NODE_CONF_CACHE.get(botInfo.getId());
             if(Objects.nonNull(nodeIdList)){
-                //log.info("机器人节点处理器,为机器人[{}]找到{}个节点配置",botNumber,nodeIdList.size());
+                log.debug("机器人节点处理器,为机器人[{}]找到{}个节点配置",botNumber,nodeIdList.size());
                 //开始执行流程
                 nodeIdList.forEach(nodeConfId->{
                     DaLowCodeNodeConf nodeConf = CacheManager.NODE_CONF_CACHE.get(nodeConfId);

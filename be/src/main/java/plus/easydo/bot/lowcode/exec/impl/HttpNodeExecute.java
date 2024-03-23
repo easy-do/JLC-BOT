@@ -22,13 +22,13 @@ public class HttpNodeExecute implements NodeExecute {
 
     @Override
     public ExecuteResult execute(JSONObject paramJson, JSONObject confJson) {
-        log.info("http请求节点: param:{},conf:{}", paramJson, confJson);
+        log.debug("http请求节点: param:{},conf:{}", paramJson, confJson);
         if (Objects.nonNull(paramJson) && Objects.nonNull(confJson)) {
             String address = confJson.getStr("address");
             String resSaveFiled = confJson.getStr("resSaveFiled");
             address = ParamReplaceUtils.replaceParam(address, paramJson);
             try {
-                String res = HttpRequest.get(address).timeout(1000).execute().body();
+                String res = HttpRequest.get(address).timeout(3000).execute().body();
                 paramJson.set(resSaveFiled, res);
                 return ExecuteResult.ok(res);
             } catch (Exception e) {

@@ -55,7 +55,7 @@ public class NodeExecuteServer {
     }
 
     public List<NodeExecuteResult> execute(DaLowCodeNodeConf daLowCodeNodeConf, Object params) {
-        log.info("========== 节点配置[{}]开始执行 ==========", daLowCodeNodeConf.getConfName());
+        log.debug("========== 节点配置[{}]开始执行 ==========", daLowCodeNodeConf.getConfName());
         long startTime = System.currentTimeMillis();
         List<NodeExecuteResult> result = new ArrayList<>();
         JSONObject paramsJson = JSONUtil.createObj();
@@ -219,7 +219,7 @@ public class NodeExecuteServer {
         if (CharSequenceUtil.equals(currentNode.getShape(), LowCodeConstants.END_NODE) && !error && currentNodeExecuteSuccess) {
             result.add(NodeExecuteResult.builder().nodeId(endNode.getId()).nodeName(endNode.getLabel()).nodeCode(endNode.getShape()).executeTime(0L).build());
         }
-        log.info("========== 节点配置[{}]处理器执行结束,耗时{}ms ==========", daLowCodeNodeConf.getConfName(), System.currentTimeMillis() - startTime);
+        log.debug("========== 节点配置[{}]处理器执行结束,耗时{}ms ==========", daLowCodeNodeConf.getConfName(), System.currentTimeMillis() - startTime);
         return result;
     }
 

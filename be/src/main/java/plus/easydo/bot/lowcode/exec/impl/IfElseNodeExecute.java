@@ -25,7 +25,7 @@ public class IfElseNodeExecute implements NodeExecute {
 
     @Override
     public ExecuteResult execute(JSONObject paramJson, JSONObject confJson) {
-        log.info("判断节点: param:{},conf:{}", paramJson, confJson);
+        log.debug("判断节点: param:{},conf:{}", paramJson, confJson);
         if (Objects.nonNull(paramJson) && Objects.nonNull(confJson)) {
             String type = confJson.getStr("type");
             if (Objects.nonNull(type)) {

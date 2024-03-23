@@ -22,7 +22,7 @@ public class SendGroupMessageNodeExecute implements NodeExecute {
 
     @Override
     public ExecuteResult execute(JSONObject paramJson, JSONObject confJson) {
-        log.info("发送群消息节点: param:{},conf:{}",paramJson,confJson);
+        log.debug("发送群消息节点: param:{},conf:{}",paramJson,confJson);
         if(Objects.nonNull(paramJson) && Objects.nonNull(confJson)){
             String message = confJson.getStr("message");
             if(Objects.nonNull(message)){

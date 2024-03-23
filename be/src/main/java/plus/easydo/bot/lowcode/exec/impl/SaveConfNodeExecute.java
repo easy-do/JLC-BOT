@@ -21,7 +21,7 @@ public class SaveConfNodeExecute implements NodeExecute {
 
     @Override
     public ExecuteResult execute(JSONObject paramJson, JSONObject confJson) {
-        log.info("保存机器人配置节点: param:{},conf:{}",paramJson,confJson);
+        log.debug("保存机器人配置节点: param:{},conf:{}",paramJson,confJson);
         if(Objects.nonNull(paramJson) && Objects.nonNull(confJson)){
             String botNumber = paramJson.getStr(OneBotConstants.SELF_ID);
             String confKey = confJson.getStr("confkKey");
