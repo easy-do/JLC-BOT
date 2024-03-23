@@ -9,7 +9,7 @@ export async function getSysNodeInfo(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<API.RDaLowCodeSysNode>(`/api/sysNode/info/${param0}`, {
+  return request<API.RLowCodeSysNode>(`/api/sysNode/info/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
@@ -18,7 +18,7 @@ export async function getSysNodeInfo(
 
 /** 所有数据 GET /api/sysNode/list */
 export async function listSysNode(options?: { [key: string]: any }) {
-  return request<API.RMapStringListDaLowCodeSysNode>('/api/sysNode/list', {
+  return request<API.RMapStringListLowCodeSysNode>('/api/sysNode/list', {
     method: 'GET',
     ...(options || {}),
   });
@@ -26,7 +26,7 @@ export async function listSysNode(options?: { [key: string]: any }) {
 
 /** 分页 POST /api/sysNode/page */
 export async function pageSysNode(body: API.PageQo, options?: { [key: string]: any }) {
-  return request<API.RListDaLowCodeSysNode>('/api/sysNode/page', {
+  return request<API.RListLowCodeSysNode>('/api/sysNode/page', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -51,7 +51,7 @@ export async function removeSysNode(
 }
 
 /** 添加 POST /api/sysNode/save */
-export async function saveSysNode(body: API.DaLowCodeSysNode, options?: { [key: string]: any }) {
+export async function saveSysNode(body: API.LowCodeSysNode, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/sysNode/save', {
     method: 'POST',
     headers: {
@@ -63,7 +63,7 @@ export async function saveSysNode(body: API.DaLowCodeSysNode, options?: { [key: 
 }
 
 /** 更新 POST /api/sysNode/update */
-export async function updateSysNode(body: API.DaLowCodeSysNode, options?: { [key: string]: any }) {
+export async function updateSysNode(body: API.LowCodeSysNode, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/sysNode/update', {
     method: 'POST',
     headers: {

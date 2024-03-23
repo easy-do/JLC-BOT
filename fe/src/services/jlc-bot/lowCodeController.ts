@@ -44,7 +44,7 @@ export async function getNodeConf(
 
 /** 所有节点配置 POST /api/lowcode/listNodeConf */
 export async function listNodeConf(options?: { [key: string]: any }) {
-  return request<API.RListDaLowCodeNodeConf>('/api/lowcode/listNodeConf', {
+  return request<API.RListLowCodeNodeConf>('/api/lowcode/listNodeConf', {
     method: 'POST',
     ...(options || {}),
   });
@@ -52,7 +52,7 @@ export async function listNodeConf(options?: { [key: string]: any }) {
 
 /** 分页查询节点配置 POST /api/lowcode/pageNodeConf */
 export async function pageNodeConf(body: API.PageQo, options?: { [key: string]: any }) {
-  return request<API.RListDaLowCodeNodeConf>('/api/lowcode/pageNodeConf', {
+  return request<API.RListLowCodeNodeConf>('/api/lowcode/pageNodeConf', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

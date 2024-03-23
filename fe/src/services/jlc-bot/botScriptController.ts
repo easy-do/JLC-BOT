@@ -3,7 +3,7 @@
 import { request } from 'umi';
 
 /** 添加机器人脚本配置 POST /api/botScript/add */
-export async function addBotScript(body: API.DaBotEventScript, options?: { [key: string]: any }) {
+export async function addBotScript(body: API.BotEventScript, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/botScript/add', {
     method: 'POST',
     headers: {
@@ -16,7 +16,7 @@ export async function addBotScript(body: API.DaBotEventScript, options?: { [key:
 
 /** 所有脚本列表 GET /api/botScript/botScriptList */
 export async function botScriptList(options?: { [key: string]: any }) {
-  return request<API.RListDaBotEventScript>('/api/botScript/botScriptList', {
+  return request<API.RListBotEventScript>('/api/botScript/botScriptList', {
     method: 'GET',
     ...(options || {}),
   });
@@ -29,7 +29,7 @@ export async function infoBotScript(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<API.RDaBotEventScript>(`/api/botScript/info/${param0}`, {
+  return request<API.RBotEventScript>(`/api/botScript/info/${param0}`, {
     method: 'POST',
     params: { ...queryParams },
     ...(options || {}),
@@ -37,11 +37,8 @@ export async function infoBotScript(
 }
 
 /** 分页查询 POST /api/botScript/page */
-export async function pageBotScript(
-  body: API.DaBotEventScriptQo,
-  options?: { [key: string]: any },
-) {
-  return request<API.RListDaBotEventScript>('/api/botScript/page', {
+export async function pageBotScript(body: API.BotEventScriptQo, options?: { [key: string]: any }) {
+  return request<API.RListBotEventScript>('/api/botScript/page', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -64,10 +61,7 @@ export async function removeBotScript(body: string[], options?: { [key: string]:
 }
 
 /** 更新机器人脚本配置 POST /api/botScript/update */
-export async function updateBotScript(
-  body: API.DaBotEventScript,
-  options?: { [key: string]: any },
-) {
+export async function updateBotScript(body: API.BotEventScript, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/botScript/update', {
     method: 'POST',
     headers: {

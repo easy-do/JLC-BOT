@@ -1,20 +1,5 @@
 declare namespace API {
-  type BotNodeDto = {
-    id?: number;
-    eventType?: string;
-    confName?: string;
-    nodes?: Record<string, any>;
-    nodeConf?: Record<string, any>;
-  };
-
-  type CurrentUser = {
-    userName?: string;
-    menu?: Record<string, any>[];
-    resource?: Record<string, any>[];
-    mode?: string;
-  };
-
-  type DaBotConf = {
+  type BotConf = {
     id?: number;
     botNumber?: string;
     platform?: string;
@@ -23,7 +8,7 @@ declare namespace API {
     remark?: string;
   };
 
-  type DaBotEventScript = {
+  type BotEventScript = {
     id?: number;
     scriptName?: string;
     eventType?: string;
@@ -32,7 +17,7 @@ declare namespace API {
     remark?: string;
   };
 
-  type DaBotEventScriptQo = {
+  type BotEventScriptQo = {
     current?: number;
     pageSize?: number;
     scriptName?: string;
@@ -41,7 +26,7 @@ declare namespace API {
     remark?: string;
   };
 
-  type DaBotInfo = {
+  type BotInfo = {
     id?: number;
     botNumber?: string;
     botSecret?: string;
@@ -51,7 +36,7 @@ declare namespace API {
     extData?: string;
   };
 
-  type DaBotMessage = {
+  type BotMessage = {
     id?: number;
     messageId?: string;
     groupId?: string;
@@ -61,7 +46,7 @@ declare namespace API {
     message?: string;
   };
 
-  type DaBotMessageQo = {
+  type BotMessageQo = {
     current?: number;
     pageSize?: number;
     messageId?: string;
@@ -72,7 +57,15 @@ declare namespace API {
     message?: string;
   };
 
-  type DaBotNotice = {
+  type BotNodeDto = {
+    id?: number;
+    eventType?: string;
+    confName?: string;
+    nodes?: Record<string, any>;
+    nodeConf?: Record<string, any>;
+  };
+
+  type BotNotice = {
     id?: number;
     noticeType?: string;
     subType?: string;
@@ -84,7 +77,7 @@ declare namespace API {
     messageId?: string;
   };
 
-  type DaBotNoticeQo = {
+  type BotNoticeQo = {
     current?: number;
     pageSize?: number;
     noticeType?: string;
@@ -97,7 +90,7 @@ declare namespace API {
     messageId?: string;
   };
 
-  type DaBotQo = {
+  type BotQo = {
     current?: number;
     pageSize?: number;
     botNumber?: string;
@@ -106,7 +99,7 @@ declare namespace API {
     botUrl?: string;
   };
 
-  type DaBotRequest = {
+  type BotRequest = {
     id?: number;
     requestType?: string;
     groupId?: string;
@@ -117,7 +110,7 @@ declare namespace API {
     flag?: string;
   };
 
-  type DaBotRequestQo = {
+  type BotRequestQo = {
     current?: number;
     pageSize?: number;
     requestType?: string;
@@ -129,37 +122,11 @@ declare namespace API {
     flag?: string;
   };
 
-  type DaGameConfigQo = {
-    current?: number;
-    pageSize?: number;
-    confName?: string;
-    confType?: number;
-    confKey?: string;
-  };
-
-  type DaLowCodeNodeConf = {
-    id?: number;
-    confData?: string;
-    confName?: string;
-    nodeData?: string;
-    eventType?: string;
-    createTime?: string;
-    updateTime?: string;
-    deleteFlag?: boolean;
-  };
-
-  type DaLowCodeSysNode = {
-    id?: number;
-    nodeName?: string;
-    groupType?: string;
-    nodeCode?: string;
-    nodeColor?: string;
-    nodeIcon?: string;
-    nodePort?: string;
-    maxSize?: number;
-    formData?: string;
-    remark?: string;
-    deleteFlag?: boolean;
+  type CurrentUser = {
+    userName?: string;
+    menu?: Record<string, any>[];
+    resource?: Record<string, any>[];
+    mode?: string;
   };
 
   type DebugBotNodeDto = {
@@ -209,6 +176,31 @@ declare namespace API {
     password: string;
   };
 
+  type LowCodeNodeConf = {
+    id?: number;
+    confData?: string;
+    confName?: string;
+    nodeData?: string;
+    eventType?: string;
+    createTime?: string;
+    updateTime?: string;
+    deleteFlag?: boolean;
+  };
+
+  type LowCodeSysNode = {
+    id?: number;
+    nodeName?: string;
+    groupType?: string;
+    nodeCode?: string;
+    nodeColor?: string;
+    nodeIcon?: string;
+    nodePort?: string;
+    maxSize?: number;
+    formData?: string;
+    remark?: string;
+    deleteFlag?: boolean;
+  };
+
   type NodeExecuteResult = {
     nodeId?: string;
     nodeName?: string;
@@ -216,6 +208,12 @@ declare namespace API {
     data?: Record<string, any>;
     message?: string;
     status?: number;
+    executeTime?: number;
+  };
+
+  type NodePAVo = {
+    nodeName?: string;
+    confName?: string;
     executeTime?: number;
   };
 
@@ -227,6 +225,24 @@ declare namespace API {
   type RBoolean = {
     code?: number;
     data?: boolean;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
+  type RBotEventScript = {
+    code?: number;
+    data?: BotEventScript;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
+  type RBotInfo = {
+    code?: number;
+    data?: BotInfo;
     message?: string;
     errorMessage?: string;
     success?: boolean;
@@ -251,33 +267,6 @@ declare namespace API {
     total?: number;
   };
 
-  type RDaBotEventScript = {
-    code?: number;
-    data?: DaBotEventScript;
-    message?: string;
-    errorMessage?: string;
-    success?: boolean;
-    total?: number;
-  };
-
-  type RDaBotInfo = {
-    code?: number;
-    data?: DaBotInfo;
-    message?: string;
-    errorMessage?: string;
-    success?: boolean;
-    total?: number;
-  };
-
-  type RDaLowCodeSysNode = {
-    code?: number;
-    data?: DaLowCodeSysNode;
-    message?: string;
-    errorMessage?: string;
-    success?: boolean;
-    total?: number;
-  };
-
   type removeBotConfParams = {
     id: number;
   };
@@ -290,72 +279,54 @@ declare namespace API {
     id: Record<string, any>;
   };
 
-  type RListDaBotConf = {
+  type RListBotConf = {
     code?: number;
-    data?: DaBotConf[];
+    data?: BotConf[];
     message?: string;
     errorMessage?: string;
     success?: boolean;
     total?: number;
   };
 
-  type RListDaBotEventScript = {
+  type RListBotEventScript = {
     code?: number;
-    data?: DaBotEventScript[];
+    data?: BotEventScript[];
     message?: string;
     errorMessage?: string;
     success?: boolean;
     total?: number;
   };
 
-  type RListDaBotInfo = {
+  type RListBotInfo = {
     code?: number;
-    data?: DaBotInfo[];
+    data?: BotInfo[];
     message?: string;
     errorMessage?: string;
     success?: boolean;
     total?: number;
   };
 
-  type RListDaBotMessage = {
+  type RListBotMessage = {
     code?: number;
-    data?: DaBotMessage[];
+    data?: BotMessage[];
     message?: string;
     errorMessage?: string;
     success?: boolean;
     total?: number;
   };
 
-  type RListDaBotNotice = {
+  type RListBotNotice = {
     code?: number;
-    data?: DaBotNotice[];
+    data?: BotNotice[];
     message?: string;
     errorMessage?: string;
     success?: boolean;
     total?: number;
   };
 
-  type RListDaBotRequest = {
+  type RListBotRequest = {
     code?: number;
-    data?: DaBotRequest[];
-    message?: string;
-    errorMessage?: string;
-    success?: boolean;
-    total?: number;
-  };
-
-  type RListDaLowCodeNodeConf = {
-    code?: number;
-    data?: DaLowCodeNodeConf[];
-    message?: string;
-    errorMessage?: string;
-    success?: boolean;
-    total?: number;
-  };
-
-  type RListDaLowCodeSysNode = {
-    code?: number;
-    data?: DaLowCodeSysNode[];
+    data?: BotRequest[];
     message?: string;
     errorMessage?: string;
     success?: boolean;
@@ -365,6 +336,24 @@ declare namespace API {
   type RListLong = {
     code?: number;
     data?: number[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
+  type RListLowCodeNodeConf = {
+    code?: number;
+    data?: LowCodeNodeConf[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
+  type RListLowCodeSysNode = {
+    code?: number;
+    data?: LowCodeSysNode[];
     message?: string;
     errorMessage?: string;
     success?: boolean;
@@ -398,7 +387,25 @@ declare namespace API {
     total?: number;
   };
 
-  type RMapStringListDaLowCodeSysNode = {
+  type RLowCodeSysNode = {
+    code?: number;
+    data?: LowCodeSysNode;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
+  type RMapStringListLowCodeSysNode = {
+    code?: number;
+    data?: Record<string, any>;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
+  type RMapStringListNodePAVo = {
     code?: number;
     data?: Record<string, any>;
     message?: string;
@@ -447,5 +454,13 @@ declare namespace API {
     confKey?: string;
     remark?: string;
     isSystemConf?: boolean;
+  };
+
+  type SystemConfigQo = {
+    current?: number;
+    pageSize?: number;
+    confName?: string;
+    confType?: number;
+    confKey?: string;
   };
 }

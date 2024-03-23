@@ -3,7 +3,7 @@
 import { request } from 'umi';
 
 /** 添加机器人配置 POST /api/bot/add */
-export async function addBot(body: API.DaBotInfo, options?: { [key: string]: any }) {
+export async function addBot(body: API.BotInfo, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/bot/add', {
     method: 'POST',
     headers: {
@@ -15,7 +15,7 @@ export async function addBot(body: API.DaBotInfo, options?: { [key: string]: any
 }
 
 /** 添加机器人配置 POST /api/bot/addBotConf */
-export async function addBotConf(body: API.DaBotConf, options?: { [key: string]: any }) {
+export async function addBotConf(body: API.BotConf, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/bot/addBotConf', {
     method: 'POST',
     headers: {
@@ -48,7 +48,7 @@ export async function getBotConf(
   options?: { [key: string]: any },
 ) {
   const { botNumber: param0, ...queryParams } = params;
-  return request<API.RListDaBotConf>(`/api/bot/getBotConf/${param0}`, {
+  return request<API.RListBotConf>(`/api/bot/getBotConf/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
@@ -76,7 +76,7 @@ export async function infoBot(
   options?: { [key: string]: any },
 ) {
   const { id: param0, ...queryParams } = params;
-  return request<API.RDaBotInfo>(`/api/bot/info/${param0}`, {
+  return request<API.RBotInfo>(`/api/bot/info/${param0}`, {
     method: 'POST',
     params: { ...queryParams },
     ...(options || {}),
@@ -84,8 +84,8 @@ export async function infoBot(
 }
 
 /** 分页查询 POST /api/bot/page */
-export async function pageBot(body: API.DaBotQo, options?: { [key: string]: any }) {
-  return request<API.RListDaBotInfo>('/api/bot/page', {
+export async function pageBot(body: API.BotQo, options?: { [key: string]: any }) {
+  return request<API.RListBotInfo>('/api/bot/page', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -96,8 +96,8 @@ export async function pageBot(body: API.DaBotQo, options?: { [key: string]: any 
 }
 
 /** 分页查询消息记录 POST /api/bot/pageBotMessage */
-export async function pageBotMessage(body: API.DaBotMessageQo, options?: { [key: string]: any }) {
-  return request<API.RListDaBotMessage>('/api/bot/pageBotMessage', {
+export async function pageBotMessage(body: API.BotMessageQo, options?: { [key: string]: any }) {
+  return request<API.RListBotMessage>('/api/bot/pageBotMessage', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -108,8 +108,8 @@ export async function pageBotMessage(body: API.DaBotMessageQo, options?: { [key:
 }
 
 /** 分页查询通知记录 POST /api/bot/pageBotNotice */
-export async function pageBotNotice(body: API.DaBotNoticeQo, options?: { [key: string]: any }) {
-  return request<API.RListDaBotNotice>('/api/bot/pageBotNotice', {
+export async function pageBotNotice(body: API.BotNoticeQo, options?: { [key: string]: any }) {
+  return request<API.RListBotNotice>('/api/bot/pageBotNotice', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -120,8 +120,8 @@ export async function pageBotNotice(body: API.DaBotNoticeQo, options?: { [key: s
 }
 
 /** 分页查询请求记录 POST /api/bot/pageBotRequest */
-export async function pageBotRequest(body: API.DaBotRequestQo, options?: { [key: string]: any }) {
-  return request<API.RListDaBotRequest>('/api/bot/pageBotRequest', {
+export async function pageBotRequest(body: API.BotRequestQo, options?: { [key: string]: any }) {
+  return request<API.RListBotRequest>('/api/bot/pageBotRequest', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -158,7 +158,7 @@ export async function removeBotConf(
 }
 
 /** 更新机器人配置 POST /api/bot/update */
-export async function updateBot(body: API.DaBotInfo, options?: { [key: string]: any }) {
+export async function updateBot(body: API.BotInfo, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/bot/update', {
     method: 'POST',
     headers: {
@@ -170,7 +170,7 @@ export async function updateBot(body: API.DaBotInfo, options?: { [key: string]: 
 }
 
 /** 更新机器人配置 POST /api/bot/updateBotConf */
-export async function updateBotConf(body: API.DaBotConf, options?: { [key: string]: any }) {
+export async function updateBotConf(body: API.BotConf, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/bot/updateBotConf', {
     method: 'POST',
     headers: {

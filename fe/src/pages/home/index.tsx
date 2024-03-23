@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Skeleton, Tag, Modal } from 'antd';
+import { Skeleton, Tag, Modal, Card } from 'antd';
 
 import { request, useModel } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -8,6 +8,9 @@ import styles from './style.less';
 import ProList from '@ant-design/pro-list';
 
 import React from 'react';
+
+import { Bar } from '@ant-design/charts';
+import { nodeExecute } from '@/services/jlc-bot/performanceAnalysisController';
 
 const PageHeaderContent: FC<{ currentUser: API.CurrentUser }> = ({ currentUser }) => {
   const loading = currentUser && Object.keys(currentUser).length;
@@ -22,7 +25,7 @@ const PageHeaderContent: FC<{ currentUser: API.CurrentUser }> = ({ currentUser }
       <div className={styles.content}>
         <div className={styles.contentTitle}>
           你好，
-          {currentUser.accountname}
+          {currentUser.userName}
           ，祝你开心每一天！
         </div>
         {/* <div>
@@ -47,9 +50,10 @@ const Home: React.FC = () => {
 
   const [dataSource, setDatasource] = useState([]);
 
+  const [nodeExecutePaData, setNodeExecutePaData] = useState();
+  const [nodeExecuteConfPaData, setNodeExecuteConfPaData] = useState();
 
   useEffect(() => {
-
     getAdList().then((res) => {
       if (res.success) {
         try {
@@ -84,12 +88,48 @@ const Home: React.FC = () => {
         } catch (error) {}
       }
     });
+    nodeExecute().then((res) => {
+      if (res.success) {
+        setNodeExecutePaData({
+          title: {
+            visible: true,
+            text: '节点执行效率',
+          },
+          data: res.data.node,
+          forceFit: true,
+          xField: 'executeTime',
+          yField: 'nodeName',
+          description: {
+            visible: true,
+            text: '节点执行完毕的平均耗时,单位毫秒',
+          },
+        });
+        setNodeExecuteConfPaData({
+          title: {
+            visible: true,
+            text: '节点配置执行效率',
+          },
+          data: res.data.nodeConf,
+          forceFit: true,
+          xField: 'executeTime',
+          yField: 'confName',
+          description: {
+            visible: true,
+            text: '节点配置执行完毕的平均耗时,单位毫秒',
+          },
+        });
+      }
+    });
   }, []);
 
   return (
-    <PageContainer
-      content={<PageHeaderContent currentUser={initialState?.currentUser} />}
-    >
+    <PageContainer content={<PageHeaderContent currentUser={initialState?.currentUser} />}>
+      <Card>
+        <Bar {...nodeExecuteConfPaData} />
+      </Card>
+      <Card>
+        <Bar {...nodeExecutePaData} />
+      </Card>
       <Modal
         open={adVisible}
         onCancel={() => handleAdVisible(false)}

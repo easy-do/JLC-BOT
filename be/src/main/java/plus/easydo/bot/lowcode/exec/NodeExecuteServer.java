@@ -172,6 +172,8 @@ public class NodeExecuteServer {
                 ExecuteResult res = null;
                 try {
                     res = nodeExecute.execute(paramsJson, confJson.getJSONObject(currentNode.getId()));
+                    Node finalCurrentNode = currentNode;
+                    CompletableFuture.runAsync(() -> saveNodeExecLog(lowCodeNodeConf, finalCurrentNode, System.currentTimeMillis() - nodeStartTime));
                     currentNodeExecuteSuccess = res.isSuccess();
                 } catch (Exception e) {
                     error = true;
@@ -185,7 +187,6 @@ public class NodeExecuteServer {
                             .build());
                 }
                 if (!error) {
-                    execTime = System.currentTimeMillis() - nodeStartTime;
                     result.add(NodeExecuteResult.builder()
                             .nodeId(currentNode.getId())
                             .nodeName(currentNode.getLabel())
@@ -195,9 +196,6 @@ public class NodeExecuteServer {
                             .message(res.getMessage())
                             .executeTime(System.currentTimeMillis() - nodeStartTime)
                             .build());
-                    Node finalCurrentNode = currentNode;
-                    long finalExecTime = execTime;
-                    CompletableFuture.runAsync(() -> saveNodeExecLog(lowCodeNodeConf, finalCurrentNode, finalExecTime));
                 }
                 if (!error && currentNodeExecuteSuccess) {
                     if (isElseNode) {
@@ -237,10 +235,8 @@ public class NodeExecuteServer {
         if (CharSequenceUtil.equals(currentNode.getShape(), LowCodeConstants.END_NODE) && !error && currentNodeExecuteSuccess) {
             result.add(NodeExecuteResult.builder().nodeId(endNode.getId()).nodeName(endNode.getLabel()).nodeCode(endNode.getShape()).executeTime(0L).build());
         }
-        execTime = System.currentTimeMillis() - startTime;
-        long finalExecTime1 = execTime;
-        CompletableFuture.runAsync(() -> saveNodeConfExecLog(lowCodeNodeConf, finalExecTime1));
-        log.debug("========== 节点配置[{}]处理器执行结束,耗时{}ms ==========", lowCodeNodeConf.getConfName(), execTime);
+        CompletableFuture.runAsync(() -> saveNodeConfExecLog(lowCodeNodeConf, System.currentTimeMillis() - startTime));
+        log.debug("========== 节点配置[{}]处理器执行结束,耗时{}ms ==========", lowCodeNodeConf.getConfName(), System.currentTimeMillis() - startTime);
         return result;
     }
 

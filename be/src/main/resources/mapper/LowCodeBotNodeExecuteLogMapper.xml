@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="plus.easydo.bot.mapper.BotNodeExecuteLogMapper">
+
+
+    <select id="nodeExecutePa" resultType="plus.easydo.bot.vo.NodePAVo">
+        SELECT node_name AS nodeName, AVG(execute_time) AS executeTime FROM low_code_bot_node_execute_log group by node_code order by executeTime desc;
+    </select>
+
+</mapper>

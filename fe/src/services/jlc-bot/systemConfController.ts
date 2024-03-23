@@ -17,7 +17,7 @@ export async function getConfInfo(
 }
 
 /** 分页 POST /api/conf/page */
-export async function pageConf(body: API.DaGameConfigQo, options?: { [key: string]: any }) {
+export async function pageConf(body: API.SystemConfigQo, options?: { [key: string]: any }) {
   return request<API.RListSystemConf>('/api/conf/page', {
     method: 'POST',
     headers: {

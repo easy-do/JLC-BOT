@@ -3,6 +3,9 @@ package plus.easydo.bot.mapper;
 import plus.easydo.bot.entity.BotNodeConfExecuteLog;
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import plus.easydo.bot.vo.NodePAVo;
+
+import java.util.List;
 
 /**
  * 节点配置执行日志 映射层。
@@ -13,5 +16,7 @@ import org.apache.ibatis.annotations.Mapper;
 @Mapper
 public interface BotNodeConfExecuteLogMapper extends BaseMapper<BotNodeConfExecuteLog> {
 
+
+    List<NodePAVo> nodeConfExecutePa();
 
 }

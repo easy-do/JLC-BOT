@@ -5,6 +5,9 @@ import org.springframework.stereotype.Service;
 import plus.easydo.bot.entity.BotNodeExecuteLog;
 import plus.easydo.bot.mapper.BotNodeExecuteLogMapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import plus.easydo.bot.vo.NodePAVo;
+
+import java.util.List;
 
 /**
  * 节点执行日志 服务层实现。
@@ -15,4 +18,7 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 @Service
 public class BotNodeExecuteLogManager extends ServiceImpl<BotNodeExecuteLogMapper, BotNodeExecuteLog>{
 
+    public List<NodePAVo> nodeExecutePa() {
+        return mapper.nodeExecutePa();
+    }
 }

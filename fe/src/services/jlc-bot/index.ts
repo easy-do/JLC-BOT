@@ -9,6 +9,7 @@ import * as systemConfController from './systemConfController';
 import * as botScriptController from './botScriptController';
 import * as botController from './botController';
 import * as systemController from './systemController';
+import * as performanceAnalysisController from './performanceAnalysisController';
 export default {
   userController,
   lowCodeSysNodeController,
@@ -17,4 +18,5 @@ export default {
   botScriptController,
   botController,
   systemController,
+  performanceAnalysisController,
 };
