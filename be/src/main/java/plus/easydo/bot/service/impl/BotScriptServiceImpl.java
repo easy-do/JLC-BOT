@@ -31,8 +31,6 @@ public class BotScriptServiceImpl implements BotScriptService {
 
     private final BotEventScriptManager botEventScriptManager;
 
-    private final BotEventScriptManager botEventScriptManager;
-
     private final BotScriptBotManager botScriptBotManager;
 
     @Override
