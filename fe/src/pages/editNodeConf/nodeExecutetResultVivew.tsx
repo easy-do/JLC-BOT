@@ -39,6 +39,14 @@ function NodeExecutetResultVivew(props: any) {
       },
     },
     {
+      title: '执行结果',
+      dataIndex: 'executeResult',
+      ellipsis: true,
+      renderText(text, record, index, action) {
+          return record.executeResult ? JSON.stringify(record.executeResult) : '';
+      },
+    },
+    {
       title: '详细信息',
       dataIndex: 'message',
       ellipsis: true

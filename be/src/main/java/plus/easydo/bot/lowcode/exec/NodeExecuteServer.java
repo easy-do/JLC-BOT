@@ -197,6 +197,7 @@ public class NodeExecuteServer {
                             .message(res.getMessage())
                             .executeTime(System.currentTimeMillis() - nodeStartTime)
                             .paramsJson(paramsJson)
+                            .executeResult(res)
                             .build());
                 }
                 if (!error && currentNodeExecuteSuccess) {

@@ -26,5 +26,6 @@ public class NodeExecuteResult {
     private Integer status;
     private Long executeTime = 0L;
     private JSONObject paramsJson;
+    private ExecuteResult executeResult;
 
 }
