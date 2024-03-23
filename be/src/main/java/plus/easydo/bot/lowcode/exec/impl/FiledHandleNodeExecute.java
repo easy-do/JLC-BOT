@@ -23,7 +23,7 @@ public class FiledHandleNodeExecute implements NodeExecute {
 
     @Override
     public ExecuteResult execute(JSONObject paramJson, JSONObject confJson) {
-        log.info("字段处理节点: param:{},conf:{}", paramJson, confJson);
+        log.debug("字段处理节点: param:{},conf:{}", paramJson, confJson);
         if (Objects.nonNull(paramJson) && Objects.nonNull(confJson)) {
             String type = confJson.getStr("type");
             if (Objects.nonNull(type)) {
