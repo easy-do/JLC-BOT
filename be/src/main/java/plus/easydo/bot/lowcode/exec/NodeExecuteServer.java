@@ -100,7 +100,8 @@ public class NodeExecuteServer {
         if (Objects.isNull(startNode)) {
             throw new BaseException("没有配置开始节点");
         }
-        result.add(NodeExecuteResult.builder().nodeId(startNode.getId()).nodeName(startNode.getLabel()).nodeCode(startNode.getShape()).executeTime(0L).build());
+        result.add(NodeExecuteResult.builder().nodeId(startNode.getId()).nodeName(startNode.getLabel()).nodeCode(startNode.getShape()).executeTime(0L).paramsJson(paramsJson).build());
+
         //找结束节点
         Node endNode = nodeShapeMap.get(LowCodeConstants.END_NODE);
         if (Objects.isNull(endNode)) {
@@ -139,7 +140,6 @@ public class NodeExecuteServer {
         Node currentNode = startNextNode;
         boolean error = false;
         boolean currentNodeExecuteSuccess = false;
-        long execTime;
         do {
             currentShape = currentNode.getShape();
             NodeExecute nodeExecute = nodeExecMap.get(currentShape);
@@ -184,6 +184,7 @@ public class NodeExecuteServer {
                             .status(2)
                             .message(ExceptionUtil.getMessage(e))
                             .executeTime(System.currentTimeMillis() - nodeStartTime)
+                            .paramsJson(paramsJson)
                             .build());
                 }
                 if (!error) {
@@ -195,6 +196,7 @@ public class NodeExecuteServer {
                             .status(currentNodeExecuteSuccess ? 1 : 0)
                             .message(res.getMessage())
                             .executeTime(System.currentTimeMillis() - nodeStartTime)
+                            .paramsJson(paramsJson)
                             .build());
                 }
                 if (!error && currentNodeExecuteSuccess) {
@@ -233,7 +235,7 @@ public class NodeExecuteServer {
             }
         } while (Objects.nonNull(currentNode) && !error && currentNodeExecuteSuccess && !CharSequenceUtil.equals(currentNode.getShape(), LowCodeConstants.END_NODE));
         if (CharSequenceUtil.equals(currentNode.getShape(), LowCodeConstants.END_NODE) && !error && currentNodeExecuteSuccess) {
-            result.add(NodeExecuteResult.builder().nodeId(endNode.getId()).nodeName(endNode.getLabel()).nodeCode(endNode.getShape()).executeTime(0L).build());
+            result.add(NodeExecuteResult.builder().nodeId(endNode.getId()).nodeName(endNode.getLabel()).nodeCode(endNode.getShape()).paramsJson(paramsJson).executeTime(0L).build());
         }
         CompletableFuture.runAsync(() -> saveNodeConfExecLog(lowCodeNodeConf, System.currentTimeMillis() - startTime));
         log.debug("========== 节点配置[{}]处理器执行结束,耗时{}ms ==========", lowCodeNodeConf.getConfName(), System.currentTimeMillis() - startTime);

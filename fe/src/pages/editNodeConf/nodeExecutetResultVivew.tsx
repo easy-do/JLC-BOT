@@ -31,6 +31,14 @@ function NodeExecutetResultVivew(props: any) {
       }
     },
     {
+      title: '全局参数',
+      dataIndex: 'paramsJson',
+      ellipsis: true,
+      renderText(text, record, index, action) {
+          return record.paramsJson ? JSON.stringify(record.paramsJson) : '';
+      },
+    },
+    {
       title: '详细信息',
       dataIndex: 'message',
       ellipsis: true

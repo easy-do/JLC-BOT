@@ -171,6 +171,18 @@ declare namespace API {
     id: number;
   };
 
+  type JSONConfig = {
+    keyComparator?: Record<string, any>;
+    ignoreError?: boolean;
+    ignoreCase?: boolean;
+    dateFormat?: string;
+    ignoreNullValue?: boolean;
+    transientSupport?: boolean;
+    stripTrailingZeros?: boolean;
+    checkDuplicate?: boolean;
+    order?: boolean;
+  };
+
   type LoginDto = {
     userName: string;
     password: string;
@@ -209,6 +221,7 @@ declare namespace API {
     message?: string;
     status?: number;
     executeTime?: number;
+    paramsJson?: { raw?: Record<string, any>; config?: JSONConfig; empty?: boolean };
   };
 
   type NodePAVo = {

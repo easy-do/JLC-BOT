@@ -1,5 +1,6 @@
 package plus.easydo.bot.lowcode.model;
 
+import cn.hutool.json.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -24,5 +25,6 @@ public class NodeExecuteResult {
     private String message;
     private Integer status;
     private Long executeTime = 0L;
+    private JSONObject paramsJson;
 
 }

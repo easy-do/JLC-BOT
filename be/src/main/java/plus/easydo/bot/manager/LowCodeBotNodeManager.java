@@ -2,7 +2,7 @@ package plus.easydo.bot.manager;
 
 
 import com.mybatisflex.core.query.QueryWrapper;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Component;
 import plus.easydo.bot.entity.LowCodeBotNode;
 import plus.easydo.bot.mapper.LowCodeBotNodeMapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
@@ -18,7 +18,7 @@ import static plus.easydo.bot.entity.table.LowCodeBotNodeTableDef.LOW_CODE_BOT_N
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
  */
-@Service
+@Component
 public class LowCodeBotNodeManager extends ServiceImpl<LowCodeBotNodeMapper, LowCodeBotNode> {
 
     public boolean clearBotConf(Long botId) {

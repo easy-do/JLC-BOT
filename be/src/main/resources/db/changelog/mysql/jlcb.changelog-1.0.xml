@@ -496,4 +496,16 @@
               DEFAULT CHARSET = utf8mb4 COMMENT ='节点执行日志';
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240323-1" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            CREATE TABLE `bot_post_log`
+            (
+                `id`        bigint(20) NOT NULL AUTO_INCREMENT COMMENT '编号',
+                `post_time` datetime DEFAULT NULL COMMENT '推送时间',
+                `message`   longtext COMMENT '消息',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='接收消息日志';
+        </sql>
+    </changeSet>
 </databaseChangeLog>

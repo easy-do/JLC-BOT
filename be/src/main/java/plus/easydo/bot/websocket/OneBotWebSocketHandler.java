@@ -3,6 +3,7 @@ package plus.easydo.bot.websocket;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.extra.spring.SpringUtil;
@@ -16,8 +17,10 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import plus.easydo.bot.entity.BotInfo;
+import plus.easydo.bot.entity.BotPostLog;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.constant.OneBotConstants;
+import plus.easydo.bot.manager.BotPostLogServiceManager;
 import plus.easydo.bot.manager.CacheManager;
 
 import java.io.IOException;
@@ -25,6 +28,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
@@ -43,6 +47,7 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
     private static final Map<String, String> BOT_SESSION_MAP = new HashMap<>();
     private static final Cache<String,String> MESSAGE_CACHE = CacheUtil.newTimedCache(5000);
 
+
     private OneBotService oneBotService;
 
     private OneBotService getOneBotService(){
@@ -50,6 +55,14 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
             return SpringUtil.getBean(OneBotService.class);
         }
         return oneBotService;
+    }
+    private BotPostLogServiceManager botPostLogServiceManager;
+
+    private BotPostLogServiceManager getBotPostLogServiceManager(){
+        if(Objects.isNull(oneBotService)){
+            return SpringUtil.getBean(BotPostLogServiceManager.class);
+        }
+        return botPostLogServiceManager;
     }
 
     @Override
@@ -92,6 +105,7 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
         log.debug("接收到客户端消息:" + message.getPayload());
         JSONObject messageJson = JSONUtil.parseObj(message.getPayload());
         if(Objects.nonNull(messageJson.getObj(OneBotConstants.POST_TYPE))){
+            CompletableFuture.runAsync(()->getBotPostLogServiceManager().save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).message(messageJson.toJSONString(0)).build()));
             getOneBotService().handlerPost(messageJson);
         }
     }
