@@ -2,7 +2,6 @@ package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;
-import cn.hutool.core.lang.tree.Tree;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -12,12 +11,10 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.dto.LoginDto;
+import plus.easydo.bot.service.LoginService;
 import plus.easydo.bot.vo.CurrentUser;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
-import plus.easydo.bot.service.LoginService;
-
-import java.util.List;
 
 /**
  * @author laoyu
@@ -40,6 +37,7 @@ public class UserController {
     public R<String> login(@Validated @RequestBody LoginDto loginDto){
         return DataResult.ok(loginService.login(loginDto));
     }
+
 
     @Operation(summary = "退出")
     @GetMapping("/logout")

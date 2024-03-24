@@ -1,7 +1,6 @@
 package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
-import cn.dev33.satoken.annotation.SaCheckPermission;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,11 +9,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import plus.easydo.bot.vo.DataResult;
-import plus.easydo.bot.vo.R;
 import plus.easydo.bot.entity.SystemConf;
 import plus.easydo.bot.qo.SystemConfigQo;
 import plus.easydo.bot.service.SystemConfService;
+import plus.easydo.bot.vo.DataResult;
+import plus.easydo.bot.vo.R;
 
 import java.io.Serializable;
 import java.util.List;
@@ -39,8 +38,8 @@ public class SystemConfController {
      * @param gameConfigQo gameConfigQo
      * @return 分页对象
      */
+    @SaCheckLogin
     @Operation(summary = "分页")
-    @SaCheckPermission("conf")
     @PostMapping("/page")
     public R<List<SystemConf>> pageConf(@RequestBody SystemConfigQo gameConfigQo) {
         return DataResult.ok(daGameConfigService.confPage(gameConfigQo));
@@ -52,8 +51,8 @@ public class SystemConfController {
      * @param id daGameConfig主键
      * @return 游戏配置详情
      */
-    @Operation(summary = "详情")
     @SaCheckLogin
+    @Operation(summary = "详情")
     @GetMapping("/info/{id}")
     public R<SystemConf> getConfInfo(@PathVariable Serializable id) {
         return DataResult.ok(daGameConfigService.getById(id));
@@ -65,8 +64,9 @@ public class SystemConfController {
      * @param systemConf 游戏配置
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
+
+    @SaCheckLogin
     @Operation(summary = "添加")
-    @SaCheckPermission("conf.save")
     @PostMapping("/save")
     public R<Object> saveConf(@RequestBody SystemConf systemConf) {
         return DataResult.ok(daGameConfigService.saveConf(systemConf));
@@ -77,8 +77,8 @@ public class SystemConfController {
      * @param systemConf 游戏配置
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
+    @SaCheckLogin
     @Operation(summary = "更新")
-    @SaCheckPermission("conf.update")
     @PostMapping("/update")
     public R<Object> updateConf(@RequestBody SystemConf systemConf) {
         return DataResult.ok(daGameConfigService.updateConf(systemConf));

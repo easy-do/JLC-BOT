@@ -1,6 +1,6 @@
 package plus.easydo.bot.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -8,11 +8,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.dto.EnableBotScriptDto;
-import plus.easydo.bot.entity.BotInfo;
-import plus.easydo.bot.vo.DataResult;
-import plus.easydo.bot.vo.R;
 import plus.easydo.bot.entity.BotConf;
+import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.BotMessage;
 import plus.easydo.bot.entity.BotNotice;
 import plus.easydo.bot.entity.BotRequest;
@@ -21,7 +20,8 @@ import plus.easydo.bot.qo.BotNoticeQo;
 import plus.easydo.bot.qo.BotQo;
 import plus.easydo.bot.qo.BotRequestQo;
 import plus.easydo.bot.service.BotService;
-import org.springframework.web.bind.annotation.RestController;
+import plus.easydo.bot.vo.DataResult;
+import plus.easydo.bot.vo.R;
 
 import java.util.List;
 
@@ -44,8 +44,8 @@ public class BotController {
      * @param botQo 分页对象
      * @return 分页对象
      */
+    @SaCheckLogin
     @Operation(summary = "分页查询")
-    @SaCheckPermission("platformBot")
     @PostMapping("/page")
     public R<List<BotInfo>> pageBot(@RequestBody BotQo botQo) {
         return DataResult.ok(botService.pageBot(botQo));
@@ -59,8 +59,8 @@ public class BotController {
      * @author laoyu
      * @date 2024/2/21
      */
+    @SaCheckLogin
     @Operation(summary = "机器人详情")
-    @SaCheckPermission("platformBot")
     @PostMapping("/info/{id}")
     public R<BotInfo> infoBot(@PathVariable("id") Long id) {
         return DataResult.ok(botService.infoBot(id));
@@ -72,8 +72,8 @@ public class BotController {
      * @param botInfo daCdk
      * @return 分页对象
      */
+    @SaCheckLogin
     @Operation(summary = "添加机器人配置")
-    @SaCheckPermission("platformBot.add")
     @PostMapping("/add")
     public R<Boolean> addBot(@RequestBody BotInfo botInfo) {
         return DataResult.ok(botService.addBot(botInfo));
@@ -85,8 +85,8 @@ public class BotController {
      * @param botInfo daCdk
      * @return 分页对象
      */
+    @SaCheckLogin
     @Operation(summary = "更新机器人配置")
-    @SaCheckPermission("platformBot.update")
     @PostMapping("/update")
     public R<Boolean> updateBot(@RequestBody BotInfo botInfo) {
         return DataResult.ok(botService.updateBot(botInfo));
@@ -99,8 +99,8 @@ public class BotController {
      * @param ids 主键集合
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
+    @SaCheckLogin
     @Operation(summary = "删除机器人")
-    @SaCheckPermission("platformBot.remove")
     @PostMapping("/remove")
     public R<Boolean> removeBot(@RequestBody List<String> ids) {
         return DataResult.ok(botService.removeBot(ids));
@@ -114,29 +114,29 @@ public class BotController {
      * @author laoyu
      * @date 2024-02-23
      */
+    @SaCheckLogin
     @Operation(summary = "获取机器人配置")
-    @SaCheckPermission("platformBot")
     @GetMapping("/getBotConf/{botNumber}")
     public R<List<BotConf>> getBotConf(@PathVariable("botNumber") String botNumber) {
         return DataResult.ok(botService.getBotConf(botNumber));
     }
 
+    @SaCheckLogin
     @Operation(summary = "添加机器人配置")
-    @SaCheckPermission("platformBot.update")
     @PostMapping("/addBotConf")
     public R<Boolean> addBotConf(@RequestBody BotConf botConf) {
         return DataResult.ok(botService.addBotConf(botConf));
     }
 
+    @SaCheckLogin
     @Operation(summary = "更新机器人配置")
-    @SaCheckPermission("platformBot.update")
     @PostMapping("/updateBotConf")
     public R<Boolean> updateBotConf(@RequestBody BotConf botConf) {
         return DataResult.ok(botService.updateBotConf(botConf));
     }
 
+    @SaCheckLogin
     @Operation(summary = "删除机器人配置")
-    @SaCheckPermission("platformBot.update")
     @GetMapping("/removeBotConf/{id}")
     public R<Boolean> removeBotConf(@PathVariable("id") Long id) {
         return DataResult.ok(botService.removeBotConf(id));
@@ -148,8 +148,8 @@ public class BotController {
      * @param botMessageQo 分页对象
      * @return 分页对象
      */
+    @SaCheckLogin
     @Operation(summary = "分页查询消息记录")
-    @SaCheckPermission("botMessage")
     @PostMapping("/pageBotMessage")
     public R<List<BotMessage>> pageBotMessage(@RequestBody BotMessageQo botMessageQo) {
         return DataResult.ok(botService.pageBotMessage(botMessageQo));
@@ -161,8 +161,8 @@ public class BotController {
      * @param botRequestQo 分页对象
      * @return 分页对象
      */
+    @SaCheckLogin
     @Operation(summary = "分页查询请求记录")
-    @SaCheckPermission("botRequest")
     @PostMapping("/pageBotRequest")
     public R<List<BotRequest>> pageBotRequest(@RequestBody BotRequestQo botRequestQo) {
         return DataResult.ok(botService.pageBotRequest(botRequestQo));
@@ -174,8 +174,8 @@ public class BotController {
      * @param botNoticeQo 分页对象
      * @return 分页对象
      */
+    @SaCheckLogin
     @Operation(summary = "分页查询通知记录")
-    @SaCheckPermission("botNotice")
     @PostMapping("/pageBotNotice")
     public R<List<BotNotice>> pageBotNotice(@RequestBody BotNoticeQo botNoticeQo) {
         return DataResult.ok(botService.pageBotNotice(botNoticeQo));
@@ -186,8 +186,8 @@ public class BotController {
      * @param enableBotScriptDto
      * @return
      */
+    @SaCheckLogin
     @Operation(summary = "启用脚本")
-    @SaCheckPermission("platformBot.update")
     @PostMapping("/enableBotScript")
     public R<Boolean> enableBotScript(@RequestBody EnableBotScriptDto enableBotScriptDto) {
         return DataResult.ok(botService.enableBotScript(enableBotScriptDto));
@@ -201,8 +201,8 @@ public class BotController {
      * @author laoyu
      * @date 2024/2/24
      */
+    @SaCheckLogin
     @Operation(summary = "已开启脚本")
-    @SaCheckPermission("platformBot.update")
     @PostMapping("/getEnableBotScript/{id}")
     public R<List<Long>> getEnableBotScript(@PathVariable("id") Long id) {
         return DataResult.ok(botService.getEnableBotScript(id));

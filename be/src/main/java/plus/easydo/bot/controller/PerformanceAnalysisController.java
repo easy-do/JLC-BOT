@@ -37,7 +37,7 @@ public class PerformanceAnalysisController {
      * @return 所有数据
      */
     @SaCheckLogin
-    @Operation(summary = "所有数据")
+    @Operation(summary = "节点执行效率分析")
     @GetMapping("/nodeExecute")
     public R<Map<String, List<NodePAVo>>> nodeExecute() {
         return DataResult.ok(performanceAnalysisService.nodeExecute());

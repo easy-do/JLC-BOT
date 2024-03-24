@@ -1,15 +1,19 @@
 package plus.easydo.bot.controller;
 
-import cn.dev33.satoken.annotation.SaCheckPermission;
-import cn.dev33.satoken.annotation.SaMode;
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.*;
-import plus.easydo.bot.vo.DataResult;
-import plus.easydo.bot.vo.R;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.entity.BotEventScript;
 import plus.easydo.bot.qo.BotEventScriptQo;
 import plus.easydo.bot.service.BotScriptService;
+import plus.easydo.bot.vo.DataResult;
+import plus.easydo.bot.vo.R;
 
 import java.util.List;
 
@@ -32,8 +36,8 @@ public class BotScriptController {
      * @param botEventScriptQo botEventScriptQo
      * @return 分页对象
      */
+    @SaCheckLogin
     @Operation(summary = "分页查询")
-    @SaCheckPermission("botScript")
     @PostMapping("/page")
     public R<List<BotEventScript>> pageBotScript(@RequestBody BotEventScriptQo botEventScriptQo) {
         return DataResult.ok(botScriptService.pageBotScript(botEventScriptQo));
@@ -46,8 +50,8 @@ public class BotScriptController {
      * @author laoyu
      * @date 2024/2/24
      */
+    @SaCheckLogin
     @Operation(summary = "所有脚本列表")
-    @SaCheckPermission(mode=SaMode.OR,value = {"botScript","platformBot"})
     @GetMapping("/botScriptList")
     public R<List<BotEventScript>> botScriptList() {
         return DataResult.ok(botScriptService.botScriptList());
@@ -61,8 +65,8 @@ public class BotScriptController {
      * @author laoyu
      * @date 2024/2/21
      */
+    @SaCheckLogin
     @Operation(summary = "机器人脚本详情")
-    @SaCheckPermission("botScript")
     @PostMapping("/info/{id}")
     public R<BotEventScript> infoBotScript(@PathVariable("id") Long id) {
         return DataResult.ok(botScriptService.infoBotScript(id));
@@ -74,8 +78,8 @@ public class BotScriptController {
      * @param botEventScript daCdk
      * @return 分页对象
      */
+    @SaCheckLogin
     @Operation(summary = "添加机器人脚本配置")
-    @SaCheckPermission("botScript.add")
     @PostMapping("/add")
     public R<Boolean> addBotScript(@RequestBody BotEventScript botEventScript) {
         return DataResult.ok(botScriptService.addBotScript(botEventScript));
@@ -87,8 +91,8 @@ public class BotScriptController {
      * @param botEventScript daCdk
      * @return 分页对象
      */
+    @SaCheckLogin
     @Operation(summary = "更新机器人脚本配置")
-    @SaCheckPermission("botScript.update")
     @PostMapping("/update")
     public R<Boolean> updateBotScript(@RequestBody BotEventScript botEventScript) {
         return DataResult.ok(botScriptService.updateBotScript(botEventScript));
@@ -101,8 +105,8 @@ public class BotScriptController {
      * @param ids 主键集合
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
+    @SaCheckLogin
     @Operation(summary = "删除机器人脚本")
-    @SaCheckPermission("botScript.remove")
     @PostMapping("/remove")
     public R<Boolean> removeBotScript(@RequestBody List<String> ids) {
         return DataResult.ok(botScriptService.removeBotScript(ids));

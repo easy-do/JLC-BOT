@@ -1,5 +1,6 @@
 package plus.easydo.bot.controller;
 
+import cn.dev33.satoken.annotation.SaCheckLogin;
 import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -8,12 +9,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.entity.LowCodeSysNode;
+import plus.easydo.bot.qo.PageQo;
 import plus.easydo.bot.service.LowCodeSysNodeService;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
-import org.springframework.web.bind.annotation.RestController;
-import plus.easydo.bot.qo.PageQo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -38,6 +39,7 @@ public class LowCodeSysNodeController {
      * @param lowCodeSysNode 系统节点信息
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
+    @SaCheckLogin
     @Operation(summary = "添加")
     @PostMapping("/save")
     public R<Boolean> saveSysNode(@RequestBody LowCodeSysNode lowCodeSysNode) {
@@ -51,6 +53,7 @@ public class LowCodeSysNodeController {
      * @param id 主键
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
+    @SaCheckLogin
     @Operation(summary = "删除")
     @GetMapping("/remove/{id}")
     public R<Boolean> removeSysNode(@PathVariable Serializable id) {
@@ -64,6 +67,7 @@ public class LowCodeSysNodeController {
      * @param lowCodeSysNode 系统节点信息
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
+    @SaCheckLogin
     @Operation(summary = "更新")
     @PostMapping("/update")
     public R<Boolean> updateSysNode(@RequestBody LowCodeSysNode lowCodeSysNode) {
@@ -76,6 +80,7 @@ public class LowCodeSysNodeController {
      *
      * @return 所有数据
      */
+    @SaCheckLogin
     @Operation(summary = "所有数据")
     @GetMapping("/list")
     public R<Map<String,List<LowCodeSysNode>>> listSysNode() {
@@ -89,6 +94,7 @@ public class LowCodeSysNodeController {
      * @param id daLowCodeSysNode主键
      * @return 系统节点信息详情
      */
+    @SaCheckLogin
     @Operation(summary = "详细信息")
     @GetMapping("/info/{id}")
     public R<LowCodeSysNode> getSysNodeInfo(@PathVariable Serializable id) {
@@ -102,6 +108,7 @@ public class LowCodeSysNodeController {
      * @param pageQo 分页对象
      * @return 分页对象
      */
+    @SaCheckLogin
     @Operation(summary = "分页")
     @PostMapping("/page")
     public R<List<LowCodeSysNode>> pageSysNode(@RequestBody PageQo pageQo) {
