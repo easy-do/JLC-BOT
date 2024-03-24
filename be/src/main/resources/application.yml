@@ -32,7 +32,7 @@ mybatis-flex:
       password: ${MYSQL_PASS:88888888}
 
 jcl:
-  current-version: 2024.03.21
+  current-version: 2024.03.24
   mode: ${MODE:default} # default：与docker服务端配合模式  standalone：独立部署模式  utils：工具模式
 
 ############## Sa-Token 配置 (文档: https://sa-token.cc) ##############
