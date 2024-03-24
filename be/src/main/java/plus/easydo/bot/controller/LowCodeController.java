@@ -1,25 +1,42 @@
 package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.hutool.core.io.FileUtil;
+import cn.hutool.core.io.IoUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.dto.DebugBotNodeDto;
 import plus.easydo.bot.dto.SetBotNodeDto;
 import plus.easydo.bot.entity.LowCodeNodeConf;
+import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.lowcode.model.NodeExecuteResult;
 import plus.easydo.bot.qo.PageQo;
 import plus.easydo.bot.service.LowCodeService;
+import plus.easydo.bot.util.ResponseUtil;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
 
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.nio.charset.Charset;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author laoyu
@@ -78,6 +95,45 @@ public class LowCodeController {
     @GetMapping("/getNodeConf/{id}")
     public R<BotNodeDto> getNodeConf(@PathVariable("id") Long id) {
         return DataResult.ok(lowCodeService.getNodeConf(id));
+    }
+
+    /**
+     * 复制节点配置
+     *
+     * @param id id
+     * @return plus.easydo.bot.vo.R<java.lang.Boolean>
+     * @author laoyu
+     * @date 2024-03-24
+     */
+    @SaCheckLogin
+    @Operation(summary = "复制节点配置")
+    @GetMapping("/copyNodeConf/{id}")
+    public R<Long> copyNodeConf(@PathVariable("id") Long id) {
+        return DataResult.ok(lowCodeService.copyNodeConf(id));
+    }
+
+    /**
+     * 导入节点配置
+     *
+     * @param file file
+     * @return plus.easydo.bot.vo.R<java.lang.Boolean>
+     * @author laoyu
+     * @date 2024-03-24
+     */
+    @SaCheckLogin
+    @Operation(summary = "导入节点配置")
+    @PostMapping("/importNodeConf")
+    public R<Long> importNodeConf(@RequestParam("file") MultipartFile file) throws IOException {
+        InputStream ip = file.getInputStream();
+        byte[] bytes = ip.readAllBytes();
+        String content = new String(bytes);
+        try {
+            BotNodeDto nodeDto = JSONUtil.toBean(content, BotNodeDto.class);
+            nodeDto.setId(null);
+            return DataResult.ok(lowCodeService.saveNodeConf(nodeDto));
+        }catch (Exception e){
+            return DataResult.fail("解析配置信息内容失败");
+        }
     }
 
     /**

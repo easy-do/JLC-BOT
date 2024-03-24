@@ -21,4 +21,8 @@ public class BotNodeExecuteLogManager extends ServiceImpl<BotNodeExecuteLogMappe
     public List<NodePAVo> nodeExecutePa() {
         return mapper.nodeExecutePa();
     }
+
+    public List<NodePAVo> nodeExecuteTop() {
+        return mapper.nodeExecuteTop();
+    }
 }

@@ -20,5 +20,6 @@ public class NodePAVo {
     private String nodeName;
     private String confName;
     private Integer executeTime;
+    private Long count;
 
 }

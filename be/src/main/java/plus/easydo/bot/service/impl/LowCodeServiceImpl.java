@@ -144,6 +144,13 @@ public class LowCodeServiceImpl implements LowCodeService {
         return list.stream().map(LowCodeBotNode::getConfId).toList();
     }
 
+    @Override
+    public Long copyNodeConf(Long id) {
+        BotNodeDto nodeConf = getNodeConf(id);
+        nodeConf.setConfName("副本-"+nodeConf.getConfName());
+        return saveNodeConf(nodeConf);
+    }
+
     @PostConstruct
     @Override
     public void initLowCodeNodeCache() {

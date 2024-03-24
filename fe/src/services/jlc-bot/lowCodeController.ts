@@ -2,6 +2,20 @@
 /* eslint-disable */
 import { request } from 'umi';
 
+/** 复制节点配置 GET /api/lowcode/copyNodeConf/${param0} */
+export async function copyNodeConf(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.copyNodeConfParams,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<API.RLong>(`/api/lowcode/copyNodeConf/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
 /** 调试节点配置 POST /api/lowcode/debugNodeConf */
 export async function debugNodeConf(body: API.DebugBotNodeDto, options?: { [key: string]: any }) {
   return request<API.RListNodeExecuteResult>('/api/lowcode/debugNodeConf', {
@@ -38,6 +52,18 @@ export async function getNodeConf(
   return request<API.RBotNodeDto>(`/api/lowcode/getNodeConf/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
+/** 导入节点配置 POST /api/lowcode/importNodeConf */
+export async function importNodeConf(body: {}, options?: { [key: string]: any }) {
+  return request<API.RLong>('/api/lowcode/importNodeConf', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }

@@ -122,6 +122,10 @@ declare namespace API {
     flag?: string;
   };
 
+  type copyNodeConfParams = {
+    id: number;
+  };
+
   type CurrentUser = {
     userName?: string;
     menu?: Record<string, any>[];
@@ -137,6 +141,12 @@ declare namespace API {
   type EnableBotScriptDto = {
     botId?: number;
     scriptIds?: number[];
+  };
+
+  type ExecuteResult = {
+    success?: boolean;
+    message?: string;
+    data?: Record<string, any>;
   };
 
   type getBotConfParams = {
@@ -222,12 +232,14 @@ declare namespace API {
     status?: number;
     executeTime?: number;
     paramsJson?: { raw?: Record<string, any>; config?: JSONConfig; empty?: boolean };
+    executeResult?: ExecuteResult;
   };
 
   type NodePAVo = {
     nodeName?: string;
     confName?: string;
     executeTime?: number;
+    count?: number;
   };
 
   type PageQo = {

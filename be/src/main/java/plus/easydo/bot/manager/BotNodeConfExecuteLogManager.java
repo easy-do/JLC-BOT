@@ -21,4 +21,8 @@ public class BotNodeConfExecuteLogManager extends ServiceImpl<BotNodeConfExecute
     public List<NodePAVo> nodeConfExecutePa() {
         return mapper.nodeConfExecutePa();
     }
+
+    public List<NodePAVo> nodeConfExecuteTop() {
+        return mapper.nodeConfExecuteTop();
+    }
 }

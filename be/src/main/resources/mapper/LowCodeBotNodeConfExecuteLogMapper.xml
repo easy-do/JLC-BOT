@@ -8,5 +8,8 @@
     <select id="nodeConfExecutePa" resultType="plus.easydo.bot.vo.NodePAVo">
         SELECT conf_name AS confName, AVG(execute_time) AS executeTime FROM low_code_bot_node_conf_execute_log group by conf_id order by executeTime desc;
     </select>
+    <select id="nodeConfExecuteTop" resultType="plus.easydo.bot.vo.NodePAVo">
+        SELECT conf_name AS confName, count(*) AS count FROM low_code_bot_node_conf_execute_log group by conf_id order by count desc;
+    </select>
 
 </mapper>

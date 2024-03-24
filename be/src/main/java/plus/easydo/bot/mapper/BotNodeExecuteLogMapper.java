@@ -19,4 +19,6 @@ public interface BotNodeExecuteLogMapper extends BaseMapper<BotNodeExecuteLog> {
 
     List<NodePAVo> nodeExecutePa();
 
+    List<NodePAVo> nodeExecuteTop();
+
 }

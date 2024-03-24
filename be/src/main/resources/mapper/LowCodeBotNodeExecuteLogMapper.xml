@@ -8,5 +8,8 @@
     <select id="nodeExecutePa" resultType="plus.easydo.bot.vo.NodePAVo">
         SELECT node_name AS nodeName, AVG(execute_time) AS executeTime FROM low_code_bot_node_execute_log group by node_code order by executeTime desc;
     </select>
+    <select id="nodeExecuteTop" resultType="plus.easydo.bot.vo.NodePAVo">
+        SELECT node_name AS nodeName, count(*) AS count FROM low_code_bot_node_execute_log group by node_code order by count desc;
+    </select>
 
 </mapper>

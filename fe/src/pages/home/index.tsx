@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Skeleton, Tag, Modal, Card } from 'antd';
+import { Skeleton, Tag, Modal, Card, Row, Col } from 'antd';
 
 import { request, useModel } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';
@@ -10,7 +10,7 @@ import ProList from '@ant-design/pro-list';
 import React from 'react';
 
 import { Bar } from '@ant-design/charts';
-import { nodeExecute } from '@/services/jlc-bot/performanceAnalysisController';
+import { nodeExecutePa } from '@/services/jlc-bot/performanceAnalysisController';
 
 const PageHeaderContent: FC<{ currentUser: API.CurrentUser }> = ({ currentUser }) => {
   const loading = currentUser && Object.keys(currentUser).length;
@@ -50,6 +50,8 @@ const Home: React.FC = () => {
 
   const [dataSource, setDatasource] = useState([]);
 
+  const [nodeExecuteTopData, setNodeExecuteTopData] = useState();
+  const [nodeExecuteConfTopData, setNodeExecuteConfTopData] = useState();
   const [nodeExecutePaData, setNodeExecutePaData] = useState();
   const [nodeExecuteConfPaData, setNodeExecuteConfPaData] = useState();
 
@@ -85,10 +87,10 @@ const Home: React.FC = () => {
             });
           }
           setDatasource(data);
-        } catch (error) {}
+        } catch (error) { }
       }
     });
-    nodeExecute().then((res) => {
+    nodeExecutePa().then((res) => {
       if (res.success) {
         setNodeExecutePaData({
           title: {
@@ -118,12 +120,46 @@ const Home: React.FC = () => {
             text: '节点配置执行完毕的平均耗时,单位毫秒',
           },
         });
+        setNodeExecuteTopData({
+          title: {
+            visible: true,
+            text: '节点执行排行',
+          },
+          data: res.data.nodeTop,
+          forceFit: true,
+          xField: 'count',
+          yField: 'nodeName',
+          description: {
+            visible: true,
+            text: '节点执行次数',
+          },
+        });
+        setNodeExecuteConfTopData({
+          title: {
+            visible: true,
+            text: '节点配置执行排行',
+          },
+          data: res.data.nodeConfTop,
+          forceFit: true,
+          xField: 'count',
+          yField: 'confName',
+          description: {
+            visible: true,
+            text: '节点配置执行次数',
+          },
+        });
       }
     });
   }, []);
 
   return (
     <PageContainer content={<PageHeaderContent currentUser={initialState?.currentUser} />}>
+      <Card>
+        <Bar {...nodeExecuteConfTopData} />
+      </Card>
+      <Card>
+        <Bar {...nodeExecuteTopData} />
+      </Card>
       <Card>
         <Bar {...nodeExecuteConfPaData} />
       </Card>
@@ -151,7 +187,7 @@ const Home: React.FC = () => {
           rowKey="id"
           headerTitle=""
           dataSource={dataSource}
-          itemCardProps={{ onClick: () => {} }}
+          itemCardProps={{ onClick: () => { } }}
           metas={{
             title: {},
             description: {},

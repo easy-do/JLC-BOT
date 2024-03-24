@@ -2,9 +2,9 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 所有数据 GET /api/pa/nodeExecute */
-export async function nodeExecute(options?: { [key: string]: any }) {
-  return request<API.RMapStringListNodePAVo>('/api/pa/nodeExecute', {
+/** 节点执行效率分析 GET /api/pa/nodeExecutePa */
+export async function nodeExecutePa(options?: { [key: string]: any }) {
+  return request<API.RMapStringListNodePAVo>('/api/pa/nodeExecutePa', {
     method: 'GET',
     ...(options || {}),
   });

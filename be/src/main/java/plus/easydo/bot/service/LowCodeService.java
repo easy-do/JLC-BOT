@@ -39,4 +39,6 @@ public interface LowCodeService {
     List<LowCodeNodeConf> listNodeConf();
 
     List<Long> getBotNode(Long botId);
+
+    Long copyNodeConf(Long id);
 }

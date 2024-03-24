@@ -13,6 +13,6 @@ import java.util.Map;
  */
 
 public interface PerformanceAnalysisService {
-    Map<String, List<NodePAVo>> nodeExecute();
+    Map<String, List<NodePAVo>> nodeExecutePa();
 
 }
