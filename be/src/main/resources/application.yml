@@ -22,6 +22,25 @@ spring:
     enabled: true
     databaseChangeLogTable: "jlc_bot_database_change_log"
     databaseChangeLogLockTable: "jlc_bot_database_change_log_lock"
+  # 定时器配置
+  quartz:
+    # 使用数据库存储
+    job-store-type: memory
+    # 初始化完成后自动启动调度程序
+    autoStartup: true
+    properties:
+      org:
+        quartz:
+          # 调度器配置
+          scheduler:
+            instanceName: bootQuartzScheduler
+            instanceId: AUTO
+          # 线程池配置
+          threadPool:
+            threadNamePrefix: Boot_Job_Pool
+            threadPriority: 5
+            threadCount: 10
+            class: org.quartz.simpl.SimpleThreadPool
 
 mybatis-flex:
   datasource:
