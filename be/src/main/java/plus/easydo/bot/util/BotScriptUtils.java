@@ -10,7 +10,7 @@ import java.util.List;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-02-23 15:37
+ * @Date 2024-02-23
  * @Description 机器人脚本扩展工具,定义一些便捷方法
  */
 public class BotScriptUtils {

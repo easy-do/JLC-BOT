@@ -5,7 +5,7 @@ import plus.easydo.bot.lowcode.model.ExecuteResult;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-03-06 11:34
+ * @Date 2024-03-06
  * @Description 节点执行器
  */
 public interface NodeExecute {

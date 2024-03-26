@@ -4,17 +4,15 @@ import { EditableProTable } from '@ant-design/pro-table';
 import { Button, message } from 'antd';
 import { addBotConf, getBotConf, removeBotConf, updateBotConf } from '@/services/jlc-bot/botController';
 import { PlusOutlined } from '@ant-design/icons';
-import { Access, useAccess } from 'umi';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 
 
 const EditBotConf = (props: any) => {
 
-  const access = useAccess();
 
   const editableFormRef = useRef<EditableFormInstance>();
 
-  const [currentData, setCurrentData] = useState<API.DaBotConf[]>();
+  const [currentData, setCurrentData] = useState<API.BotConf[]>();
 
   const [editableKeys, setEditableRowKeys] = useState<React.Key[]>([]);
 
@@ -26,7 +24,7 @@ const EditBotConf = (props: any) => {
      * @param fields
      */
   
-    const handleAdd = async (fields: API.DaBotInfo) => {
+    const handleAdd = async (fields: API.BotInfo) => {
       const hide = message.loading('正在添加');
   
       try {
@@ -63,7 +61,7 @@ const EditBotConf = (props: any) => {
 
 
 
-  const columns: ProColumns<API.DaBotConf>[] = [
+  const columns: ProColumns<API.BotConf>[] = [
     {
       title: '配置编码',
       dataIndex: 'id',
@@ -127,7 +125,7 @@ const EditBotConf = (props: any) => {
 
   return (
     <>
-    <EditableProTable<API.DaBotConf>
+    <EditableProTable<API.BotConf>
       editableFormRef={editableFormRef}
       rowKey="id"
       headerTitle={'机器人配置'}
@@ -137,7 +135,6 @@ const EditBotConf = (props: any) => {
         x: 960,
       }}
       toolBarRender={() => [
-        <Access accessible={access.hashPre('platformBot.update')}>
           <Button
             type="primary"
             icon={<PlusOutlined />}
@@ -147,7 +144,6 @@ const EditBotConf = (props: any) => {
           >
             添加配置
           </Button>
-        </Access>,
       ]}
       loading={false}
       columns={columns}
@@ -194,7 +190,7 @@ const EditBotConf = (props: any) => {
           destroyOnClose: true,
         }}
         onFinish={async (value) => {
-          const success = await handleAdd(value as API.DaItemEntity);
+          const success = await handleAdd(value as API.BotConf);
           if (success) {
             handleModalVisible(false);
             getBotConfData(props.botNumber);

@@ -508,4 +508,38 @@
               DEFAULT CHARSET = utf8mb4 COMMENT ='接收消息日志';
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240326" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            CREATE TABLE `quartz_job`
+            (
+                `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT '任务id',
+                `job_name`        varchar(32)  DEFAULT NULL COMMENT '任务名称',
+                `cron_expression` varchar(32)  DEFAULT NULL COMMENT 'cron表达式',
+                `job_class`       varchar(64)  DEFAULT NULL COMMENT '任务执行类',
+                `job_param`       longtext COMMENT '任务参数',
+                `status`          tinyint(1)   DEFAULT '0' COMMENT '状态',
+                `remark`          varchar(100) DEFAULT NULL COMMENT '备注',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='定时任务信息';
+
+            CREATE TABLE `quartz_job_log`
+            (
+                `id`              bigint(20) NOT NULL AUTO_INCREMENT COMMENT 'id',
+                `job_id`          bigint(20)  DEFAULT NULL COMMENT '任务id',
+                `job_name`        varchar(32) DEFAULT NULL COMMENT '任务名称',
+                `cron_expression` varchar(32) DEFAULT NULL COMMENT 'cron表达式',
+                `job_class`       varchar(64) DEFAULT NULL COMMENT '任务执行类',
+                `job_param`       longtext COMMENT '任务参数',
+                `status`          tinyint(1)  DEFAULT NULL COMMENT '状态',
+                `execute_time`    bigint(20)  DEFAULT NULL COMMENT '执行耗时',
+                `error_message`   longtext COMMENT '异常信息',
+                `create_time`     datetime    DEFAULT NULL COMMENT '保存时间',
+                PRIMARY KEY (`id`)
+            ) ENGINE = InnoDB
+              DEFAULT CHARSET = utf8mb4 COMMENT ='定时任务日志';
+            UPDATE system_conf SET conf_name='菜单', conf_type=4, conf_data='[{"name":"首页","path":"/home"},{"name":"系统配置","path":"/conf"},{"name":"机器人管理","path":"/botManager","children":[{"name":"机器人","path":"/platformBot"},{"name":"机器人脚本","path":"/botScript"},{"name":"消息记录","path":"/botMessage"},{"name":"请求记录","path":"/botRequest"},{"name":"通知记录","path":"/botNotice"}]},{"name":"系统节点","path":"/sysNode"},{"name":"节点配置","path":"/nodeConf"},{"name":"定时任务","path":"/systemJob"}]', conf_key='menu', remark='系统菜单', is_system_conf=1 WHERE conf_key='menu';
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>

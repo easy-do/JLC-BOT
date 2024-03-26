@@ -3,6 +3,7 @@
 // API 更新时间：
 // API 唯一标识：
 import * as userController from './userController';
+import * as jobController from './jobController';
 import * as lowCodeSysNodeController from './lowCodeSysNodeController';
 import * as lowCodeController from './lowCodeController';
 import * as systemConfController from './systemConfController';
@@ -12,6 +13,7 @@ import * as systemController from './systemController';
 import * as performanceAnalysisController from './performanceAnalysisController';
 export default {
   userController,
+  jobController,
   lowCodeSysNodeController,
   lowCodeController,
   systemConfController,

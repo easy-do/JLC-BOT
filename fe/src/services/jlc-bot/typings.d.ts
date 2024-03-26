@@ -181,6 +181,10 @@ declare namespace API {
     id: number;
   };
 
+  type jobInfoParams = {
+    id: number;
+  };
+
   type JSONConfig = {
     keyComparator?: Record<string, any>;
     ignoreError?: boolean;
@@ -247,6 +251,16 @@ declare namespace API {
     pageSize?: number;
   };
 
+  type QuartzJob = {
+    id?: number;
+    jobName?: string;
+    cronExpression?: string;
+    jobClass?: string;
+    jobParam?: string;
+    status?: boolean;
+    remark?: string;
+  };
+
   type RBoolean = {
     code?: number;
     data?: boolean;
@@ -293,6 +307,10 @@ declare namespace API {
   };
 
   type removeBotConfParams = {
+    id: number;
+  };
+
+  type removeJobParams = {
     id: number;
   };
 
@@ -394,6 +412,15 @@ declare namespace API {
     total?: number;
   };
 
+  type RListQuartzJob = {
+    code?: number;
+    data?: QuartzJob[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
   type RListSystemConf = {
     code?: number;
     data?: SystemConf[];
@@ -448,6 +475,15 @@ declare namespace API {
     total?: number;
   };
 
+  type RQuartzJob = {
+    code?: number;
+    data?: QuartzJob;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
   type RString = {
     code?: number;
     data?: string;
@@ -466,9 +502,21 @@ declare namespace API {
     total?: number;
   };
 
+  type runOneJobParams = {
+    id: number;
+  };
+
   type SetBotNodeDto = {
     botId?: number;
     confIdList?: number[];
+  };
+
+  type startJobParams = {
+    id: number;
+  };
+
+  type stopJobParams = {
+    id: number;
   };
 
   type SystemConf = {

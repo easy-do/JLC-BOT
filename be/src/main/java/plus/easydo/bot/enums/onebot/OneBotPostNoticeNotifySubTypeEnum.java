@@ -4,7 +4,7 @@ import java.util.Objects;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-02-21 16:21
+ * @Date 2024-02-21
  * @Description 系统通知子类型
  */
 public enum OneBotPostNoticeNotifySubTypeEnum {

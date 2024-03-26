@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-02-21 11:13
+ * @Date 2024-02-21
  * @Description cq上报消息类型枚举
  */
 @Getter

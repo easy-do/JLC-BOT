@@ -85,6 +85,10 @@ export default defineConfig({
       component: './nodeConf',
     },
     {
+      path: '/systemJob',
+      component: './systemJob',
+    },
+    {
       component: '404',
     },
   ],

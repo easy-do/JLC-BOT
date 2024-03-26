@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * @author yuzhanfeng
- * @Date 2023-11-24 10:50
+ * @Date 2023-11-24
  * @Description 系统配置
  */
 @Data

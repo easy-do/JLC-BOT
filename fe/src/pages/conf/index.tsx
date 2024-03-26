@@ -6,7 +6,6 @@ import ProTable from '@ant-design/pro-table';
 import { pageConf, saveConf, updateConf } from '@/services/jlc-bot/systemConfController';
 import { ModalForm, ProFormDigit, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { PlusOutlined } from '@ant-design/icons';
-import { Access, useAccess } from 'umi';
 
 const ConfList: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -15,7 +14,6 @@ const ConfList: React.FC = () => {
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   const [confType, setConfType] = useState<number>(1);
-  const access = useAccess();
   /**
    * 添加节点
    *
@@ -113,19 +111,17 @@ const ConfList: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <Access accessible={access.hashPre('conf.update')}>
-          <a
-            key="id"
-            onClick={() => {
-              record.isSystemConf = record.isSystemConf+'';
-              setCurrentRow(record);
-              setConfType(record.confType);
-              handleUpdateModalVisible(true);
-            }}
-          >
-            编辑
-          </a>
-        </Access>
+        <a
+          key="id"
+          onClick={() => {
+            record.isSystemConf = record.isSystemConf + '';
+            setCurrentRow(record);
+            setConfType(record.confType);
+            handleUpdateModalVisible(true);
+          }}
+        >
+          编辑
+        </a>
         ,
       ],
     },
@@ -147,17 +143,15 @@ const ConfList: React.FC = () => {
         request={pageConf}
         columns={columns}
         toolBarRender={() => [
-          <Access accessible={access.hashPre('conf.save')}>
-            <Button
-              type="primary"
-              key="primary"
-              onClick={() => {
-                handleModalVisible(true);
-              }}
-            >
-              <PlusOutlined /> 新建
-            </Button>
-          </Access>
+          <Button
+            type="primary"
+            key="primary"
+            onClick={() => {
+              handleModalVisible(true);
+            }}
+          >
+            <PlusOutlined /> 新建
+          </Button>
           ,
         ]}
       />

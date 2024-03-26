@@ -6,11 +6,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.quartz.JobExecutionContext;
 import org.springframework.scheduling.quartz.QuartzJobBean;
 import plus.easydo.bot.constant.SystemConstant;
+import plus.easydo.bot.job.task.QuartzTask;
+import plus.easydo.bot.manager.QuartzJobLogManager;
+
+import java.util.Objects;
 
 
 /**
  * @author yuzhanfeng
- * @Date 2024-03-25 23:55
+ * @Date 2024-03-25
  * @Description 定时任务
  */
 @Slf4j
@@ -18,7 +22,7 @@ public class QuartzRecord extends QuartzJobBean {
     @Override
     protected void executeInternal(JobExecutionContext context) {
         QuartzJob quartzJob = (QuartzJob)context.getMergedJobDataMap().get(QuartzJob.JOB_PARAM_KEY) ;
-        QuartzJobLogService quartzJobLogService = SpringUtil.getBean(QuartzJobLogService.class) ;
+        QuartzJobLogManager logManager = SpringUtil.getBean(QuartzJobLogManager.class) ;
         // 定时器日志记录
         QuartzJobLog quartzJobLog = new QuartzJobLog () ;
         quartzJobLog.setJobId(quartzJob.getId());
@@ -28,8 +32,13 @@ public class QuartzRecord extends QuartzJobBean {
         long beginTime = System.currentTimeMillis() ;
         try {
             // 加载并执行
-            log.info("执行任务......");
-            log.info("{}",quartzJob);
+            String jobClass = quartzJob.getJobClass();
+            QuartzTask taskBean = SpringUtil.getBean(jobClass);
+            if(Objects.nonNull(taskBean)){
+                taskBean.executeInternal(context,quartzJob);
+            }else {
+                log.warn("没有找到任务类[{}]",jobClass);
+            }
             long executeTime = System.currentTimeMillis() - beginTime;
             quartzJobLog.setExecuteTime(executeTime);
             quartzJobLog.setStatus(true);
@@ -41,7 +50,7 @@ public class QuartzRecord extends QuartzJobBean {
             quartzJobLog.setErrorMessage(e.getMessage());
         } finally {
             // 保存执行日志
-            quartzJobLogService.save(quartzJobLog) ;
+            logManager.save(quartzJobLog) ;
         }
     }
 }

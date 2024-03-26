@@ -11,7 +11,7 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * @author yuzhanfeng
- * @Date 2023/2/1 15:16
+ * @Date 2023/2/1
  * @Description 响应工具类
  */
 public class ResponseUtil {

@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-03-25 23:22
+ * @Date 2024-03-25
  * @Description QuartzJob对象
  */
 @Data

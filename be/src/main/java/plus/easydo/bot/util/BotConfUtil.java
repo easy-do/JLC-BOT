@@ -11,7 +11,7 @@ import java.util.Objects;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-02-23 15:11
+ * @Date 2024-02-23
  * @Description 机器人配置工具类
  */
 public class BotConfUtil {

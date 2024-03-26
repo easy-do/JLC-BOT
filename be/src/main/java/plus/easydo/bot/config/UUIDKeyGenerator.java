@@ -5,7 +5,7 @@ import com.mybatisflex.core.keygen.IKeyGenerator;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-01-02 17:33
+ * @Date 2024-01-02
  * @Description 自定义uuid生成
  */
 public class UUIDKeyGenerator implements IKeyGenerator {

@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-02-21 16:21
+ * @Date 2024-02-21
  * @Description 请求类型
  */
 @Getter

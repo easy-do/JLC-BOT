@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-03-06 12:49
+ * @Date 2024-03-06
  * @Description 调试节点参数封装
  */
 @Data

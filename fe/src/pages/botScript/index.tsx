@@ -4,7 +4,6 @@ import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Access, useAccess } from 'umi';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { addBotScript, infoBotScript, pageBotScript, removeBotScript, updateBotScript } from '@/services/jlc-bot/botScriptController';
 import loader from '@monaco-editor/loader';
@@ -13,8 +12,7 @@ loader.config({ paths: { vs: 'https://cdn.staticfile.org/monaco-editor/0.43.0/mi
 
 const botScript: React.FC = () => {
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.DaBotEventScript>();
-  const access = useAccess();
+  const [currentRow, setCurrentRow] = useState<API.BotEventScript>();
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   /**
@@ -23,7 +21,7 @@ const botScript: React.FC = () => {
    * @param fields
    */
 
-  const handleAdd = async (fields: API.DaBotEventScript) => {
+  const handleAdd = async (fields: API.BotEventScript) => {
     const hide = message.loading('正在添加');
 
     try {
@@ -52,9 +50,9 @@ const botScript: React.FC = () => {
     });
   };
 
- /** 编辑脚本 */
- const [updateScriptModalVisible, handleUpdateScriptModalVisible] = useState<boolean>(false);
- const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
+  /** 编辑脚本 */
+  const [updateScriptModalVisible, handleUpdateScriptModalVisible] = useState<boolean>(false);
+  const [confirmLoading, setConfirmLoading] = useState<boolean>(false);
   const [cureentScriptContext, setCureentScriptContext] = useState<string>('// 什么都没有');
 
   const handleEditorChange = (value: string, event: any) => {
@@ -86,7 +84,7 @@ const botScript: React.FC = () => {
 
   /** 国际化配置 */
 
-  const columns: ProColumns<API.DaBotEventScript>[] = [
+  const columns: ProColumns<API.BotEventScript>[] = [
     {
       title: '脚本名',
       dataIndex: 'scriptName',
@@ -95,20 +93,20 @@ const botScript: React.FC = () => {
       title: '事件类型',
       dataIndex: 'eventType',
       search: false,
-      valueEnum:{
-        'message':'接到消息',
-        'notice':'通知',
-        'meta_event':'元事件',
-        'game_user_send_msg':'游戏角色消息',
-        'pick_up_item_event':'装备拾取事件',
+      valueEnum: {
+        'message': '接到消息',
+        'notice': '通知',
+        'meta_event': '元事件',
+        'game_user_send_msg': '游戏角色消息',
+        'pick_up_item_event': '装备拾取事件',
       }
     },
     {
       title: '脚本类型',
       dataIndex: 'scriptType',
       search: false,
-      valueEnum:{
-        'cqhttp':'cqhttp',
+      valueEnum: {
+        'cqhttp': 'cqhttp',
       }
     },
     {
@@ -120,7 +118,6 @@ const botScript: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <Access accessible={access.hashPre('botScript.update')}>
         <a
           key="id"
           onClick={() => {
@@ -128,38 +125,33 @@ const botScript: React.FC = () => {
           }}
         >
           编辑信息
+        </a>,
+        <a
+          key="id"
+          onClick={() => {
+            setCurrentRow(record);
+            openScriptEditor(record.id);
+          }}
+        >
+          编辑脚本
+        </a>,
+        <a
+          key="id"
+          onClick={() => {
+            removeBotScript([record.id]).then((res) => {
+              actionRef.current.reload();
+            });
+          }}
+        >
+          删除
         </a>
-      </Access>,
-      <Access accessible={access.hashPre('botScript.update')}>
-              <a
-                key="id"
-                onClick={() => {
-                  setCurrentRow(record);
-                  openScriptEditor(record.id);
-                }}
-              >
-                编辑脚本
-              </a>
-            </Access>,
-        <Access accessible={access.hashPre('botScript.remove')}>
-          <a
-            key="id"
-            onClick={() => {
-              removeBotScript([record.id]).then((res) => {
-                actionRef.current.reload();
-              });
-            }}
-          >
-            删除
-          </a>
-        </Access>,
       ],
     },
   ];
 
   return (
     <PageContainer>
-      <ProTable<API.DaBotEventScript, API.RListDaBotEventScript>
+      <ProTable<API.BotEventScript, API.RListBotEventScript>
         headerTitle="机器人脚本"
         actionRef={actionRef}
         rowKey="id"
@@ -171,17 +163,15 @@ const botScript: React.FC = () => {
           showSizeChanger: false,
         }}
         toolBarRender={() => [
-          <Access accessible={access.hashPre('item.save')}>
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => {
-                handleModalVisible(true);
-              }}
-            >
-              添加脚本
-            </Button>
-          </Access>,
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              handleModalVisible(true);
+            }}
+          >
+            添加脚本
+          </Button>
         ]}
         request={pageBotScript}
         columns={columns}
@@ -194,7 +184,7 @@ const botScript: React.FC = () => {
           destroyOnClose: true,
         }}
         onFinish={async (value) => {
-          const success = await handleAdd(value as API.DaBotEventScript);
+          const success = await handleAdd(value as API.BotEventScript);
           if (success) {
             handleModalVisible(false);
             if (actionRef.current) {
@@ -321,7 +311,7 @@ const botScript: React.FC = () => {
             {
               label: '接到系统通知',
               value: 'notice',
-            },            
+            },
             {
               label: '游戏角色消息',
               value: 'game_user_send_msg',

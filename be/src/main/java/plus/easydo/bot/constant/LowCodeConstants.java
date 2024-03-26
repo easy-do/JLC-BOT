@@ -3,7 +3,7 @@ package plus.easydo.bot.constant;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-03-06 18:23
+ * @Date 2024-03-06
  * @Description 常量
  */
 public class LowCodeConstants {

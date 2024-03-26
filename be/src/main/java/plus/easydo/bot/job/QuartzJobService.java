@@ -1,22 +1,19 @@
 package plus.easydo.bot.job;
 
-import cn.hutool.core.exceptions.ExceptionUtil;
+import com.mybatisflex.core.paginate.Page;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.quartz.CronScheduleBuilder;
-import org.quartz.CronTrigger;
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.JobKey;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.TriggerBuilder;
-import org.quartz.TriggerKey;
 import org.springframework.stereotype.Component;
+import plus.easydo.bot.manager.QuartzJobManager;
+import plus.easydo.bot.qo.PageQo;
+
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-03-25 23:37
+ * @Date 2024-03-25
  * @Description QuartzJobService
  */
 @Component
@@ -24,89 +21,125 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class QuartzJobService {
 
-    private final Scheduler scheduler;
+    private final QuartzJobUtils quartzJobUtils;
 
-    private TriggerKey getTriggerKey(QuartzJob quartzJob) {
-        return TriggerKey.triggerKey(quartzJob.getId() + "-" + quartzJob.getJobName());
+    private final QuartzJobManager quartzJobManager;
+
+    @PostConstruct
+    public void initJob() {
+        log.info("开始初始化定时任务......");
+        List<QuartzJob> jobList = quartzJobManager.list();
+        jobList.forEach(quartzJob -> {
+            boolean res = quartzJobUtils.createJob(quartzJob);
+            if (Boolean.FALSE.equals(quartzJob.getStatus())) {
+                quartzJobUtils.pauseJob(quartzJob);
+            }
+            log.info("添加任务==> {},{}", quartzJob.getJobName(), res);
+        });
+        log.info("初始化定时任务结束......");
     }
 
-    private JobKey getJobKey(QuartzJob quartzJob) {
-        return JobKey.jobKey(quartzJob.getId() + "-" + quartzJob.getJobName());
-    }
-
-    public boolean createJob(QuartzJob quartzJob) {
-        try {
-            // 构建任务
-            JobDetail jobDetail = JobBuilder.newJob(QuartzRecord.class).withIdentity(getJobKey(quartzJob)).build();
-            // 构建Cron调度器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(quartzJob.getCronExpression()).withMisfireHandlingInstructionDoNothing();
-            // 任务触发器
-            CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(getTriggerKey(quartzJob)).withSchedule(scheduleBuilder).build();
-            jobDetail.getJobDataMap().put(QuartzJob.JOB_PARAM_KEY, quartzJob);
-            scheduler.scheduleJob(jobDetail, trigger);
-            pauseJob(quartzJob);
-            return true;
-        } catch (SchedulerException e) {
-            log.warn("创建任务失败:{}", ExceptionUtil.getMessage(e));
+    /**
+     * 添加任务
+     *
+     * @param quartzJob quartzJob
+     * @return boolean
+     * @author laoyu
+     * @date 2024-03-26
+     */
+    public boolean addJob(QuartzJob quartzJob) {
+        boolean res = quartzJobManager.save(quartzJob);
+        if (res) {
+            return quartzJobUtils.createJob(quartzJob);
         }
         return false;
     }
 
+    /**
+     * 运行一次
+     *
+     * @param id id
+     * @return boolean
+     * @author laoyu
+     * @date 2024-03-26
+     */
+    public boolean runOneJob(Long id) {
+        QuartzJob quartzJob = quartzJobManager.getById(id);
+        if (Objects.nonNull(quartzJob)) {
+            return quartzJobUtils.triggerJob(quartzJob);
+        }
+        return false;
+    }
+
+    /**
+     * 开启定时任务
+     *
+     * @param id id
+     * @return boolean
+     * @author laoyu
+     * @date 2024-03-26
+     */
+    public boolean startJob(Long id) {
+        QuartzJob quartzJob = quartzJobManager.getById(id);
+        if (Objects.nonNull(quartzJob) && Boolean.FALSE.equals(quartzJob.getStatus())) {
+            if (quartzJobUtils.resumeJob(quartzJob)) {
+                quartzJob.setStatus(true);
+                return quartzJobManager.updateById(quartzJob);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 停止任务
+     *
+     * @param id id
+     * @return boolean
+     * @author laoyu
+     * @date 2024-03-26
+     */
+    public boolean stopJob(Long id) {
+        QuartzJob quartzJob = quartzJobManager.getById(id);
+        if (Objects.nonNull(quartzJob)) {
+            if (quartzJobUtils.pauseJob(quartzJob)) {
+                quartzJob.setStatus(false);
+                return quartzJobManager.updateById(quartzJob);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * 更新任务
+     *
+     * @param quartzJob quartzJob
+     * @return boolean
+     * @author laoyu
+     * @date 2024-03-26
+     */
     public boolean updateJob(QuartzJob quartzJob) {
-        try {
-            // 查询触发器Key
-            TriggerKey triggerKey = getTriggerKey(quartzJob);
-            // 构建Cron调度器
-            CronScheduleBuilder scheduleBuilder = CronScheduleBuilder.cronSchedule(quartzJob.getCronExpression()).withMisfireHandlingInstructionDoNothing();
-            // 任务触发器
-            CronTrigger trigger = TriggerBuilder.newTrigger().withIdentity(triggerKey).withSchedule(scheduleBuilder).build();
-            //参数
-            trigger.getJobDataMap().put(QuartzJob.JOB_PARAM_KEY, quartzJob);
-            scheduler.rescheduleJob(triggerKey, trigger);
-            return true;
-        } catch (SchedulerException e) {
-            log.warn("更新任务失败:{}", ExceptionUtil.getMessage(e));
+        if (quartzJobManager.updateById(quartzJob)) {
+            return quartzJobUtils.rescheduleJob(quartzJob);
         }
         return false;
     }
 
-    public boolean triggerJob(QuartzJob quartzJob) {
-        try {
-            this.scheduler.triggerJob(getJobKey(quartzJob));
-            return true;
-        } catch (SchedulerException e) {
-            log.warn("暂停任务失败:{}", ExceptionUtil.getMessage(e));
+
+    public boolean removeJob(Long id) {
+        QuartzJob quartzJob = quartzJobManager.getById(id);
+        if (Objects.nonNull(quartzJob)) {
+            if (quartzJobUtils.removeJob(quartzJob)) {
+                return quartzJobManager.removeById(id);
+            }
         }
         return false;
     }
 
-    public boolean pauseJob(QuartzJob quartzJob) {
-        try {
-            this.scheduler.pauseJob(getJobKey(quartzJob));
-        } catch (SchedulerException e) {
-            log.warn("暂停任务失败:{}", ExceptionUtil.getMessage(e));
-        }
-        return false;
+    public Page<QuartzJob> jobPage(PageQo pageQo) {
+        return quartzJobManager.page(new Page<>(pageQo.getCurrent(), pageQo.getPageSize()));
     }
 
-    public boolean resumeJob(QuartzJob quartzJob) {
-        try {
-            this.scheduler.resumeJob(getJobKey(quartzJob));
-            return true;
-        } catch (SchedulerException e) {
-            log.warn("恢复任务失败:{}", ExceptionUtil.getMessage(e));
-        }
-        return false;
+    public QuartzJob jobInfo(Long id) {
+        return quartzJobManager.getById(id);
     }
-
-    public boolean deleteJob(QuartzJob quartzJob) {
-        try {
-            scheduler.deleteJob(getJobKey(quartzJob));
-            return true;
-        } catch (SchedulerException e) {
-            log.warn("删除任务失败:{}", ExceptionUtil.getMessage(e));
-        }
-        return false;
-    }
-
 }

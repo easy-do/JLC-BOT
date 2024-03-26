@@ -6,9 +6,8 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { Access, useAccess } from 'umi';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import { enableBotScript, getBotConf, getEnableBotScript, infoBot, pageBot, removeBot, updateBot } from '@/services/jlc-bot/botController';
+import { enableBotScript, getEnableBotScript, infoBot, pageBot, removeBot, updateBot } from '@/services/jlc-bot/botController';
 import { addBot } from '@/services/jlc-bot/botController';
 import Modal from 'antd/lib/modal/Modal';
 import EditBotConf from './EditBotConf';
@@ -18,8 +17,7 @@ import { getBotNode, listNodeConf, setBotNode } from '@/services/jlc-bot/lowCode
 const platfromBot: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
   const actionRef = useRef<ActionType>();
-  const [currentRow, setCurrentRow] = useState<API.DaBotInfo>();
-  const access = useAccess();
+  const [currentRow, setCurrentRow] = useState<API.BotInfo>();
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
   /**
@@ -28,7 +26,7 @@ const platfromBot: React.FC = () => {
    * @param fields
    */
 
-  const handleAdd = async (fields: API.DaBotInfo) => {
+  const handleAdd = async (fields: API.BotInfo) => {
     const hide = message.loading('正在添加');
 
     try {
@@ -57,60 +55,60 @@ const platfromBot: React.FC = () => {
     });
   };
 
-    /** 编辑配置窗口的弹窗 */
-    const [editBotConfModalVisible, handleEditBotConfModalVisible] = useState<boolean>(false);
+  /** 编辑配置窗口的弹窗 */
+  const [editBotConfModalVisible, handleEditBotConfModalVisible] = useState<boolean>(false);
 
-    const openEditBotConfModal = (id: string) => {
-      infoBot({ id: id }).then((res) => {
-        if (res.success) {
-          setCurrentRow(res.data);
-          handleEditBotConfModalVisible(true);
-        } else {
-          message.warn(res.errorMessage);
-        }
-      });
-    };
+  const openEditBotConfModal = (id: string) => {
+    infoBot({ id: id }).then((res) => {
+      if (res.success) {
+        setCurrentRow(res.data);
+        handleEditBotConfModalVisible(true);
+      } else {
+        message.warn(res.errorMessage);
+      }
+    });
+  };
 
-        /** 启用脚本窗口的弹窗 */
-        const [enableBotScriptModalVisible, handleEnableBotScriptModalVisible] = useState<boolean>(false);
-        const [enableScriptData, setEnableScriptData] = useState<API.EnableBotScriptDto>({
-          botId: '',
-          scriptIds: [],
-        });
+  /** 启用脚本窗口的弹窗 */
+  const [enableBotScriptModalVisible, handleEnableBotScriptModalVisible] = useState<boolean>(false);
+  const [enableScriptData, setEnableScriptData] = useState<API.EnableBotScriptDto>({
+    botId: '',
+    scriptIds: [],
+  });
 
-        const openEnableBotScriptModal = (id: string) => {
-          getEnableBotScript({ id: id }).then((res) => {
-            if (res.success) {
-              setEnableScriptData({botId:id,scriptIds:res.data});
-              handleEnableBotScriptModalVisible(true);
-            } else {
-              message.warn(res.errorMessage);
-            }
-          });
-        };
+  const openEnableBotScriptModal = (id: string) => {
+    getEnableBotScript({ id: id }).then((res) => {
+      if (res.success) {
+        setEnableScriptData({ botId: id, scriptIds: res.data });
+        handleEnableBotScriptModalVisible(true);
+      } else {
+        message.warn(res.errorMessage);
+      }
+    });
+  };
 
-        /** 启用低代码窗口的弹窗 */
-        const [enableBotNodeModalVisible, handleEnableBotNodeModalVisible] = useState<boolean>(false);
-        const [enableBotNodeData, setEnableBotNodeData] = useState<API.SetBotNodeDto>({
-          botId: undefined,
-          confIdList: [],
-        });
+  /** 启用低代码窗口的弹窗 */
+  const [enableBotNodeModalVisible, handleEnableBotNodeModalVisible] = useState<boolean>(false);
+  const [enableBotNodeData, setEnableBotNodeData] = useState<API.SetBotNodeDto>({
+    botId: undefined,
+    confIdList: [],
+  });
 
-        const openEnableBotNodeModal = (id: string) => {
-          getBotNode({ id: id }).then((res) => {
-            if (res.success) {
-              setEnableBotNodeData({botId:id,confIdList:res.data});
-              handleEnableBotNodeModalVisible(true);
-            } else {
-              message.warn(res.errorMessage);
-            }
-          });
-        };
-        
+  const openEnableBotNodeModal = (id: string) => {
+    getBotNode({ id: id }).then((res) => {
+      if (res.success) {
+        setEnableBotNodeData({ botId: id, confIdList: res.data });
+        handleEnableBotNodeModalVisible(true);
+      } else {
+        message.warn(res.errorMessage);
+      }
+    });
+  };
+
 
   /** 国际化配置 */
 
-  const columns: ProColumns<API.DaBotInfo>[] = [
+  const columns: ProColumns<API.BotInfo>[] = [
     {
       title: 'bot账号',
       dataIndex: 'botNumber',
@@ -128,7 +126,6 @@ const platfromBot: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <Access accessible={access.hashPre('platformBot.update')}>
         <a
           key="id"
           onClick={() => {
@@ -136,57 +133,48 @@ const platfromBot: React.FC = () => {
           }}
         >
           编辑信息
+        </a>,
+        <a
+          key="id"
+          onClick={() => {
+            openEditBotConfModal(record.id);
+          }}
+        >
+          编辑配置
+        </a>,
+        <a
+          key="id"
+          onClick={() => {
+            openEnableBotScriptModal(record.id);
+          }}
+        >
+          启用脚本
+        </a>,
+        <a
+          key="id"
+          onClick={() => {
+            openEnableBotNodeModal(record.id);
+          }}
+        >
+          启用流程
+        </a>,
+        <a
+          key="id"
+          onClick={() => {
+            removeBot([record.id]).then((res) => {
+              actionRef.current.reload();
+            });
+          }}
+        >
+          删除
         </a>
-      </Access>,
-      <Access accessible={access.hashPre('platformBot.update')}>
-              <a
-                key="id"
-                onClick={() => {
-                  openEditBotConfModal(record.id);
-                }}
-              >
-                编辑配置
-              </a>
-      </Access>,
-      <Access accessible={access.hashPre('platformBot.update')}>
-      <a
-        key="id"
-        onClick={() => {
-          openEnableBotScriptModal(record.id);
-        }}
-      >
-        启用脚本
-      </a>
-      </Access>,
-      <Access accessible={access.hashPre('platformBot.update')}>
-      <a
-        key="id"
-        onClick={() => {
-          openEnableBotNodeModal(record.id);
-        }}
-      >
-        启用流程
-      </a>
-      </Access>,
-        <Access accessible={access.hashPre('platformBot.remove')}>
-          <a
-            key="id"
-            onClick={() => {
-              removeBot([record.id]).then((res) => {
-                actionRef.current.reload();
-              });
-            }}
-          >
-            删除
-          </a>
-        </Access>,
       ],
     },
   ];
 
   return (
     <PageContainer>
-      <ProTable<API.DaBotInfo, API.RListDaBotInfo>
+      <ProTable<API.BotInfo, API.RListBotInfo>
         headerTitle="机器人列表"
         actionRef={actionRef}
         rowKey="id"
@@ -198,7 +186,6 @@ const platfromBot: React.FC = () => {
           showSizeChanger: false,
         }}
         toolBarRender={() => [
-          <Access accessible={access.hashPre('platformBot.add')}>
             <Button
               type="primary"
               icon={<PlusOutlined />}
@@ -208,7 +195,6 @@ const platfromBot: React.FC = () => {
             >
               添加bot
             </Button>
-          </Access>,
         ]}
         request={pageBot}
         columns={columns}
@@ -356,7 +342,7 @@ const platfromBot: React.FC = () => {
         okText={'确定'}
         cancelText={'关闭'}
       >
-        <EditBotConf botNumber={currentRow?.botNumber} visible={editBotConfModalVisible}/>
+        <EditBotConf botNumber={currentRow?.botNumber} visible={editBotConfModalVisible} />
       </Modal>
       <ModalForm
         modalProps={{
