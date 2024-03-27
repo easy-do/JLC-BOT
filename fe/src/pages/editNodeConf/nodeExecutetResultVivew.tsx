@@ -6,16 +6,11 @@ function NodeExecutetResultVivew(props: any) {
 
   const actionRef = useRef<ActionType>();
 
-  const [resultList, setResultList] = useState<API.NodeExecuteResult[]>([]);
 
-  // useEffect(() => {
-  //   setResultList(props.resultList);
-  // }, [props.resultList]);
-
-  const columns: ProColumns<API.NodeExecuteResult>[] = [
+  const columns: ProColumns<API.CmpStepResult>[] = [
     {
-      title: '节点编号',
-      dataIndex: 'nodeCode',
+      title: '节点ID',
+      dataIndex: 'nodeId',
     },
     {
       title: '节点名称',
@@ -23,27 +18,30 @@ function NodeExecutetResultVivew(props: any) {
     },
     {
       title: '状态',
-      dataIndex: 'status',
+      dataIndex: 'success',
       valueEnum: {
-        0: { text: '失败', status: 'Error' },
-        1: { text: '成功', status: 'Success' },
-        2: { text: '异常', status: 'Error' }
+        false: { text: '失败', status: 'Error' },
+        true: { text: '成功', status: 'Success' }
       }
     },
     {
-      title: '全局参数',
-      dataIndex: 'paramsJson',
-      ellipsis: true,
-      renderText(text, record, index, action) {
-          return record.paramsJson ? JSON.stringify(record.paramsJson) : '';
-      },
+      title: '耗时(ms)',
+      dataIndex: 'timeSpent',
     },
     {
-      title: '执行结果',
-      dataIndex: 'executeResult',
+      title: '开始时间',
+      dataIndex: 'startTime',
+    },
+    {
+      title: '结束时间',
+      dataIndex: 'endTime',
+    },
+    {
+      title: '上下文变化',
+      dataIndex: 'param',
       ellipsis: true,
       renderText(text, record, index, action) {
-          return record.executeResult ? JSON.stringify(record.executeResult) : '';
+          return record.param ? JSON.stringify(record.param) : '';
       },
     },
     {
@@ -66,7 +64,7 @@ function NodeExecutetResultVivew(props: any) {
           }}
           width={"50%"}
         >
-        <ProTable<API.NodeExecuteResult, API.NodeExecuteResult>
+        <ProTable<API.CmpStepResult, API.CmpStepResult>
         toolBarRender={false}
         actionRef={actionRef}
         rowKey="nodeId"

@@ -1,13 +1,8 @@
 package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
-import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import io.swagger.v3.oas.annotations.Operation;
-import jakarta.servlet.ServletOutputStream;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,22 +16,15 @@ import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.dto.DebugBotNodeDto;
 import plus.easydo.bot.dto.SetBotNodeDto;
 import plus.easydo.bot.entity.LowCodeNodeConf;
-import plus.easydo.bot.exception.BaseException;
-import plus.easydo.bot.lowcode.model.NodeExecuteResult;
+import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.qo.PageQo;
 import plus.easydo.bot.service.LowCodeService;
-import plus.easydo.bot.util.ResponseUtil;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.charset.Charset;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * @author laoyu
@@ -200,14 +188,14 @@ public class LowCodeController {
      * 调试节点配置
      *
      * @param debugBotNodeDto debugBotNodeDto
-     * @return vo.plus.easydo.lowcode.bot.R<java.lang.Object>
+     * @return plus.easydo.bot.vo.R<java.util.List<plus.easydo.bot.lowcode.model.CmpStepResult>>
      * @author laoyu
-     * @date 2024-03-06
+     * @date 2024-03-27
      */
     @SaCheckLogin
     @Operation(summary = "调试节点配置")
     @PostMapping("/debugNodeConf")
-    public R<List<NodeExecuteResult>> debugNodeConf(@RequestBody DebugBotNodeDto debugBotNodeDto) {
+    public R<List<CmpStepResult>> debugNodeConf(@RequestBody DebugBotNodeDto debugBotNodeDto) {
         return DataResult.ok(lowCodeService.debugNodeConf(debugBotNodeDto));
     }
 

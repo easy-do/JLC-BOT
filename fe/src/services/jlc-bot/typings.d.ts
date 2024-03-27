@@ -122,6 +122,19 @@ declare namespace API {
     flag?: string;
   };
 
+  type CmpStepResult = {
+    nodeId?: string;
+    nodeName?: string;
+    tag?: string;
+    startTime?: string;
+    endTime?: string;
+    timeSpent?: number;
+    success?: boolean;
+    message?: string;
+    param?: { raw?: Record<string, any>; config?: JSONConfig; empty?: boolean };
+    rollbackTimeSpent?: number;
+  };
+
   type copyNodeConfParams = {
     id: number;
   };
@@ -141,12 +154,6 @@ declare namespace API {
   type EnableBotScriptDto = {
     botId?: number;
     scriptIds?: number[];
-  };
-
-  type ExecuteResult = {
-    success?: boolean;
-    message?: string;
-    data?: Record<string, any>;
   };
 
   type getBotConfParams = {
@@ -225,18 +232,6 @@ declare namespace API {
     formData?: string;
     remark?: string;
     deleteFlag?: boolean;
-  };
-
-  type NodeExecuteResult = {
-    nodeId?: string;
-    nodeName?: string;
-    nodeCode?: string;
-    data?: Record<string, any>;
-    message?: string;
-    status?: number;
-    executeTime?: number;
-    paramsJson?: { raw?: Record<string, any>; config?: JSONConfig; empty?: boolean };
-    executeResult?: ExecuteResult;
   };
 
   type NodePAVo = {
@@ -376,6 +371,15 @@ declare namespace API {
     total?: number;
   };
 
+  type RListCmpStepResult = {
+    code?: number;
+    data?: CmpStepResult[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
   type RListLong = {
     code?: number;
     data?: number[];
@@ -397,15 +401,6 @@ declare namespace API {
   type RListLowCodeSysNode = {
     code?: number;
     data?: LowCodeSysNode[];
-    message?: string;
-    errorMessage?: string;
-    success?: boolean;
-    total?: number;
-  };
-
-  type RListNodeExecuteResult = {
-    code?: number;
-    data?: NodeExecuteResult[];
     message?: string;
     errorMessage?: string;
     success?: boolean;

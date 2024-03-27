@@ -10,6 +10,6 @@ public class LowCodeConstants {
     private LowCodeConstants() {
     }
 
-    public static final String START_NODE = "start_node";
-    public static final String END_NODE = "end_node";
+    public static final String START_NODE = "startNode";
+    public static final String END_NODE = "endNode";
 }

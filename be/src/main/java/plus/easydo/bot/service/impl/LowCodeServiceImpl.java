@@ -1,8 +1,14 @@
 package plus.easydo.bot.service.impl;
 
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.LocalDateTimeUtil;
+import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.paginate.Page;
+import com.yomahub.liteflow.flow.LiteflowResponse;
+import com.yomahub.liteflow.flow.element.Node;
+import com.yomahub.liteflow.flow.entity.CmpStep;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -10,6 +16,9 @@ import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.entity.LowCodeBotNode;
 import plus.easydo.bot.lowcode.exec.NodeExecuteServer;
+import plus.easydo.bot.lowcode.model.CmpStepResult;
+import plus.easydo.bot.lowcode.node.JLCLiteFlowContext;
+import plus.easydo.bot.lowcode.node.LiteFlowNodeExecuteServer;
 import plus.easydo.bot.manager.LowCodeBotNodeManager;
 import plus.easydo.bot.manager.LowCodeNodeConfManager;
 import plus.easydo.bot.dto.BotNodeDto;
@@ -20,9 +29,11 @@ import plus.easydo.bot.service.LowCodeService;
 import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.qo.PageQo;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Queue;
 import java.util.stream.Collectors;
 
 /**
@@ -38,6 +49,8 @@ public class LowCodeServiceImpl implements LowCodeService {
     private final LowCodeNodeConfManager lowCodeNodeConfManager;
 
     private final NodeExecuteServer nodeExecuteServer;
+
+    private final LiteFlowNodeExecuteServer liteFlowNodeExecuteServer;
 
     private final LowCodeBotNodeManager lowCodeBotNodeManager;
 
@@ -104,12 +117,35 @@ public class LowCodeServiceImpl implements LowCodeService {
     }
 
     @Override
-    public List<NodeExecuteResult> debugNodeConf(DebugBotNodeDto debugBotNodeDto) {
+    public List<NodeExecuteResult> debugNodeConfOld(DebugBotNodeDto debugBotNodeDto) {
         LowCodeNodeConf conf = lowCodeNodeConfManager.getById(debugBotNodeDto.getId());
         if(Objects.isNull(conf)){
             throw new BaseException("配置不存在");
         }
         return nodeExecuteServer.execute(conf,debugBotNodeDto.getParams());
+    }
+
+    @Override
+    public List<CmpStepResult> debugNodeConf(DebugBotNodeDto debugBotNodeDto) {
+        LowCodeNodeConf conf = lowCodeNodeConfManager.getById(debugBotNodeDto.getId());
+        if(Objects.isNull(conf)){
+            throw new BaseException("配置不存在");
+        }
+        LiteflowResponse res = liteFlowNodeExecuteServer.execute(conf,debugBotNodeDto.getParams());
+        Queue<CmpStep> cmpSteps = res.getExecuteStepQueue();
+        JLCLiteFlowContext context = res.getContextBean(JLCLiteFlowContext.class);
+        Map<String, JSONObject> paramCache = context.getNodeParamCache();
+        List<CmpStepResult> resultList = new ArrayList<>();
+        for (CmpStep cmpStep: cmpSteps){
+            CmpStepResult cmpStepResult = BeanUtil.copyProperties(cmpStep, CmpStepResult.class);
+            Node node = cmpStep.getRefNode();
+            cmpStepResult.setParam(paramCache.get(node.getTag()));
+            if(!cmpStep.isSuccess()){
+                cmpStepResult.setMessage(ExceptionUtil.getMessage(cmpStep.getException()));
+            }
+            resultList.add(cmpStepResult);
+        }
+        return resultList;
     }
 
     @Override

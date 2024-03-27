@@ -26,10 +26,10 @@ public class JLCBotApplication {
                 , "http://localhost:8888"
         );
         String os = System.getProperty("os.name");
-        if (os.toLowerCase().startsWith("win")) {
-            //如果是Windows系统
-            RuntimeUtil.exec("cmd /c start " + "http://localhost:8888");
-        }
+//        if (os.toLowerCase().startsWith("win")) {
+//            //如果是Windows系统
+//            RuntimeUtil.exec("cmd /c start " + "http://localhost:8888");
+//        }
     }
 
 }

@@ -7,6 +7,8 @@ server:
     mime-types: application/javascript,application/json,application/xml,text/html,text/xml,text/plain,text/css,image/*,text/javascript
 
 spring:
+  application:
+    name: jlc-bot
   servlet:
     multipart:
       #限制报文大小，post请求大小限制,undertow里的设置不会生效
@@ -115,3 +117,31 @@ management:
       exposure:
         include:
           - health
+
+liteflow:
+  print-execution-log: false #关闭打印日志
+  rule-source-ext-data-map:
+    url: jdbc:mysql://${MYSQL_HOST:dnfmysql}:${MYSQL_PORT:3306}/jlc_bot?useUnicode=true&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&useSSL=false&serverTimezone=GMT%2B8
+    driverClassName: com.mysql.cj.jdbc.Driver
+    username: ${MYSQL_USER:root}
+    password: ${MYSQL_PASS:88888888}
+    applicationName: ${spring.application.name}
+    #以下是chain表的配置，这个一定得有
+    chainTableName: liteflow_chain
+    chainApplicationNameField: application_name
+    chainNameField: chain_name
+    elDataField: el_data
+    chainEnableField: enable
+    #以下是script表的配置，如果你没使用到脚本，下面可以不配置
+    scriptTableName: liteflow_script
+    scriptApplicationNameField: application_name
+    scriptIdField: script_id
+    scriptNameField: script_name
+    scriptDataField: script_data
+    scriptTypeField: script_type
+    scriptLanguageField: script_language
+    scriptEnableField: enable
+    #以下是轮询机制的配置
+    pollingEnabled: false
+    pollingStartSeconds: 0
+    pollingIntervalSeconds: 5

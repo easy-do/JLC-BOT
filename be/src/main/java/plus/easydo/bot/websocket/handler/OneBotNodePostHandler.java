@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.LowCodeNodeConf;
-import plus.easydo.bot.lowcode.exec.NodeExecuteServer;
+import plus.easydo.bot.lowcode.node.LiteFlowNodeExecuteServer;
 import plus.easydo.bot.manager.CacheManager;
 
 import java.util.List;
@@ -25,7 +25,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class OneBotNodePostHandler {
 
-    private final NodeExecuteServer nodeExecuteServer;
+
+    private final LiteFlowNodeExecuteServer liteFlowNodeExecuteServer;
     public void handler(String evenType, JSONObject postData){
         //通过机器人编码找到机器人id
         String botNumber = postData.getStr(OneBotConstants.SELF_ID);
@@ -38,7 +39,7 @@ public class OneBotNodePostHandler {
                 nodeIdList.forEach(nodeConfId->{
                     LowCodeNodeConf nodeConf = CacheManager.NODE_CONF_CACHE.get(nodeConfId);
                     if(Objects.nonNull(nodeConf) && (CharSequenceUtil.equals(evenType,nodeConf.getEventType()) || CharSequenceUtil.equals("all",nodeConf.getEventType()))){
-                        nodeExecuteServer.execute(nodeConf,postData);
+                        liteFlowNodeExecuteServer.execute(nodeConf,postData);
                     }
                 });
             }
