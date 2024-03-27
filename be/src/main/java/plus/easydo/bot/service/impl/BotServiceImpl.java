@@ -188,6 +188,7 @@ public class BotServiceImpl implements BotService {
         if(Objects.isNull(enableBotScriptDto.getScriptIds()) || enableBotScriptDto.getScriptIds().isEmpty()){
             return botScriptBotManager.clearBotScript(botInfo.getBotNumber());
         }
+        botScriptBotManager.clearBotScript(botInfo.getBotNumber());
         res = botScriptBotManager.saveBotScript(botInfo.getBotNumber(), enableBotScriptDto.getScriptIds());
         if(res){
             botScriptService.initBotEventScriptCache();

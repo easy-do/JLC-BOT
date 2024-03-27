@@ -370,6 +370,7 @@ const platfromBot: React.FC = () => {
           name="scriptIds"
           label="启用脚本"
           mode="multiple"
+          debounceTime={10000}
           fieldProps={{
             suffixIcon: null,
             showSearch: true,
@@ -411,6 +412,7 @@ const platfromBot: React.FC = () => {
           name="confIdList"
           label="流程"
           mode="multiple"
+          debounceTime={10000}
           fieldProps={{
             suffixIcon: null,
             showSearch: true,

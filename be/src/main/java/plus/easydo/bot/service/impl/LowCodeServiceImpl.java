@@ -156,13 +156,10 @@ public class LowCodeServiceImpl implements LowCodeService {
         }
         List<Long> confIdList = setBotNodeDto.getConfIdList();
         if(Objects.isNull(confIdList) || confIdList.isEmpty()){
-            boolean res = lowCodeBotNodeManager.clearBotConf(botId);
-            if(res){
-                initLowCodeNodeCache();
-            }
-            return res;
+            return lowCodeBotNodeManager.clearBotConf(botId);
         }
-        boolean res =  lowCodeBotNodeManager.saveBotConf(botId,confIdList);
+        lowCodeBotNodeManager.clearBotConf(botId);
+        boolean res = lowCodeBotNodeManager.saveBotConf(botId, confIdList);
         if(res){
             initLowCodeNodeCache();
         }
