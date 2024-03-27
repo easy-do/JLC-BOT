@@ -18,8 +18,8 @@ import java.util.Objects;
  * @date 2024-03-27
  */
 @Slf4j
-@LiteflowComponent(id="messageTypeIfNode",name="消息类型判断节点")
-public class MessageIfNode extends NodeIfComponent {
+@LiteflowComponent(id="messageTypeIfNode",name="消息类型判断")
+public class MessageTypeIfNode extends NodeIfComponent {
 
     @Override
     public boolean processIf() {

@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2024-03-27
  */
 @Slf4j
-@LiteflowComponent(id="startNode",name="开始节点")
+@LiteflowComponent(id="startNode",name="开始")
 public class StartNode extends NodeComponent {
 
     @Override

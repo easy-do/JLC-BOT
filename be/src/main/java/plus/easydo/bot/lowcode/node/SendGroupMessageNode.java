@@ -18,7 +18,7 @@ import java.util.Objects;
  * @date 2024-03-27
  */
 @Slf4j
-@LiteflowComponent(id = "sendGroupMessageNode", name = "发送群消息点")
+@LiteflowComponent(id = "sendGroupMessageNode", name = "发送群消息")
 public class SendGroupMessageNode extends NodeComponent {
 
     @Override

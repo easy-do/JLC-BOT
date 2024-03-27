@@ -17,7 +17,7 @@ import java.util.Objects;
  * @date 2024-03-27
  */
 @Slf4j
-@LiteflowComponent(id="botConfNode",name="机器人配置节点")
+@LiteflowComponent(id="botConfNode",name="机器人配置")
 public class BotConfNode extends NodeComponent {
 
     @Override

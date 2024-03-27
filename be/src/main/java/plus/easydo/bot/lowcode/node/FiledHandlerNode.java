@@ -18,7 +18,7 @@ import java.util.Objects;
  * @Description 字段处理节点
  */
 @Slf4j
-@LiteflowComponent(id="filedHandlerNode",name="字段处理节点")
+@LiteflowComponent(id="filedHandlerNode",name="字段处理")
 public class FiledHandlerNode extends NodeComponent {
     @Override
     public void process() throws Exception {

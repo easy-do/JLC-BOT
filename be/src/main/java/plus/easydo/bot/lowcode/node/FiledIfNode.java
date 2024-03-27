@@ -19,7 +19,7 @@ import java.util.Objects;
  * @date 2024-03-27
  */
 @Slf4j
-@LiteflowComponent(id = "filedIfNode", name = "字段判断节点")
+@LiteflowComponent(id = "filedIfNode", name = "字段判断")
 public class FiledIfNode extends NodeIfComponent {
 
     private static final String TARGET_VALUE_NOT_CONFIG = "要判断的内容未配置";
