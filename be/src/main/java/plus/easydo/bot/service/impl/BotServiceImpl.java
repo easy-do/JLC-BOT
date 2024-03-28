@@ -84,6 +84,8 @@ public class BotServiceImpl implements BotService {
     public void initBotCache() {
         Map<String, BotInfo> map = botInfoManager.list().stream().collect(Collectors.toMap(BotInfo::getBotNumber, (c) -> c));
         CacheManager.BOT_CACHE.putAll(map);
+        Map<String, BotInfo> secretMap = botInfoManager.list().stream().collect(Collectors.toMap(BotInfo::getBotSecret, (c) -> c));
+        CacheManager.SECRET_BOT_CACHE.putAll(secretMap);
     }
 
     @PostConstruct

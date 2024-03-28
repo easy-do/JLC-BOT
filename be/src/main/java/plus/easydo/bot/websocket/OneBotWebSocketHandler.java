@@ -105,7 +105,7 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
         log.debug("接收到客户端消息:" + message.getPayload());
         JSONObject messageJson = JSONUtil.parseObj(message.getPayload());
         if(Objects.nonNull(messageJson.getObj(OneBotConstants.POST_TYPE))){
-            CompletableFuture.runAsync(()->getBotPostLogServiceManager().save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).message(messageJson.toJSONString(0)).build()));
+            CompletableFuture.runAsync(()->getBotPostLogServiceManager().save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).platform("qq").message(messageJson.toJSONString(0)).build()));
             getOneBotService().handlerPost(messageJson);
         }
     }

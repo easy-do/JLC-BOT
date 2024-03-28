@@ -15,7 +15,6 @@ import org.springframework.stereotype.Service;
 import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.entity.LowCodeBotNode;
-import plus.easydo.bot.lowcode.exec.NodeExecuteServer;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.lowcode.node.JLCLiteFlowContext;
 import plus.easydo.bot.lowcode.node.LiteFlowNodeExecuteServer;
@@ -23,7 +22,6 @@ import plus.easydo.bot.manager.LowCodeBotNodeManager;
 import plus.easydo.bot.manager.LowCodeNodeConfManager;
 import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.dto.DebugBotNodeDto;
-import plus.easydo.bot.lowcode.model.NodeExecuteResult;
 import plus.easydo.bot.dto.SetBotNodeDto;
 import plus.easydo.bot.service.LowCodeService;
 import plus.easydo.bot.manager.CacheManager;
@@ -47,8 +45,6 @@ import java.util.stream.Collectors;
 public class LowCodeServiceImpl implements LowCodeService {
 
     private final LowCodeNodeConfManager lowCodeNodeConfManager;
-
-    private final NodeExecuteServer nodeExecuteServer;
 
     private final LiteFlowNodeExecuteServer liteFlowNodeExecuteServer;
 
@@ -114,15 +110,6 @@ public class LowCodeServiceImpl implements LowCodeService {
             initLowCodeNodeCache();
         }
         return res;
-    }
-
-    @Override
-    public List<NodeExecuteResult> debugNodeConfOld(DebugBotNodeDto debugBotNodeDto) {
-        LowCodeNodeConf conf = lowCodeNodeConfManager.getById(debugBotNodeDto.getId());
-        if(Objects.isNull(conf)){
-            throw new BaseException("配置不存在");
-        }
-        return nodeExecuteServer.execute(conf,debugBotNodeDto.getParams());
     }
 
     @Override

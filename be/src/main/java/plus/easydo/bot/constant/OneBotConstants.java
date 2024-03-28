@@ -21,15 +21,12 @@ public class OneBotConstants {
     public static final String TIME = "time";
     public static final String SELF_ID = "self_id";
     public static final String MESSAGE_ID = "message_id";
-    public static final String SENDER_ID = "sender_id";
-    public static final String TARGET_ID = "target_id";
     public static final String STATUS = "status";
     public static final String REQUEST_TYPE = "request_type";
     public static final String META_EVENT_TYPE = "meta_event_type";
     public static final String HEARTBEAT = "heartbeat";
     public static final String NOTICE_TYPE = "notice_type";
     public static final String GET_LOGIN_INFO = "get_login_info";
-    public static final String SHA1_PRE = "sha1=";
     public static final String HEADER_SELF_ID = "x-self-id";
     public static final String HEADER_AUTHORIZATION = "authorization";
     public static final String HEADER_AUTHORIZATION_VALUE_PRE = "Bearer ";

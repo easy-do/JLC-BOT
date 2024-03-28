@@ -42,4 +42,10 @@ public class BotPostLog {
     @Column(value = "message")
     private String message;
 
+    /**
+     * 平台
+     */
+    @Column(value = "platform")
+    private String platform;
+
 }

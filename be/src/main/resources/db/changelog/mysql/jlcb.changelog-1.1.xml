@@ -493,5 +493,10 @@
 ]', 0);
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240328-2" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            ALTER TABLE bot_post_log ADD platfrom varchar(12) NULL;
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>

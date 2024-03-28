@@ -28,6 +28,8 @@ public class CacheManager {
     public static final Map<String, SystemConf> GAME_CONF_MAP = new HashMap<>();
     /** 机器人缓存 */
     public static final Map<String, BotInfo> BOT_CACHE = new HashMap<>();
+    /** 密钥与机器人缓存 */
+    public static final Map<String, BotInfo> SECRET_BOT_CACHE = new HashMap<>();
     /** 机器人配置缓存 */
     public static final Map<String, Map<String,String>> BOT_CONF_CACHE = new HashMap<>();
     /** 事件与脚本对应关系 */

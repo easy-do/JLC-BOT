@@ -5,7 +5,6 @@ import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.dto.DebugBotNodeDto;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
-import plus.easydo.bot.lowcode.model.NodeExecuteResult;
 import plus.easydo.bot.dto.SetBotNodeDto;
 import plus.easydo.bot.qo.PageQo;
 
@@ -31,7 +30,6 @@ public interface LowCodeService {
 
     boolean removeNodeConf(Long id);
 
-    List<NodeExecuteResult> debugNodeConfOld(DebugBotNodeDto debugBotNodeDto);
     List<CmpStepResult> debugNodeConf(DebugBotNodeDto debugBotNodeDto);
 
     void initLowCodeNodeCache();

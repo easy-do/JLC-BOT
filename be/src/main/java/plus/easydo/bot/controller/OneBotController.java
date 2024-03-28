@@ -1,17 +1,30 @@
 package plus.easydo.bot.controller;
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.json.JSONObject;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import plus.easydo.bot.constant.OneBotConstants;
+import plus.easydo.bot.entity.BotInfo;
+import plus.easydo.bot.entity.BotPostLog;
+import plus.easydo.bot.manager.BotPostLogServiceManager;
+import plus.easydo.bot.manager.CacheManager;
+import plus.easydo.bot.vo.DataResult;
+import plus.easydo.bot.vo.R;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.Iterator;
+import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author laoyu
@@ -25,6 +38,8 @@ import java.util.Iterator;
 @RequiredArgsConstructor
 public class OneBotController {
 
+
+    private final BotPostLogServiceManager botPostLogServiceManager;
 
 //    @PostMapping("/v11/post")
     public void post(HttpServletRequest request) throws IOException {
@@ -55,6 +70,31 @@ public class OneBotController {
         byte[] bodyByte = opt.toByteArray();
         IoUtil.close(opt);
         return bodyByte;
+    }
+
+
+    @RequestMapping("/weChatFerryPost")
+    public R<Boolean> post(@RequestBody JSONObject messageJson, @RequestParam("token")String token) throws IOException {
+        BotInfo botInfo = CacheManager.SECRET_BOT_CACHE.get(token);
+        if(Objects.nonNull(botInfo)){
+            weChatFerryAdApter(messageJson,botInfo);
+            CompletableFuture.runAsync(()->botPostLogServiceManager.save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).platform("wx").message(messageJson.toJSONString(0)).build()));
+            return DataResult.ok();
+        }
+        return DataResult.fail("鉴权失败");
+    }
+
+    private void weChatFerryAdApter(JSONObject messageJson, BotInfo botInfo) {
+        messageJson.remove("xml");
+        String messageId = messageJson.getStr("id");
+        messageJson.set(OneBotConstants.MESSAGE_ID,messageId);
+        messageJson.set(OneBotConstants.SELF_ID,botInfo.getBotNumber());
+        Boolean isGroup = messageJson.getBool("is_group");
+        if(isGroup){
+            String groupId = messageJson.getStr("roomid");
+            messageJson.set(OneBotConstants.GROUP_ID,groupId);
+        }
+
     }
 
 }
