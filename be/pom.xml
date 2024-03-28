@@ -55,7 +55,7 @@
         <dependency>
             <groupId>cn.hutool</groupId>
             <artifactId>hutool-all</artifactId>
-            <version>5.8.24</version>
+            <version>5.8.25</version>
         </dependency>
 
         <dependency>
@@ -130,15 +130,46 @@
             <artifactId>liteflow-spring-boot-starter</artifactId>
             <version>2.11.4</version>
         </dependency>
+
         <dependency>
             <groupId>com.yomahub</groupId>
             <artifactId>liteflow-rule-sql</artifactId>
             <version>2.11.4</version>
         </dependency>
+
         <dependency>
             <groupId>com.yomahub</groupId>
             <artifactId>liteflow-el-builder</artifactId>
             <version>2.11.4.2</version>
+        </dependency>
+
+        <!-- 引入WeChatFerry-->
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.22.2</version>
+        </dependency>
+        <dependency>
+            <groupId>net.java.dev.jna</groupId>
+            <artifactId>jna</artifactId>
+            <version>5.6.0</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>5.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>5.8.1</version>
+        </dependency>
+        <dependency>
+            <groupId>io.sisu.nng</groupId>
+            <artifactId>nng</artifactId>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/src/main/resources/lib/nng-java-1.4.0-SNAPSHOT.jar</systemPath>
+            <version>1.0.4-SNAPSHOT</version>
         </dependency>
 
     </dependencies>
@@ -150,6 +181,7 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
+                    <includeSystemScope>true</includeSystemScope>
                     <excludes>
                         <exclude>
                             <groupId>org.projectlombok</groupId>

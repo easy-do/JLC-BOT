@@ -5,6 +5,7 @@ import plus.easydo.bot.entity.BotEventScript;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.SystemConf;
 import plus.easydo.bot.entity.LowCodeNodeConf;
+import plus.easydo.bot.wcf.Client;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,6 +43,8 @@ public class CacheManager {
     public static final Map<Long, LowCodeNodeConf> NODE_CONF_CACHE = new HashMap<>();
     /** 所有机器人与节点关联缓存 */
     public static final Map<Long, List<Long>> BOT_NODE_CONF_CACHE = new HashMap<>();
+
+    public static final List<Client> CLIENT_CACHE = new ArrayList<>();
 
     private CacheManager() {
     }

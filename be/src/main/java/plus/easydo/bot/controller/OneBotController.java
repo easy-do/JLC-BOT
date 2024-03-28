@@ -73,19 +73,18 @@ public class OneBotController {
     }
 
 
-    @RequestMapping("/weChatFerryPost")
+    @RequestMapping("/wcfPost")
     public R<Boolean> post(@RequestBody JSONObject messageJson, @RequestParam("token")String token) throws IOException {
         BotInfo botInfo = CacheManager.SECRET_BOT_CACHE.get(token);
         if(Objects.nonNull(botInfo)){
-            weChatFerryAdApter(messageJson,botInfo);
+            wcfAdApter(messageJson,botInfo);
             CompletableFuture.runAsync(()->botPostLogServiceManager.save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).platform("wx").message(messageJson.toJSONString(0)).build()));
             return DataResult.ok();
         }
         return DataResult.fail("鉴权失败");
     }
 
-    private void weChatFerryAdApter(JSONObject messageJson, BotInfo botInfo) {
-        messageJson.remove("xml");
+    private void wcfAdApter(JSONObject messageJson, BotInfo botInfo) {
         String messageId = messageJson.getStr("id");
         messageJson.set(OneBotConstants.MESSAGE_ID,messageId);
         messageJson.set(OneBotConstants.SELF_ID,botInfo.getBotNumber());
