@@ -48,6 +48,7 @@ public class FiledHandlerNode extends NodeComponent {
                                     log.warn("字段处理节点未完整执行,返回false,原因:要替换字段为空或要替换的内容未配置");
                                     throw new BaseException("要替换字段为空或要替换的内容未配置");
                                 }
+                                break;
                             case "subBefore":
                                 if (Objects.nonNull(targetValue)) {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
@@ -56,6 +57,7 @@ public class FiledHandlerNode extends NodeComponent {
                                     log.debug("字段处理节点未完整执行,返回false,原因:要处理字段为空或分隔符未配置");
                                     throw new BaseException("要处理字段为空或分隔符未配置");
                                 }
+                                break;
                             case "subAfter":
                                 if (Objects.nonNull(targetValue)) {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
@@ -64,6 +66,7 @@ public class FiledHandlerNode extends NodeComponent {
                                     log.warn("字段处理节点未完整执行,返回false,原因:要处理字段为空或分隔符未配置");
                                     throw new BaseException("要处理字段为空或分隔符未配置");
                                 }
+                                break;
                             case "split":
                                 if (Objects.nonNull(targetValue)) {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
@@ -72,6 +75,7 @@ public class FiledHandlerNode extends NodeComponent {
                                     log.warn("字段处理节点未完整执行,返回false,原因:要处理字段为空或分隔符未配置");
                                     throw new BaseException("要处理字段为空或分隔符未配置");
                                 }
+                                break;
                             case "appendBefore":
                                 if (Objects.nonNull(targetValue)) {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
@@ -80,6 +84,7 @@ public class FiledHandlerNode extends NodeComponent {
                                     log.warn("字段处理节点未完整执行,返回false,原因:要处理字段为空或分隔符未配置");
                                     throw new BaseException("要处理字段为空或分隔符未配置");
                                 }
+                                break;
                             case "appendAfter":
                                 if (Objects.nonNull(targetValue)) {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
@@ -88,8 +93,10 @@ public class FiledHandlerNode extends NodeComponent {
                                     log.warn("字段处理节点未完整执行,返回false,原因:要处理字段为空或分隔符未配置");
                                     throw new BaseException("要处理字段为空或分隔符未配置");
                                 }
+                                break;
                             case "strLength":
                                 paramJson.set(saveFiled, String.valueOf(value).length());
+                                break;
                             case "listLength":
                                 if (Objects.nonNull(targetValue)) {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
@@ -98,8 +105,10 @@ public class FiledHandlerNode extends NodeComponent {
                                     log.warn("字段处理节点未完整执行,返回false,原因:要处理字段为空或分隔符未配置");
                                     throw new BaseException("要处理字段为空或分隔符未配置");
                                 }
+                                break;
                             case "toJson":
                                 paramJson.set(saveFiled, JSONUtil.parseObj(value));
+                                break;
                             default:
                                 throw new BaseException("没有匹配到类型[" + type + "]");
                         }
