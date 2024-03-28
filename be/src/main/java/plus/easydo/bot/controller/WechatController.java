@@ -5,6 +5,7 @@ import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -26,7 +27,7 @@ import java.util.Iterator;
 @RequiredArgsConstructor
 public class WechatController {
 
-    @PostMapping("/post")
+    @RequestMapping("/post")
     public void post(HttpServletRequest request, @RequestParam("token")String token) throws IOException {
 
         Enumeration<String> names = request.getHeaderNames();
