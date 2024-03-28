@@ -37,15 +37,15 @@ public class MessageTypeIfNode extends NodeIfComponent {
                     OneBotMessageParse messageParse = message.toBean(OneBotMessageParse.class);
                     return Objects.nonNull(messageParse) && CharSequenceUtil.equals(messageParse.getType(), type);
                 }else {
-                    log.warn("判断消息节点未完整执行,返回false,原因:消息字段不存在");
+                    log.warn("判断消息节点未完整执行,原因:消息字段不存在");
                     throw new BaseException("判断类型未设置");
                 }
             } else {
-                log.warn("判断消息节点未完整执行,返回false,原因:判断类型未设置");
+                log.warn("判断消息节点未完整执行,原因:判断类型未设置");
                 throw new BaseException("判断类型未设置");
             }
         } else {
-            log.warn("判断消息节点未完整执行,返回false,原因:参数或节点配置为空,param:{},conf:{}", paramJson, confJson);
+            log.warn("判断消息节点未完整执行,原因:参数或节点配置为空,param:{},conf:{}", paramJson, confJson);
             throw new BaseException("参数或节点配置为空");
         }
     }

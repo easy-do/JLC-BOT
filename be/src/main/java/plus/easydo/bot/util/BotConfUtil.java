@@ -41,6 +41,15 @@ public class BotConfUtil {
         return "";
     }
 
+    public static String getBotConfNull(String botNumber,String key){
+        Map<String, String> conf = CacheManager.BOT_CONF_CACHE.get(botNumber);
+        if(Objects.nonNull(conf)){
+            String value = conf.get(key);
+            return Objects.nonNull(value)?value:null;
+        }
+        return null;
+    }
+
     public static boolean saveBotConf(String botNumber,String key, String value){
         BotConf botConf = BotConf.builder().botNumber(botNumber).confKey(key).confValue(value).build();
         return getBotService().addBotConf(botConf);

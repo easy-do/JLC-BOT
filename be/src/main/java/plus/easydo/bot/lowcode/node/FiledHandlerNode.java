@@ -45,7 +45,7 @@ public class FiledHandlerNode extends NodeComponent {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
                                     paramJson.set(saveFiled, StrUtil.replace(String.valueOf(value), sourceValue, targetValue));
                                 } else {
-                                    log.warn("字段处理节点未完整执行,返回false,原因:要替换字段为空或要替换的内容未配置");
+                                    log.warn("字段处理节点未完整执行,原因:要替换字段为空或要替换的内容未配置");
                                     throw new BaseException("要替换字段为空或要替换的内容未配置");
                                 }
                                 break;
@@ -54,7 +54,7 @@ public class FiledHandlerNode extends NodeComponent {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
                                     paramJson.set(saveFiled, CharSequenceUtil.subBefore(String.valueOf(value), targetValue, false));
                                 } else {
-                                    log.debug("字段处理节点未完整执行,返回false,原因:要处理字段为空或分隔符未配置");
+                                    log.debug("字段处理节点未完整执行,原因:要处理字段为空或分隔符未配置");
                                     throw new BaseException("要处理字段为空或分隔符未配置");
                                 }
                                 break;
@@ -63,7 +63,7 @@ public class FiledHandlerNode extends NodeComponent {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
                                     paramJson.set(saveFiled, CharSequenceUtil.subAfter(String.valueOf(value), targetValue, false));
                                 } else {
-                                    log.warn("字段处理节点未完整执行,返回false,原因:要处理字段为空或分隔符未配置");
+                                    log.warn("字段处理节点未完整执行,原因:要处理字段为空或分隔符未配置");
                                     throw new BaseException("要处理字段为空或分隔符未配置");
                                 }
                                 break;
@@ -72,7 +72,7 @@ public class FiledHandlerNode extends NodeComponent {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
                                     paramJson.set(saveFiled, CharSequenceUtil.split(String.valueOf(value), targetValue));
                                 } else {
-                                    log.warn("字段处理节点未完整执行,返回false,原因:要处理字段为空或分隔符未配置");
+                                    log.warn("字段处理节点未完整执行,原因:要处理字段为空或分隔符未配置");
                                     throw new BaseException("要处理字段为空或分隔符未配置");
                                 }
                                 break;
@@ -81,7 +81,7 @@ public class FiledHandlerNode extends NodeComponent {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
                                     paramJson.set(saveFiled, targetValue + value);
                                 } else {
-                                    log.warn("字段处理节点未完整执行,返回false,原因:要处理字段为空或分隔符未配置");
+                                    log.warn("字段处理节点未完整执行,原因:要处理字段为空或分隔符未配置");
                                     throw new BaseException("要处理字段为空或分隔符未配置");
                                 }
                                 break;
@@ -90,7 +90,7 @@ public class FiledHandlerNode extends NodeComponent {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
                                     paramJson.set(saveFiled, value + targetValue);
                                 } else {
-                                    log.warn("字段处理节点未完整执行,返回false,原因:要处理字段为空或分隔符未配置");
+                                    log.warn("字段处理节点未完整执行,原因:要处理字段为空或分隔符未配置");
                                     throw new BaseException("要处理字段为空或分隔符未配置");
                                 }
                                 break;
@@ -102,7 +102,7 @@ public class FiledHandlerNode extends NodeComponent {
                                     targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
                                     paramJson.set(saveFiled, CharSequenceUtil.split(String.valueOf(value), targetValue).size());
                                 } else {
-                                    log.warn("字段处理节点未完整执行,返回false,原因:要处理字段为空或分隔符未配置");
+                                    log.warn("字段处理节点未完整执行,原因:要处理字段为空或分隔符未配置");
                                     throw new BaseException("要处理字段为空或分隔符未配置");
                                 }
                                 break;

@@ -84,10 +84,10 @@ public class FiledIfNode extends NodeIfComponent {
                             }
                         }
                         case "isNull" -> {
-                            return Objects.nonNull(value);
+                            return Objects.isNull(value);
                         }
                         case "isNotNull" -> {
-                            return Objects.isNull(value);
+                            return Objects.nonNull(value);
                         }
                         case "isBlank" -> {
                             return Objects.isNull(value) || CharSequenceUtil.isBlank(String.valueOf(value));
@@ -98,15 +98,15 @@ public class FiledIfNode extends NodeIfComponent {
                         default -> throw new BaseException("没有匹配到类型[" + type + "]");
                     }
                 } else {
-                    log.warn("判断节点未完整执行,返回false,原因:目标字段未定义");
+                    log.warn("判断节点未完整执行,原因:目标字段未定义");
                     throw new BaseException("目标字段未定义");
                 }
             } else {
-                log.warn("判断节点未完整执行,返回false,原因:判断类型未设置");
+                log.warn("判断节点未完整执行,原因:判断类型未设置");
                 throw new BaseException("判断类型未设置");
             }
         } else {
-            log.warn("判断节点未完整执行,返回false,原因:参数或节点配置为空,param:{},conf:{}", paramJson, confJson);
+            log.warn("判断节点未完整执行,原因:参数或节点配置为空,param:{},conf:{}", paramJson, confJson);
             throw new BaseException("参数或节点配置为空");
         }
         return false;
@@ -121,7 +121,7 @@ public class FiledIfNode extends NodeIfComponent {
     private boolean checkTargetValue(String targetValue) {
         boolean res = CharSequenceUtil.isNotBlank(targetValue);
         if (!res) {
-            log.warn("判断节点未完整执行,返回false,原因:要判断的内容未配置");
+            log.warn("判断节点未完整执行,原因:要判断的内容未配置");
         }
         return res;
     }
