@@ -1,16 +1,10 @@
 package plus.easydo.bot.wcf;
 
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.io.IoUtil;
 import io.sisu.nng.Socket;
 import io.sisu.nng.pair.Pair1Socket;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.system.ApplicationHome;
-import org.springframework.core.io.ClassPathResource;
+import plus.easydo.bot.util.FileUtils;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -49,51 +43,7 @@ public class Client {
 
     private void initClient(String host, int port, boolean debug) {
         try {
-
-            ApplicationHome ah = new ApplicationHome(getClass());
-            File homeFile = ah.getSource();
-            String parent = homeFile.getParentFile().getPath();
-            if (!FileUtil.exist(parent + "/win32-x86-64")) {
-                FileUtil.mkdir(parent + "/win32-x86-64");
-            }
-
-            ClassPathResource wcfPathResource = new ClassPathResource("/win32-x86-64/wcf.exe");
-            BufferedOutputStream wcfOp = FileUtil.getOutputStream(parent + "/win32-x86-64/wcf.exe");
-            InputStream wcfIp = wcfPathResource.getInputStream();
-            IoUtil.copy(wcfIp, wcfOp);
-            IoUtil.close(wcfIp);
-            IoUtil.close(wcfOp);
-
-            ClassPathResource nngPathResource = new ClassPathResource("/win32-x86-64/nng.dll");
-            BufferedOutputStream nngOp = FileUtil.getOutputStream(parent + "/win32-x86-64/nng.dll");
-            InputStream nngIp = nngPathResource.getInputStream();
-            IoUtil.copy(nngIp, nngOp);
-            IoUtil.close(nngIp);
-            IoUtil.close(nngOp);
-
-            ClassPathResource sdkPathResource = new ClassPathResource("/win32-x86-64/sdk.dll");
-            BufferedOutputStream sdkOp = FileUtil.getOutputStream(parent + "/win32-x86-64/sdk.dll");
-            InputStream sdkIp = sdkPathResource.getInputStream();
-            IoUtil.copy(sdkIp, sdkOp);
-            IoUtil.close(sdkIp);
-            IoUtil.close(sdkOp);
-
-            ClassPathResource spyPathResource = new ClassPathResource("/win32-x86-64/spy.dll");
-            BufferedOutputStream spyOp = FileUtil.getOutputStream(parent + "/win32-x86-64/spy.dll");
-            InputStream spyIp = spyPathResource.getInputStream();
-            IoUtil.copy(spyIp, spyOp);
-            IoUtil.close(spyIp);
-            IoUtil.close(spyOp);
-
-            ClassPathResource spyDebugPathResource = new ClassPathResource("/win32-x86-64/spy_debug.dll");
-            BufferedOutputStream spyDebugOp = FileUtil.getOutputStream(parent + "/win32-x86-64/spy_debug.dll");
-            InputStream spyDebugIp = spyDebugPathResource.getInputStream();
-            IoUtil.copy(spyDebugIp, spyDebugOp);
-            IoUtil.close(spyDebugIp);
-            IoUtil.close(spyDebugOp);
-
-
-            wcfPath = parent + "/win32-x86-64/wcf.exe";
+            wcfPath = FileUtils.copyWcf();
             String[] cmd = new String[4];
             cmd[0] = wcfPath;
             cmd[1] = "start";

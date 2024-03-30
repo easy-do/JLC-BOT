@@ -104,6 +104,18 @@ public class OneBotApiUtils {
 
     }
 
+    public static void sendGroupFile(String botNumber, String filePath, String groupId) {
+        BotInfo bot = getBotInfo(botNumber);
+        String invokeType = bot.getInvokeType();
+        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WCF_HTTP.getType())){
+//            OneBotWcfHttpUtils.sendMessage(botNumber,groupId, message);
+        }
+        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WCF_CLIENT.getType())){
+            OneBotWcfClientUtils.sendGroupFile(botNumber, filePath, groupId);
+        }
+
+    }
+
     /**
      * 撤回消息
      *

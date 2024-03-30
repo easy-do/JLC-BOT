@@ -75,4 +75,9 @@ public class OneBotWcfClientUtils {
         Client client = getClient(botNumber);
         client.revokeMsg(Integer.parseInt(messageId));
     }
+
+    public static void sendGroupFile(String botNumber, String path, String receiver) {
+        Client client = getClient(botNumber);
+        client.sendFile(path,receiver);
+    }
 }
