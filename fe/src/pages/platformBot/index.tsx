@@ -6,7 +6,7 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
-import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import { ModalForm, ProFormItem, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { enableBotScript, getEnableBotScript, infoBot, pageBot, removeBot, updateBot } from '@/services/jlc-bot/botController';
 import { addBot } from '@/services/jlc-bot/botController';
 import Modal from 'antd/lib/modal/Modal';
@@ -47,6 +47,8 @@ const platfromBot: React.FC = () => {
   const openEditModal = (id: string) => {
     infoBot({ id: id }).then((res) => {
       if (res.success) {
+        const data = res.data;
+        data.platform1 = data.platform;
         setCurrentRow(res.data);
         handleEditModalVisible(true);
       } else {
@@ -230,6 +232,9 @@ const platfromBot: React.FC = () => {
           destroyOnClose: true,
         }}
         onFinish={async (value) => {
+          if (value.platform == 'other' && value.platform1) {
+            value.platform = value.platform1;
+          }
           const success = await handleAdd(value as API.BotInfo);
           if (success) {
             handleModalVisible(false);
@@ -249,6 +254,46 @@ const platfromBot: React.FC = () => {
             },
           ]}
         />
+        <ProFormSelect
+          name="platform"
+          label="平台"
+          showSearch
+
+          fieldProps={{
+
+          }}
+          rules={[
+            {
+              required: true,
+              message: '请选择平台',
+            },
+          ]}
+          options={[
+            {
+              label: 'QQ',
+              value: 'qq',
+            },
+            {
+              label: 'WeChat',
+              value: 'wx',
+            },
+            {
+              label: '其他',
+              value: 'other',
+            }
+          ]}
+        />
+        <ProFormItem
+          noStyle
+          shouldUpdate
+        >
+          {({ getFieldValue }) => getFieldValue('platform') === 'other' && <ProFormText name={'platform1'} rules={[
+            {
+              required: true,
+              message: '请输入平台编码',
+            },
+          ]} label={"自定义平台"} />}
+        </ProFormItem>
         <ProFormText
           name="botUrl"
           label="通信地址"
@@ -271,12 +316,12 @@ const platfromBot: React.FC = () => {
               label: '反向websocket',
               value: 'websocket_reverse',
             },
-            // {
-            //   label: 'http',
-            //   value: 'http',
-            // },
             {
-              label: 'http上报',
+              label: 'HTTP',
+              value: 'http',
+            },
+            {
+              label: 'HTTP_POST',
               value: 'http_post',
             },
             {
@@ -333,6 +378,9 @@ const platfromBot: React.FC = () => {
         initialValues={currentRow}
         onVisibleChange={handleEditModalVisible}
         onFinish={(value) => {
+          if (value.platform == 'other' && value.platform1) {
+            value.platform = value.platform1;
+          }
           updateBot(value).then((res) => {
             if (res.success) {
               message.success('修改成功');
@@ -355,6 +403,46 @@ const platfromBot: React.FC = () => {
             },
           ]}
         />
+        <ProFormSelect
+          name="platform"
+          label="平台"
+          showSearch
+
+          fieldProps={{
+
+          }}
+          rules={[
+            {
+              required: true,
+              message: '请选择平台',
+            },
+          ]}
+          options={[
+            {
+              label: 'QQ',
+              value: 'qq',
+            },
+            {
+              label: 'WeChat',
+              value: 'wx',
+            },
+            {
+              label: '其他',
+              value: 'other',
+            }
+          ]}
+        />
+        <ProFormItem
+          noStyle
+          shouldUpdate
+        >
+          {({ getFieldValue }) => getFieldValue('platform') === 'other' && <ProFormText name={'platform1'} rules={[
+            {
+              required: true,
+              message: '请输入平台编码',
+            },
+          ]} label={"自定义平台"} />}
+        </ProFormItem>
         <ProFormText
           name="botUrl"
           label="通信地址"
@@ -377,12 +465,12 @@ const platfromBot: React.FC = () => {
               label: '反向websocket',
               value: 'websocket_reverse',
             },
-            // {
-            //   label: 'http',
-            //   value: 'http',
-            // },
             {
-              label: 'http上报',
+              label: 'HTTP',
+              value: 'http',
+            },
+            {
+              label: 'HTTP_POST',
               value: 'http_post',
             },
             {
@@ -414,7 +502,7 @@ const platfromBot: React.FC = () => {
               value: 'http',
             },
             {
-              label: 'wcf客户端通信',
+              label: 'wcf-客户端通信',
               value: 'wcf_client',
             },
           ]}

@@ -473,4 +473,10 @@
         </sql>
     </changeSet>
 
+    <changeSet author="yuzhanfeng" id="20240330-1" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            ALTER TABLE bot_info ADD platform varchar(12) NULL;
+        </sql>
+    </changeSet>
+
 </databaseChangeLog>

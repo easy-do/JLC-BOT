@@ -1,6 +1,5 @@
 package plus.easydo.bot.wcf;
 
-import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -11,8 +10,6 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
-import plus.easydo.bot.entity.BotPostLog;
-import plus.easydo.bot.enums.onebot.OneBotPlatformEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.manager.BotPostLogServiceManager;
@@ -55,7 +52,7 @@ public class WcfRunner implements ApplicationRunner {
                     Wcf.WxMsg msg = client.getMsg();
                     try {
                         JSONObject messageJson = wcfAdApter(msg, client);
-                        CompletableFuture.runAsync(()->botPostLogServiceManager.save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).platform(OneBotPlatformEnum.WX.getType()).message(messageJson.toJSONString(0)).build()));
+                        CompletableFuture.runAsync(()->botPostLogServiceManager.saveLog(messageJson));
                         CompletableFuture.runAsync(()->oneBotService.handlerPost(messageJson));
                     }catch (Exception e){
                         log.error("wcf消息处理异常,{}", ExceptionUtil.getMessage(e));

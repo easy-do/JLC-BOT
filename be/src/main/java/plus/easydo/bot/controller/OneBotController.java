@@ -1,20 +1,23 @@
 package plus.easydo.bot.controller;
 
-import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.io.IoUtil;
+import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.crypto.SecureUtil;
+import cn.hutool.crypto.digest.HMac;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
-import plus.easydo.bot.entity.BotPostLog;
 import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.manager.BotPostLogServiceManager;
@@ -26,8 +29,6 @@ import plus.easydo.bot.websocket.OneBotService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.util.Enumeration;
-import java.util.Iterator;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
@@ -47,17 +48,35 @@ public class OneBotController {
 
     private final OneBotService oneBotService;
 
-//    @PostMapping("/v11/post")
-    public void post(HttpServletRequest request) throws IOException {
-
-        Enumeration<String> names = request.getHeaderNames();
-        for (Iterator<String> it = names.asIterator(); it.hasNext(); ) {
-            String name = it.next();
-            log.info("hearder=>{},{}",name,request.getHeader(name));
+    @PostMapping("/v11/post")
+    public void v11Post(@RequestHeader("x-self-id") String selfId, @RequestHeader("x-signature") String signature, HttpServletRequest request) throws IOException {
+        BotInfo bot = CacheManager.BOT_CACHE.get(selfId);
+        if(Objects.nonNull(bot)){
+            // 获取内容长度
+            byte[] bodyByte = getBodyByte(request);
+            if(verifySignature(bot.getBotSecret(),bodyByte,signature)){
+                JSONObject messageJson = JSONUtil.parseObj(new String(bodyByte));
+                CompletableFuture.runAsync(()->botPostLogServiceManager.saveLog(messageJson));
+                CompletableFuture.runAsync(()->oneBotService.handlerPost(messageJson));
+            }
         }
-        log.info("body:{}",new String(getBodyByte(request)));
     }
 
+
+    /**
+     * 验签
+     *
+     * @param secret secret
+     * @param body body
+     * @param signature signature
+     * @return boolean
+     * @author laoyu
+     * @date 2024-02-22
+     */
+    private boolean verifySignature(String secret, byte[] body, String signature){
+        HMac hMac = SecureUtil.hmacSha1(secret);
+        return CharSequenceUtil.equals(OneBotConstants.SHA1_PRE + hMac.digestHex(body),signature);
+    }
 
     /**
      * 获取请问内容的字节数组
@@ -80,11 +99,11 @@ public class OneBotController {
 
 
     @RequestMapping("/wcfPost")
-    public R<Boolean> post(@RequestBody JSONObject postData, @RequestParam("token")String token) throws IOException {
+    public R<Boolean> wcfPost(@RequestBody JSONObject postData, @RequestParam("token")String token){
         BotInfo botInfo = CacheManager.SECRET_BOT_CACHE.get(token);
         if(Objects.nonNull(botInfo)){
             JSONObject messageJson = wcfAdApter(postData, botInfo);
-            CompletableFuture.runAsync(()->botPostLogServiceManager.save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).platform("wx").message(messageJson.toJSONString(0)).build()));
+            CompletableFuture.runAsync(()->botPostLogServiceManager.saveLog(messageJson));
             CompletableFuture.runAsync(()->oneBotService.handlerPost(messageJson));
             return DataResult.ok();
         }

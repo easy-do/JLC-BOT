@@ -3,7 +3,6 @@ package plus.easydo.bot.websocket;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
-import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.extra.spring.SpringUtil;
@@ -17,8 +16,6 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import plus.easydo.bot.entity.BotInfo;
-import plus.easydo.bot.entity.BotPostLog;
-import plus.easydo.bot.enums.onebot.OneBotPlatformEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.constant.OneBotConstants;
@@ -109,7 +106,7 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
         String postType = messageJson.getStr(OneBotConstants.POST_TYPE);
         if(Objects.nonNull(postType)){
             if(!CharSequenceUtil.contains(postType, OneBotPostTypeEnum.META_EVENT.getType())){
-                CompletableFuture.runAsync(()->getBotPostLogServiceManager().save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).platform(OneBotPlatformEnum.QQ.getType()).message(messageJson.toJSONString(0)).build()));
+                CompletableFuture.runAsync(()->getBotPostLogServiceManager().saveLog(messageJson));
             }
             getOneBotService().handlerPost(messageJson);
         }

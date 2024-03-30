@@ -81,4 +81,10 @@ public class BotInfo {
     @Column(value = "invoke_type")
     private String invokeType;
 
+    /**
+     * 平台
+     */
+    @Column(value = "platform")
+    private String platform;
+
 }

@@ -48,4 +48,6 @@ public class OneBotConstants {
     public static final String FLAG = "flag";
     public static final String SUB_TYPE = "sub_type";
 
+    public static final String SHA1_PRE = "sha1=";
+
 }
