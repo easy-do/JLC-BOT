@@ -32,7 +32,7 @@ public class MessageTypeIfNode extends NodeIfComponent {
         if (Objects.nonNull(paramJson) && Objects.nonNull(confJson)) {
             String type = confJson.getStr("type");
             if (Objects.nonNull(type)) {
-                JSONObject message = paramJson.getJSONObject(OneBotConstants.MESSAGE);
+                JSONObject message = paramJson.getJSONObject(OneBotConstants.MESSAGE_PARSE);
                 if(Objects.nonNull(message)){
                     OneBotMessageParse messageParse = message.toBean(OneBotMessageParse.class);
                     return Objects.nonNull(messageParse) && CharSequenceUtil.equals(messageParse.getType(), type);

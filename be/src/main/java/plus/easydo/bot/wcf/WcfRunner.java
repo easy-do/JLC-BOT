@@ -4,7 +4,6 @@ import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
-import com.iamteer.Wcf;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -13,8 +12,14 @@ import org.springframework.stereotype.Component;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.BotPostLog;
+import plus.easydo.bot.enums.onebot.OneBotPlatformEnum;
+import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
+import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.manager.BotPostLogServiceManager;
 import plus.easydo.bot.manager.CacheManager;
+import plus.easydo.bot.util.OneBotUtils;
+import plus.easydo.bot.util.OneBotWcfClientUtils;
+import plus.easydo.bot.websocket.OneBotService;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -31,6 +36,8 @@ public class WcfRunner implements ApplicationRunner {
 
     private final BotPostLogServiceManager botPostLogServiceManager;
 
+    private final OneBotService oneBotService;
+
     @Override
     public void run(ApplicationArguments args) throws Exception {
         String os = System.getProperty("os.name");
@@ -38,7 +45,7 @@ public class WcfRunner implements ApplicationRunner {
         if (os.toLowerCase().startsWith("win")) {
             // 本地启动 RPC
             Client client = new Client(true); // 默认 10086 端口
-            CacheManager.CLIENT_CACHE.add(client);
+            OneBotWcfClientUtils.saveClient(client);
             // 接收消息，并调用 printWxMsg 处理
             client.enableRecvMsg(100);
             log.info("wcf启动完成");
@@ -48,8 +55,8 @@ public class WcfRunner implements ApplicationRunner {
                     Wcf.WxMsg msg = client.getMsg();
                     try {
                         JSONObject messageJson = wcfAdApter(msg, client);
-                        CompletableFuture.runAsync(()->botPostLogServiceManager.save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).platform("wx").message(messageJson.toJSONString(0)).build()));
-
+                        CompletableFuture.runAsync(()->botPostLogServiceManager.save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).platform(OneBotPlatformEnum.WX.getType()).message(messageJson.toJSONString(0)).build()));
+                        CompletableFuture.runAsync(()->oneBotService.handlerPost(messageJson));
                     }catch (Exception e){
                         log.error("wcf消息处理异常,{}", ExceptionUtil.getMessage(e));
                     }
@@ -62,21 +69,27 @@ public class WcfRunner implements ApplicationRunner {
         }
     }
 
-
     private JSONObject wcfAdApter(Wcf.WxMsg msg, Client client) {
         JSONObject messageJson = JSONUtil.createObj();
-        messageJson.set(OneBotConstants.MESSAGE_ID,msg.getId());
-        messageJson.set(OneBotConstants.MESSAGE,msg.getContent());
-        messageJson.set(OneBotConstants.MESSAGE_TYPE,msg.getType());
-        messageJson.set(OneBotConstants.GROUP_ID,msg.getRoomid());
-        messageJson.set(OneBotConstants.TIME,msg.getTs());
-        messageJson.set("is_group",msg.getIsGroup());
-        messageJson.set("is_self",msg.getIsSelf());
-        messageJson.set("extra",msg.getExtra());
-        messageJson.set("xml",msg.getXml());
+        messageJson.set(OneBotConstants.MESSAGE_ID, msg.getId());
+        messageJson.set(OneBotConstants.SENDER, msg.getSender());
+
+        String content = msg.getContent();
+        messageJson.set(OneBotConstants.MESSAGE, OneBotUtils.buildMessageJson(content));
+        messageJson.set(OneBotConstants.RAW_MESSAGE, content);
+
+        messageJson.set(OneBotConstants.MESSAGE_TYPE, msg.getType());
+        messageJson.set(OneBotConstants.GROUP_ID, msg.getRoomid());
+        messageJson.set(OneBotConstants.TIME, msg.getTs());
+        boolean isGroup = msg.getIsGroup();
+        messageJson.set(OneBotConstants.POST_TYPE, OneBotPostTypeEnum.MESSAGE.getType());
+        messageJson.set(OneBotConstants.MESSAGE_TYPE, isGroup ? OneBotPostMessageTypeEnum.GROUP.getType() : OneBotPostMessageTypeEnum.PRIVATE.getType());
+        messageJson.set("is_group", isGroup);
+        messageJson.set("extra", msg.getExtra());
+        messageJson.set("xml", msg.getXml());
         BotInfo botInfo = CacheManager.BOT_CACHE.get(client.getSelfWxid());
-        if(Objects.nonNull(botInfo)){
-            messageJson.set(OneBotConstants.SELF_ID,botInfo.getBotNumber());
+        if (Objects.nonNull(botInfo)) {
+            messageJson.set(OneBotConstants.SELF_ID, botInfo.getBotNumber());
         }
         return messageJson;
     }

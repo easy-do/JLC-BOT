@@ -26,5 +26,5 @@ public class OneBotSender {
     private String sex;
     private String title;
     @JsonProperty("user_id")
-    private Integer userId;
+    private String userId;
 }

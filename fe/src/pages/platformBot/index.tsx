@@ -186,15 +186,15 @@ const platfromBot: React.FC = () => {
           showSizeChanger: false,
         }}
         toolBarRender={() => [
-            <Button
-              type="primary"
-              icon={<PlusOutlined />}
-              onClick={() => {
-                handleModalVisible(true);
-              }}
-            >
-              添加bot
-            </Button>
+          <Button
+            type="primary"
+            icon={<PlusOutlined />}
+            onClick={() => {
+              handleModalVisible(true);
+            }}
+          >
+            添加bot
+          </Button>
         ]}
         request={pageBot}
         columns={columns}
@@ -209,7 +209,7 @@ const platfromBot: React.FC = () => {
         closable={false}
       >
         {currentRow?.name && (
-          <ProDescriptions<API.DaItemEntity>
+          <ProDescriptions<API.BotInfo>
             column={2}
             title={currentRow?.name}
             request={async () => ({
@@ -218,7 +218,7 @@ const platfromBot: React.FC = () => {
             params={{
               id: currentRow?.name,
             }}
-            columns={columns as ProDescriptionsItemProps<API.DaItemEntity>[]}
+            columns={columns as ProDescriptionsItemProps<API.BotInfo>[]}
           />
         )}
       </Drawer>
@@ -230,7 +230,7 @@ const platfromBot: React.FC = () => {
           destroyOnClose: true,
         }}
         onFinish={async (value) => {
-          const success = await handleAdd(value as API.DaItemEntity);
+          const success = await handleAdd(value as API.BotInfo);
           if (success) {
             handleModalVisible(false);
             if (actionRef.current) {
@@ -251,11 +251,65 @@ const platfromBot: React.FC = () => {
         />
         <ProFormText
           name="botUrl"
-          label="通讯地址"
+          label="通信地址"
+        />
+        <ProFormSelect
+          name="postType"
+          label="上报方式"
           rules={[
             {
               required: true,
-              message: '请输入通讯地址',
+              message: '请选择上报方式',
+            },
+          ]}
+          options={[
+            {
+              label: '正向websocket',
+              value: 'websocket',
+            },
+            {
+              label: '反向websocket',
+              value: 'websocket_reverse',
+            },
+            // {
+            //   label: 'http',
+            //   value: 'http',
+            // },
+            {
+              label: 'http上报',
+              value: 'http_post',
+            },
+            {
+              label: 'wcf-http上报',
+              value: 'wcf_http',
+            },
+            {
+              label: 'wcf-客户端通信',
+              value: 'wcf_client',
+            },
+          ]}
+        />
+        <ProFormSelect
+          name="invokeType"
+          label="调用方式"
+          rules={[
+            {
+              required: true,
+              message: '请选择调用方式',
+            },
+          ]}
+          options={[
+            {
+              label: 'websocket',
+              value: 'websocket',
+            },
+            {
+              label: 'http',
+              value: 'http',
+            },
+            {
+              label: 'wcf客户端通信',
+              value: 'wcf_client',
             },
           ]}
         />
@@ -303,11 +357,65 @@ const platfromBot: React.FC = () => {
         />
         <ProFormText
           name="botUrl"
-          label="通讯地址"
+          label="通信地址"
+        />
+        <ProFormSelect
+          name="postType"
+          label="上报方式"
           rules={[
             {
               required: true,
-              message: '请输入通讯地址',
+              message: '请选择上报方式',
+            },
+          ]}
+          options={[
+            {
+              label: '正向websocket',
+              value: 'websocket',
+            },
+            {
+              label: '反向websocket',
+              value: 'websocket_reverse',
+            },
+            // {
+            //   label: 'http',
+            //   value: 'http',
+            // },
+            {
+              label: 'http上报',
+              value: 'http_post',
+            },
+            {
+              label: 'wcf-http上报',
+              value: 'wcf_http',
+            },
+            {
+              label: 'wcf-客户端通信',
+              value: 'wcf_client',
+            },
+          ]}
+        />
+        <ProFormSelect
+          name="invokeType"
+          label="调用方式"
+          rules={[
+            {
+              required: true,
+              message: '请选择调用方式',
+            },
+          ]}
+          options={[
+            {
+              label: 'websocket',
+              value: 'websocket',
+            },
+            {
+              label: 'http',
+              value: 'http',
+            },
+            {
+              label: 'wcf客户端通信',
+              value: 'wcf_client',
             },
           ]}
         />

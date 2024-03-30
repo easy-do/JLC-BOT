@@ -27,6 +27,7 @@ public class AviatorScriptUtil {
             AviatorEvaluator.importFunctions(CharSequenceUtil.class);
             AviatorEvaluator.importFunctions(BotConfUtil.class);
             AviatorEvaluator.importFunctions(OneBotUtils.class);
+            AviatorEvaluator.importFunctions(OneBotApiUtils.class);
             AviatorEvaluator.importFunctions(String.class);
             AviatorEvaluator.importFunctions(BotScriptUtils.class);
             AviatorEvaluator.importFunctions(StrUtil.class);

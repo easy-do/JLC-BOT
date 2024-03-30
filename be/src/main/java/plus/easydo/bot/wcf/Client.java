@@ -2,7 +2,6 @@ package plus.easydo.bot.wcf;
 
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
-import com.iamteer.Wcf;
 import io.sisu.nng.Socket;
 import io.sisu.nng.pair.Pair1Socket;
 import lombok.extern.slf4j.Slf4j;
@@ -282,6 +281,25 @@ public class Client {
     }
 
     /**
+     * @param messageId: 消息id
+     * @return int
+     * @Description 撤回消息
+     * @author Changhua
+     * "wxid_xxxxxxxxxxxxx1,wxid_xxxxxxxxxxxxx2");
+     **/
+    public int revokeMsg(Integer messageId) {
+        Wcf.Request req = Wcf.Request.newBuilder().setFuncValue(Wcf.Functions.FUNC_REVOKE_MSG_VALUE).setUi64(messageId).build();
+        log.debug("sendText: {}", bytesToHex(req.toByteArray()));
+        Wcf.Response rsp = sendCmd(req);
+        int ret = -1;
+        if (rsp != null) {
+            ret = rsp.getStatus();
+        }
+
+        return ret;
+    }
+
+    /**
      * @param msg:      消息内容（如果是 @ 消息则需要有跟 @ 的人数量相同的 @）
      * @param receiver: 消息接收人，私聊为 wxid（wxid_xxxxxxxxxxxxxx），群聊为
      *                  roomid（xxxxxxxxxx@chatroom）
@@ -364,7 +382,6 @@ public class Client {
         if (rsp != null) {
             ret = rsp.getStatus();
         }
-
         return ret;
     }
 

@@ -4,8 +4,6 @@ package plus.easydo.bot.websocket.handler.message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import plus.easydo.bot.websocket.model.OneBotLoginInfo;
-import plus.easydo.bot.websocket.model.OneBotSender;
 
 
 /**
@@ -18,11 +16,10 @@ import plus.easydo.bot.websocket.model.OneBotSender;
 @RequiredArgsConstructor
 public class OneBotGroupMessageHandler {
 
-    private OneBotLoginInfo loginInfo;
 
     private final OneBotGroupAtMessageHandler groupAtMessageHandler;
 
-    public String handlerMessage(String botNumber, String groupId, OneBotSender sender, String message){
+    public String handlerMessage(String botNumber, String groupId, String sender, String message){
 
 
         return "";

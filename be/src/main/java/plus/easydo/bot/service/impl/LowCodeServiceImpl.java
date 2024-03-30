@@ -11,6 +11,7 @@ import com.yomahub.liteflow.flow.element.Node;
 import com.yomahub.liteflow.flow.entity.CmpStep;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.exception.BaseException;
@@ -26,6 +27,7 @@ import plus.easydo.bot.dto.SetBotNodeDto;
 import plus.easydo.bot.service.LowCodeService;
 import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.util.OneBotUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,6 +42,7 @@ import java.util.stream.Collectors;
  * @description 低代码服务实现
  * @date 2024/3/5
  */
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class LowCodeServiceImpl implements LowCodeService {
@@ -118,7 +121,12 @@ public class LowCodeServiceImpl implements LowCodeService {
         if(Objects.isNull(conf)){
             throw new BaseException("配置不存在");
         }
-        LiteflowResponse res = liteFlowNodeExecuteServer.execute(conf,debugBotNodeDto.getParams());
+
+        //处理参数格式、parseMessage
+        JSONObject paramsJson = JSONUtil.parseObj(debugBotNodeDto.getParams());
+        OneBotUtils.parseMessage(paramsJson, log);
+
+        LiteflowResponse res = liteFlowNodeExecuteServer.execute(conf,paramsJson);
         Queue<CmpStep> cmpSteps = res.getExecuteStepQueue();
         JLCLiteFlowContext context = res.getContextBean(JLCLiteFlowContext.class);
         Map<String, JSONObject> paramCache = context.getNodeParamCache();

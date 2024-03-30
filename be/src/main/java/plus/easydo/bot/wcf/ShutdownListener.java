@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextClosedEvent;
 import org.springframework.stereotype.Component;
-import plus.easydo.bot.manager.CacheManager;
+import plus.easydo.bot.util.OneBotWcfClientUtils;
 
 /**
  * @author yuzhanfeng
@@ -19,8 +19,6 @@ public class ShutdownListener implements ApplicationListener<ContextClosedEvent>
     public void onApplicationEvent(ContextClosedEvent event) {
         // 在这里处理应用程序停止的逻辑
         log.info("Application is closing...");
-        CacheManager.CLIENT_CACHE.forEach(client -> {
-            client.diableRecvMsg();
-        });
+        OneBotWcfClientUtils.CLIENT_CACHE.forEach((key,client)->client.diableRecvMsg());
     }
 }

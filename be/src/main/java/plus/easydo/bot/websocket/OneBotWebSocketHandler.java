@@ -18,6 +18,8 @@ import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.BotPostLog;
+import plus.easydo.bot.enums.onebot.OneBotPlatformEnum;
+import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.manager.BotPostLogServiceManager;
@@ -104,8 +106,11 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) {
         log.debug("接收到客户端消息:" + message.getPayload());
         JSONObject messageJson = JSONUtil.parseObj(message.getPayload());
-        if(Objects.nonNull(messageJson.getObj(OneBotConstants.POST_TYPE))){
-            CompletableFuture.runAsync(()->getBotPostLogServiceManager().save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).platform("qq").message(messageJson.toJSONString(0)).build()));
+        String postType = messageJson.getStr(OneBotConstants.POST_TYPE);
+        if(Objects.nonNull(postType)){
+            if(!CharSequenceUtil.contains(postType, OneBotPostTypeEnum.META_EVENT.getType())){
+                CompletableFuture.runAsync(()->getBotPostLogServiceManager().save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).platform(OneBotPlatformEnum.QQ.getType()).message(messageJson.toJSONString(0)).build()));
+            }
             getOneBotService().handlerPost(messageJson);
         }
     }

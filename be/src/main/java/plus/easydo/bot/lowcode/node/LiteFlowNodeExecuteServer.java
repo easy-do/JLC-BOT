@@ -13,7 +13,6 @@ import com.yomahub.liteflow.flow.entity.CmpStep;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.constant.LowCodeConstants;
-import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotNodeConfExecuteLog;
 import plus.easydo.bot.entity.BotNodeExecuteLog;
 import plus.easydo.bot.entity.LowCodeNodeConf;
@@ -21,9 +20,6 @@ import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.lowcode.model.Node;
 import plus.easydo.bot.manager.BotNodeConfExecuteLogManager;
 import plus.easydo.bot.manager.BotNodeExecuteLogManager;
-import plus.easydo.bot.manager.CacheManager;
-import plus.easydo.bot.util.OneBotUtils;
-import plus.easydo.bot.websocket.model.OneBotMessageParse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -49,7 +45,7 @@ public class LiteFlowNodeExecuteServer {
 
     private final BotNodeConfExecuteLogManager nodeConfExecuteLogManager;
 
-    public LiteflowResponse execute(LowCodeNodeConf lowCodeNodeConf, Object params) {
+    public LiteflowResponse execute(LowCodeNodeConf lowCodeNodeConf, JSONObject paramsJson) {
 
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -65,23 +61,6 @@ public class LiteFlowNodeExecuteServer {
         String elData = stringBuilder.toString();
         String chainName = "botChain" + lowCodeNodeConf.getId();
         LiteFlowChainELBuilder.createChain().setChainName(chainName).setEL(elData).build();
-
-
-        //初始化参数
-        JSONObject paramsJson = JSONUtil.createObj();
-        if (Objects.nonNull(params)) {
-            paramsJson = JSONUtil.parseObj(params);
-        }
-        Object botNumber = paramsJson.get(OneBotConstants.SELF_ID);
-        if (Objects.nonNull(botNumber)) {
-            paramsJson.set("botNumber", botNumber);
-            paramsJson.set("botConf", CacheManager.BOT_CONF_CACHE.get(botNumber));
-        }
-        String message = paramsJson.getStr(OneBotConstants.MESSAGE);
-        if (Objects.nonNull(message)) {
-            OneBotMessageParse messageParse = OneBotUtils.parseMessage(message);
-            paramsJson.set(OneBotConstants.MESSAGE, messageParse);
-        }
 
         //初始化上下文
         JLCLiteFlowContext context = new JLCLiteFlowContext();

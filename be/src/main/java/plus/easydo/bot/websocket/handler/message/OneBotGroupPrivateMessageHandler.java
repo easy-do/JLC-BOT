@@ -13,7 +13,7 @@ import plus.easydo.bot.websocket.model.OneBotSender;
 public class OneBotGroupPrivateMessageHandler {
 
 
-    public String handlerMessage(String groupId, OneBotSender sender, String message) {
+    public String handlerMessage(String groupId, String senderId, String message) {
         return "";
     }
 }

@@ -6,7 +6,7 @@ import com.yomahub.liteflow.core.NodeComponent;
 import lombok.extern.slf4j.Slf4j;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.exception.BaseException;
-import plus.easydo.bot.util.OneBotUtils;
+import plus.easydo.bot.util.OneBotApiUtils;
 import plus.easydo.bot.util.ParamReplaceUtils;
 
 import java.util.Objects;
@@ -35,7 +35,7 @@ public class SendGroupMessageNode extends NodeComponent {
                 String botNumber = paramJson.getStr(OneBotConstants.SELF_ID);
                 String groupId = paramJson.getStr(OneBotConstants.GROUP_ID);
                 message = ParamReplaceUtils.replaceParam(message, paramJson);
-                OneBotUtils.sendGroupMessage(botNumber, groupId, message, true);
+                OneBotApiUtils.sendGroupMessage(botNumber, groupId, message, true);
             } else {
                 log.warn("发送群消息节点未完整执行,原因:没有找到要发送的消息配置");
                 throw new BaseException("没有找到要发送的消息配置");

@@ -10,6 +10,7 @@ import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.lowcode.node.LiteFlowNodeExecuteServer;
 import plus.easydo.bot.manager.CacheManager;
+import plus.easydo.bot.util.OneBotUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -39,6 +40,13 @@ public class OneBotNodePostHandler {
                 nodeIdList.forEach(nodeConfId->{
                     LowCodeNodeConf nodeConf = CacheManager.NODE_CONF_CACHE.get(nodeConfId);
                     if(Objects.nonNull(nodeConf) && (CharSequenceUtil.equals(evenType,nodeConf.getEventType()) || CharSequenceUtil.equals("all",nodeConf.getEventType()))){
+
+                        //预处理参数、parseMessage
+                        OneBotUtils.parseMessage(postData, log);
+                        postData.set("botNumber",botNumber);
+                        postData.set("botConf",CacheManager.BOT_CONF_CACHE.get(botNumber));
+
+                        //执行处理
                         liteFlowNodeExecuteServer.execute(nodeConf,postData);
                     }
                 });

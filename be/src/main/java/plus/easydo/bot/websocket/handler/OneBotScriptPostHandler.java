@@ -46,10 +46,10 @@ public class OneBotScriptPostHandler {
                     log.info("执行脚本===============");
                     try {
                         Expression expression = AviatorScriptUtil.compile(function.getScriptContent());
-                        Object message = postData.remove(OneBotConstants.MESSAGE);
-                        if(Objects.nonNull(message)){
-                            postData.set(OneBotConstants.MESSAGE, OneBotUtils.parseMessage(JSONUtil.toJsonStr(message)));
-                        }
+
+                        //消息解析
+                        OneBotUtils.parseMessage(postData,log);
+
                         expression.execute(AviatorEvaluator.newEnv("postData",postData,"botNumber",botNumber));
                         log.info("脚本执行结束===============");
                     } catch (Exception e) {

@@ -1,5 +1,6 @@
 package plus.easydo.bot.constant;
 
+
 /**
  * @author laoyu
  * @version 1.0
@@ -17,6 +18,8 @@ public class OneBotConstants {
     public static final String MESSAGE_TYPE = "message_type";
     public static final String GROUP_ID = "group_id";
     public static final String MESSAGE = "message";
+    public static final String RAW_MESSAGE = "raw_message";
+    public static final String MESSAGE_PARSE = "messageParse";
     public static final String SENDER = "sender";
     public static final String TIME = "time";
     public static final String SELF_ID = "self_id";
@@ -41,6 +44,7 @@ public class OneBotConstants {
     public static final String OPERATOR_ID = "operator_id";
 
     public static final String COMMENT = "comment";
+
     public static final String FLAG = "flag";
     public static final String SUB_TYPE = "sub_type";
 

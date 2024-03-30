@@ -3,6 +3,7 @@ package plus.easydo.bot.controller;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -14,10 +15,14 @@ import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.BotPostLog;
+import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
+import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.manager.BotPostLogServiceManager;
 import plus.easydo.bot.manager.CacheManager;
+import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
+import plus.easydo.bot.websocket.OneBotService;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -38,8 +43,9 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class OneBotController {
 
-
     private final BotPostLogServiceManager botPostLogServiceManager;
+
+    private final OneBotService oneBotService;
 
 //    @PostMapping("/v11/post")
     public void post(HttpServletRequest request) throws IOException {
@@ -74,26 +80,38 @@ public class OneBotController {
 
 
     @RequestMapping("/wcfPost")
-    public R<Boolean> post(@RequestBody JSONObject messageJson, @RequestParam("token")String token) throws IOException {
+    public R<Boolean> post(@RequestBody JSONObject postData, @RequestParam("token")String token) throws IOException {
         BotInfo botInfo = CacheManager.SECRET_BOT_CACHE.get(token);
         if(Objects.nonNull(botInfo)){
-            wcfAdApter(messageJson,botInfo);
+            JSONObject messageJson = wcfAdApter(postData, botInfo);
             CompletableFuture.runAsync(()->botPostLogServiceManager.save(BotPostLog.builder().postTime(LocalDateTimeUtil.now()).platform("wx").message(messageJson.toJSONString(0)).build()));
+            CompletableFuture.runAsync(()->oneBotService.handlerPost(messageJson));
             return DataResult.ok();
         }
         return DataResult.fail("鉴权失败");
     }
 
-    private void wcfAdApter(JSONObject messageJson, BotInfo botInfo) {
-        String messageId = messageJson.getStr("id");
-        messageJson.set(OneBotConstants.MESSAGE_ID,messageId);
-        messageJson.set(OneBotConstants.SELF_ID,botInfo.getBotNumber());
-        Boolean isGroup = messageJson.getBool("is_group");
-        if(isGroup){
-            String groupId = messageJson.getStr("roomid");
-            messageJson.set(OneBotConstants.GROUP_ID,groupId);
-        }
 
+    private JSONObject wcfAdApter(JSONObject sourceMessage, BotInfo botInfo) {
+        JSONObject messageJson = JSONUtil.createObj();
+        messageJson.set(OneBotConstants.POST_TYPE, OneBotPostTypeEnum.MESSAGE.getType());
+        messageJson.set(OneBotConstants.SELF_ID,botInfo.getBotNumber());
+        messageJson.set(OneBotConstants.MESSAGE_ID,sourceMessage.get("id"));
+        messageJson.set(OneBotConstants.SENDER,sourceMessage.get("sender"));
+
+        String content = sourceMessage.getStr("content");
+        messageJson.set(OneBotConstants.MESSAGE, OneBotUtils.buildMessageJson(content));
+        messageJson.set(OneBotConstants.RAW_MESSAGE, content);
+
+        messageJson.set(OneBotConstants.MESSAGE_TYPE,sourceMessage.get("type"));
+        messageJson.set(OneBotConstants.GROUP_ID,sourceMessage.get("roomid"));
+        messageJson.set(OneBotConstants.TIME,sourceMessage.get("ts"));
+        boolean isGroup = sourceMessage.getBool("isGroup");
+        messageJson.set(OneBotConstants.MESSAGE_TYPE,isGroup? OneBotPostMessageTypeEnum.GROUP.getType():OneBotPostMessageTypeEnum.PRIVATE.getType());
+        messageJson.set("is_group",isGroup);
+        messageJson.set("extra",sourceMessage.get("extra"));
+        messageJson.set("xml",sourceMessage.get("xml"));
+        return messageJson;
     }
 
 }

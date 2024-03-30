@@ -49,12 +49,21 @@ public class OneBotPostMessageHandler implements OneBotPostHandler{
         Object messageId = postData.get(OneBotConstants.MESSAGE_ID);
         log.debug("接收到消息,类型:{},内容:{}", OneBotPostMessageTypeEnum.getDescByType(messageType), message);
         Object groupId = postData.get(OneBotConstants.GROUP_ID);
-        JSONObject senderJson = postData.getJSONObject(OneBotConstants.SENDER);
-        OneBotSender sender = JSONUtil.toBean(senderJson, OneBotSender.class);
+
+        //处理发送人
+        String senderId;
+        try {
+            JSONObject senderJson = postData.getJSONObject(OneBotConstants.SENDER);
+            OneBotSender sender = JSONUtil.toBean(senderJson, OneBotSender.class);
+            senderId = sender.getUserId();
+        }catch (Exception e){
+            senderId = postData.getStr(OneBotConstants.SENDER);
+        }
+
         OneBotMessageParse oneBotMessageParse = OneBotUtils.parseMessage(message);
         if(oneBotMessageParse.getSegmentSize() != 0){
             BotMessage botMessage = BotMessage.builder()
-                    .sendUser(String.valueOf(sender.getUserId()))
+                    .sendUser(senderId)
                     .selfUser(selfId)
                     .selfTime(LocalDateTimeUtil.of(time))
                     .message(oneBotMessageParse.getSegmentSize() == 1 ? oneBotMessageParse.getSimpleMessage():oneBotMessageParse.getParseMessage())
@@ -64,14 +73,14 @@ public class OneBotPostMessageHandler implements OneBotPostHandler{
                 //群内发起的私聊
                 if(Objects.nonNull(groupId)){
                     botMessage.setGroupId(String.valueOf(groupId));
-                    groupPrivateMessageHandler.handlerMessage(String.valueOf(groupId), sender, message);
+                    groupPrivateMessageHandler.handlerMessage(String.valueOf(groupId),senderId, message);
                 }else {
                     //直接私聊
-                    privateMessageHandler.handlerMessage(sender, message);
+                    privateMessageHandler.handlerMessage(senderId, message);
                 }
             }else {
                 botMessage.setGroupId(String.valueOf(groupId));
-                groupMessageHandler.handlerMessage(selfId, String.valueOf(groupId), sender, message);
+                groupMessageHandler.handlerMessage(selfId, String.valueOf(groupId), senderId, message);
             }
             CompletableFuture.runAsync(()-> botMessageManager.save(botMessage));
         }

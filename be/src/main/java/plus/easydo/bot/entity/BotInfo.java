@@ -69,4 +69,16 @@ public class BotInfo {
     @Column(value = "ext_data")
     private String extData;
 
+    /**
+     * 机器人上报消息协议
+     */
+    @Column(value = "post_type")
+    private String postType;
+
+    /**
+     * 机器人调用协议
+     */
+    @Column(value = "invoke_type")
+    private String invokeType;
+
 }

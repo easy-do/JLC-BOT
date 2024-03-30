@@ -36,7 +36,7 @@ public class OneBotService {
         if(CharSequenceUtil.isNotBlank(postType)){
             OneBotPostHandler postDataHandler = postHandlerMap.get(postType);
             if(Objects.nonNull(postDataHandler)){
-                postDataHandler.handlerPost(postData);
+                CompletableFuture.runAsync(()->postDataHandler.handlerPost(postData));
             }
         }
         CompletableFuture.runAsync(()->oneBotScriptPostHandler.handler(postType,postData));
