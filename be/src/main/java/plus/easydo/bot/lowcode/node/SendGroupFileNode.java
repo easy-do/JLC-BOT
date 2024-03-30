@@ -35,7 +35,7 @@ public class SendGroupFileNode extends NodeComponent {
                 String botNumber = paramJson.getStr(OneBotConstants.SELF_ID);
                 String groupId = paramJson.getStr(OneBotConstants.GROUP_ID);
                 path = ParamReplaceUtils.replaceParam(path,paramJson);
-                OneBotApiUtils.sendGroupFile(botNumber, path, groupId);
+                OneBotApiUtils.sendGroupFile(botNumber, groupId, path);
             } else {
                 log.warn("发发送群文件未完整执行,原因:没有找到要发送的路径配置");
                 throw new BaseException("没有找到要发送的文件路径配置");

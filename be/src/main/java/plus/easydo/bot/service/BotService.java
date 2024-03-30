@@ -49,13 +49,18 @@ public interface BotService {
     boolean addBotConf(BotConf botConf);
 
     boolean removeBotConf(Long id);
-    boolean removeBotConf(String botNumber,String key);
+
+    boolean removeBotConf(String botNumber, String key);
 
     BotConf getByBotNumberAndKey(String botNumber, String key);
+
+    BotInfo getByBotNumber(String botNumber);
 
     List<Long> getEnableBotScript(Long id);
 
     boolean enableBotScript(EnableBotScriptDto enableBotScriptDto);
 
     boolean removeBotConfLike(String botNumber, String key);
+
+    OneBotApiService getApiServer(String botNumber);
 }

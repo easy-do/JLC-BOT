@@ -1,10 +1,9 @@
 package plus.easydo.bot.util;
 
-import cn.hutool.core.text.CharSequenceUtil;
-import plus.easydo.bot.entity.BotInfo;
-import plus.easydo.bot.enums.onebot.OneBotProtocolsTypeEnum;
-import plus.easydo.bot.exception.BaseException;
-import plus.easydo.bot.manager.CacheManager;
+
+import cn.hutool.extra.spring.SpringUtil;
+import plus.easydo.bot.service.BotService;
+import plus.easydo.bot.service.OneBotApiService;
 
 import java.util.Objects;
 
@@ -18,12 +17,14 @@ public class OneBotApiUtils {
     private OneBotApiUtils() {
     }
 
-    public static BotInfo getBotInfo(String botNumber){
-        BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
-        if(Objects.isNull(bot)){
-            throw new BaseException("机器人["+botNumber+"]不存在");
+
+    private static BotService botService;
+
+    public static OneBotApiService getApiServer(String botNumber) {
+        if (Objects.isNull(botService)) {
+            botService = SpringUtil.getBean(BotService.class);
         }
-        return bot;
+        return botService.getApiServer(botNumber);
     }
 
     /**
@@ -34,21 +35,7 @@ public class OneBotApiUtils {
      * @date 2024-02-21
      */
     public static String getLoginInfo(String botNumber) {
-        BotInfo bot = getBotInfo(botNumber);
-        String invokeType = bot.getInvokeType();
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.HTTP.getType())){
-            return OneBotHttpUtils.getLoginInfo(botNumber);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WEBSOCKET.getType())){
-            return OneBotWebsocketUtils.getLoginInfo(botNumber);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WCF_HTTP.getType())){
-            return OneBotWcfHttpUtils.getLoginInfo(botNumber);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WCF_CLIENT.getType())){
-            return OneBotWcfClientUtils.getLoginInfo(botNumber);
-        }
-        return "";
+        return getApiServer(botNumber).getLoginInfo(botNumber);
     }
 
     /**
@@ -59,61 +46,24 @@ public class OneBotApiUtils {
      * @date 2024-02-21
      */
     public static String getGroupList(String botNumber) {
-        BotInfo bot = getBotInfo(botNumber);
-        String invokeType = bot.getInvokeType();
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.HTTP.getType())){
-            return OneBotHttpUtils.getGroupList(botNumber);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WEBSOCKET.getType())){
-            return OneBotWebsocketUtils.getGroupList(botNumber);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WCF_HTTP.getType())){
-            return OneBotWcfHttpUtils.getGroupList(botNumber);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WCF_CLIENT.getType())){
-            return OneBotWcfClientUtils.getGroupList(botNumber);
-        }
-        return "";
+        return getApiServer(botNumber).getGroupList(botNumber);
     }
 
     /**
      * 发送群消息
      *
-     * @param groupId    groupId
-     * @param message    message
-     * @param autoEscape 是否纯文本
+     * @param groupId groupId
+     * @param message message
      * @return java.lang.String
      * @author laoyu
      * @date 2024-02-21
      */
-    public static void sendGroupMessage(String botNumber, String groupId, String message, boolean autoEscape) {
-        BotInfo bot = getBotInfo(botNumber);
-        String invokeType = bot.getInvokeType();
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.HTTP.getType())){
-            OneBotHttpUtils.sendGroupMessage(botNumber,groupId,message,autoEscape);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WEBSOCKET.getType())){
-            OneBotWebsocketUtils.sendGroupMessage(botNumber,groupId,message,autoEscape);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WCF_HTTP.getType())){
-            OneBotWcfHttpUtils.sendMessage(botNumber,groupId, message);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WCF_CLIENT.getType())){
-            OneBotWcfClientUtils.sendMessage(botNumber,groupId, message);
-        }
-
+    public static void sendGroupMessage(String botNumber, String groupId, String message) {
+        getApiServer(botNumber).sendGroupMessage(botNumber, groupId, message);
     }
 
-    public static void sendGroupFile(String botNumber, String filePath, String groupId) {
-        BotInfo bot = getBotInfo(botNumber);
-        String invokeType = bot.getInvokeType();
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WCF_HTTP.getType())){
-//            OneBotWcfHttpUtils.sendMessage(botNumber,groupId, message);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WCF_CLIENT.getType())){
-            OneBotWcfClientUtils.sendGroupFile(botNumber, filePath, groupId);
-        }
-
+    public static void sendGroupFile(String botNumber, String groupId, String filePath) {
+        getApiServer(botNumber).sendGroupFile(botNumber, groupId, filePath);
     }
 
     /**
@@ -125,20 +75,7 @@ public class OneBotApiUtils {
      * @date 2024-02-21
      */
     public static void deleteMsg(String botNumber, String messageId) {
-        BotInfo bot = getBotInfo(botNumber);
-        String invokeType = bot.getInvokeType();
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.HTTP.getType())){
-            OneBotHttpUtils.deleteMsg(botNumber,messageId);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WEBSOCKET.getType())){
-            OneBotWebsocketUtils.deleteMsg(botNumber,messageId);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WCF_HTTP.getType())){
-            OneBotWcfHttpUtils.deleteMsg(botNumber,messageId);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WCF_CLIENT.getType())){
-            OneBotWcfClientUtils.deleteMsg(botNumber,messageId);
-        }
+        getApiServer(botNumber).deleteMsg(botNumber, messageId);
     }
 
     /**
@@ -152,14 +89,7 @@ public class OneBotApiUtils {
      * @date 2024/2/21
      */
     public static void setGroupBan(String botNumber, String groupId, String userId, Long duration) {
-        BotInfo bot = getBotInfo(botNumber);
-        String invokeType = bot.getInvokeType();
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.HTTP.getType())){
-            OneBotHttpUtils.setGroupBan(botNumber,groupId,userId,duration);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WEBSOCKET.getType())){
-            OneBotWebsocketUtils.setGroupBan(botNumber,groupId,userId,duration);
-        }
+        getApiServer(botNumber).setGroupBan(botNumber, groupId, userId, duration);
     }
 
     /**
@@ -172,14 +102,7 @@ public class OneBotApiUtils {
      * @date 2024/2/21
      */
     public static void setGroupWholeBan(String botNumber, String groupId, boolean enable) {
-        BotInfo bot = getBotInfo(botNumber);
-        String invokeType = bot.getInvokeType();
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.HTTP.getType())){
-            OneBotHttpUtils.setGroupWholeBan(botNumber,groupId,enable);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WEBSOCKET.getType())){
-            OneBotWebsocketUtils.setGroupWholeBan(botNumber,groupId,enable);
-        }
+        getApiServer(botNumber).setGroupWholeBan(botNumber, groupId, enable);
     }
 
     /**
@@ -193,13 +116,6 @@ public class OneBotApiUtils {
      * @date 2024/2/21
      */
     public static void setGroupKick(String botNumber, String groupId, String userId, boolean rejectAddRequest) {
-        BotInfo bot = getBotInfo(botNumber);
-        String invokeType = bot.getInvokeType();
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.HTTP.getType())){
-            OneBotHttpUtils.setGroupKick(botNumber,groupId,userId,rejectAddRequest);
-        }
-        if(CharSequenceUtil.equals(invokeType, OneBotProtocolsTypeEnum.WEBSOCKET.getType())){
-            OneBotWebsocketUtils.setGroupKick(botNumber,groupId,userId,rejectAddRequest);
-        }
+        getApiServer(botNumber).setGroupKick(botNumber, groupId, userId, rejectAddRequest);
     }
 }

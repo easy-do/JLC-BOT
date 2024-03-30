@@ -4,17 +4,31 @@ import cn.hutool.core.lang.UUID;
 import com.mybatisflex.core.paginate.Page;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import plus.easydo.bot.service.BotScriptService;
-import plus.easydo.bot.service.BotService;
 import plus.easydo.bot.dto.EnableBotScriptDto;
-import plus.easydo.bot.entity.*;
+import plus.easydo.bot.entity.BotConf;
+import plus.easydo.bot.entity.BotInfo;
+import plus.easydo.bot.entity.BotMessage;
+import plus.easydo.bot.entity.BotNotice;
+import plus.easydo.bot.entity.BotRequest;
+import plus.easydo.bot.entity.BotScriptBot;
 import plus.easydo.bot.exception.BaseException;
-import plus.easydo.bot.manager.*;
+import plus.easydo.bot.manager.BotConfManager;
+import plus.easydo.bot.manager.BotInfoManager;
+import plus.easydo.bot.manager.BotMessageManager;
+import plus.easydo.bot.manager.BotNoticeManager;
+import plus.easydo.bot.manager.BotRequestManager;
+import plus.easydo.bot.manager.BotScriptBotManager;
+import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.qo.BotMessageQo;
 import plus.easydo.bot.qo.BotNoticeQo;
 import plus.easydo.bot.qo.BotQo;
 import plus.easydo.bot.qo.BotRequestQo;
+import plus.easydo.bot.service.BotScriptService;
+import plus.easydo.bot.service.BotService;
+import plus.easydo.bot.service.OneBotApiService;
+import plus.easydo.bot.util.OneBotUtils;
 
 import java.util.HashMap;
 import java.util.List;
@@ -45,6 +59,9 @@ public class BotServiceImpl implements BotService {
     private final BotScriptBotManager botScriptBotManager;
 
     private final BotScriptService botScriptService;
+
+    @Autowired
+    private Map<String, OneBotApiService> apiServiceMap;
 
     @Override
     public Page<BotInfo> pageBot(BotQo botQo) {
@@ -92,15 +109,15 @@ public class BotServiceImpl implements BotService {
     @Override
     public void initBotConfCache() {
         List<BotConf> allConf = botConfManager.list();
-        Map<String,Map<String,String>> cacheMap = new HashMap<>();
+        Map<String, Map<String, String>> cacheMap = new HashMap<>();
         Map<String, List<BotConf>> botNumberMap = allConf.stream().collect(Collectors.groupingBy(BotConf::getBotNumber));
-        for (Map.Entry<String, List<BotConf>> entry :botNumberMap.entrySet()){
+        for (Map.Entry<String, List<BotConf>> entry : botNumberMap.entrySet()) {
             String platformBotNumber = entry.getKey();
             List<BotConf> values = entry.getValue();
             Map<String, String> confMap = values.stream().collect(Collectors.toMap(BotConf::getConfKey, BotConf::getConfValue));
-            cacheMap.put(platformBotNumber,confMap);
+            cacheMap.put(platformBotNumber, confMap);
         }
-       CacheManager.BOT_CONF_CACHE.putAll(cacheMap);
+        CacheManager.BOT_CONF_CACHE.putAll(cacheMap);
     }
 
     @Override
@@ -126,7 +143,7 @@ public class BotServiceImpl implements BotService {
     @Override
     public boolean updateBotConf(BotConf botConf) {
         boolean res = botConfManager.updateById(botConf);
-        if(res){
+        if (res) {
             initBotConfCache();
         }
         return res;
@@ -135,14 +152,14 @@ public class BotServiceImpl implements BotService {
     @Override
     public boolean addBotConf(BotConf botConf) {
         BotConf dbConf = botConfManager.getByBotNumberAndKey(botConf.getBotNumber(), botConf.getConfKey());
-        if(Objects.nonNull(dbConf)){
+        if (Objects.nonNull(dbConf)) {
             botConf.setId(dbConf.getId());
             botConf.setConfValue(botConf.getConfValue());
             return updateBotConf(botConf);
         }
 
         boolean res = botConfManager.save(botConf);
-        if(res){
+        if (res) {
             initBotConfCache();
         }
         return res;
@@ -151,7 +168,7 @@ public class BotServiceImpl implements BotService {
     @Override
     public boolean removeBotConf(Long id) {
         boolean res = botConfManager.removeById(id);
-        if(res){
+        if (res) {
             initBotConfCache();
         }
         return res;
@@ -160,7 +177,7 @@ public class BotServiceImpl implements BotService {
     @Override
     public boolean removeBotConf(String botNumber, String key) {
         boolean res = botConfManager.removeBotConf(botNumber, key);
-        if(res){
+        if (res) {
             initBotConfCache();
         }
         return res;
@@ -168,13 +185,18 @@ public class BotServiceImpl implements BotService {
 
     @Override
     public BotConf getByBotNumberAndKey(String botNumber, String key) {
-        return botConfManager.getByBotNumberAndKey(botNumber,key);
+        return botConfManager.getByBotNumberAndKey(botNumber, key);
+    }
+
+    @Override
+    public BotInfo getByBotNumber(String botNumber) {
+        return botInfoManager.getByBotNumber(botNumber);
     }
 
     @Override
     public List<Long> getEnableBotScript(Long id) {
         BotInfo botInfo = botInfoManager.getById(id);
-        if(Objects.isNull(botInfo)){
+        if (Objects.isNull(botInfo)) {
             throw new BaseException("机器人不存在");
         }
         return botScriptBotManager.getBotScript(botInfo.getBotNumber()).stream().map(BotScriptBot::getScriptId).toList();
@@ -184,15 +206,15 @@ public class BotServiceImpl implements BotService {
     public boolean enableBotScript(EnableBotScriptDto enableBotScriptDto) {
         BotInfo botInfo = botInfoManager.getById(enableBotScriptDto.getBotId());
         boolean res;
-        if(Objects.isNull(botInfo)){
+        if (Objects.isNull(botInfo)) {
             throw new BaseException("机器人不存在");
         }
-        if(Objects.isNull(enableBotScriptDto.getScriptIds()) || enableBotScriptDto.getScriptIds().isEmpty()){
+        if (Objects.isNull(enableBotScriptDto.getScriptIds()) || enableBotScriptDto.getScriptIds().isEmpty()) {
             return botScriptBotManager.clearBotScript(botInfo.getBotNumber());
         }
         botScriptBotManager.clearBotScript(botInfo.getBotNumber());
         res = botScriptBotManager.saveBotScript(botInfo.getBotNumber(), enableBotScriptDto.getScriptIds());
-        if(res){
+        if (res) {
             botScriptService.initBotEventScriptCache();
         }
         return res;
@@ -201,10 +223,21 @@ public class BotServiceImpl implements BotService {
     @Override
     public boolean removeBotConfLike(String botNumber, String key) {
         boolean res = botConfManager.removeBotConfLike(botNumber, key);
-        if(res){
+        if (res) {
             initBotConfCache();
         }
         return res;
+    }
+
+    @Override
+    public OneBotApiService getApiServer(String botNumber) {
+        BotInfo bot = OneBotUtils.getBotInfo(botNumber);
+        String invokeType = bot.getInvokeType() + "OneBotApi";
+        OneBotApiService apiService = apiServiceMap.get("sandboxOneBotApi");
+        if (Objects.isNull(apiService)) {
+            throw new BaseException("api服务[" + invokeType + "]不存在");
+        }
+        return apiService;
     }
 
     @Override

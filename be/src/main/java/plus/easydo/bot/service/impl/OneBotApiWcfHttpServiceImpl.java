@@ -1,27 +1,27 @@
-package plus.easydo.bot.util;
+package plus.easydo.bot.service.impl;
 
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import org.springframework.stereotype.Service;
 import plus.easydo.bot.constant.OneBotWcfConstants;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.manager.CacheManager;
+import plus.easydo.bot.service.OneBotApiService;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-03-29
- * @Description wcf工具
+ * @Date 2024-03-31
+ * @Description oneBot协议websocket请求api实现
  */
-public class OneBotWcfHttpUtils {
+@Service("wcf_httpOneBotApi")
+public class OneBotApiWcfHttpServiceImpl implements OneBotApiService {
 
-    private OneBotWcfHttpUtils() {
-    }
 
     private static String getRequest(String botNumber, String path) {
         BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
@@ -42,34 +42,59 @@ public class OneBotWcfHttpUtils {
                 .execute().body();
     }
 
-    public static String getLoginInfo(String botNumber) {
+
+    @Override
+    public String getLoginInfo(String botNumber) {
         String res = getRequest(botNumber, OneBotWcfConstants.USERINFO);
         return JSONUtil.parseObj(res).getJSONObject("data").toStringPretty();
     }
 
-    public static String getGroupList(String botNumber) {
+    @Override
+    public String getGroupList(String botNumber) {
         String res = getRequest(botNumber, OneBotWcfConstants.CONTACTS);
         JSONArray contacts = JSONUtil.parseObj(res).getJSONArray("data");
         JSONArray array = JSONUtil.createArray();
-        for (Object obj: contacts){
+        for (Object obj : contacts) {
             JSONObject js = JSONUtil.parseObj(obj);
             String wxid = js.getStr("wxid");
-            if(StrUtil.endWith(wxid,"@chatroom")){
+            if (StrUtil.endWith(wxid, "@chatroom")) {
                 array.add(obj);
             }
         }
         return array.toStringPretty();
     }
 
-    public static void sendMessage(String botNumber, String receiver, String message) {
+    @Override
+    public void sendGroupMessage(String botNumber, String groupId, String message) {
         JSONObject body = JSONUtil.createObj();
-        body.set("aters","");
-        body.set("receiver","receiver");
-        body.set("msg","message");
-        postRequest(botNumber,"/text",body);
+        body.set("aters", "");
+        body.set("receiver", "receiver");
+        body.set("msg", "message");
+        postRequest(botNumber, "/text", body);
     }
 
-    public static void deleteMsg(String botNumber, String messageId) {
-        getRequest(botNumber,"revoke-msg?id="+messageId);
+    @Override
+    public void sendGroupFile(String botNumber, String groupId, String filePath) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void deleteMsg(String botNumber, String messageId) {
+        getRequest(botNumber, "revoke-msg?id=" + messageId);
+    }
+
+    @Override
+    public void setGroupBan(String botNumber, String groupId, String userId, Long duration) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void setGroupWholeBan(String botNumber, String groupId, boolean enable) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void setGroupKick(String botNumber, String groupId, String userId, boolean rejectAddRequest) {
+        throw new BaseException("暂不支持的api");
     }
 }

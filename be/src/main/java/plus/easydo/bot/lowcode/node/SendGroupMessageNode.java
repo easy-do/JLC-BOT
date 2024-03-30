@@ -35,7 +35,7 @@ public class SendGroupMessageNode extends NodeComponent {
                 String botNumber = paramJson.getStr(OneBotConstants.SELF_ID);
                 String groupId = paramJson.getStr(OneBotConstants.GROUP_ID);
                 message = ParamReplaceUtils.replaceParam(message, paramJson);
-                OneBotApiUtils.sendGroupMessage(botNumber, groupId, message, true);
+                OneBotApiUtils.sendGroupMessage(botNumber, groupId, message);
             } else {
                 log.warn("发送群消息节点未完整执行,原因:没有找到要发送的消息配置");
                 throw new BaseException("没有找到要发送的消息配置");

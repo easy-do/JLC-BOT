@@ -40,27 +40,31 @@ public class WcfRunner implements ApplicationRunner {
         String os = System.getProperty("os.name");
         //如果是windows则启动
         if (os.toLowerCase().startsWith("win")) {
-            // 本地启动 RPC
-            Client client = new Client(true); // 默认 10086 端口
-            OneBotWcfClientUtils.saveClient(client);
-            // 接收消息，并调用 printWxMsg 处理
-            client.enableRecvMsg(100);
-            log.info("wcf启动完成");
-            Thread thread = new Thread(() -> {
-                log.info("开始监听wcf消息");
-                while (client.getIsReceivingMsg()) {
-                    Wcf.WxMsg msg = client.getMsg();
-                    try {
-                        JSONObject messageJson = wcfAdApter(msg, client);
-                        CompletableFuture.runAsync(()->botPostLogServiceManager.saveLog(messageJson));
-                        CompletableFuture.runAsync(()->oneBotService.handlerPost(messageJson));
-                    }catch (Exception e){
-                        log.error("wcf消息处理异常,{}", ExceptionUtil.getMessage(e));
+            try {
+                // 本地启动 RPC
+                Client client = new Client(true); // 默认 10086 端口
+                OneBotWcfClientUtils.saveClient(client);
+                // 接收消息，并调用 printWxMsg 处理
+                client.enableRecvMsg(100);
+                log.info("wcf启动完成");
+                Thread thread = new Thread(() -> {
+                    log.info("开始监听wcf消息");
+                    while (client.getIsReceivingMsg()) {
+                        Wcf.WxMsg msg = client.getMsg();
+                        try {
+                            JSONObject messageJson = wcfAdApter(msg, client);
+                            CompletableFuture.runAsync(()->botPostLogServiceManager.saveLog(messageJson));
+                            CompletableFuture.runAsync(()->oneBotService.handlerPost(messageJson));
+                        }catch (Exception e){
+                            log.error("wcf消息处理异常,{}", ExceptionUtil.getMessage(e));
+                        }
                     }
-                }
-            });
-            thread.start();
-            client.keepRunning();
+                });
+                thread.start();
+                client.keepRunning();
+            }catch (Exception e){
+                log.error("初始化wcf失败:{}",ExceptionUtil.getMessage(e));
+            }
         }else {
             log.warn("非windows运行,不启动wcf");
         }

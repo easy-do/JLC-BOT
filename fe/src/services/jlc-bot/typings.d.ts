@@ -34,6 +34,9 @@ declare namespace API {
     botUrl?: string;
     lastHeartbeatTime?: string;
     extData?: string;
+    postType?: string;
+    invokeType?: string;
+    platform?: string;
   };
 
   type BotMessage = {
@@ -202,6 +205,12 @@ declare namespace API {
     stripTrailingZeros?: boolean;
     checkDuplicate?: boolean;
     order?: boolean;
+  };
+
+  type JSONObject = {
+    raw?: Record<string, any>;
+    config?: JSONConfig;
+    empty?: boolean;
   };
 
   type LoginDto = {
@@ -530,5 +539,26 @@ declare namespace API {
     confName?: string;
     confType?: number;
     confKey?: string;
+  };
+
+  type wcfPost2Params = {
+    token: string;
+  };
+
+  type wcfPost3Params = {
+    token: string;
+  };
+
+  type wcfPost4Params = {
+    token: string;
+  };
+
+  type wcfPost5Params = {
+    token: string;
+  };
+
+  type wcfPostParams = {
+    postData: JSONObject;
+    token: string;
   };
 }
