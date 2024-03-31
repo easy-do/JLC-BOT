@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.util.BotConfUtil;
+import plus.easydo.bot.util.ParamReplaceUtils;
 
 import java.util.List;
 import java.util.Objects;
@@ -37,15 +38,7 @@ public class BotConfNode extends NodeComponent {
             String type = confJson.getStr("type");
             if(Objects.nonNull(confKey) && Objects.nonNull(confValue) && Objects.nonNull(type)){
                 String dbConfValue = BotConfUtil.getBotConfNull(botNumber, confKey);
-                //            "override": {
-                //            "remove": {
-                //            "noOverride": {
-                //            "subAppend": {
-                //            "afterAppend": {
-                //            "toListAdd": {
-                //            "subRemove": {
-                //            "afterRemove": {
-                //            "toListRemove": {
+                confValue = ParamReplaceUtils.replaceParam(confValue,paramJson);
                 switch (type) {
                     case "override" -> BotConfUtil.saveBotConf(botNumber,confKey,confValue);
                     case "noOverride" -> {
