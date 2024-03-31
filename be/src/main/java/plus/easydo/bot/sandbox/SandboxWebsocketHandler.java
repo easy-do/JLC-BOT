@@ -3,7 +3,6 @@ package plus.easydo.bot.sandbox;
 
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
@@ -12,7 +11,6 @@ import cn.hutool.extra.spring.SpringUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.annotation.Bean;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
@@ -25,7 +23,6 @@ import plus.easydo.bot.websocket.OneBotService;
 
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
-import java.util.concurrent.LinkedBlockingDeque;
 
 /**
  * @author laoyu
@@ -38,7 +35,7 @@ public class SandboxWebsocketHandler implements WebSocketHandler {
 
     private static final ConcurrentLinkedDeque<WebSocketSession> CONCURRENT_LINKED_DEQUE = new ConcurrentLinkedDeque<>();
 
-    private static final Cache<String,SandboxMessage> MESSAGE_CACHE = CacheUtil.newFIFOCache(100);
+    private static final Cache<String,SandboxMessage> MESSAGE_CACHE = CacheUtil.newFIFOCache(50);
 
     private static OneBotService oneBotService;
 
@@ -52,8 +49,10 @@ public class SandboxWebsocketHandler implements WebSocketHandler {
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        saveSession(session);
         log.info("沙箱客户端连接:" + session.getId());
+        CONCURRENT_LINKED_DEQUE.forEach(value-> closeSession(value));
+        CONCURRENT_LINKED_DEQUE.clear();
+        saveSession(session);
         for (SandboxMessage sandboxMessage : MESSAGE_CACHE){
             sendMessageNotCache(session,sandboxMessage);
         }
@@ -107,6 +106,13 @@ public class SandboxWebsocketHandler implements WebSocketHandler {
                 log.error("沙箱:广播消息失败->{},{}", session.getId(), ExceptionUtil.getMessage(exception));
             }
         });
+    }
+
+    private void closeSession(WebSocketSession session){
+        try {
+            session.close();
+        }catch (Exception e){
+        }
     }
 
     public static void cacheMessage(SandboxMessage message){

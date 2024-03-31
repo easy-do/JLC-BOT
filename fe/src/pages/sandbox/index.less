@@ -1,0 +1,108 @@
+.chatRoom {
+  padding: 14px;
+  margin-top: 20px;
+  border: 1px solid #006fde;
+  border-radius: 4px;
+  background: rgba(239, 247, 260, .5);
+
+  .chatContent {
+    // background-color: rgb(240, 244, 250);
+    height: 500px;
+    overflow: auto;
+
+    .chatLeft {
+      display: flex;
+      margin-bottom: 20px;
+
+      .text::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        bottom: 0;
+        left: -6.3px;
+        border: 1px solid #EEEEEE;
+        border-radius: 3px;
+        width: 10px;
+        height: 10px;
+        background: #fff;
+        transform: rotate(45deg);
+        border-right: transparent;
+        border-top: transparent;
+        .messaheImg{
+        width: 450px;
+        height: 450px;
+      }
+      }
+
+    }
+
+    .chatRight {
+      display: flex;
+      flex-direction: row-reverse;
+      margin-bottom: 20px;
+
+      .info {
+        text-align: right;
+      }
+
+      .text::after {
+        content: "";
+        position: absolute;
+        top: 10px;
+        bottom: 0;
+        right: -6.3px;
+        border: 1px solid #EEEEEE;
+        border-radius: 3px;
+        width: 10px;
+        height: 10px;
+        background: #fff;
+        transform: rotate(45deg);
+        border-left: transparent;
+        border-bottom: transparent;
+      }
+    }
+
+    img {
+      width: 45px;
+      height: 45px;
+      border-radius: 50%;
+    }
+
+    .info {
+      margin: 0 12px;
+
+      .name {
+        font-size: 16px;
+      }
+
+      .textCon {
+        position: relative;
+
+        .text {
+          position: relative;
+          display: inline-block;
+          max-width: 999px;
+          padding: 8px 12px;
+          border: 1px solid #EEEEEE;
+          border-radius: 5px;
+          background: #FFFFFF;
+        }
+
+        .image {
+          height: 300px;
+          width: 300px;
+          border: 1px;
+        }
+      }
+    }
+  }
+
+  .inputArea {
+    position: relative;
+
+    button {
+      position: absolute;
+      right: 0;
+    }
+  }
+}

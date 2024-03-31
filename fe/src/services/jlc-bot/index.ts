@@ -5,7 +5,6 @@
 import * as userController from './userController';
 import * as jobController from './jobController';
 import * as lowCodeSysNodeController from './lowCodeSysNodeController';
-import * as sandBoxController from './sandBoxController';
 import * as oneBotController from './oneBotController';
 import * as lowCodeController from './lowCodeController';
 import * as systemConfController from './systemConfController';
@@ -17,7 +16,6 @@ export default {
   userController,
   jobController,
   lowCodeSysNodeController,
-  sandBoxController,
   oneBotController,
   lowCodeController,
   systemConfController,

@@ -25,8 +25,6 @@ import { updateNodeConf } from '@/services/jlc-bot/lowCodeController';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import NodeExecutetResultVivew from './nodeExecutetResultVivew';
 
-import styles from './index.less';
-
 
 function EditNodeConf(props: { location: { search: string | string[][] | Record<string, string> | URLSearchParams | undefined; }; }) {
   let graph: Graph;
@@ -86,49 +84,7 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
   const [isDebuModalOpen, setIsDebuModalOpen] = useState(false);
   const [debugResultData, setDebugResultData] = useState<API.CmpStepResult[]>([]);
 
-  // 沙箱弹框a
-  const [sandboxOpen, setSandboxOpen] = useState(false);
-  const [websocket, setWebsocket] = useState<WebSocket>();
-  const [sandboxMessageList, setSandboxMessageList] = useState([]);
-  const [messageInput, setMessageInput] = useState<string>();
-  const chatContent = useRef<HTMLDivElement>(null)
 
-
-  const createSandbox = () => {
-    const ws = new WebSocket('ws://localhost:8888/ws/sandbox');
-    setSandboxMessageList([]);
-    ws.onopen = () => {
-      console.log('WebSocket connected');
-      if (websocket) {
-        websocket.close();
-      }
-      setWebsocket(ws);
-    }
-    ws.onmessage = (message) => {
-      const a = sandboxMessageList;
-      a.push(JSON.parse(message.data));
-      setSandboxMessageList(a);
-      chatContent.current.scrollTop = chatContent.current?.scrollHeight
-    }
-    ws.onerror = (error) => console.error('WebSocket error:', error);
-    ws.onclose = () => console.log('WebSocket disconnected');
-
-    setSandboxOpen(true);
-  }
-
-  const changeMessageInput = (e: any) => {
-    setMessageInput(e.target.value);
-    chatContent.current.scrollTop = chatContent.current?.scrollHeight
-  }
-
-  const sendSandboxMessage = () => {
-    if (!messageInput || messageInput == '') {
-      message.warn('请先输入消息');
-      return;
-    }
-    websocket?.send(messageInput);
-    setMessageInput(undefined);
-  }
 
   // 初始化antvx的window开发工具hook
   // window.__x6_instances__ = [];
@@ -507,22 +463,6 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
         >
           调试
         </Button>
-        <Button
-          type="primary"
-          icon={<PlayCircleOutlined />}
-          style={{
-            position: 'fixed',
-            cursor: 'pointer',
-            right: '0',
-            top: '400px',
-            zIndex: 99,
-          }}
-          onClick={() => {
-            createSandbox(true);
-          }}
-        >
-          沙箱
-        </Button>
         <ModalForm
           modalProps={{
             destroyOnClose: true,
@@ -628,59 +568,6 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
             ]}
           />
         </ModalForm>
-        <Modal
-          open={sandboxOpen}
-          onCancel={() => {
-            setSandboxOpen(false);
-            websocket?.close();
-            setSandboxMessageList([]);
-          }}
-          okText={undefined}
-          destroyOnClose
-          title={'沙箱测试'}
-          footer={null}
-          style={{ minHeight: '50%', minWidth: '30%' }}
-        >
-          <div className={styles.chatRoom}>
-            <div className={styles.chatContent} ref={chatContent}>
-              {sandboxMessageList?.map((chatItem) => {
-                if (!chatItem?.isSelf) {
-                  return (
-                    <div className={styles.chatLeft}>
-                      {/* <img src={(chatItem?.isSelf ? chatItem?.expertImgUrl : chatItem?.userImgUrl) ?? 'jlc'} alt="" /> */}
-                      <div className={styles.info}>
-                        <div className={styles.name}>{'JLC-BOT'}</div>
-                        <div className={styles.textCon}>
-                          <div className={styles.text}>{chatItem?.message}</div>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                } else {
-                  return (
-                    <div className={styles.chatRight}>
-                      {/* <img src={(chatItem?.isSelf ? chatItem?.userImgUrl : chatItem?.expertImgUrl) ?? 'me'} alt="" /> */}
-                      <div className={styles.info}>
-                        <div className={styles.name}>{'我'}</div>
-                        <div className={styles.textCon}>
-                          <div className={styles.text}>{chatItem?.message}</div>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                }
-              })}
-            </div>
-            <div className={styles.inputArea}>
-              <Input placeholder="请输入内容" size="large" onKeyDown={(event)=>{
-                if(event.key == 'Enter' && messageInput && messageInput != ''){
-                  sendSandboxMessage();
-                }
-              }} value={messageInput} onChange={(e: any) => changeMessageInput(e)} />
-              <Button size="large" type="primary" onClick={sendSandboxMessage}>发送</Button>
-            </div>
-          </div>
-        </Modal>
       </div>
     </PageContainer>
   );

@@ -62,8 +62,8 @@ public class Client {
             String cmdUrl = "tcp://" + host + ":" + port;
             connectRPC(cmdUrl);
         } catch (Exception e) {
-            log.error("初始化失败: {}", e);
-            System.exit(-1);
+            log.error("wcf初始化失败: {}", e);
+//            System.exit(-1);
         }
     }
 

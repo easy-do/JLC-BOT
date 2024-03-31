@@ -89,6 +89,10 @@ export default defineConfig({
       component: './systemJob',
     },
     {
+      path: '/sandbox',
+      component: './sandbox',
+    },
+    {
       component: '404',
     },
   ],

@@ -1,6 +1,5 @@
 package plus.easydo.bot.service;
 
-import cn.hutool.json.JSONObject;
 
 /**
  * @author yuzhanfeng
@@ -8,5 +7,4 @@ import cn.hutool.json.JSONObject;
  * @Description 沙箱服务
  */
 public interface SandboxService {
-    boolean sendMessage(JSONObject message);
 }

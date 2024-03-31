@@ -1,13 +1,17 @@
 package plus.easydo.bot.service.impl;
 
+import cn.hutool.core.codec.Base64;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.lang.UUID;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONUtil;
 import org.springframework.stereotype.Service;
+import oshi.util.FileUtil;
 import plus.easydo.bot.sandbox.SandboxMessage;
 import plus.easydo.bot.sandbox.SandboxWebsocketHandler;
 import plus.easydo.bot.service.OneBotApiService;
+import plus.easydo.bot.util.FileUtils;
 import plus.easydo.bot.util.OneBotUtils;
 
 /**
@@ -37,7 +41,7 @@ public class OneBotApiSandboxServiceImpl implements OneBotApiService {
 
     @Override
     public String getGroupList(String botNumber) {
-        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "沙箱群组为空"));
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "获取群组列表"));
         return "[]";
     }
 
@@ -49,7 +53,20 @@ public class OneBotApiSandboxServiceImpl implements OneBotApiService {
 
     @Override
     public void sendGroupFile(String botNumber, String groupId, String filePath) {
-        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("file", filePath));
+        String type = "file";
+        if(StrUtil.endWith(filePath,".jpg")){
+            type = "image";
+            if(!StrUtil.startWith(filePath,"http")){
+                byte[] bytes = FileUtil.readAllBytes(filePath);
+                filePath = ("data:image/png;base64,"+Base64.encode(bytes));
+            }
+        }
+        if(StrUtil.endWith(filePath,".mp4")){
+            type = "video";
+            byte[] bytes = FileUtil.readAllBytes(filePath);
+            filePath = ("data:video/mp4;base64,"+Base64.encode(bytes));
+        }
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage(type, filePath));
     }
 
     @Override
@@ -59,18 +76,18 @@ public class OneBotApiSandboxServiceImpl implements OneBotApiService {
 
     @Override
     public void setGroupBan(String botNumber, String groupId, String userId, Long duration) {
-        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "禁言群组[" + groupId + "]用户[" + userId + "]" + duration + "毫秒"));
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "禁言群组[" + groupId + "]的用户[" + userId + "]" + duration + "毫秒"));
     }
 
     @Override
     public void setGroupWholeBan(String botNumber, String groupId, boolean enable) {
-        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", enable ? "开启全体禁言" : "关闭全体禁言"));
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", enable ? "开启群组全体禁言" : "关闭群组全体禁言"));
     }
 
     @Override
     public void setGroupKick(String botNumber, String groupId, String userId, boolean rejectAddRequest) {
         String rejectAddRequestText = rejectAddRequest ? "并拉黑" : "不拉黑";
-        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "移出群组[" + groupId + "]用户[" + userId + "]" + rejectAddRequestText));
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "将[" + groupId + "]用户[" + userId + "]移出群组" + rejectAddRequestText));
 
     }
 }

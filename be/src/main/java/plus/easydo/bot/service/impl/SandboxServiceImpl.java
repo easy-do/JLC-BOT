@@ -25,7 +25,6 @@ public class SandboxServiceImpl implements SandboxService {
 
     private final BotService botService;
 
-    private final OneBotService oneBotService;
 
     @PostConstruct
     public void initSandBoxBot() {
@@ -40,19 +39,5 @@ public class SandboxServiceImpl implements SandboxService {
                     .build();
             botService.addBot(botInfo);
         }
-    }
-
-
-    @Override
-    public boolean sendMessage(JSONObject message) {
-        oneBotService.handlerPost(message);
-//        SandboxMessage sandboxMessage = SandboxMessage.builder()
-//                .isSelf(true)
-//                .type("text")
-//                .message(message.getStr(OneBotConstants.MESSAGE))
-//                .date(LocalDateTimeUtil.format(LocalDateTimeUtil.now(), DatePattern.NORM_DATETIME_PATTERN))
-//                .build();
-//        SandboxWebsocketHandler.sendMessage(sandboxMessage);
-        return false;
     }
 }
