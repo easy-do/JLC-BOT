@@ -1,7 +1,6 @@
 package plus.easydo.bot.websocket.handler.message;
 
 import org.springframework.stereotype.Component;
-import plus.easydo.bot.websocket.model.OneBotSender;
 
 
 /**

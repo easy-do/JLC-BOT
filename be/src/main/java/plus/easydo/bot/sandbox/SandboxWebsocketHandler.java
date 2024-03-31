@@ -35,12 +35,12 @@ public class SandboxWebsocketHandler implements WebSocketHandler {
 
     private static final ConcurrentLinkedDeque<WebSocketSession> CONCURRENT_LINKED_DEQUE = new ConcurrentLinkedDeque<>();
 
-    private static final Cache<String,SandboxMessage> MESSAGE_CACHE = CacheUtil.newFIFOCache(50);
+    private static final Cache<String, SandboxMessage> MESSAGE_CACHE = CacheUtil.newFIFOCache(50);
 
     private static OneBotService oneBotService;
 
-    public static OneBotService getOneBotService(){
-        if(Objects.isNull(oneBotService)){
+    public static OneBotService getOneBotService() {
+        if (Objects.isNull(oneBotService)) {
             oneBotService = SpringUtil.getBean(OneBotService.class);
         }
         return oneBotService;
@@ -50,11 +50,11 @@ public class SandboxWebsocketHandler implements WebSocketHandler {
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
         log.info("沙箱客户端连接:" + session.getId());
-        CONCURRENT_LINKED_DEQUE.forEach(value-> closeSession(value));
+        CONCURRENT_LINKED_DEQUE.forEach(value -> closeSession(value));
         CONCURRENT_LINKED_DEQUE.clear();
         saveSession(session);
-        for (SandboxMessage sandboxMessage : MESSAGE_CACHE){
-            sendMessageNotCache(session,sandboxMessage);
+        for (SandboxMessage sandboxMessage : MESSAGE_CACHE) {
+            sendMessageNotCache(session, sandboxMessage);
         }
     }
 
@@ -70,18 +70,18 @@ public class SandboxWebsocketHandler implements WebSocketHandler {
                 .time(LocalDateTimeUtil.format(LocalDateTimeUtil.now(), DatePattern.NORM_DATETIME_PATTERN))
                 .build();
         cacheMessage(sandboxMessage);
-        sendMessageNotCache(session,sandboxMessage);
+        sendMessageNotCache(session, sandboxMessage);
         JSONObject jsonObject = JSONUtil.parseObj(sandboxMessage);
-        jsonObject.set(OneBotConstants.SELF_ID,"jlc-bot-sandbox");
-        jsonObject.set(OneBotConstants.GROUP_ID,"jlc-bot-sandbox");
-        jsonObject.set(OneBotConstants.MESSAGE,textMessage);
-        jsonObject.set(OneBotConstants.RAW_MESSAGE,textMessage);
+        jsonObject.set(OneBotConstants.SELF_ID, "jlc-bot-sandbox");
+        jsonObject.set(OneBotConstants.GROUP_ID, "jlc-bot-sandbox");
+        jsonObject.set(OneBotConstants.MESSAGE, textMessage);
+        jsonObject.set(OneBotConstants.RAW_MESSAGE, textMessage);
         jsonObject.set(OneBotConstants.POST_TYPE, OneBotPostTypeEnum.MESSAGE.getType());
         jsonObject.set(OneBotConstants.MESSAGE_TYPE, OneBotPostMessageTypeEnum.GROUP.getType());
         getOneBotService().handlerPost(jsonObject);
     }
 
-    public static void sendMessageNotCache(WebSocketSession session, SandboxMessage message){
+    public static void sendMessageNotCache(WebSocketSession session, SandboxMessage message) {
         String str = JSONUtil.toJsonStr(message);
         WebSocketMessage<?> textMessage = new TextMessage(str);
         try {
@@ -90,16 +90,17 @@ public class SandboxWebsocketHandler implements WebSocketHandler {
             log.error("沙箱:广播消息失败->{},{}", session.getId(), ExceptionUtil.getMessage(exception));
         }
     }
-    public static void sendMessage(WebSocketSession session, SandboxMessage message){
+
+    public static void sendMessage(WebSocketSession session, SandboxMessage message) {
         cacheMessage(message);
-        sendMessageNotCache(session,message);
+        sendMessageNotCache(session, message);
     }
 
-    public static void sendMessage(SandboxMessage message){
+    public static void sendMessage(SandboxMessage message) {
         cacheMessage(message);
         String str = JSONUtil.toJsonStr(message);
         WebSocketMessage<?> textMessage = new TextMessage(str);
-        CONCURRENT_LINKED_DEQUE.forEach(session->{
+        CONCURRENT_LINKED_DEQUE.forEach(session -> {
             try {
                 session.sendMessage(textMessage);
             } catch (Exception exception) {
@@ -108,22 +109,22 @@ public class SandboxWebsocketHandler implements WebSocketHandler {
         });
     }
 
-    private void closeSession(WebSocketSession session){
+    private void closeSession(WebSocketSession session) {
         try {
             session.close();
-        }catch (Exception e){
+        } catch (Exception e) {
         }
     }
 
-    public static void cacheMessage(SandboxMessage message){
+    public static void cacheMessage(SandboxMessage message) {
         MESSAGE_CACHE.put(message.getMessageId(), message);
     }
 
-    private void saveSession(WebSocketSession session){
+    private void saveSession(WebSocketSession session) {
         CONCURRENT_LINKED_DEQUE.add(session);
     }
 
-    private void removeSession(WebSocketSession session){
+    private void removeSession(WebSocketSession session) {
         CONCURRENT_LINKED_DEQUE.remove(session);
     }
 
@@ -137,7 +138,7 @@ public class SandboxWebsocketHandler implements WebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-        log.warn("沙箱客户端断开连接:{},断开编码：{}" , session.getId(),closeStatus.getCode());
+        log.warn("沙箱客户端断开连接:{},断开编码：{}", session.getId(), closeStatus.getCode());
         removeSession(session);
 
     }

@@ -46,7 +46,7 @@ public class BotScriptController {
     /**
      * 所有脚本列表
      *
-     * @return vo.plus.easydo.lowcode.bot.R<java.util.List<plus.easydo.bot.entity.BotEventScript>>
+     * @return vo.plus.easydo.lowcode.bot.R<java.util.List < plus.easydo.bot.entity.BotEventScript>>
      * @author laoyu
      * @date 2024/2/24
      */

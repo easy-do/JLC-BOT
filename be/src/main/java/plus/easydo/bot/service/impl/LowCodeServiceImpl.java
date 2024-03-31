@@ -13,20 +13,20 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import plus.easydo.bot.entity.LowCodeNodeConf;
-import plus.easydo.bot.exception.BaseException;
-import plus.easydo.bot.entity.LowCodeBotNode;
-import plus.easydo.bot.lowcode.model.CmpStepResult;
-import plus.easydo.bot.lowcode.node.JLCLiteFlowContext;
-import plus.easydo.bot.lowcode.node.LiteFlowNodeExecuteServer;
-import plus.easydo.bot.manager.LowCodeBotNodeManager;
-import plus.easydo.bot.manager.LowCodeNodeConfManager;
 import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.dto.DebugBotNodeDto;
 import plus.easydo.bot.dto.SetBotNodeDto;
-import plus.easydo.bot.service.LowCodeService;
+import plus.easydo.bot.entity.LowCodeBotNode;
+import plus.easydo.bot.entity.LowCodeNodeConf;
+import plus.easydo.bot.exception.BaseException;
+import plus.easydo.bot.lowcode.model.CmpStepResult;
+import plus.easydo.bot.lowcode.node.JLCLiteFlowContext;
+import plus.easydo.bot.lowcode.node.LiteFlowNodeExecuteServer;
 import plus.easydo.bot.manager.CacheManager;
+import plus.easydo.bot.manager.LowCodeBotNodeManager;
+import plus.easydo.bot.manager.LowCodeNodeConfManager;
 import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.service.LowCodeService;
 import plus.easydo.bot.util.OneBotUtils;
 
 import java.util.ArrayList;
@@ -63,7 +63,7 @@ public class LowCodeServiceImpl implements LowCodeService {
                 .createTime(LocalDateTimeUtil.now())
                 .build();
         boolean res = lowCodeNodeConfManager.save(lowCodeNodeConf);
-        if(res){
+        if (res) {
             initLowCodeNodeCache();
         }
         return lowCodeNodeConf.getId();
@@ -80,7 +80,7 @@ public class LowCodeServiceImpl implements LowCodeService {
                 .updateTime(LocalDateTimeUtil.now())
                 .build();
         boolean res = lowCodeNodeConfManager.updateById(lowCodeNodeConf);
-        if(res){
+        if (res) {
             initLowCodeNodeCache();
         }
         return res;
@@ -89,7 +89,7 @@ public class LowCodeServiceImpl implements LowCodeService {
     @Override
     public BotNodeDto getNodeConf(Long id) {
         LowCodeNodeConf conf = lowCodeNodeConfManager.getById(id);
-        if(Objects.isNull(conf)){
+        if (Objects.isNull(conf)) {
             throw new BaseException("配置不存在");
         }
         return BotNodeDto.builder()
@@ -109,7 +109,7 @@ public class LowCodeServiceImpl implements LowCodeService {
     @Override
     public boolean removeNodeConf(Long id) {
         boolean res = lowCodeNodeConfManager.removeById(id);
-        if(res){
+        if (res) {
             initLowCodeNodeCache();
         }
         return res;
@@ -118,7 +118,7 @@ public class LowCodeServiceImpl implements LowCodeService {
     @Override
     public List<CmpStepResult> debugNodeConf(DebugBotNodeDto debugBotNodeDto) {
         LowCodeNodeConf conf = lowCodeNodeConfManager.getById(debugBotNodeDto.getId());
-        if(Objects.isNull(conf)){
+        if (Objects.isNull(conf)) {
             throw new BaseException("配置不存在");
         }
 
@@ -126,16 +126,16 @@ public class LowCodeServiceImpl implements LowCodeService {
         JSONObject paramsJson = JSONUtil.parseObj(debugBotNodeDto.getParams());
         OneBotUtils.parseMessage(paramsJson, log);
 
-        LiteflowResponse res = liteFlowNodeExecuteServer.execute(conf,paramsJson);
+        LiteflowResponse res = liteFlowNodeExecuteServer.execute(conf, paramsJson);
         Queue<CmpStep> cmpSteps = res.getExecuteStepQueue();
         JLCLiteFlowContext context = res.getContextBean(JLCLiteFlowContext.class);
         Map<String, JSONObject> paramCache = context.getNodeParamCache();
         List<CmpStepResult> resultList = new ArrayList<>();
-        for (CmpStep cmpStep: cmpSteps){
+        for (CmpStep cmpStep : cmpSteps) {
             CmpStepResult cmpStepResult = BeanUtil.copyProperties(cmpStep, CmpStepResult.class);
             Node node = cmpStep.getRefNode();
             cmpStepResult.setParam(paramCache.get(node.getTag()));
-            if(!cmpStep.isSuccess()){
+            if (!cmpStep.isSuccess()) {
                 cmpStepResult.setMessage(ExceptionUtil.getMessage(cmpStep.getException()));
             }
             resultList.add(cmpStepResult);
@@ -146,16 +146,16 @@ public class LowCodeServiceImpl implements LowCodeService {
     @Override
     public boolean setBotNode(SetBotNodeDto setBotNodeDto) {
         Long botId = setBotNodeDto.getBotId();
-        if(Objects.isNull(botId)){
+        if (Objects.isNull(botId)) {
             throw new BaseException("机器人id不能为空");
         }
         List<Long> confIdList = setBotNodeDto.getConfIdList();
-        if(Objects.isNull(confIdList) || confIdList.isEmpty()){
+        if (Objects.isNull(confIdList) || confIdList.isEmpty()) {
             return lowCodeBotNodeManager.clearBotConf(botId);
         }
         lowCodeBotNodeManager.clearBotConf(botId);
         boolean res = lowCodeBotNodeManager.saveBotConf(botId, confIdList);
-        if(res){
+        if (res) {
             initLowCodeNodeCache();
         }
         return res;
@@ -175,7 +175,7 @@ public class LowCodeServiceImpl implements LowCodeService {
     @Override
     public Long copyNodeConf(Long id) {
         BotNodeDto nodeConf = getNodeConf(id);
-        nodeConf.setConfName("副本-"+nodeConf.getConfName());
+        nodeConf.setConfName("副本-" + nodeConf.getConfName());
         return saveNodeConf(nodeConf);
     }
 
@@ -185,12 +185,12 @@ public class LowCodeServiceImpl implements LowCodeService {
         //缓存节点配置缓存
         List<LowCodeNodeConf> confList = lowCodeNodeConfManager.list();
         CacheManager.NODE_CONF_CACHE.clear();
-        confList.forEach(conf-> CacheManager.NODE_CONF_CACHE.put(conf.getId(),conf));
+        confList.forEach(conf -> CacheManager.NODE_CONF_CACHE.put(conf.getId(), conf));
         //缓存机器人与节点关联缓存
         List<LowCodeBotNode> list = lowCodeBotNodeManager.list();
         Map<Long, List<LowCodeBotNode>> groupMap = list.stream().collect(Collectors.groupingBy(LowCodeBotNode::getBotId));
         CacheManager.BOT_NODE_CONF_CACHE.clear();
-        groupMap.forEach((key,value)-> CacheManager.BOT_NODE_CONF_CACHE.put(key,value.stream().map(LowCodeBotNode::getConfId).toList()));
+        groupMap.forEach((key, value) -> CacheManager.BOT_NODE_CONF_CACHE.put(key, value.stream().map(LowCodeBotNode::getConfId).toList()));
     }
 
 

@@ -183,6 +183,7 @@ public class BotController {
 
     /**
      * 开启脚本
+     *
      * @param enableBotScriptDto
      * @return
      */
@@ -197,7 +198,7 @@ public class BotController {
      * 已开启脚本
      *
      * @param id id
-     * @return vo.plus.easydo.lowcode.bot.R<java.util.List<java.lang.Long>>
+     * @return vo.plus.easydo.lowcode.bot.R<java.util.List < java.lang.Long>>
      * @author laoyu
      * @date 2024/2/24
      */

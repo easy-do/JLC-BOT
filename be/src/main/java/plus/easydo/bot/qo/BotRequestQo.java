@@ -1,6 +1,8 @@
 package plus.easydo.bot.qo;
 
-import lombok.*;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 
@@ -13,7 +15,7 @@ import java.time.LocalDateTime;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class BotRequestQo extends PageQo{
+public class BotRequestQo extends PageQo {
 
 
     /**

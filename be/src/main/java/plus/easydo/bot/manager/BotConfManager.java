@@ -28,7 +28,7 @@ public class BotConfManager extends ServiceImpl<BotConfMapper, BotConf> {
     public BotConf getByBotNumberAndKey(String botNumber, String key) {
         QueryWrapper queryWrapper = query().and(BOT_CONF.BOT_NUMBER.eq(botNumber)).and(BOT_CONF.CONF_KEY.eq(key));
         List<BotConf> res = list(queryWrapper);
-        if(!res.isEmpty()){
+        if (!res.isEmpty()) {
             return res.get(0);
         }
         return null;

@@ -23,11 +23,11 @@ import static plus.easydo.bot.entity.table.BotEventScriptTableDef.BOT_EVENT_SCRI
 public class BotEventScriptManager extends ServiceImpl<BotEventScriptMapper, BotEventScript> {
 
     public List<BotEventScript> listAll() {
-        return list(query().select(BOT_EVENT_SCRIPT.ID,BOT_EVENT_SCRIPT.EVENT_TYPE,BOT_EVENT_SCRIPT.SCRIPT_NAME,BOT_EVENT_SCRIPT.REMARK));
+        return list(query().select(BOT_EVENT_SCRIPT.ID, BOT_EVENT_SCRIPT.EVENT_TYPE, BOT_EVENT_SCRIPT.SCRIPT_NAME, BOT_EVENT_SCRIPT.REMARK));
     }
 
     public Page<BotEventScript> pageBotScript(BotEventScriptQo botEventScriptQo) {
-        QueryWrapper queryWrapper = query().select(BOT_EVENT_SCRIPT.ID,BOT_EVENT_SCRIPT.EVENT_TYPE,BOT_EVENT_SCRIPT.SCRIPT_TYPE,BOT_EVENT_SCRIPT.SCRIPT_NAME,BOT_EVENT_SCRIPT.REMARK);
-        return page(new Page<>(botEventScriptQo.getCurrent(), botEventScriptQo.getPageSize()),queryWrapper);
+        QueryWrapper queryWrapper = query().select(BOT_EVENT_SCRIPT.ID, BOT_EVENT_SCRIPT.EVENT_TYPE, BOT_EVENT_SCRIPT.SCRIPT_TYPE, BOT_EVENT_SCRIPT.SCRIPT_NAME, BOT_EVENT_SCRIPT.REMARK);
+        return page(new Page<>(botEventScriptQo.getCurrent(), botEventScriptQo.getPageSize()), queryWrapper);
     }
 }

@@ -9,10 +9,8 @@ import org.springframework.stereotype.Service;
 import plus.easydo.bot.constant.OneBotWcfConstants;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.exception.BaseException;
-import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.service.OneBotApiService;
-
-import java.util.Objects;
+import plus.easydo.bot.util.OneBotUtils;
 
 /**
  * @author yuzhanfeng
@@ -24,19 +22,13 @@ public class OneBotApiWcfHttpServiceImpl implements OneBotApiService {
 
 
     private static String getRequest(String botNumber, String path) {
-        BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
-        if (Objects.isNull(bot)) {
-            throw new BaseException("没有找到机器人[" + botNumber + "]信息");
-        }
+        BotInfo bot = OneBotUtils.getBotInfo(botNumber);
         return HttpRequest.get(bot.getBotUrl() + "/" + path)
                 .execute().body();
     }
 
     private static String postRequest(String botNumber, String path, JSONObject body) {
-        BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
-        if (Objects.isNull(bot)) {
-            throw new BaseException("没有找到机器人[" + botNumber + "]信息");
-        }
+        BotInfo bot = OneBotUtils.getBotInfo(botNumber);
         return HttpRequest.post(bot.getBotUrl() + "/" + path)
                 .body(body.toStringPretty())
                 .execute().body();

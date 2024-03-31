@@ -1,13 +1,13 @@
 package plus.easydo.bot.entity;
 
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Builder;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 /**
  * 系统节点信息 实体类。
@@ -81,7 +81,7 @@ public class LowCodeSysNode {
     /**
      * 删除标记
      */
-    @Column(value = "delete_flag",isLogicDelete = true)
+    @Column(value = "delete_flag", isLogicDelete = true)
     private Boolean deleteFlag;
 
 }

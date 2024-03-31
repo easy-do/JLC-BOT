@@ -120,7 +120,7 @@ public class LocalDateTimeUtils {
      * @date 2022/5/9
      */
     public static LocalDateTime lastStartTime(long day) {
-        return LocalDateTime.of(LocalDate.now().minus(day-1L, ChronoUnit.DAYS), LocalTime.MIN);
+        return LocalDateTime.of(LocalDate.now().minus(day - 1L, ChronoUnit.DAYS), LocalTime.MIN);
     }
 
     /**
@@ -261,7 +261,7 @@ public class LocalDateTimeUtils {
     }
 
     /**
-     *  指定年月份结束时间
+     * 指定年月份结束时间
      *
      * @return java.time.LocalDateTime
      * @author laoyu
@@ -584,7 +584,7 @@ public class LocalDateTimeUtils {
      * @date 2022/5/9
      */
     public static LocalDateTime nextYearStartTime() {
-        return LocalDateTime.of(LocalDate.now().plus(1L,    ChronoUnit.YEARS).with(TemporalAdjusters.firstDayOfYear()), LocalTime.MIN);
+        return LocalDateTime.of(LocalDate.now().plus(1L, ChronoUnit.YEARS).with(TemporalAdjusters.firstDayOfYear()), LocalTime.MIN);
     }
 
     /**
@@ -595,6 +595,6 @@ public class LocalDateTimeUtils {
      * @date 2022/5/9
      */
     public static LocalDateTime nextYearEndTime() {
-        return LocalDateTime.of(LocalDate.now().plus(1L,  			      ChronoUnit.YEARS).with(TemporalAdjusters.lastDayOfYear()), LocalTime.MAX);
+        return LocalDateTime.of(LocalDate.now().plus(1L, ChronoUnit.YEARS).with(TemporalAdjusters.lastDayOfYear()), LocalTime.MAX);
     }
 }

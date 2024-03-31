@@ -26,7 +26,7 @@ public class Base64OnSetListener implements SetListener {
 
     @Override
     public Object onSet(Object entity, String property, Object value) {
-        if(value != null && CharSequenceUtil.isNotBlank(value.toString()) && BASE64_FILED.contains(property) && Base64.isBase64(value.toString())){
+        if (value != null && CharSequenceUtil.isNotBlank(value.toString()) && BASE64_FILED.contains(property) && Base64.isBase64(value.toString())) {
             value = Base64.decodeStr(value.toString());
         }
         return value;

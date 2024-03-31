@@ -7,11 +7,11 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import plus.easydo.bot.service.SystemConfService;
 import plus.easydo.bot.entity.SystemConf;
-import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.mapper.GameConfigMapper;
 import plus.easydo.bot.qo.SystemConfigQo;
+import plus.easydo.bot.service.SystemConfService;
+import plus.easydo.bot.util.OneBotUtils;
 
 import java.util.List;
 
@@ -30,7 +30,6 @@ import static plus.easydo.bot.entity.table.SystemConfTableDef.SYSTEM_CONF;
 public class SystemConfServiceImpl extends ServiceImpl<GameConfigMapper, SystemConf> implements SystemConfService {
 
 
-
     @Override
     public Page<SystemConf> confPage(SystemConfigQo gameConfigQo) {
         QueryWrapper query = query()
@@ -42,8 +41,8 @@ public class SystemConfServiceImpl extends ServiceImpl<GameConfigMapper, SystemC
     @Override
     public boolean saveConf(SystemConf systemConf) {
         boolean result = save(systemConf);
-        if(result){
-            cacheGameConf();
+        if (result) {
+            cacheSystemConf();
         }
         return result;
     }
@@ -51,8 +50,8 @@ public class SystemConfServiceImpl extends ServiceImpl<GameConfigMapper, SystemC
     @Override
     public boolean updateConf(SystemConf systemConf) {
         boolean result = updateById(systemConf);
-        if(result){
-            cacheGameConf();
+        if (result) {
+            cacheSystemConf();
         }
         return result;
     }
@@ -65,12 +64,10 @@ public class SystemConfServiceImpl extends ServiceImpl<GameConfigMapper, SystemC
 
 
     @Override
-    public void cacheGameConf() {
+    public void cacheSystemConf() {
         log.info("初始化缓存游戏配置 start");
-        List<SystemConf> confList  = list();
-        CacheManager.GAME_CONF_LIST.clear();
-        CacheManager.GAME_CONF_LIST.addAll(confList);
-        confList.forEach(conf-> CacheManager.GAME_CONF_MAP.put(conf.getConfKey(),conf));
+        List<SystemConf> confList = list();
+        OneBotUtils.cacheSystemConf(confList);
         log.info("初始化缓存游戏配置 end");
     }
 }

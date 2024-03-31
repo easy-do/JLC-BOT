@@ -19,7 +19,7 @@ public class OneBotGroupMessageHandler {
 
     private final OneBotGroupAtMessageHandler groupAtMessageHandler;
 
-    public String handlerMessage(String botNumber, String groupId, String sender, String message){
+    public String handlerMessage(String botNumber, String groupId, String sender, String message) {
 
 
         return "";

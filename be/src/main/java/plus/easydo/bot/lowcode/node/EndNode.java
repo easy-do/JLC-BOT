@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
  * @date 2024-03-27
  */
 @Slf4j
-@LiteflowComponent(id="endNode",name="结束")
+@LiteflowComponent(id = "endNode", name = "结束")
 public class EndNode extends NodeComponent {
 
     @Override
@@ -22,6 +22,6 @@ public class EndNode extends NodeComponent {
     @Override
     public void onSuccess() throws Exception {
         JLCLiteFlowContext context = getContextBean(JLCLiteFlowContext.class);
-        context.getNodeParamCache().put(getTag(),context.getParam());
+        context.getNodeParamCache().put(getTag(), context.getParam());
     }
 }

@@ -10,8 +10,6 @@ import java.util.Objects;
 public enum OneBotPostNoticeNotifySubTypeEnum {
 
 
-
-
     HONOR("honor", "群荣誉变更"),
     POKE("poke", "戳一戳"),
     LUCKY_KING("lucky_king", "群红包幸运王"),

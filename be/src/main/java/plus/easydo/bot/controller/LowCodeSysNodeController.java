@@ -83,7 +83,7 @@ public class LowCodeSysNodeController {
     @SaCheckLogin
     @Operation(summary = "所有数据")
     @GetMapping("/list")
-    public R<Map<String,List<LowCodeSysNode>>> listSysNode() {
+    public R<Map<String, List<LowCodeSysNode>>> listSysNode() {
         return DataResult.ok(lowCodeSysNodeService.listSysNode());
     }
 
@@ -112,6 +112,6 @@ public class LowCodeSysNodeController {
     @Operation(summary = "分页")
     @PostMapping("/page")
     public R<List<LowCodeSysNode>> pageSysNode(@RequestBody PageQo pageQo) {
-        return DataResult.ok(lowCodeSysNodeService.page(new Page<>(pageQo.getCurrent(),pageQo.getPageSize())));
+        return DataResult.ok(lowCodeSysNodeService.page(new Page<>(pageQo.getCurrent(), pageQo.getPageSize())));
     }
 }

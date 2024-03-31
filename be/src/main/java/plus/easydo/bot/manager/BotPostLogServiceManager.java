@@ -3,12 +3,13 @@ package plus.easydo.bot.manager;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.json.JSONObject;
+import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.BotPostLog;
 import plus.easydo.bot.mapper.BotPostLogMapper;
-import com.mybatisflex.spring.service.impl.ServiceImpl;
+import plus.easydo.bot.util.OneBotUtils;
 
 /**
  * 接收消息日志 服务层实现。
@@ -17,10 +18,10 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
  * @since 1.0
  */
 @Component
-public class BotPostLogServiceManager extends ServiceImpl<BotPostLogMapper, BotPostLog>{
+public class BotPostLogServiceManager extends ServiceImpl<BotPostLogMapper, BotPostLog> {
 
     public void saveLog(JSONObject messageJson) {
-        BotInfo botInfo = CacheManager.BOT_CACHE.get(messageJson.get(OneBotConstants.SELF_ID));
+        BotInfo botInfo = OneBotUtils.getBotInfo(messageJson.getStr(OneBotConstants.SELF_ID));
         save(BotPostLog.builder()
                 .postTime(LocalDateTimeUtil.now())
                 .platform(botInfo.getPlatform())

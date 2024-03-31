@@ -1,8 +1,8 @@
 package plus.easydo.bot.mapper;
 
-import plus.easydo.bot.entity.BotEventScript;
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import plus.easydo.bot.entity.BotEventScript;
 
 /**
  * 机器人脚本 映射层。

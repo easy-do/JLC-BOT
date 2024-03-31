@@ -21,64 +21,69 @@ public class BotConfUtil {
     private BotConfUtil() {
     }
 
-    public static BotService getBotService(){
+    public static void cacheBotConfCache(Map<String, Map<String, String>> cacheMap) {
+        CacheManager.BOT_CONF_CACHE.putAll(cacheMap);
+    }
+
+    public static BotService getBotService() {
         if (Objects.isNull(botService)) {
             botService = SpringUtil.getBean(BotService.class);
         }
         return botService;
     }
 
-    public static Map<String, String> getAllBotConf(String botNumber){
+    public static Map<String, String> getAllBotConf(String botNumber) {
         return CacheManager.BOT_CONF_CACHE.get(botNumber);
     }
 
-    public static String getBotConf(String botNumber,String key){
+    public static String getBotConf(String botNumber, String key) {
         Map<String, String> conf = CacheManager.BOT_CONF_CACHE.get(botNumber);
-        if(Objects.nonNull(conf)){
+        if (Objects.nonNull(conf)) {
             String value = conf.get(key);
-            return Objects.nonNull(value)?value:"";
+            return Objects.nonNull(value) ? value : "";
         }
         return "";
     }
 
-    public static String getBotConfNull(String botNumber,String key){
+    public static String getBotConfNull(String botNumber, String key) {
         Map<String, String> conf = CacheManager.BOT_CONF_CACHE.get(botNumber);
-        if(Objects.nonNull(conf)){
+        if (Objects.nonNull(conf)) {
             String value = conf.get(key);
-            return Objects.nonNull(value)?value:null;
+            return Objects.nonNull(value) ? value : null;
         }
         return null;
     }
 
-    public static boolean saveBotConf(String botNumber,String key, String value){
+    public static boolean saveBotConf(String botNumber, String key, String value) {
         BotConf botConf = BotConf.builder().botNumber(botNumber).confKey(key).confValue(value).build();
         return getBotService().addBotConf(botConf);
     }
 
-    public static boolean saveBotConf(String botNumber,String key, String value,String remark){
+    public static boolean saveBotConf(String botNumber, String key, String value, String remark) {
         BotConf botConf = BotConf.builder().botNumber(botNumber).confKey(key).confValue(value).remark(remark).build();
         return getBotService().addBotConf(botConf);
     }
 
-    public static boolean updateBotConf(String botNumber,String key, String value){
-        BotConf botConf = getBotService().getByBotNumberAndKey(botNumber,key);
-        if(Objects.isNull(botConf)){
-            return saveBotConf(botNumber,key,value);
+    public static boolean updateBotConf(String botNumber, String key, String value) {
+        BotConf botConf = getBotService().getByBotNumberAndKey(botNumber, key);
+        if (Objects.isNull(botConf)) {
+            return saveBotConf(botNumber, key, value);
         }
         botConf = BotConf.builder().id(botConf.getId()).confValue(value).build();
         return getBotService().updateBotConf(botConf);
     }
 
-    public static boolean removeBotConf(String botNumber,String key){
-        if(CharSequenceUtil.isBlank(botNumber) || CharSequenceUtil.isBlank(key)){
+    public static boolean removeBotConf(String botNumber, String key) {
+        if (CharSequenceUtil.isBlank(botNumber) || CharSequenceUtil.isBlank(key)) {
             return false;
         }
-        return getBotService().removeBotConf(botNumber,key);
+        return getBotService().removeBotConf(botNumber, key);
     }
-    public static boolean removeBotConfLike(String botNumber,String key){
-        if(CharSequenceUtil.isBlank(botNumber) || CharSequenceUtil.isBlank(key)){
+
+    public static boolean removeBotConfLike(String botNumber, String key) {
+        if (CharSequenceUtil.isBlank(botNumber) || CharSequenceUtil.isBlank(key)) {
             return false;
         }
-        return getBotService().removeBotConfLike(botNumber,key);
+        return getBotService().removeBotConfLike(botNumber, key);
     }
 }

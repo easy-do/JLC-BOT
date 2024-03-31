@@ -31,15 +31,15 @@ public class OneBotService {
 
     private final OneBotNodePostHandler oneBotNodePostHandler;
 
-    public void handlerPost(JSONObject postData){
+    public void handlerPost(JSONObject postData) {
         String postType = postData.getStr(OneBotConstants.POST_TYPE);
-        if(CharSequenceUtil.isNotBlank(postType)){
+        if (CharSequenceUtil.isNotBlank(postType)) {
             OneBotPostHandler postDataHandler = postHandlerMap.get(postType);
-            if(Objects.nonNull(postDataHandler)){
-                CompletableFuture.runAsync(()->postDataHandler.handlerPost(postData));
+            if (Objects.nonNull(postDataHandler)) {
+                CompletableFuture.runAsync(() -> postDataHandler.handlerPost(postData));
             }
         }
-        CompletableFuture.runAsync(()->oneBotScriptPostHandler.handler(postType,postData));
-        CompletableFuture.runAsync(()->oneBotNodePostHandler.handler(postType,postData));
+        CompletableFuture.runAsync(() -> oneBotScriptPostHandler.handler(postType, postData));
+        CompletableFuture.runAsync(() -> oneBotNodePostHandler.handler(postType, postData));
     }
 }

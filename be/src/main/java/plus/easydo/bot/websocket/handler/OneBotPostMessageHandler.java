@@ -7,16 +7,16 @@ import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import plus.easydo.bot.manager.BotMessageManager;
 import plus.easydo.bot.constant.OneBotConstants;
-import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
-import plus.easydo.bot.websocket.model.OneBotMessageParse;
-import plus.easydo.bot.websocket.model.OneBotSender;
-import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.entity.BotMessage;
+import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
+import plus.easydo.bot.manager.BotMessageManager;
+import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.websocket.handler.message.OneBotGroupMessageHandler;
 import plus.easydo.bot.websocket.handler.message.OneBotGroupPrivateMessageHandler;
 import plus.easydo.bot.websocket.handler.message.OneBotPrivateMessageHandler;
+import plus.easydo.bot.websocket.model.OneBotMessageParse;
+import plus.easydo.bot.websocket.model.OneBotSender;
 
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -30,7 +30,7 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Service("message")
 @RequiredArgsConstructor
-public class OneBotPostMessageHandler implements OneBotPostHandler{
+public class OneBotPostMessageHandler implements OneBotPostHandler {
 
     private final OneBotGroupMessageHandler groupMessageHandler;
 
@@ -56,33 +56,33 @@ public class OneBotPostMessageHandler implements OneBotPostHandler{
             JSONObject senderJson = postData.getJSONObject(OneBotConstants.SENDER);
             OneBotSender sender = JSONUtil.toBean(senderJson, OneBotSender.class);
             senderId = sender.getUserId();
-        }catch (Exception e){
+        } catch (Exception e) {
             senderId = postData.getStr(OneBotConstants.SENDER);
         }
 
         OneBotMessageParse oneBotMessageParse = OneBotUtils.parseMessage(message);
-        if(oneBotMessageParse.getSegmentSize() != 0){
+        if (oneBotMessageParse.getSegmentSize() != 0) {
             BotMessage botMessage = BotMessage.builder()
                     .sendUser(senderId)
                     .selfUser(selfId)
                     .selfTime(LocalDateTimeUtil.of(time))
-                    .message(oneBotMessageParse.getSegmentSize() == 1 ? oneBotMessageParse.getSimpleMessage():oneBotMessageParse.getParseMessage())
+                    .message(oneBotMessageParse.getSegmentSize() == 1 ? oneBotMessageParse.getSimpleMessage() : oneBotMessageParse.getParseMessage())
                     .messageId(String.valueOf(messageId))
                     .build();
-            if (CharSequenceUtil.equals(messageType,OneBotPostMessageTypeEnum.PRIVATE.getType())){
+            if (CharSequenceUtil.equals(messageType, OneBotPostMessageTypeEnum.PRIVATE.getType())) {
                 //群内发起的私聊
-                if(Objects.nonNull(groupId)){
+                if (Objects.nonNull(groupId)) {
                     botMessage.setGroupId(String.valueOf(groupId));
-                    groupPrivateMessageHandler.handlerMessage(String.valueOf(groupId),senderId, message);
-                }else {
+                    groupPrivateMessageHandler.handlerMessage(String.valueOf(groupId), senderId, message);
+                } else {
                     //直接私聊
                     privateMessageHandler.handlerMessage(senderId, message);
                 }
-            }else {
+            } else {
                 botMessage.setGroupId(String.valueOf(groupId));
                 groupMessageHandler.handlerMessage(selfId, String.valueOf(groupId), senderId, message);
             }
-            CompletableFuture.runAsync(()-> botMessageManager.save(botMessage));
+            CompletableFuture.runAsync(() -> botMessageManager.save(botMessage));
         }
     }
 }

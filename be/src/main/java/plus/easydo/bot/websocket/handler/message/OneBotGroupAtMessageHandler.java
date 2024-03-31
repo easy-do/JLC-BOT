@@ -12,7 +12,7 @@ import plus.easydo.bot.websocket.model.OneBotSender;
 @Component
 public class OneBotGroupAtMessageHandler {
 
-    public String handlerMessage(String groupId, OneBotSender sender, String message){
+    public String handlerMessage(String groupId, OneBotSender sender, String message) {
 //        OneBotUtils.sendGroupMessage(groupId, CharSequenceUtil.format(CqConstant.AT_MESSAGE_PRE,sender.getUserId())+message,false);
         return "";
     }

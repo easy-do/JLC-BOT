@@ -115,7 +115,7 @@ public class FiledIfNode extends NodeIfComponent {
     @Override
     public void onSuccess() throws Exception {
         JLCLiteFlowContext context = getContextBean(JLCLiteFlowContext.class);
-        context.getNodeParamCache().put(getTag(),context.getParam());
+        context.getNodeParamCache().put(getTag(), context.getParam());
     }
 
     private boolean checkTargetValue(String targetValue) {

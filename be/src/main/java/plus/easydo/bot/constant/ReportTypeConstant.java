@@ -9,10 +9,10 @@ package plus.easydo.bot.constant;
 
 public class ReportTypeConstant {
 
-    public static final String PING  = "ping";
-    public static final String GET_CONF  = "get_conf";
-    public static final String LOGIN  = "login";
-    public static final String LOGOUT  = "logout";
+    public static final String PING = "ping";
+    public static final String GET_CONF = "get_conf";
+    public static final String LOGIN = "login";
+    public static final String LOGOUT = "logout";
 
 
     private ReportTypeConstant() {

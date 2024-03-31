@@ -16,11 +16,11 @@ public class CaptchaUtil {
     private CaptchaUtil() {
     }
 
-    public static String getCaptchaKey(HttpServletRequest request){
+    public static String getCaptchaKey(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies(); // 获取所有的Cookie信息
         if (cookies != null) {
             for (Cookie cookie : cookies) {
-                if(SystemConstant.CAPTCHA_KEY.equals(cookie.getName())){
+                if (SystemConstant.CAPTCHA_KEY.equals(cookie.getName())) {
                     return cookie.getValue();
                 }
             }

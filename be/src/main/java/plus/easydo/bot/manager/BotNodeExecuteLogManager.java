@@ -1,10 +1,10 @@
 package plus.easydo.bot.manager;
 
 
+import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.entity.BotNodeExecuteLog;
 import plus.easydo.bot.mapper.BotNodeExecuteLogMapper;
-import com.mybatisflex.spring.service.impl.ServiceImpl;
 import plus.easydo.bot.vo.NodePAVo;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
  * @since 1.0
  */
 @Component
-public class BotNodeExecuteLogManager extends ServiceImpl<BotNodeExecuteLogMapper, BotNodeExecuteLog>{
+public class BotNodeExecuteLogManager extends ServiceImpl<BotNodeExecuteLogMapper, BotNodeExecuteLog> {
 
     public List<NodePAVo> nodeExecutePa() {
         return mapper.nodeExecutePa();

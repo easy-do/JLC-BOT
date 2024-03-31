@@ -19,6 +19,6 @@ public class ShutdownListener implements ApplicationListener<ContextClosedEvent>
     public void onApplicationEvent(ContextClosedEvent event) {
         // 在这里处理应用程序停止的逻辑
         log.info("Application is closing...");
-        OneBotWcfClientUtils.CLIENT_CACHE.forEach((key,client)->client.diableRecvMsg());
+        OneBotWcfClientUtils.CLIENT_CACHE.forEach((key, client) -> client.diableRecvMsg());
     }
 }

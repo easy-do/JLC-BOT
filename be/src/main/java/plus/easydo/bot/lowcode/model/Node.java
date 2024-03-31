@@ -29,9 +29,9 @@ public class Node {
     @JsonProperty("label")
     private String label;
     @JsonProperty("position")
-    private Map<String,Integer> position;
+    private Map<String, Integer> position;
     @JsonProperty("size")
-    private Map<String,Integer> size;
+    private Map<String, Integer> size;
     @JsonProperty("view")
     private String view;
     @JsonProperty("color")
@@ -49,29 +49,30 @@ public class Node {
 
     @Data
     @NoArgsConstructor
-    public static class EdgInfo{
+    public static class EdgInfo {
         @JsonProperty("cell")
         private String cell;
         @JsonProperty("port")
         private String port;
     }
+
     @Data
     @NoArgsConstructor
-    public static class Port{
+    public static class Port {
         @JsonProperty("groups")
         private String groups;
         @JsonProperty("items")
         private List<Item> items;
+
         @Data
         @NoArgsConstructor
-        public static class Item{
+        public static class Item {
             @JsonProperty("group")
             private String group;
             @JsonProperty("id")
             private String id;
         }
     }
-
 
 
 }

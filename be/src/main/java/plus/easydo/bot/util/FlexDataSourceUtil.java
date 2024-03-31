@@ -22,11 +22,11 @@ public class FlexDataSourceUtil {
 
     private final MybatisFlexProperties mybatisFlexProperties;
 
-    private static final Map<String,DruidDataSource> CACHE_MAP = new ConcurrentHashMap<>();
+    private static final Map<String, DruidDataSource> CACHE_MAP = new ConcurrentHashMap<>();
 
-    public DruidDataSource getDataSource(String key){
+    public DruidDataSource getDataSource(String key) {
         DruidDataSource cacheDs = CACHE_MAP.get(key);
-        if(Objects.nonNull(cacheDs)){
+        if (Objects.nonNull(cacheDs)) {
             return cacheDs;
         }
         Map<String, Map<String, String>> datasourceMap = mybatisFlexProperties.getDatasource();
@@ -36,7 +36,7 @@ public class FlexDataSourceUtil {
         dataSource.setUsername(properties.get("username"));
         dataSource.setPassword(properties.get("password"));
         dataSource.setConnectionInitSqls(Collections.singleton(properties.get("connectionInitSqls")));
-        CACHE_MAP.put(key,dataSource);
+        CACHE_MAP.put(key, dataSource);
         return dataSource;
     }
 

@@ -12,7 +12,7 @@ import plus.easydo.bot.job.QuartzJob;
  */
 @Slf4j
 @Component("simpleQuartzTask")
-public class SimpleQuartzTask implements QuartzTask{
+public class SimpleQuartzTask implements QuartzTask {
     @Override
     public void executeInternal(JobExecutionContext context, QuartzJob quartzJob) {
         log.info("simpleQuartzTask execute ......");

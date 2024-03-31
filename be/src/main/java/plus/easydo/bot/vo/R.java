@@ -1,8 +1,6 @@
 package plus.easydo.bot.vo;
 
 
-
-
 import cn.hutool.http.HttpStatus;
 
 import java.io.Serializable;

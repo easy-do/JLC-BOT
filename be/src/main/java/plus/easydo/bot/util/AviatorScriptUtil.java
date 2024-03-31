@@ -39,8 +39,8 @@ public class AviatorScriptUtil {
         }
     }
 
-    public static Expression compile(String script){
-        return AviatorEvaluator.getInstance().compile(script,true);
+    public static Expression compile(String script) {
+        return AviatorEvaluator.getInstance().compile(script, true);
     }
 
     public static void main(String[] args) {

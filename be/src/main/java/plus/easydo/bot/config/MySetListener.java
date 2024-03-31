@@ -15,7 +15,7 @@ import java.util.Objects;
 public class MySetListener implements SetListener {
     @Override
     public Object onSet(Object entity, String property, Object value) {
-        if(Objects.nonNull(value) && value instanceof String){
+        if (Objects.nonNull(value) && value instanceof String) {
 //            log.info("SetListener,property:{},value:{}",property,value);
 //            return CharsetUtil.convert( value.toString(), CharsetUtil.ISO_8859_1, CharsetUtil.UTF_8);
         }

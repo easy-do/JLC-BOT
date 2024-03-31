@@ -21,7 +21,6 @@ import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.manager.BotPostLogServiceManager;
-import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
@@ -50,14 +49,14 @@ public class OneBotController {
 
     @PostMapping("/v11/post")
     public void v11Post(@RequestHeader("x-self-id") String selfId, @RequestHeader("x-signature") String signature, HttpServletRequest request) throws IOException {
-        BotInfo bot = CacheManager.BOT_CACHE.get(selfId);
-        if(Objects.nonNull(bot)){
+        BotInfo bot = OneBotUtils.getBotInfo(selfId);
+        if (Objects.nonNull(bot)) {
             // 获取内容长度
             byte[] bodyByte = getBodyByte(request);
-            if(verifySignature(bot.getBotSecret(),bodyByte,signature)){
+            if (verifySignature(bot.getBotSecret(), bodyByte, signature)) {
                 JSONObject messageJson = JSONUtil.parseObj(new String(bodyByte));
-                CompletableFuture.runAsync(()->botPostLogServiceManager.saveLog(messageJson));
-                CompletableFuture.runAsync(()->oneBotService.handlerPost(messageJson));
+                CompletableFuture.runAsync(() -> botPostLogServiceManager.saveLog(messageJson));
+                CompletableFuture.runAsync(() -> oneBotService.handlerPost(messageJson));
             }
         }
     }
@@ -66,16 +65,16 @@ public class OneBotController {
     /**
      * 验签
      *
-     * @param secret secret
-     * @param body body
+     * @param secret    secret
+     * @param body      body
      * @param signature signature
      * @return boolean
      * @author laoyu
      * @date 2024-02-22
      */
-    private boolean verifySignature(String secret, byte[] body, String signature){
+    private boolean verifySignature(String secret, byte[] body, String signature) {
         HMac hMac = SecureUtil.hmacSha1(secret);
-        return CharSequenceUtil.equals(OneBotConstants.SHA1_PRE + hMac.digestHex(body),signature);
+        return CharSequenceUtil.equals(OneBotConstants.SHA1_PRE + hMac.digestHex(body), signature);
     }
 
     /**
@@ -90,7 +89,7 @@ public class OneBotController {
         ServletInputStream in = request.getInputStream();
         int length = request.getContentLength();
         ByteArrayOutputStream opt = new ByteArrayOutputStream(length);
-        IoUtil.copy(in,opt);
+        IoUtil.copy(in, opt);
         IoUtil.close(in);
         byte[] bodyByte = opt.toByteArray();
         IoUtil.close(opt);
@@ -99,12 +98,12 @@ public class OneBotController {
 
 
     @RequestMapping("/wcfPost")
-    public R<Boolean> wcfPost(@RequestBody JSONObject postData, @RequestParam("token")String token){
-        BotInfo botInfo = CacheManager.SECRET_BOT_CACHE.get(token);
-        if(Objects.nonNull(botInfo)){
+    public R<Boolean> wcfPost(@RequestBody JSONObject postData, @RequestParam("token") String token) {
+        BotInfo botInfo = OneBotUtils.getBotInfoBySecret(token);
+        if (Objects.nonNull(botInfo)) {
             JSONObject messageJson = wcfAdApter(postData, botInfo);
-            CompletableFuture.runAsync(()->botPostLogServiceManager.saveLog(messageJson));
-            CompletableFuture.runAsync(()->oneBotService.handlerPost(messageJson));
+            CompletableFuture.runAsync(() -> botPostLogServiceManager.saveLog(messageJson));
+            CompletableFuture.runAsync(() -> oneBotService.handlerPost(messageJson));
             return DataResult.ok();
         }
         return DataResult.fail("鉴权失败");
@@ -114,22 +113,22 @@ public class OneBotController {
     private JSONObject wcfAdApter(JSONObject sourceMessage, BotInfo botInfo) {
         JSONObject messageJson = JSONUtil.createObj();
         messageJson.set(OneBotConstants.POST_TYPE, OneBotPostTypeEnum.MESSAGE.getType());
-        messageJson.set(OneBotConstants.SELF_ID,botInfo.getBotNumber());
-        messageJson.set(OneBotConstants.MESSAGE_ID,sourceMessage.get("id"));
-        messageJson.set(OneBotConstants.SENDER,sourceMessage.get("sender"));
+        messageJson.set(OneBotConstants.SELF_ID, botInfo.getBotNumber());
+        messageJson.set(OneBotConstants.MESSAGE_ID, sourceMessage.get("id"));
+        messageJson.set(OneBotConstants.SENDER, sourceMessage.get("sender"));
 
         String content = sourceMessage.getStr("content");
         messageJson.set(OneBotConstants.MESSAGE, OneBotUtils.buildMessageJson(content));
         messageJson.set(OneBotConstants.RAW_MESSAGE, content);
 
-        messageJson.set(OneBotConstants.MESSAGE_TYPE,sourceMessage.get("type"));
-        messageJson.set(OneBotConstants.GROUP_ID,sourceMessage.get("roomid"));
-        messageJson.set(OneBotConstants.TIME,sourceMessage.get("ts"));
+        messageJson.set(OneBotConstants.MESSAGE_TYPE, sourceMessage.get("type"));
+        messageJson.set(OneBotConstants.GROUP_ID, sourceMessage.get("roomid"));
+        messageJson.set(OneBotConstants.TIME, sourceMessage.get("ts"));
         boolean isGroup = sourceMessage.getBool("isGroup");
-        messageJson.set(OneBotConstants.MESSAGE_TYPE,isGroup? OneBotPostMessageTypeEnum.GROUP.getType():OneBotPostMessageTypeEnum.PRIVATE.getType());
-        messageJson.set("is_group",isGroup);
-        messageJson.set("extra",sourceMessage.get("extra"));
-        messageJson.set("xml",sourceMessage.get("xml"));
+        messageJson.set(OneBotConstants.MESSAGE_TYPE, isGroup ? OneBotPostMessageTypeEnum.GROUP.getType() : OneBotPostMessageTypeEnum.PRIVATE.getType());
+        messageJson.set("is_group", isGroup);
+        messageJson.set("extra", sourceMessage.get("extra"));
+        messageJson.set("xml", sourceMessage.get("xml"));
         return messageJson;
     }
 

@@ -26,7 +26,7 @@ public class BotScriptBotManager extends ServiceImpl<BotScriptBotMapper, BotScri
 
     public boolean saveBotScript(String botNumber, List<Long> ids) {
         List<BotScriptBot> list = new ArrayList<>();
-        ids.forEach(scriptId->{
+        ids.forEach(scriptId -> {
             BotScriptBot botScriptBot = BotScriptBot.builder().botNumber(botNumber).scriptId(scriptId).build();
             list.add(botScriptBot);
         });

@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class BotEventScriptQo extends PageQo{
+public class BotEventScriptQo extends PageQo {
 
 
     /**

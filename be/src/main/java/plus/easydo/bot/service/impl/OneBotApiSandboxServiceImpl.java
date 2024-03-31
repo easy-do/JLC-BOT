@@ -11,7 +11,6 @@ import oshi.util.FileUtil;
 import plus.easydo.bot.sandbox.SandboxMessage;
 import plus.easydo.bot.sandbox.SandboxWebsocketHandler;
 import plus.easydo.bot.service.OneBotApiService;
-import plus.easydo.bot.util.FileUtils;
 import plus.easydo.bot.util.OneBotUtils;
 
 /**
@@ -54,17 +53,17 @@ public class OneBotApiSandboxServiceImpl implements OneBotApiService {
     @Override
     public void sendGroupFile(String botNumber, String groupId, String filePath) {
         String type = "file";
-        if(StrUtil.endWith(filePath,".jpg")){
+        if (StrUtil.endWith(filePath, ".jpg")) {
             type = "image";
-            if(!StrUtil.startWith(filePath,"http")){
+            if (!StrUtil.startWith(filePath, "http")) {
                 byte[] bytes = FileUtil.readAllBytes(filePath);
-                filePath = ("data:image/png;base64,"+Base64.encode(bytes));
+                filePath = ("data:image/png;base64," + Base64.encode(bytes));
             }
         }
-        if(StrUtil.endWith(filePath,".mp4")){
+        if (StrUtil.endWith(filePath, ".mp4")) {
             type = "video";
             byte[] bytes = FileUtil.readAllBytes(filePath);
-            filePath = ("data:video/mp4;base64,"+Base64.encode(bytes));
+            filePath = ("data:video/mp4;base64," + Base64.encode(bytes));
         }
         SandboxWebsocketHandler.sendMessage(buildSandboxMessage(type, filePath));
     }

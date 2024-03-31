@@ -26,6 +26,7 @@ public class SystemController {
     public String version() {
         return systemConfig.getCurrentVersion();
     }
+
     @Operation(summary = "获取当前模式")
     @GetMapping("/mode")
     public String mode() {

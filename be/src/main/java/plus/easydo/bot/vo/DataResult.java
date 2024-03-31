@@ -21,7 +21,7 @@ public class DataResult<T> extends R<T> {
     /**
      * 功能描述
      *
-     * @param code code
+     * @param code    code
      * @param message message
      * @author laoyu
      */
@@ -202,10 +202,10 @@ public class DataResult<T> extends R<T> {
     /**
      * result
      *
-     * @param data data
-     * @param code code
-     * @param msg  msg
-     * @param success  success
+     * @param data    data
+     * @param code    code
+     * @param msg     msg
+     * @param success success
      * @return plus.easydo.common.result
      * @author laoyu
      */
@@ -218,12 +218,13 @@ public class DataResult<T> extends R<T> {
         r.setErrorMessage(msg);
         return r;
     }
+
     /**
      * result
      *
-     * @param code code
-     * @param msg  msg
-     * @param success  success
+     * @param code    code
+     * @param msg     msg
+     * @param success success
      * @return plus.easydo.common.result
      * @author laoyu
      */

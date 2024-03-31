@@ -2,10 +2,10 @@ package plus.easydo.bot.manager;
 
 
 import com.mybatisflex.core.query.QueryWrapper;
+import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.entity.LowCodeBotNode;
 import plus.easydo.bot.mapper.LowCodeBotNodeMapper;
-import com.mybatisflex.spring.service.impl.ServiceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,7 +28,7 @@ public class LowCodeBotNodeManager extends ServiceImpl<LowCodeBotNodeMapper, Low
 
     public boolean saveBotConf(Long botId, List<Long> confIdList) {
         List<LowCodeBotNode> list = new ArrayList<>();
-        confIdList.forEach(confId->{
+        confIdList.forEach(confId -> {
             LowCodeBotNode entity = LowCodeBotNode.builder()
                     .botId(botId)
                     .confId(confId)

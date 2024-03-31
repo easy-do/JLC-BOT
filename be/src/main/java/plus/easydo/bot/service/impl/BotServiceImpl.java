@@ -20,7 +20,6 @@ import plus.easydo.bot.manager.BotMessageManager;
 import plus.easydo.bot.manager.BotNoticeManager;
 import plus.easydo.bot.manager.BotRequestManager;
 import plus.easydo.bot.manager.BotScriptBotManager;
-import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.qo.BotMessageQo;
 import plus.easydo.bot.qo.BotNoticeQo;
 import plus.easydo.bot.qo.BotQo;
@@ -28,6 +27,7 @@ import plus.easydo.bot.qo.BotRequestQo;
 import plus.easydo.bot.service.BotScriptService;
 import plus.easydo.bot.service.BotService;
 import plus.easydo.bot.service.OneBotApiService;
+import plus.easydo.bot.util.BotConfUtil;
 import plus.easydo.bot.util.OneBotUtils;
 
 import java.util.HashMap;
@@ -100,9 +100,9 @@ public class BotServiceImpl implements BotService {
     @Override
     public void initBotCache() {
         Map<String, BotInfo> map = botInfoManager.list().stream().collect(Collectors.toMap(BotInfo::getBotNumber, (c) -> c));
-        CacheManager.BOT_CACHE.putAll(map);
+        OneBotUtils.saveBotNumberBotCache(map);
         Map<String, BotInfo> secretMap = botInfoManager.list().stream().collect(Collectors.toMap(BotInfo::getBotSecret, (c) -> c));
-        CacheManager.SECRET_BOT_CACHE.putAll(secretMap);
+        OneBotUtils.saveSecretBotCache(secretMap);
     }
 
     @PostConstruct
@@ -117,7 +117,7 @@ public class BotServiceImpl implements BotService {
             Map<String, String> confMap = values.stream().collect(Collectors.toMap(BotConf::getConfKey, BotConf::getConfValue));
             cacheMap.put(platformBotNumber, confMap);
         }
-        CacheManager.BOT_CONF_CACHE.putAll(cacheMap);
+        BotConfUtil.cacheBotConfCache(cacheMap);
     }
 
     @Override

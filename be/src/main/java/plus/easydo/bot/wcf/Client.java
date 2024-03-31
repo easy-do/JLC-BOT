@@ -56,7 +56,7 @@ public class Client {
             int status = Runtime.getRuntime().exec(cmd).waitFor();
             if (status != 0) {
                 log.error("启动 RPC 失败: {}", status);
-                System.exit(-1);
+//                System.exit(-1);
             }
             isLocalHostPort = true;
             String cmdUrl = "tcp://" + host + ":" + port;
@@ -78,7 +78,7 @@ public class Client {
             log.info("wx登录成功");
         } catch (Exception e) {
             log.error("连接 RPC 失败: ", e);
-            System.exit(-1);
+//            System.exit(-1);
         }
         Runtime.getRuntime().addShutdownHook(new Thread() {
             public void run() {

@@ -8,7 +8,7 @@ import plus.easydo.bot.job.QuartzJob;
  * @Date 2024-03-26
  * @Description Quartz的任务抽象
  */
-public  interface QuartzTask {
+public interface QuartzTask {
 
     void executeInternal(JobExecutionContext context, QuartzJob quartzJob);
 }

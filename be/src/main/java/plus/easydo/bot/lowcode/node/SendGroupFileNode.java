@@ -34,7 +34,7 @@ public class SendGroupFileNode extends NodeComponent {
             if (Objects.nonNull(path)) {
                 String botNumber = paramJson.getStr(OneBotConstants.SELF_ID);
                 String groupId = paramJson.getStr(OneBotConstants.GROUP_ID);
-                path = ParamReplaceUtils.replaceParam(path,paramJson);
+                path = ParamReplaceUtils.replaceParam(path, paramJson);
                 OneBotApiUtils.sendGroupFile(botNumber, groupId, path);
             } else {
                 log.warn("发发送群文件未完整执行,原因:没有找到要发送的路径配置");
@@ -50,6 +50,6 @@ public class SendGroupFileNode extends NodeComponent {
     @Override
     public void onSuccess() throws Exception {
         JLCLiteFlowContext context = getContextBean(JLCLiteFlowContext.class);
-        context.getNodeParamCache().put(getTag(),context.getParam());
+        context.getNodeParamCache().put(getTag(), context.getParam());
     }
 }

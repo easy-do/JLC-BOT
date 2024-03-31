@@ -10,9 +10,9 @@ import org.springframework.validation.BindException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
-import plus.easydo.bot.exception.BaseException;
 
 import java.util.Objects;
 
@@ -88,7 +88,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(SaTokenException.class)
     public R<Object> authException(SaTokenException e) {
-        return DataResult.fail(HttpStatus.UNAUTHORIZED,e.getMessage());
+        return DataResult.fail(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 
     /**
@@ -100,7 +100,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NotLoginException.class)
     public R<Object> notLoginException(NotLoginException e) {
-        return DataResult.fail(HttpStatus.UNAUTHORIZED,"未登录，或授权过期");
+        return DataResult.fail(HttpStatus.UNAUTHORIZED, "未登录，或授权过期");
     }
 
     /**
@@ -112,7 +112,7 @@ public class GlobalExceptionHandler {
      */
     @ExceptionHandler(NotPermissionException.class)
     public R<Object> notLoginException(NotPermissionException e) {
-        return DataResult.fail(HttpStatus.UNAUTHORIZED,"无接口权限");
+        return DataResult.fail(HttpStatus.UNAUTHORIZED, "无接口权限");
     }
 
 

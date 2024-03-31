@@ -26,7 +26,6 @@ public class ResponseUtil {
     private static final String FORCE_DOWNLOAD = "application/force-download";
 
 
-
     private ResponseUtil() {
     }
 
@@ -37,11 +36,11 @@ public class ResponseUtil {
      * @author laoyu
      * @date 2023/2/7
      */
-    public static void setImgResponse(HttpServletResponse response, String filePath)  {
+    public static void setImgResponse(HttpServletResponse response, String filePath) {
         response.setContentType(IMAGE_PNG);
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, FILE_NAME
-                + URLEncoder.encode(CharSequenceUtil.subAfter(filePath,"/",false), StandardCharsets.UTF_8).replace("\\+", "%20"));
+                + URLEncoder.encode(CharSequenceUtil.subAfter(filePath, "/", false), StandardCharsets.UTF_8).replace("\\+", "%20"));
     }
 
     /**
@@ -65,7 +64,7 @@ public class ResponseUtil {
      * @author laoyu
      * @date 2023/2/7
      */
-    public static void setFileResponse(HttpServletResponse response,String fileName) {
+    public static void setFileResponse(HttpServletResponse response, String fileName) {
         response.setContentType(FORCE_DOWNLOAD);
         response.setCharacterEncoding(CharsetUtil.UTF_8);
         response.setHeader(HttpHeaders.CONTENT_DISPOSITION, FILE_NAME

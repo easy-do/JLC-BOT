@@ -18,7 +18,7 @@ import java.util.Objects;
  * @Description 字段处理节点
  */
 @Slf4j
-@LiteflowComponent(id="filedHandlerNode",name="字段处理")
+@LiteflowComponent(id = "filedHandlerNode", name = "字段处理")
 public class FiledHandlerNode extends NodeComponent {
     @Override
     public void process() throws Exception {
@@ -133,6 +133,6 @@ public class FiledHandlerNode extends NodeComponent {
     @Override
     public void onSuccess() throws Exception {
         JLCLiteFlowContext context = getContextBean(JLCLiteFlowContext.class);
-        context.getNodeParamCache().put(getTag(),context.getParam());
+        context.getNodeParamCache().put(getTag(), context.getParam());
     }
 }

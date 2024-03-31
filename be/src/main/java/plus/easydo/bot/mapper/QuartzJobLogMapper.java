@@ -2,7 +2,6 @@ package plus.easydo.bot.mapper;
 
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
-import plus.easydo.bot.job.QuartzJob;
 import plus.easydo.bot.job.QuartzJobLog;
 
 /**

@@ -6,11 +6,11 @@ import cn.hutool.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import plus.easydo.bot.manager.BotRequestManager;
 import plus.easydo.bot.constant.OneBotConstants;
-import plus.easydo.bot.enums.onebot.OneBotPostRequestTypeEnum;
-import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.entity.BotRequest;
+import plus.easydo.bot.enums.onebot.OneBotPostRequestTypeEnum;
+import plus.easydo.bot.manager.BotRequestManager;
+import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.websocket.handler.request.OneBotFriendRequestHandler;
 import plus.easydo.bot.websocket.handler.request.OneBotGroupRequestHandler;
 
@@ -25,7 +25,7 @@ import java.util.concurrent.CompletableFuture;
 @Slf4j
 @Service("request")
 @RequiredArgsConstructor
-public class OneBotPostRequestHandler implements OneBotPostHandler{
+public class OneBotPostRequestHandler implements OneBotPostHandler {
 
     private final OneBotFriendRequestHandler friendRequestHandler;
 
@@ -40,7 +40,7 @@ public class OneBotPostRequestHandler implements OneBotPostHandler{
         Object selfId = postData.get(OneBotConstants.SELF_ID);
         String comment = postData.getStr(OneBotConstants.COMMENT);
         String flag = postData.getStr(OneBotConstants.FLAG);
-        String userId  = String.valueOf(postData.get(OneBotConstants.USER_ID));
+        String userId = String.valueOf(postData.get(OneBotConstants.USER_ID));
         BotRequest botRequest = BotRequest.builder()
                 .requestType(requestType)
                 .sendUser(userId)
@@ -50,13 +50,13 @@ public class OneBotPostRequestHandler implements OneBotPostHandler{
                 .flag(flag)
                 .build();
         log.debug("接收到请求消息,类型:{},验证信息:{}", OneBotPostRequestTypeEnum.getDescByType(requestType), comment);
-        if(CharSequenceUtil.equals(requestType, OneBotPostRequestTypeEnum.GROUP.getType())){
+        if (CharSequenceUtil.equals(requestType, OneBotPostRequestTypeEnum.GROUP.getType())) {
             Object groupId = postData.get(OneBotConstants.GROUP_ID);
             botRequest.setGroupId(String.valueOf(groupId));
             groupRequestHandler.handlerRequest(userId, String.valueOf(groupId), comment, flag);
-        }else {
-            friendRequestHandler.handlerRequest(userId,comment,flag);
+        } else {
+            friendRequestHandler.handlerRequest(userId, comment, flag);
         }
-        CompletableFuture.runAsync(()-> botRequestManager.save(botRequest));
+        CompletableFuture.runAsync(() -> botRequestManager.save(botRequest));
     }
 }

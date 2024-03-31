@@ -17,16 +17,17 @@ public class ParamReplaceUtils {
     private ParamReplaceUtils() {
     }
 
-    private static final String PARAM_RE =  "\\$\\{(.*?)\\}";
-    public static String replaceParam(String content,JSONObject paramJson){
+    private static final String PARAM_RE = "\\$\\{(.*?)\\}";
+
+    public static String replaceParam(String content, JSONObject paramJson) {
         //带符号的
         List<String> group0 = ReUtil.findAllGroup0(PARAM_RE, content);
         //不带符号的
         List<String> group1 = ReUtil.findAllGroup1(PARAM_RE, content);
         for (int i = 0; i < group0.size(); i++) {
             Object value = paramJson.getByPath(group1.get(i));
-            if(Objects.nonNull(value)){
-                content = CharSequenceUtil.replace(content,group0.get(i),String.valueOf(value));
+            if (Objects.nonNull(value)) {
+                content = CharSequenceUtil.replace(content, group0.get(i), String.valueOf(value));
             }
         }
         return content;

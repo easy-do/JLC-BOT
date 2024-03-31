@@ -21,7 +21,7 @@ public class BotInfoManager extends ServiceImpl<BotInfoMapper, BotInfo> {
 
     public boolean updateBybotNumber(BotInfo botInfo) {
         QueryWrapper queryWrapper = query().and(BOT_INFO.BOT_NUMBER.eq(botInfo.getBotNumber()));
-        return update(botInfo,queryWrapper);
+        return update(botInfo, queryWrapper);
     }
 
     public BotInfo getByBotNumber(String botNumber) {

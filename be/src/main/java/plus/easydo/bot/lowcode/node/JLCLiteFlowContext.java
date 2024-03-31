@@ -18,6 +18,6 @@ public class JLCLiteFlowContext {
 
     private JSONObject nodeConf;
 
-    private Map<String,JSONObject> nodeParamCache = new HashMap<>();
+    private Map<String, JSONObject> nodeParamCache = new HashMap<>();
 
 }

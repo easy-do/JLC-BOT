@@ -1,10 +1,10 @@
 package plus.easydo.bot.manager;
 
 
+import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.entity.BotNodeConfExecuteLog;
 import plus.easydo.bot.mapper.BotNodeConfExecuteLogMapper;
-import com.mybatisflex.spring.service.impl.ServiceImpl;
 import plus.easydo.bot.vo.NodePAVo;
 
 import java.util.List;

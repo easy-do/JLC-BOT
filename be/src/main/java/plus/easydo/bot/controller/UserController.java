@@ -30,18 +30,17 @@ public class UserController {
     private final LoginService loginService;
 
 
-
     @Operation(summary = "登录")
     @SaIgnore
     @PostMapping("/login")
-    public R<String> login(@Validated @RequestBody LoginDto loginDto){
+    public R<String> login(@Validated @RequestBody LoginDto loginDto) {
         return DataResult.ok(loginService.login(loginDto));
     }
 
 
     @Operation(summary = "退出")
     @GetMapping("/logout")
-    public R<String> logout(){
+    public R<String> logout() {
         loginService.logout();
         return DataResult.ok();
     }
@@ -49,7 +48,7 @@ public class UserController {
     @Operation(summary = "获取当前用户信息")
     @SaCheckLogin
     @GetMapping("/currentUser")
-    public R<CurrentUser> currentUser(){
+    public R<CurrentUser> currentUser() {
         return DataResult.ok(loginService.currentUser());
     }
 }

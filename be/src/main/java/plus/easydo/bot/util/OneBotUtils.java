@@ -6,12 +6,15 @@ import cn.hutool.json.JSONUtil;
 import org.slf4j.Logger;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
+import plus.easydo.bot.entity.SystemConf;
 import plus.easydo.bot.enums.onebot.OneBotMessageTypeEnum;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.websocket.model.OneBotMessage;
 import plus.easydo.bot.websocket.model.OneBotMessageParse;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 
@@ -32,6 +35,28 @@ public class OneBotUtils {
             throw new BaseException("机器人[" + botNumber + "]不存在");
         }
         return bot;
+    }
+
+    public static BotInfo getBotInfoBySecret(String secret) {
+        BotInfo botInfo = CacheManager.SECRET_BOT_CACHE.get(secret);
+        if (Objects.isNull(botInfo)) {
+            throw new BaseException("机器人不存在");
+        }
+        return botInfo;
+    }
+
+    public static void saveSecretBotCache(Map<String, BotInfo> secretMap) {
+        CacheManager.SECRET_BOT_CACHE.putAll(secretMap);
+    }
+
+    public static void saveBotNumberBotCache(Map<String, BotInfo> botMap) {
+        CacheManager.BOT_CACHE.putAll(botMap);
+    }
+
+    public static void cacheSystemConf(List<SystemConf> confList) {
+        CacheManager.SYSTEM_CONF_LIST.clear();
+        CacheManager.SYSTEM_CONF_LIST.addAll(confList);
+        confList.forEach(conf -> CacheManager.SYSTEM_CONF_MAP.put(conf.getConfKey(), conf));
     }
 
 

@@ -1,10 +1,10 @@
 package plus.easydo.bot.entity;
 
+import com.mybatisflex.annotation.Column;
+import com.mybatisflex.annotation.Table;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import com.mybatisflex.annotation.Column;
-import com.mybatisflex.annotation.Table;
 import lombok.NoArgsConstructor;
 
 /**

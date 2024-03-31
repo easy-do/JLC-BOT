@@ -1,8 +1,8 @@
 package plus.easydo.bot.mapper;
 
-import plus.easydo.bot.entity.BotPostLog;
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import plus.easydo.bot.entity.BotPostLog;
 
 /**
  * 接收消息日志 映射层。

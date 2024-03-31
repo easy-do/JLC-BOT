@@ -23,8 +23,8 @@ import static plus.easydo.bot.entity.table.LowCodeNodeConfTableDef.LOW_CODE_NODE
 public class LowCodeNodeConfManager extends ServiceImpl<LowCodeNodeConfMapper, LowCodeNodeConf> {
 
     public Page<LowCodeNodeConf> pageNodeConf(PageQo pageQo) {
-        QueryWrapper queryWrapper = query().select(LOW_CODE_NODE_CONF.ID, LOW_CODE_NODE_CONF.CONF_NAME,LOW_CODE_NODE_CONF.CREATE_TIME,LOW_CODE_NODE_CONF.UPDATE_TIME);
-        return page(new Page<>(pageQo.getCurrent(),pageQo.getPageSize()),queryWrapper);
+        QueryWrapper queryWrapper = query().select(LOW_CODE_NODE_CONF.ID, LOW_CODE_NODE_CONF.CONF_NAME, LOW_CODE_NODE_CONF.CREATE_TIME, LOW_CODE_NODE_CONF.UPDATE_TIME);
+        return page(new Page<>(pageQo.getCurrent(), pageQo.getPageSize()), queryWrapper);
     }
 
     public List<LowCodeNodeConf> listNodeConf() {

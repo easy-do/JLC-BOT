@@ -5,10 +5,10 @@ import cn.hutool.json.JSONObject;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import plus.easydo.bot.manager.BotNoticeManager;
 import plus.easydo.bot.constant.OneBotConstants;
-import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.entity.BotNotice;
+import plus.easydo.bot.manager.BotNoticeManager;
+import plus.easydo.bot.util.OneBotUtils;
 
 /**
  * @author laoyu
@@ -19,7 +19,7 @@ import plus.easydo.bot.entity.BotNotice;
 @Slf4j
 @Service("notice")
 @RequiredArgsConstructor
-public class OneBotPostNoticeHandler implements OneBotPostHandler{
+public class OneBotPostNoticeHandler implements OneBotPostHandler {
 
     private final BotNoticeManager botNoticeManager;
 

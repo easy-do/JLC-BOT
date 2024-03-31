@@ -1,8 +1,8 @@
 package plus.easydo.bot.mapper;
 
-import plus.easydo.bot.entity.LowCodeNodeConf;
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import plus.easydo.bot.entity.LowCodeNodeConf;
 
 /**
  * 节点配置信息 映射层。

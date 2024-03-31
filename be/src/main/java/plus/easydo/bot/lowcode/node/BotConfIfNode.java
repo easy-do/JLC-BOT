@@ -94,11 +94,11 @@ public class BotConfIfNode extends NodeIfComponent {
                     }
                     default -> throw new BaseException("没有匹配到类型[" + type + "]");
                 }
-            } else{
+            } else {
                 log.warn("配置信息不全,conf:{}", confJson);
                 throw new BaseException("配置信息不全");
             }
-        }else {
+        } else {
             log.warn("判断机器人配置节点未完整执行,原因:参数或节点配置为空,param:{},conf:{}", paramJson, confJson);
             throw new BaseException("参数或节点配置为空");
         }

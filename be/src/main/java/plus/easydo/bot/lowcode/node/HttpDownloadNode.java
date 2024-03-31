@@ -3,8 +3,6 @@ package plus.easydo.bot.lowcode.node;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
-import cn.hutool.core.io.FileUtil;
-import cn.hutool.core.lang.UUID;
 import cn.hutool.http.HttpRequest;
 import cn.hutool.http.HttpResponse;
 import cn.hutool.http.HttpStatus;
@@ -16,7 +14,6 @@ import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.util.FileUtils;
 import plus.easydo.bot.util.ParamReplaceUtils;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -49,16 +46,16 @@ public class HttpDownloadNode extends NodeComponent {
                     HttpResponse res = HttpRequest.get(address).timeout(timeout).execute();
                     byte[] bytes;
                     int status = res.getStatus();
-                    if(HttpStatus.isRedirected(status)){
+                    if (HttpStatus.isRedirected(status)) {
                         String location = res.header("Location");
                         HttpResponse newRes = HttpRequest.get(location).timeout(timeout).execute();
                         bytes = newRes.bodyBytes();
-                    }else {
+                    } else {
                         bytes = res.bodyBytes();
                     }
                     String fileName = LocalDateTimeUtil.format(LocalDateTimeUtil.now(), DatePattern.PURE_DATETIME_MS_PATTERN) + "." + fileSuffix;
                     String path = FileUtils.saveFileToCachePath(bytes, fileName);
-                    paramJson.set(resSaveFiled,path);
+                    paramJson.set(resSaveFiled, path);
                 } catch (Exception e) {
                     String message = ExceptionUtil.getMessage(e);
                     log.warn("http请求节点未完整执行,原因:http请求报错,{}", message);

@@ -1,13 +1,11 @@
 package plus.easydo.bot.service.impl;
 
-import cn.hutool.json.JSONObject;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.service.BotService;
 import plus.easydo.bot.service.SandboxService;
-import plus.easydo.bot.websocket.OneBotService;
 
 import java.util.Objects;
 

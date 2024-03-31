@@ -22,21 +22,21 @@ public class FileUtils {
     private FileUtils() {
     }
 
-    public static String getHomePath(){
+    public static String getHomePath() {
         ApplicationHome applicationHome = new ApplicationHome(FileUtils.class);
         File homeFile = applicationHome.getSource();
         return homeFile.getParentFile().getPath();
     }
 
-    public static String getCachePath(){
+    public static String getCachePath() {
         boolean win = System.getProperty("os.name").startsWith("win");
         String cachePath;
-        if(win){
+        if (win) {
             cachePath = getHomePath() + "/cache/dl/";
-        }else {
-            cachePath =  "/data/cache/dl/";
+        } else {
+            cachePath = "/data/cache/dl/";
         }
-        if(FileUtil.exist(cachePath)){
+        if (FileUtil.exist(cachePath)) {
             FileUtil.mkdir(cachePath);
         }
         return cachePath;
@@ -45,7 +45,7 @@ public class FileUtils {
     public static String saveFileToCachePath(byte[] bytes, String fileName) {
         String path = getCachePath();
         String time = LocalDateTimeUtil.format(LocalDateTimeUtil.now(), DatePattern.PURE_DATE_FORMATTER);
-        File file = FileUtil.writeBytes(bytes, path + time+ "/" +fileName);
+        File file = FileUtil.writeBytes(bytes, path + time + "/" + fileName);
         return file.getAbsolutePath();
     }
 

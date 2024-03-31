@@ -1,11 +1,11 @@
 package plus.easydo.bot.service.impl;
 
 
+import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.entity.LowCodeSysNode;
 import plus.easydo.bot.mapper.LowCodeSysNodeMapper;
 import plus.easydo.bot.service.LowCodeSysNodeService;
-import com.mybatisflex.spring.service.impl.ServiceImpl;
 
 import java.util.List;
 import java.util.Map;

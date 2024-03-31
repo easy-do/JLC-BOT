@@ -15,19 +15,18 @@ import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
+import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.exception.BaseException;
-import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.manager.BotPostLogServiceManager;
-import plus.easydo.bot.manager.CacheManager;
+import plus.easydo.bot.util.OneBotUtils;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
@@ -44,21 +43,22 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
     private static final Map<String, WebSocketSession> SESSION_MAP = new HashMap<>();
     private static final Map<String, String> SESSION_BOT_MAP = new HashMap<>();
     private static final Map<String, String> BOT_SESSION_MAP = new HashMap<>();
-    private static final Cache<String,String> MESSAGE_CACHE = CacheUtil.newTimedCache(5000);
+    private static final Cache<String, String> MESSAGE_CACHE = CacheUtil.newTimedCache(5000);
 
 
     private OneBotService oneBotService;
 
-    private OneBotService getOneBotService(){
-        if(Objects.isNull(oneBotService)){
+    private OneBotService getOneBotService() {
+        if (Objects.isNull(oneBotService)) {
             return SpringUtil.getBean(OneBotService.class);
         }
         return oneBotService;
     }
+
     private BotPostLogServiceManager botPostLogServiceManager;
 
-    private BotPostLogServiceManager getBotPostLogServiceManager(){
-        if(Objects.isNull(oneBotService)){
+    private BotPostLogServiceManager getBotPostLogServiceManager() {
+        if (Objects.isNull(oneBotService)) {
             return SpringUtil.getBean(BotPostLogServiceManager.class);
         }
         return botPostLogServiceManager;
@@ -70,29 +70,29 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
         //先鉴权
         HttpHeaders handshakeHeaders = session.getHandshakeHeaders();
         List<String> selfId = handshakeHeaders.get(OneBotConstants.HEADER_SELF_ID);
-        if(Objects.nonNull(selfId) && !selfId.isEmpty()){
-            BotInfo botInfo = CacheManager.BOT_CACHE.get(selfId.get(0));
-            if(Objects.nonNull(botInfo)){
+        if (Objects.nonNull(selfId) && !selfId.isEmpty()) {
+            BotInfo botInfo = OneBotUtils.getBotInfo(selfId.get(0));
+            if (Objects.nonNull(botInfo)) {
                 String botSecret = botInfo.getBotSecret();
-                if(CharSequenceUtil.isNotBlank(botSecret)){
+                if (CharSequenceUtil.isNotBlank(botSecret)) {
                     List<String> authorization = handshakeHeaders.get(OneBotConstants.HEADER_AUTHORIZATION);
-                    if(Objects.nonNull(authorization) && !authorization.isEmpty()){
-                        if(CharSequenceUtil.equals(OneBotConstants.HEADER_AUTHORIZATION_VALUE_PRE + botSecret,authorization.get(0))){
+                    if (Objects.nonNull(authorization) && !authorization.isEmpty()) {
+                        if (CharSequenceUtil.equals(OneBotConstants.HEADER_AUTHORIZATION_VALUE_PRE + botSecret, authorization.get(0))) {
                             log.info("机器人鉴权成功,保持会话连接.");
-                            saveSession(session,botInfo);
-                        }else {
+                            saveSession(session, botInfo);
+                        } else {
                             log.warn("机器人鉴权失败,断开会话.");
                             closeSession(session);
                         }
-                    }else {
+                    } else {
                         log.warn("机器人未传递token,断开会话.");
                         closeSession(session);
                     }
-                }else {
+                } else {
                     log.warn("机器人未设置密钥,跳过鉴权,保持会话连接.");
-                    saveSession(session,botInfo);
+                    saveSession(session, botInfo);
                 }
-            }else {
+            } else {
                 log.warn("与系统机器人匹配失败,断开会话.");
                 closeSession(session);
             }
@@ -104,37 +104,38 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
         log.debug("接收到客户端消息:" + message.getPayload());
         JSONObject messageJson = JSONUtil.parseObj(message.getPayload());
         String postType = messageJson.getStr(OneBotConstants.POST_TYPE);
-        if(Objects.nonNull(postType)){
-            if(!CharSequenceUtil.contains(postType, OneBotPostTypeEnum.META_EVENT.getType())){
-                CompletableFuture.runAsync(()->getBotPostLogServiceManager().saveLog(messageJson));
+        if (Objects.nonNull(postType)) {
+            if (!CharSequenceUtil.contains(postType, OneBotPostTypeEnum.META_EVENT.getType())) {
+                getBotPostLogServiceManager().saveLog(messageJson);
+//                CompletableFuture.runAsync(()->getBotPostLogServiceManager().saveLog(messageJson));
             }
             getOneBotService().handlerPost(messageJson);
         }
     }
 
-    private void saveSession(WebSocketSession session, BotInfo botInfo){
+    private void saveSession(WebSocketSession session, BotInfo botInfo) {
         CONCURRENT_LINKED_DEQUE.add(session);
-        SESSION_MAP.put(session.getId(),session);
-        SESSION_BOT_MAP.put(session.getId(),botInfo.getBotNumber());
-        SESSION_BOT_MAP.put(session.getId(),botInfo.getBotNumber());
-        BOT_SESSION_MAP.put(botInfo.getBotNumber(),session.getId());
+        SESSION_MAP.put(session.getId(), session);
+        SESSION_BOT_MAP.put(session.getId(), botInfo.getBotNumber());
+        SESSION_BOT_MAP.put(session.getId(), botInfo.getBotNumber());
+        BOT_SESSION_MAP.put(botInfo.getBotNumber(), session.getId());
     }
 
-    private void removeSession(WebSocketSession session){
+    private void removeSession(WebSocketSession session) {
         CONCURRENT_LINKED_DEQUE.remove(session);
         SESSION_MAP.remove(session.getId());
         String botNumber = SESSION_BOT_MAP.get(session.getId());
         SESSION_BOT_MAP.remove(session.getId());
-        if(CharSequenceUtil.isNotBlank(botNumber)){
+        if (CharSequenceUtil.isNotBlank(botNumber)) {
             BOT_SESSION_MAP.remove(botNumber);
         }
     }
 
-    public static void sendMessage(String botNumber, String message){
+    public static void sendMessage(String botNumber, String message) {
         String sessionId = BOT_SESSION_MAP.get(botNumber);
-        if(Objects.nonNull(sessionId)){
+        if (Objects.nonNull(sessionId)) {
             WebSocketSession session = SESSION_MAP.get(sessionId);
-            if(Objects.nonNull(session)){
+            if (Objects.nonNull(session)) {
                 try {
                     session.sendMessage(new TextMessage(message));
                 } catch (IOException e) {
@@ -144,19 +145,19 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
         }
     }
 
-    public static String sendMessageAwaitRes(String botNumber, String messageId, String message){
+    public static String sendMessageAwaitRes(String botNumber, String messageId, String message) {
         String sessionId = BOT_SESSION_MAP.get(botNumber);
-        if(Objects.nonNull(sessionId)){
+        if (Objects.nonNull(sessionId)) {
             WebSocketSession session = SESSION_MAP.get(sessionId);
-            if(Objects.nonNull(session)){
+            if (Objects.nonNull(session)) {
                 try {
                     session.sendMessage(new TextMessage(message));
                     String res = MESSAGE_CACHE.get(messageId);
                     int sleepTime = 0;
-                    while(Objects.isNull(res) && sleepTime < 3000){
+                    while (Objects.isNull(res) && sleepTime < 3000) {
                         try {
                             Thread.sleep(500);
-                            sleepTime = sleepTime+500;
+                            sleepTime = sleepTime + 500;
                         } catch (InterruptedException e) {
                             throw new BaseException(ExceptionUtil.getMessage(e));
                         }
@@ -171,7 +172,7 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
         return "";
     }
 
-    private void closeSession(WebSocketSession session){
+    private void closeSession(WebSocketSession session) {
         try {
             session.close();
         } catch (IOException e) {
@@ -189,7 +190,7 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-        log.warn("机器人客户端断开连接:{},断开编码：{}" , session.getId(),closeStatus.getCode());
+        log.warn("机器人客户端断开连接:{},断开编码：{}", session.getId(), closeStatus.getCode());
         removeSession(session);
 
     }

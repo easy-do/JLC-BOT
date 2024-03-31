@@ -26,16 +26,16 @@ public class PerformanceAnalysisServiceImpl implements PerformanceAnalysisServic
     private final BotNodeConfExecuteLogManager nodeConfExecuteLogManager;
 
     @Override
-    public Map<String,List<NodePAVo>> nodeExecutePa() {
-        Map<String,List<NodePAVo>> result = MapUtil.newConcurrentHashMap(2);
+    public Map<String, List<NodePAVo>> nodeExecutePa() {
+        Map<String, List<NodePAVo>> result = MapUtil.newConcurrentHashMap(2);
         List<NodePAVo> node = nodeExecuteLogManager.nodeExecutePa();
-        result.put("node",node);
+        result.put("node", node);
         List<NodePAVo> nodeTop = nodeExecuteLogManager.nodeExecuteTop();
-        result.put("nodeTop",nodeTop);
+        result.put("nodeTop", nodeTop);
         List<NodePAVo> nodeConf = nodeConfExecuteLogManager.nodeConfExecutePa();
-        result.put("nodeConf",nodeConf);
+        result.put("nodeConf", nodeConf);
         List<NodePAVo> nodeConfTop = nodeConfExecuteLogManager.nodeConfExecuteTop();
-        result.put("nodeConfTop",nodeConfTop);
+        result.put("nodeConfTop", nodeConfTop);
 
         return result;
     }

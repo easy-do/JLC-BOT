@@ -13,7 +13,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @EqualsAndHashCode(callSuper = false)
-public class SystemConfigQo extends PageQo{
+public class SystemConfigQo extends PageQo {
 
     /**
      * 配置名称

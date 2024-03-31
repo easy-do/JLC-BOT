@@ -44,7 +44,7 @@ public class LowCodeController {
      * 分页查询节点配置
      *
      * @param pageQo pageQo
-     * @return vo.plus.easydo.lowcode.bot.R<java.util.List<model.bot.lowcode.plus.easydo.lowcode.bot.BotNodeDto>>
+     * @return vo.plus.easydo.lowcode.bot.R<java.util.List < model.bot.lowcode.plus.easydo.lowcode.bot.BotNodeDto>>
      * @author laoyu
      * @date 2024-03-06
      */
@@ -58,7 +58,7 @@ public class LowCodeController {
     /**
      * 所有节点配置
      *
-     * @return vo.plus.easydo.lowcode.bot.R<java.util.List<entity.bot.lowcode.plus.easydo.lowcode.bot.LowCodeNodeConf>>
+     * @return vo.plus.easydo.lowcode.bot.R<java.util.List < entity.bot.lowcode.plus.easydo.lowcode.bot.LowCodeNodeConf>>
      * @author laoyu
      * @date 2024-03-07
      */
@@ -119,7 +119,7 @@ public class LowCodeController {
             BotNodeDto nodeDto = JSONUtil.toBean(content, BotNodeDto.class);
             nodeDto.setId(null);
             return DataResult.ok(lowCodeService.saveNodeConf(nodeDto));
-        }catch (Exception e){
+        } catch (Exception e) {
             return DataResult.fail("解析配置信息内容失败");
         }
     }
@@ -128,7 +128,7 @@ public class LowCodeController {
      * 获取机器人的节点配置
      *
      * @param botId botId
-     * @return vo.plus.easydo.lowcode.bot.R<java.util.List<java.lang.Long>>
+     * @return vo.plus.easydo.lowcode.bot.R<java.util.List < java.lang.Long>>
      * @author laoyu
      * @date 2024-03-07
      */
@@ -188,7 +188,7 @@ public class LowCodeController {
      * 调试节点配置
      *
      * @param debugBotNodeDto debugBotNodeDto
-     * @return plus.easydo.bot.vo.R<java.util.List<plus.easydo.bot.lowcode.model.CmpStepResult>>
+     * @return plus.easydo.bot.vo.R<java.util.List < plus.easydo.bot.lowcode.model.CmpStepResult>>
      * @author laoyu
      * @date 2024-03-27
      */

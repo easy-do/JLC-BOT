@@ -2,7 +2,6 @@ package plus.easydo.bot.service;
 
 import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -13,7 +12,6 @@ import plus.easydo.bot.entity.SystemConf;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.vo.CurrentUser;
 
-import java.util.Collections;
 import java.util.Objects;
 
 
@@ -43,10 +41,10 @@ public class LoginService {
     public String login(LoginDto loginDto) {
         SystemConf userNameConf = systemConfService.getByConfKey(SystemConstant.USER_NAME);
         SystemConf passwordConf = systemConfService.getByConfKey(SystemConstant.PASSWORD);
-        if(Objects.isNull(userNameConf) || Objects.isNull(passwordConf)){
+        if (Objects.isNull(userNameConf) || Objects.isNull(passwordConf)) {
             throw new BaseException("没有找到用户名和密码配置");
         }
-        if (CharSequenceUtil.equals(loginDto.getUserName(),userNameConf.getConfData()) && CharSequenceUtil.equals(loginDto.getPassword(),passwordConf.getConfData())) {
+        if (CharSequenceUtil.equals(loginDto.getUserName(), userNameConf.getConfData()) && CharSequenceUtil.equals(loginDto.getPassword(), passwordConf.getConfData())) {
             StpUtil.login(1);
             return StpUtil.getTokenValue();
         }
@@ -74,7 +72,6 @@ public class LoginService {
         currentUser.setResource(JSONUtil.parseArray(systemConfService.getByConfKey(SystemConstant.RESOURCE).getConfData()));
         return currentUser;
     }
-
 
 
 }

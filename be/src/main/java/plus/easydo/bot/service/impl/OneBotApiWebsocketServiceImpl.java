@@ -5,9 +5,6 @@ import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.constant.OneBotConstants;
-import plus.easydo.bot.entity.BotInfo;
-import plus.easydo.bot.exception.BaseException;
-import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.service.OneBotApiService;
 import plus.easydo.bot.websocket.OneBotWebSocketHandler;
 
@@ -22,10 +19,6 @@ import java.util.Objects;
 public class OneBotApiWebsocketServiceImpl implements OneBotApiService {
 
     private static String sendSocketAwait(String botNumber, String action, JSONObject params) {
-        BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
-        if (Objects.isNull(bot)) {
-            throw new BaseException("没有找到机器人[" + botNumber + "]信息");
-        }
         JSONObject message = JSONUtil.createObj();
         String messageId = UUID.fastUUID().toString(true);
         message.set("echo", messageId);
@@ -37,10 +30,6 @@ public class OneBotApiWebsocketServiceImpl implements OneBotApiService {
     }
 
     private static void sendSocket(String botNumber, String action, JSONObject params) {
-        BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
-        if (Objects.isNull(bot)) {
-            throw new BaseException("没有找到机器人[" + botNumber + "]信息");
-        }
         JSONObject message = JSONUtil.createObj();
         String messageId = UUID.fastUUID().toString(true);
         message.set("echo", messageId);

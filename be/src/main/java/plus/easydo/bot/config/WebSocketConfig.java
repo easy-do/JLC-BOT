@@ -31,6 +31,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
     public WebSocketHandler oneBotWebSocketHandler() {
         return new OneBotWebSocketHandler();
     }
+
     @Bean
     public WebSocketHandler sandBoxWebsocketHandler() {
         return new SandboxWebsocketHandler();

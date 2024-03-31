@@ -1,14 +1,14 @@
 package plus.easydo.bot.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import lombok.Data;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Builder;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
 import com.mybatisflex.annotation.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -69,7 +69,7 @@ public class LowCodeNodeConf {
     /**
      * 删除标记
      */
-    @Column(value = "delete_flag",isLogicDelete = true)
+    @Column(value = "delete_flag", isLogicDelete = true)
     private Boolean deleteFlag;
 
 }

@@ -13,12 +13,10 @@ import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.manager.BotPostLogServiceManager;
-import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.util.OneBotWcfClientUtils;
 import plus.easydo.bot.websocket.OneBotService;
 
-import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -53,19 +51,19 @@ public class WcfRunner implements ApplicationRunner {
                         Wcf.WxMsg msg = client.getMsg();
                         try {
                             JSONObject messageJson = wcfAdApter(msg, client);
-                            CompletableFuture.runAsync(()->botPostLogServiceManager.saveLog(messageJson));
-                            CompletableFuture.runAsync(()->oneBotService.handlerPost(messageJson));
-                        }catch (Exception e){
+                            CompletableFuture.runAsync(() -> botPostLogServiceManager.saveLog(messageJson));
+                            CompletableFuture.runAsync(() -> oneBotService.handlerPost(messageJson));
+                        } catch (Exception e) {
                             log.error("wcf消息处理异常,{}", ExceptionUtil.getMessage(e));
                         }
                     }
                 });
                 thread.start();
                 client.keepRunning();
-            }catch (Exception e){
-                log.error("初始化wcf失败:{}",ExceptionUtil.getMessage(e));
+            } catch (Exception e) {
+                log.error("初始化wcf失败:{}", ExceptionUtil.getMessage(e));
             }
-        }else {
+        } else {
             log.warn("非windows运行,不启动wcf");
         }
     }
@@ -88,10 +86,8 @@ public class WcfRunner implements ApplicationRunner {
         messageJson.set("is_group", isGroup);
         messageJson.set("extra", msg.getExtra());
         messageJson.set("xml", msg.getXml());
-        BotInfo botInfo = CacheManager.BOT_CACHE.get(client.getSelfWxid());
-        if (Objects.nonNull(botInfo)) {
-            messageJson.set(OneBotConstants.SELF_ID, botInfo.getBotNumber());
-        }
+        BotInfo botInfo = OneBotUtils.getBotInfo(client.getSelfWxid());
+        messageJson.set(OneBotConstants.SELF_ID, botInfo.getBotNumber());
         return messageJson;
     }
 

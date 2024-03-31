@@ -1,8 +1,8 @@
 package plus.easydo.bot.mapper;
 
-import plus.easydo.bot.entity.BotNodeExecuteLog;
 import com.mybatisflex.core.BaseMapper;
 import org.apache.ibatis.annotations.Mapper;
+import plus.easydo.bot.entity.BotNodeExecuteLog;
 import plus.easydo.bot.vo.NodePAVo;
 
 import java.util.List;

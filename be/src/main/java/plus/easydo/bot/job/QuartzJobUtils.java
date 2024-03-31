@@ -27,11 +27,11 @@ public class QuartzJobUtils {
     private final Scheduler scheduler;
 
     private TriggerKey getTriggerKey(QuartzJob quartzJob) {
-        return TriggerKey.triggerKey(quartzJob.getId()+"");
+        return TriggerKey.triggerKey(quartzJob.getId() + "");
     }
 
     private JobKey getJobKey(QuartzJob quartzJob) {
-        return JobKey.jobKey(quartzJob.getId()+"");
+        return JobKey.jobKey(quartzJob.getId() + "");
     }
 
     public boolean createJob(QuartzJob quartzJob) {

@@ -36,6 +36,7 @@ public class JobController {
     public R<List<QuartzJob>> pageJob(@RequestBody PageQo pageQo) {
         return DataResult.ok(quartzJobService.jobPage(pageQo));
     }
+
     @SaCheckLogin
     @GetMapping("/info/{id}")
     @Operation(summary = "任务详情")

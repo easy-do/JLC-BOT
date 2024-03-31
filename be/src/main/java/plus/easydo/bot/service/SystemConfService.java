@@ -22,5 +22,5 @@ public interface SystemConfService extends IService<SystemConf> {
 
     SystemConf getByConfKey(String confKey);
 
-    void cacheGameConf();
+    void cacheSystemConf();
 }

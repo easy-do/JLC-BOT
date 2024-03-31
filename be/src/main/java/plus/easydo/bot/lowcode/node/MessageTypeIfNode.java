@@ -18,7 +18,7 @@ import java.util.Objects;
  * @date 2024-03-27
  */
 @Slf4j
-@LiteflowComponent(id="messageTypeIfNode",name="消息类型判断")
+@LiteflowComponent(id = "messageTypeIfNode", name = "消息类型判断")
 public class MessageTypeIfNode extends NodeIfComponent {
 
     @Override
@@ -33,10 +33,10 @@ public class MessageTypeIfNode extends NodeIfComponent {
             String type = confJson.getStr("type");
             if (Objects.nonNull(type)) {
                 JSONObject message = paramJson.getJSONObject(OneBotConstants.MESSAGE_PARSE);
-                if(Objects.nonNull(message)){
+                if (Objects.nonNull(message)) {
                     OneBotMessageParse messageParse = message.toBean(OneBotMessageParse.class);
                     return Objects.nonNull(messageParse) && CharSequenceUtil.equals(messageParse.getType(), type);
-                }else {
+                } else {
                     log.warn("判断消息节点未完整执行,原因:消息字段不存在");
                     throw new BaseException("判断类型未设置");
                 }
@@ -54,6 +54,6 @@ public class MessageTypeIfNode extends NodeIfComponent {
     @Override
     public void onSuccess() throws Exception {
         JLCLiteFlowContext context = getContextBean(JLCLiteFlowContext.class);
-        context.getNodeParamCache().put(getTag(),context.getParam());
+        context.getNodeParamCache().put(getTag(), context.getParam());
     }
 }
