@@ -6,8 +6,6 @@ ENV PARAMS = ""
 ENV TZ=Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
-#COPY be/target/app-encrypted.jar /app.jar
-COPY be/target/app.jar /app.jar
+COPY be/target/app-encrypted.jar /app.jar
 
-#ENTRYPOINT ["sh","-c","java -javaagent:app.jar -jar $JAVA_OPTS /app.jar $PARAMS"]
-ENTRYPOINT ["sh","-c","java -jar $JAVA_OPTS /app.jar $PARAMS"]
+ENTRYPOINT ["sh","-c","java -javaagent:app.jar -jar $JAVA_OPTS /app.jar $PARAMS"]
