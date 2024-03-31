@@ -27,6 +27,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
@@ -106,8 +107,7 @@ public class OneBotWebSocketHandler implements WebSocketHandler {
         String postType = messageJson.getStr(OneBotConstants.POST_TYPE);
         if (Objects.nonNull(postType)) {
             if (!CharSequenceUtil.contains(postType, OneBotPostTypeEnum.META_EVENT.getType())) {
-                getBotPostLogServiceManager().saveLog(messageJson);
-//                CompletableFuture.runAsync(()->getBotPostLogServiceManager().saveLog(messageJson));
+                CompletableFuture.runAsync(()->getBotPostLogServiceManager().saveLog(messageJson));
             }
             getOneBotService().handlerPost(messageJson);
         }
