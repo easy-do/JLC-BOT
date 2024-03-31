@@ -50,6 +50,7 @@ function Sandbox(props) {
         const ws = new WebSocket(wsAddr);
         setSandboxMessageList([]);
         ws.onopen = () => {
+            setSandboxMessageList([]);
             if (websocket) {
                 websocket.close();
             }
