@@ -18,8 +18,8 @@ import java.util.Objects;
  * @Date 2024-03-31
  * @Description oneBot协议scf-http请求api实现
  */
-@Service("websocket")
-public class OneBotApiWebSocketServiceImpl implements OneBotApiService {
+@Service("websocketOneBotApi")
+public class OneBotApiWebsocketServiceImpl implements OneBotApiService {
 
     private static String sendSocketAwait(String botNumber, String action, JSONObject params) {
         BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
