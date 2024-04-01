@@ -51,9 +51,11 @@ const Home: React.FC = () => {
   const [dataSource, setDatasource] = useState([]);
 
   const [nodeExecuteTopData, setNodeExecuteTopData] = useState();
-  const [nodeExecuteConfTopData, setNodeExecuteConfTopData] = useState();
+  const [nodeExecuteMaxData, setNodeExecuteMaxData] = useState();
   const [nodeExecutePaData, setNodeExecutePaData] = useState();
   const [nodeExecuteConfPaData, setNodeExecuteConfPaData] = useState();
+  const [nodeExecuteConfTopData, setNodeExecuteConfTopData] = useState();
+  const [nodeExecuteConfMaxData, setNodeExecuteConfMaxData] = useState();
 
   useEffect(() => {
     getAdList().then((res) => {
@@ -90,12 +92,13 @@ const Home: React.FC = () => {
         } catch (error) { }
       }
     });
+
     nodeExecutePa().then((res) => {
       if (res.success) {
         setNodeExecutePaData({
           title: {
             visible: true,
-            text: '节点执行效率',
+            text: '节点平均执行效率',
           },
           data: res.data.node,
           forceFit: true,
@@ -109,7 +112,7 @@ const Home: React.FC = () => {
         setNodeExecuteConfPaData({
           title: {
             visible: true,
-            text: '节点配置执行效率',
+            text: '节点配置平均执行效率',
           },
           data: res.data.nodeConf,
           forceFit: true,
@@ -123,7 +126,7 @@ const Home: React.FC = () => {
         setNodeExecuteTopData({
           title: {
             visible: true,
-            text: '节点执行排行',
+            text: '节点执行次数排行',
           },
           data: res.data.nodeTop,
           forceFit: true,
@@ -137,7 +140,7 @@ const Home: React.FC = () => {
         setNodeExecuteConfTopData({
           title: {
             visible: true,
-            text: '节点配置执行排行',
+            text: '节点配置执行次数排行',
           },
           data: res.data.nodeConfTop,
           forceFit: true,
@@ -148,12 +151,46 @@ const Home: React.FC = () => {
             text: '节点配置执行次数',
           },
         });
+        setNodeExecuteMaxData({
+          title: {
+            visible: true,
+            text: '节点最大耗时排行',
+          },
+          data: res.data.nodeMax,
+          forceFit: true,
+          xField: 'count',
+          yField: 'nodeName',
+          description: {
+            visible: true,
+            text: '每个节点执行耗时最长的记录',
+          },
+        });
+        setNodeExecuteConfMaxData({
+          title: {
+            visible: true,
+            text: '节点配置最大耗时排行',
+          },
+          data: res.data.nodeConfMax,
+          forceFit: true,
+          xField: 'count',
+          yField: 'confName',
+          description: {
+            visible: true,
+            text: '每个节点配置执行耗时最长的记录',
+          },
+        });
       }
     });
   }, []);
 
   return (
     <PageContainer content={<PageHeaderContent currentUser={initialState?.currentUser} />}>
+      <Card>
+        <Bar {...nodeExecuteMaxData} />
+      </Card>
+      <Card>
+        <Bar {...nodeExecuteConfMaxData} />
+      </Card>
       <Card>
         <Bar {...nodeExecuteConfTopData} />
       </Card>

@@ -3,6 +3,7 @@ package plus.easydo.bot.manager;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.json.JSONObject;
+import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.constant.OneBotConstants;
@@ -26,5 +27,10 @@ public class BotPostLogServiceManager extends ServiceImpl<BotPostLogMapper, BotP
                 .postTime(LocalDateTimeUtil.now())
                 .platform(botInfo.getPlatform())
                 .message(messageJson.toJSONString(0)).build());
+    }
+
+    public boolean clean() {
+        QueryWrapper query = query().where("1=1");
+        return remove(query);
     }
 }

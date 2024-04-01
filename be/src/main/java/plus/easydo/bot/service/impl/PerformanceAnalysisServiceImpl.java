@@ -32,10 +32,14 @@ public class PerformanceAnalysisServiceImpl implements PerformanceAnalysisServic
         result.put("node", node);
         List<NodePAVo> nodeTop = nodeExecuteLogManager.nodeExecuteTop();
         result.put("nodeTop", nodeTop);
+        List<NodePAVo> nodeMax = nodeExecuteLogManager.nodeExecuteMax();
+        result.put("nodeMax", nodeMax);
         List<NodePAVo> nodeConf = nodeConfExecuteLogManager.nodeConfExecutePa();
         result.put("nodeConf", nodeConf);
         List<NodePAVo> nodeConfTop = nodeConfExecuteLogManager.nodeConfExecuteTop();
         result.put("nodeConfTop", nodeConfTop);
+        List<NodePAVo> nodeConfMax = nodeConfExecuteLogManager.nodeConfExecuteMax();
+        result.put("nodeConfMax", nodeConfMax);
 
         return result;
     }

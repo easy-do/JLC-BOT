@@ -6,10 +6,13 @@
 
 
     <select id="nodeConfExecutePa" resultType="plus.easydo.bot.vo.NodePAVo">
-        SELECT conf_name AS confName, AVG(execute_time) AS executeTime FROM low_code_bot_node_conf_execute_log group by conf_id order by executeTime desc;
+        SELECT conf_name AS confName, AVG(execute_time) AS executeTime FROM low_code_bot_node_conf_execute_log group by conf_id order by executeTime;
     </select>
     <select id="nodeConfExecuteTop" resultType="plus.easydo.bot.vo.NodePAVo">
         SELECT conf_name AS confName, count(*) AS count FROM low_code_bot_node_conf_execute_log group by conf_id order by count desc;
+    </select>
+    <select id="nodeConfExecuteMax" resultType="plus.easydo.bot.vo.NodePAVo">
+        SELECT conf_name AS confName, MAX(execute_time) AS count FROM low_code_bot_node_conf_execute_log group by conf_id order by count;
     </select>
 
 </mapper>

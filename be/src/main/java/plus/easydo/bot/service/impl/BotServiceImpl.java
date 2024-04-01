@@ -241,6 +241,21 @@ public class BotServiceImpl implements BotService {
     }
 
     @Override
+    public boolean cleanBotMessage() {
+        return botMessageManager.clean();
+    }
+
+    @Override
+    public boolean cleanBotRequest() {
+        return botRequestManager.clean();
+    }
+
+    @Override
+    public boolean cleanBotNotice() {
+        return botNoticeManager.clean();
+    }
+
+    @Override
     public BotInfo infoBot(Long id) {
         return botInfoManager.getById(id);
     }

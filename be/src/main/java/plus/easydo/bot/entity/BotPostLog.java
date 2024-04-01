@@ -1,5 +1,6 @@
 package plus.easydo.bot.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Id;
 import com.mybatisflex.annotation.KeyType;
@@ -34,6 +35,7 @@ public class BotPostLog {
      * 推送时间
      */
     @Column(value = "post_time")
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime postTime;
 
     /**

@@ -63,4 +63,10 @@ public interface BotService {
     boolean removeBotConfLike(String botNumber, String key);
 
     OneBotApiService getApiServer(String botNumber);
+
+    boolean cleanBotMessage();
+
+    boolean cleanBotRequest();
+
+    boolean cleanBotNotice();
 }

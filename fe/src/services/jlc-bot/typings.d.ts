@@ -60,12 +60,28 @@ declare namespace API {
     message?: string;
   };
 
+  type BotNodeConfExecuteLog = {
+    confId?: number;
+    confName?: string;
+    executeTime?: number;
+    createTime?: string;
+  };
+
   type BotNodeDto = {
     id?: number;
     eventType?: string;
     confName?: string;
     nodes?: Record<string, any>;
     nodeConf?: Record<string, any>;
+  };
+
+  type BotNodeExecuteLog = {
+    confId?: number;
+    confName?: string;
+    nodeCode?: string;
+    nodeName?: string;
+    executeTime?: number;
+    createTime?: string;
   };
 
   type BotNotice = {
@@ -91,6 +107,13 @@ declare namespace API {
     userId?: string;
     selfTime?: string;
     messageId?: string;
+  };
+
+  type BotPostLog = {
+    id?: number;
+    postTime?: string;
+    message?: string;
+    platform?: string;
   };
 
   type BotQo = {
@@ -362,9 +385,36 @@ declare namespace API {
     total?: number;
   };
 
+  type RListBotNodeConfExecuteLog = {
+    code?: number;
+    data?: BotNodeConfExecuteLog[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
+  type RListBotNodeExecuteLog = {
+    code?: number;
+    data?: BotNodeExecuteLog[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
   type RListBotNotice = {
     code?: number;
     data?: BotNotice[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
+  type RListBotPostLog = {
+    code?: number;
+    data?: BotPostLog[];
     message?: string;
     errorMessage?: string;
     success?: boolean;

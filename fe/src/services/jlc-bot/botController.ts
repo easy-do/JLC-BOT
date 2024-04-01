@@ -26,6 +26,30 @@ export async function addBotConf(body: API.BotConf, options?: { [key: string]: a
   });
 }
 
+/** 清空消息记录 GET /api/bot/cleanBotMessage */
+export async function cleanBotMessage(options?: { [key: string]: any }) {
+  return request<API.RBoolean>('/api/bot/cleanBotMessage', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 清空通知记录 GET /api/bot/cleanBotNotice */
+export async function cleanBotNotice(options?: { [key: string]: any }) {
+  return request<API.RBoolean>('/api/bot/cleanBotNotice', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** 清空请求记录 GET /api/bot/cleanBotRequest */
+export async function cleanBotRequest(options?: { [key: string]: any }) {
+  return request<API.RBoolean>('/api/bot/cleanBotRequest', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** 启用脚本 POST /api/bot/enableBotScript */
 export async function enableBotScript(
   body: API.EnableBotScriptDto,

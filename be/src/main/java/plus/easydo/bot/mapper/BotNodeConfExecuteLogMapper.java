@@ -20,4 +20,6 @@ public interface BotNodeConfExecuteLogMapper extends BaseMapper<BotNodeConfExecu
     List<NodePAVo> nodeConfExecutePa();
 
     List<NodePAVo> nodeConfExecuteTop();
+
+    List<NodePAVo> nodeConfExecuteMax();
 }

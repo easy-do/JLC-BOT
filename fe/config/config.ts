@@ -89,6 +89,18 @@ export default defineConfig({
       component: './systemJob',
     },
     {
+      path: '/botPostLog',
+      component: './botPostLog',
+    },
+    {
+      path: '/nodeExecuteLog',
+      component: './nodeExecuteLog',
+    },
+    {
+      path: '/nodeConfExecuteLog',
+      component: './nodeConfExecuteLog',
+    },
+    {
       path: '/sandbox',
       component: './sandbox',
     },

@@ -1,5 +1,6 @@
 package plus.easydo.bot.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.mybatisflex.annotation.Column;
 import com.mybatisflex.annotation.Table;
 import lombok.AllArgsConstructor;
@@ -40,5 +41,7 @@ public class BotNodeConfExecuteLog {
     @Column(value = "execute_time")
     private Long executeTime;
 
+    @JsonFormat(locale = "zh", timezone = "GMT+8", pattern = "yyyy-MM-dd HH:mm:ss")
+    @Column(value = "create_time")
     private LocalDateTime createTime;
 }

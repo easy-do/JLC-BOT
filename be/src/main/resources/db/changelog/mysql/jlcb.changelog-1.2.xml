@@ -484,5 +484,81 @@
             UPDATE system_conf SET conf_name='菜单', conf_type=4, conf_data='[{"name":"首页","path":"/home"},{"name":"系统配置","path":"/conf"},{"name":"机器人管理","path":"/botManager","children":[{"name":"机器人","path":"/platformBot"},{"name":"机器人脚本","path":"/botScript"},{"name":"消息记录","path":"/botMessage"},{"name":"请求记录","path":"/botRequest"},{"name":"通知记录","path":"/botNotice"}]},{"name":"系统节点","path":"/sysNode"},{"name":"节点配置","path":"/nodeConf"},{"name":"沙箱测试","path":"/sandbox"},{"name":"定时任务","path":"/systemJob"}]', conf_key='menu', remark='系统菜单', is_system_conf=1 WHERE conf_key='menu';
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240401" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            UPDATE low_code_sys_node SET node_name='配置判断', group_type='条件判断', node_code='botConfIfNode', node_color='#1296db', remark='对机器人的配置进行判断', node_icon='data:image/png;base64,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', node_ext_data=NULL, node_port='ifElsePorts', max_size=0, form_data='[
+ {
+        "title": "判断类型",
+        "dataIndex": "type",
+        "valueType": "select",
+        "initValue": "equals",
+        "valueEnum": {
+            "isNull": {
+                "text": "存在"
+            },
+            "isNotNull": {
+                "text": "不存在"
+            },
+            "contains": {
+                "text": "包含(文本)"
+            },
+            "equals": {
+                "text": "等于(文本)"
+            },
+            "notEquals": {
+                "text": "不等于(文本)"
+            },
+            "isBlank": {
+                "text": "为空字符(文本)"
+            },
+            "isNotBlank": {
+                "text": "不为空字符(文本)"
+            },
+            "lengthEquals": {
+                "text": "长度等于(文本)"
+            },
+            "toListContains": {
+                "text": "转数组判断是否包含(英文逗号分割)"
+            }
+        },
+        "formItemProps": {
+            "rules": [
+                {
+                    "required": true,
+                    "message": "请选择判断类型"
+                }
+            ]
+        }
+    },
+    {
+        "title": "配置标识",
+        "dataIndex": "confKey",
+        "initialValue": "配置的唯一标识,例如 bot_group_conf_demo",
+        "formItemProps": {
+            "rules": [
+                {
+                    "required": true,
+                    "message": "请输入配置标识"
+                }
+            ]
+        }
+    },
+    {
+        "title": "目标值",
+        "dataIndex": "targetValue",
+        "initialValue": "例如分隔符、替换、拼接、删除的文本内容",
+        "formItemProps": {
+            "rules": [
+                {
+                    "required": true,
+                    "message": "请输入目标值"
+                }
+            ]
+        }
+    }
+]', delete_flag=0 WHERE node_code='botConfIfNode';
+            UPDATE system_conf SET conf_name='菜单', conf_type=4, conf_data='[{"name":"首页","path":"/home"},{"name":"系统管理","path":"/systemManager","children":[{"name":"系统配置","path":"/conf"},{"name":"系统节点","path":"/sysNode"},{"name":"定时任务","path":"/systemJob"}]},{"name":"机器人管理","path":"/botManager","children":[{"name":"机器人","path":"/platformBot"},{"name":"机器人脚本","path":"/botScript"}]},{"name":"系统日志","path":"/systemLog","children":[{"name":"消息记录","path":"/botMessage"},{"name":"请求记录","path":"/botRequest"},{"name":"通知记录","path":"/botNotice"},{"name":"上报日志","path":"/botPostLog"},{"name":"节点执行日志","path":"/nodeExecuteLog"},{"name":"节点配置日志","path":"/nodeConfExecuteLog"}]},{"name":"节点配置","path":"/nodeConf"},{"name":"沙盒测试","path":"/sandbox"}]', conf_key='menu', remark='系统菜单', is_system_conf=1 WHERE conf_key='menu';
+       </sql>
+    </changeSet>
 
 </databaseChangeLog>

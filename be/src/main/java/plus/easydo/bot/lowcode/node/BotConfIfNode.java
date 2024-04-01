@@ -41,6 +41,7 @@ public class BotConfIfNode extends NodeIfComponent {
             if (Objects.nonNull(confKey) && Objects.nonNull(type)) {
                 String confValue = BotConfUtil.getBotConfNull(botNumber, confKey);
                 String targetValue = confJson.getStr("targetValue");
+
                 // 开始根据类型执行不同逻辑
                 switch (type) {
                     case "isNull" -> {
@@ -76,6 +77,7 @@ public class BotConfIfNode extends NodeIfComponent {
                     }
                     case "lengthEquals" -> {
                         if (checkTargetValue(targetValue)) {
+                            targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
                             return Objects.nonNull(confValue) && confValue.length() == Integer.parseInt(targetValue);
                         } else {
                             throwNotConfigTargetValue();
@@ -83,6 +85,7 @@ public class BotConfIfNode extends NodeIfComponent {
                     }
                     case "toListContains" -> {
                         if (checkTargetValue(targetValue)) {
+                            targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
                             if (Objects.nonNull(confValue)) {
                                 List<String> list = StrUtil.split(confValue, ",");
                                 return list.contains(targetValue);

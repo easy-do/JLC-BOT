@@ -156,6 +156,21 @@ public class BotController {
     }
 
     /**
+     * 清空消息记录
+     *
+     * @return plus.easydo.bot.vo.R<java.lang.Boolean>
+     * @author laoyu
+     * @date 2024-04-01
+     */
+    @SaCheckLogin
+    @Operation(summary = "清空消息记录")
+    @GetMapping("/cleanBotMessage")
+    public R<Boolean> cleanBotMessage() {
+        return DataResult.ok(botService.cleanBotMessage());
+    }
+
+
+    /**
      * 分页查询请求记录
      *
      * @param botRequestQo 分页对象
@@ -169,6 +184,20 @@ public class BotController {
     }
 
     /**
+     * 清空请求记录
+     *
+     * @return plus.easydo.bot.vo.R<java.lang.Boolean>
+     * @author laoyu
+     * @date 2024-04-01
+     */
+    @SaCheckLogin
+    @Operation(summary = "清空请求记录")
+    @GetMapping("/cleanBotRequest")
+    public R<Boolean> cleanBotRequest() {
+        return DataResult.ok(botService.cleanBotRequest());
+    }
+
+    /**
      * 分页查询通知记录
      *
      * @param botNoticeQo 分页对象
@@ -179,6 +208,20 @@ public class BotController {
     @PostMapping("/pageBotNotice")
     public R<List<BotNotice>> pageBotNotice(@RequestBody BotNoticeQo botNoticeQo) {
         return DataResult.ok(botService.pageBotNotice(botNoticeQo));
+    }
+
+    /**
+     * 清空请求记录
+     *
+     * @return plus.easydo.bot.vo.R<java.lang.Boolean>
+     * @author laoyu
+     * @date 2024-04-01
+     */
+    @SaCheckLogin
+    @Operation(summary = "清空通知记录")
+    @GetMapping("/cleanBotNotice")
+    public R<Boolean> cleanBotNotice() {
+        return DataResult.ok(botService.cleanBotNotice());
     }
 
     /**
