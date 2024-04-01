@@ -17,4 +17,5 @@ public class SystemConfig {
 
     private String currentVersion;
     private String mode;
+    private Boolean wcfEnable;
 }
