@@ -4,6 +4,7 @@ import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.io.FileUtil;
 import cn.hutool.core.io.IoUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.core.io.ClassPathResource;
 
@@ -17,6 +18,7 @@ import java.io.InputStream;
  * @Date 2024-03-30
  * @Description 文件相关自定义工具
  */
+@Slf4j
 public class FileUtils {
 
     private FileUtils() {
@@ -29,7 +31,7 @@ public class FileUtils {
     }
 
     public static String getCachePath() {
-        boolean win = System.getProperty("os.name").startsWith("win");
+        boolean win = System.getProperty("os.name").toLowerCase().startsWith("win");
         String cachePath;
         if (win) {
             cachePath = getHomePath() + "/cache/dl/";
@@ -39,6 +41,7 @@ public class FileUtils {
         if (FileUtil.exist(cachePath)) {
             FileUtil.mkdir(cachePath);
         }
+        log.debug("获取到的缓存路径为:{}",cachePath);
         return cachePath;
     }
 
@@ -51,6 +54,7 @@ public class FileUtils {
 
     public static String copyWcf() throws IOException {
         String homePath = getHomePath();
+        log.info("获取到的home路径为:{}",homePath);
         if (!FileUtil.exist(homePath + "/win32-x86-64")) {
             FileUtil.mkdir(homePath + "/win32-x86-64");
         }

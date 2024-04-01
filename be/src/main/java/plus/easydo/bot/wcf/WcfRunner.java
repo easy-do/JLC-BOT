@@ -40,7 +40,7 @@ public class WcfRunner implements ApplicationRunner {
         if (os.toLowerCase().startsWith("win")) {
             try {
                 // 本地启动 RPC
-                Client client = new Client(true); // 默认 10086 端口
+                Client client = new Client(false); // 默认 10086 端口
                 OneBotWcfClientUtils.saveClient(client);
                 // 接收消息，并调用 printWxMsg 处理
                 client.enableRecvMsg(100);
