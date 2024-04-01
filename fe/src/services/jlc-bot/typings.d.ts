@@ -206,6 +206,10 @@ declare namespace API {
     id: Record<string, any>;
   };
 
+  type getSysNodeScriptDataParams = {
+    id: Record<string, any>;
+  };
+
   type infoBotParams = {
     id: number;
   };
@@ -236,6 +240,17 @@ declare namespace API {
     empty?: boolean;
   };
 
+  type LiteFlowScript = {
+    id?: number;
+    applicationName?: string;
+    scriptId?: string;
+    scriptName?: string;
+    scriptData?: string;
+    scriptType?: string;
+    scriptLanguage?: string;
+    enable?: boolean;
+  };
+
   type LoginDto = {
     userName: string;
     password: string;
@@ -263,6 +278,7 @@ declare namespace API {
     maxSize?: number;
     formData?: string;
     remark?: string;
+    systemNode?: boolean;
     deleteFlag?: boolean;
   };
 
@@ -478,6 +494,15 @@ declare namespace API {
   type RListSystemConf = {
     code?: number;
     data?: SystemConf[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
+  type RLiteFlowScript = {
+    code?: number;
+    data?: LiteFlowScript;
     message?: string;
     errorMessage?: string;
     success?: boolean;

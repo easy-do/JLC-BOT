@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import plus.easydo.bot.entity.LiteFlowScript;
 import plus.easydo.bot.entity.LowCodeSysNode;
 import plus.easydo.bot.qo.PageQo;
 import plus.easydo.bot.service.LowCodeSysNodeService;
@@ -43,7 +44,7 @@ public class LowCodeSysNodeController {
     @Operation(summary = "添加")
     @PostMapping("/save")
     public R<Boolean> saveSysNode(@RequestBody LowCodeSysNode lowCodeSysNode) {
-        return DataResult.ok(lowCodeSysNodeService.save(lowCodeSysNode));
+        return DataResult.ok(lowCodeSysNodeService.saveSysNode(lowCodeSysNode));
     }
 
 
@@ -57,7 +58,7 @@ public class LowCodeSysNodeController {
     @Operation(summary = "删除")
     @GetMapping("/remove/{id}")
     public R<Boolean> removeSysNode(@PathVariable Serializable id) {
-        return DataResult.ok(lowCodeSysNodeService.removeById(id));
+        return DataResult.ok(lowCodeSysNodeService.removeSysNode(id));
     }
 
 
@@ -71,7 +72,46 @@ public class LowCodeSysNodeController {
     @Operation(summary = "更新")
     @PostMapping("/update")
     public R<Boolean> updateSysNode(@RequestBody LowCodeSysNode lowCodeSysNode) {
-        return DataResult.ok(lowCodeSysNodeService.updateById(lowCodeSysNode));
+        return DataResult.ok(lowCodeSysNodeService.updateSysNode(lowCodeSysNode));
+    }
+
+    /**
+     * 根据主键更新系统节点信息
+     *
+     * @param lowCodeSysNode 系统节点信息
+     * @return {@code true} 更新成功，{@code false} 更新失败
+     */
+    @SaCheckLogin
+    @Operation(summary = "更新表单配置")
+    @PostMapping("/updateFormData")
+    public R<Boolean> updateSysNodeFormData(@RequestBody LowCodeSysNode lowCodeSysNode) {
+        return DataResult.ok(lowCodeSysNodeService.updateSysNodeFormData(lowCodeSysNode));
+    }
+
+    /**
+     * 根据主键更新系统节点信息
+     *
+     * @param lowCodeSysNode 系统节点信息
+     * @return {@code true} 更新成功，{@code false} 更新失败
+     */
+    @SaCheckLogin
+    @Operation(summary = "更新脚本配置")
+    @PostMapping("/updateScriptData")
+    public R<Boolean> updateSysNodeScriptData(@RequestBody LiteFlowScript lowCodeSysNode) {
+        return DataResult.ok(lowCodeSysNodeService.updateSysNodeScriptData(lowCodeSysNode));
+    }
+
+    /**
+     * 根据系统节点信息主键获取详细信息。
+     *
+     * @param id daLowCodeSysNode主键
+     * @return 系统节点信息详情
+     */
+    @SaCheckLogin
+    @Operation(summary = "获取脚本信息")
+    @GetMapping("/getScriptData/{id}")
+    public R<LiteFlowScript> getSysNodeScriptData(@PathVariable Serializable id) {
+        return DataResult.ok(lowCodeSysNodeService.getSysNodeScriptData(id));
     }
 
 

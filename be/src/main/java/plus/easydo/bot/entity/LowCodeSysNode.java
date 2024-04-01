@@ -32,7 +32,7 @@ public class LowCodeSysNode {
     private String nodeName;
 
     /**
-     * 节点类型
+     * 分组名称
      */
     @Column(value = "group_type")
     private String groupType;
@@ -77,6 +77,12 @@ public class LowCodeSysNode {
      */
     @Column(value = "remark")
     private String remark;
+
+    /**
+     * 节点类型 是否系统节点
+     */
+    @Column(value = "system_node")
+    private Boolean systemNode;
 
     /**
      * 删除标记

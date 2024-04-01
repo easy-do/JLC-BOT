@@ -4,7 +4,7 @@ import Editor from '@monaco-editor/react';
 import { useEffect, useRef, useState } from 'react';
 import { BetaSchemaForm, ProFormInstance } from '@ant-design/pro-form';
 import './index.less';
-import { updateSysNode } from '@/services/jlc-bot/lowCodeSysNodeController';
+import { updateSysNodeFormData } from '@/services/jlc-bot/lowCodeSysNodeController';
 loader.config({ paths: { vs: 'https://cdn.staticfile.org/monaco-editor/0.43.0/min/vs' } });
 
 function EditNodeForm(props) {
@@ -46,7 +46,7 @@ function EditNodeForm(props) {
       destroyOnClose
       width={'80%'}
       onOk={() => {
-        updateSysNode({ id: props.currentRow.id, formData: cureentContext }).then((res) => {
+        updateSysNodeFormData({ id: props.currentRow.id, formData: cureentContext }).then((res) => {
           if (res.success) {
             message.success(res.message);
           } else {

@@ -2,8 +2,10 @@ package plus.easydo.bot.service;
 
 
 import com.mybatisflex.core.service.IService;
+import plus.easydo.bot.entity.LiteFlowScript;
 import plus.easydo.bot.entity.LowCodeSysNode;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -17,4 +19,15 @@ public interface LowCodeSysNodeService extends IService<LowCodeSysNode> {
 
     Map<String, List<LowCodeSysNode>> listSysNode();
 
+    boolean saveSysNode(LowCodeSysNode lowCodeSysNode);
+
+    boolean updateSysNode(LowCodeSysNode lowCodeSysNode);
+
+    boolean removeSysNode(Serializable id);
+
+    boolean updateSysNodeFormData(LowCodeSysNode lowCodeSysNode);
+
+    boolean updateSysNodeScriptData(LiteFlowScript liteFlowScript);
+
+    LiteFlowScript getSysNodeScriptData(Serializable id);
 }

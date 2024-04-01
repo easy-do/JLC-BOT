@@ -2,7 +2,6 @@ package plus.easydo.bot.lowcode.node;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -193,7 +192,7 @@ public class LiteFlowNodeExecuteServer {
 
 
     private boolean isIfNode(Node node) {
-        return Objects.nonNull(node) && StrUtil.containsAny(node.getShape(), "if", "If");
+        return Objects.nonNull(node) && CharSequenceUtil.containsAny(node.getShape(), "if", "If");
     }
 
     /**

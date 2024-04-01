@@ -2,6 +2,20 @@
 /* eslint-disable */
 import { request } from 'umi';
 
+/** 获取脚本信息 GET /api/sysNode/getScriptData/${param0} */
+export async function getSysNodeScriptData(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.getSysNodeScriptDataParams,
+  options?: { [key: string]: any },
+) {
+  const { id: param0, ...queryParams } = params;
+  return request<API.RLiteFlowScript>(`/api/sysNode/getScriptData/${param0}`, {
+    method: 'GET',
+    params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
 /** 详细信息 GET /api/sysNode/info/${param0} */
 export async function getSysNodeInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -65,6 +79,36 @@ export async function saveSysNode(body: API.LowCodeSysNode, options?: { [key: st
 /** 更新 POST /api/sysNode/update */
 export async function updateSysNode(body: API.LowCodeSysNode, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/sysNode/update', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 更新表单配置 POST /api/sysNode/updateFormData */
+export async function updateSysNodeFormData(
+  body: API.LowCodeSysNode,
+  options?: { [key: string]: any },
+) {
+  return request<API.RBoolean>('/api/sysNode/updateFormData', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
+/** 更新脚本配置 POST /api/sysNode/updateScriptData */
+export async function updateSysNodeScriptData(
+  body: API.LiteFlowScript,
+  options?: { [key: string]: any },
+) {
+  return request<API.RBoolean>('/api/sysNode/updateScriptData', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',

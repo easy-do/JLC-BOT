@@ -560,5 +560,10 @@
             UPDATE system_conf SET conf_name='菜单', conf_type=4, conf_data='[{"name":"首页","path":"/home"},{"name":"系统管理","path":"/systemManager","children":[{"name":"系统配置","path":"/conf"},{"name":"系统节点","path":"/sysNode"},{"name":"定时任务","path":"/systemJob"}]},{"name":"机器人管理","path":"/botManager","children":[{"name":"机器人","path":"/platformBot"},{"name":"机器人脚本","path":"/botScript"}]},{"name":"系统日志","path":"/systemLog","children":[{"name":"消息记录","path":"/botMessage"},{"name":"请求记录","path":"/botRequest"},{"name":"通知记录","path":"/botNotice"},{"name":"上报日志","path":"/botPostLog"},{"name":"节点执行日志","path":"/nodeExecuteLog"},{"name":"节点配置日志","path":"/nodeConfExecuteLog"}]},{"name":"节点配置","path":"/nodeConf"},{"name":"沙盒测试","path":"/sandbox"}]', conf_key='menu', remark='系统菜单', is_system_conf=1 WHERE conf_key='menu';
        </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240401-1" dbms="mysql" failOnError="true">
+        <sql dbms="mysql">
+            ALTER TABLE low_code_sys_node ADD system_node TINYINT(1) DEFAULT 1 NULL COMMENT '系统节点';
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>

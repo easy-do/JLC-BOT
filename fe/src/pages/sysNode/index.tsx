@@ -18,8 +18,9 @@ import {
   ProFormText,
   ProFormTextArea,
 } from '@ant-design/pro-form';
-import { Button, message } from 'antd';
+import { Button, Dropdown, message } from 'antd';
 import EditNodeForm from './editNodeForm';
+import EditNodeScript from './editNodeScript';
 
 const sysNode: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -33,7 +34,7 @@ const sysNode: React.FC = () => {
    * @param fields
    */
 
-  const handleAdd = async (fields: API.DaLowCodeSysNode) => {
+  const handleAdd = async (fields: API.LowCodeSysNode) => {
     const hide = message.loading('正在添加');
 
     try {
@@ -51,13 +52,14 @@ const sysNode: React.FC = () => {
 
   /** 编辑窗口的弹窗 */
   const [editModalVisible, handleEditModalVisible] = useState<boolean>(false);
-  const [currentRow, setCurrentRow] = useState<API.DaLowCodeSysNode>();
+  const [currentRow, setCurrentRow] = useState<API.LowCodeSysNode>();
 
   const openEditModal = (id: string) => {
     getSysNodeInfo({ id: id }).then((res) => {
       if (res.success) {
         const data = res.data;
         data.nodeName1 = data.nodeName;
+        data.systemNode = data.systemNode+'';
         setCurrentRow(data);
         handleEditModalVisible(true);
       }
@@ -70,7 +72,7 @@ const sysNode: React.FC = () => {
    * @param fields
    */
 
-  const handleUpdate = async (fields: API.DaLowCodeSysNode) => {
+  const handleUpdate = async (fields: API.LowCodeSysNode) => {
     const hide = message.loading('正在更新');
 
     try {
@@ -93,27 +95,45 @@ const sysNode: React.FC = () => {
     getSysNodeInfo({ id: id }).then((res) => {
       if (res.success) {
         const data = res.data;
-        data.nodeName1 = data.nodeName;
         setCurrentRow(data);
         handleEditFormDataModalVisible(true);
       }
     });
   };
 
+    /** 编辑脚本的弹窗 */
+    const [editFormScriptModalVisible, handleEditFormScriptModalVisible] = useState<boolean>(false);
+    const [editNodeScriptId, setEditNideScriptId] = useState<string>();
+
+    const openEditFormScriptModal = (id: string) => {
+      setEditNideScriptId(id);
+      handleEditFormScriptModalVisible(true);
+    };
+
   /** 国际化配置 */
 
-  const columns: ProColumns<API.DaLowCodeSysNode>[] = [
+  const columns: ProColumns<API.LowCodeSysNode>[] = [
     {
       title: '节点名称',
-      dataIndex: 'nodeName',
-    },
-    {
-      title: '分组类型',
-      dataIndex: 'groupType',
+      renderText(_text, record) {
+        return record.nodeName;
+      },
     },
     {
       title: '节点编号',
       dataIndex: 'nodeCode',
+    },
+    {
+      title: '分组名称',
+      dataIndex: 'groupType',
+    },
+    {
+      title: '系统节点',
+      dataIndex: 'systemNode',
+      valueEnum: {
+        "true": "是",
+        "false": "否"
+      }
     },
     {
       title: '备注',
@@ -124,39 +144,52 @@ const sysNode: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="id"
-          onClick={() => {
-            openEditModal(record.id);
-          }}
-        >
-          编辑
-        </a>,
-        <a
-          key="id"
-          onClick={() => {
-            openEditFormDataModal(record.id);
-          }}
-        >
-          配置表单
-        </a>,
-        <a
-          key="id"
-          onClick={() => {
-            removeSysNode({ id: record.id }).then((res) => {
-              actionRef.current.reload();
-            });
-          }}
-        >
-          删除
-        </a>,
+              <Dropdown.Button
+              menu={{
+                items: [
+                  {
+                    key: 'update',
+                    label: '编辑',
+                    onClick: (e) => {
+                      openEditModal(record.id);
+                    }
+                  },
+                  {
+                    key: 'editForm',
+                    label: '配置表单',
+                    onClick: (e) => {
+                      openEditFormDataModal(record.id);
+                    }
+                  },
+                  {
+                    key: 'editScript',
+                    label: '编辑脚本',
+                    disabled: record.systemNode,
+                    onClick: (e) => {
+                      openEditFormScriptModal(record.id);
+                    }
+                  },
+                  {
+                    key: 'remove',
+                    label: '删除',
+                    onClick: (e) => {
+                      removeSysNode({ id: record.id }).then((res) => {
+                        actionRef.current.reload();
+                      });
+                    }
+                  },
+    
+                ], onClick: (e) => console.log(e)
+              }}>
+              操作
+            </Dropdown.Button>
       ],
     },
   ];
 
   return (
     <PageContainer>
-      <ProTable<API.DaLowCodeSysNode, API.RListDaLowCodeSysNode>
+      <ProTable<API.LowCodeSysNode, API.RListLowCodeSysNode>
         headerTitle="节点列表"
         actionRef={actionRef}
         rowKey="id"
@@ -190,7 +223,7 @@ const sysNode: React.FC = () => {
         visible={createModalVisible}
         onVisibleChange={handleModalVisible}
         onFinish={async (value) => {
-          const success = await handleAdd(value as API.DaLowCodeSysNode);
+          const success = await handleAdd(value as API.LowCodeSysNode);
           if (success) {
             handleModalVisible(false);
             if (actionRef.current) {
@@ -211,17 +244,19 @@ const sysNode: React.FC = () => {
         />
         <ProFormText
           name="groupType"
-          label="分组类型"
+          label="分组名称"
+          tooltip="系统会根据分组名称对所有节点进行分组"
           rules={[
             {
               required: true,
-              message: '请选择分组类型',
+              message: '请输入分组名称',
             },
           ]}
         />
         <ProFormText
           name="nodeCode"
           label="节点编号"
+          tooltip="当节点编号包含'if'或'If'关键字时,例如 'filedIfNode', 系统会认为这是一个条件判断节点"
           rules={[
             {
               required: true,
@@ -229,12 +264,35 @@ const sysNode: React.FC = () => {
             },
           ]}
         />
+        <ProFormSelect
+          name="systemNode"
+          label="系统节点"
+          tooltip="系统节点为框架自带的节点，非系统节点执行自定义脚本内容"
+          initialValue={"false"}
+          options={[
+            {
+              label: '是',
+              value: 'true',
+            },
+            {
+              label: '否',
+              value: 'false',
+            }
+          ]}
+          rules={[
+            {
+              required: true,
+              message: '请设置是否为系统节点',
+            },
+          ]}
+        />
         <ProFormText name="nodeColor" label="节点颜色" />
-        <ProFormText name="nodeIcon" label="节点图标" />
+        <ProFormText name="nodeIcon" label="节点图标" tooltip="base64或url连接"/>
         <ProFormDigit
           name="maxSize"
           label="最大数量"
           min={0}
+          tooltip="可拖拽到画布上的最大数量,0为不限制"
           rules={[
             {
               required: true,
@@ -294,7 +352,7 @@ const sysNode: React.FC = () => {
         visible={editModalVisible}
         onVisibleChange={handleEditModalVisible}
         onFinish={async (value) => {
-          const success = await handleUpdate(value as API.DaLowCodeSysNode);
+          const success = await handleUpdate(value as API.LowCodeSysNode);
           if (success) {
             handleEditModalVisible(false);
             if (actionRef.current) {
@@ -316,17 +374,19 @@ const sysNode: React.FC = () => {
         />
         <ProFormText
           name="groupType"
-          label="分组类型"
+          label="分组名称"
+          tooltip="系统会根据分组名称对所有节点进行分组"
           rules={[
             {
               required: true,
-              message: '请选择分组类型',
+              message: '请输入分组名称',
             },
           ]}
         />
         <ProFormText
           name="nodeCode"
           label="节点编号"
+          tooltip="当节点编号包含'if'或'If'关键字时,例如 'filedIfNode', 系统会认为这是一个条件判断节点"
           rules={[
             {
               required: true,
@@ -334,11 +394,34 @@ const sysNode: React.FC = () => {
             },
           ]}
         />
+        <ProFormSelect
+          name="systemNode"
+          label="系统节点"
+          tooltip="系统节点为系统自带节点，代码写死不可直接修改, 非系统节点可动态更新代码逻辑"
+          initialValue={"false"}
+          options={[
+            {
+              label: '是',
+              value: 'true',
+            },
+            {
+              label: '否',
+              value: 'false',
+            }
+          ]}
+          rules={[
+            {
+              required: true,
+              message: '请设置是否为系统节点',
+            },
+          ]}
+        />
         <ProFormText name="nodeColor" label="节点颜色" />
-        <ProFormText name="nodeIcon" label="节点图标" />
+        <ProFormText name="nodeIcon" label="节点图标" tooltip="base64或url连接"/>
         <ProFormDigit
           name="maxSize"
           label="最大数量"
+          tooltip="可拖拽到画布上的最大数量,0为不限制"
           min={0}
           rules={[
             {
@@ -394,6 +477,11 @@ const sysNode: React.FC = () => {
         visible={editFormDataModalVisible}
         handleVisible={handleEditFormDataModalVisible}
         currentRow={currentRow}
+      />
+      <EditNodeScript
+        visible={editFormScriptModalVisible}
+        handleVisible={handleEditFormScriptModalVisible}
+        editNodeScriptId={editNodeScriptId}
       />
     </PageContainer>
   );
