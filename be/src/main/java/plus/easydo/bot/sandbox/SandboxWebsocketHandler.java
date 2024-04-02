@@ -1,14 +1,11 @@
 package plus.easydo.bot.sandbox;
 
 
+import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.cache.Cache;
 import cn.hutool.cache.CacheUtil;
-import cn.hutool.core.date.DatePattern;
-import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
-import cn.hutool.core.lang.UUID;
-import cn.hutool.extra.spring.SpringUtil;
-import cn.hutool.json.JSONObject;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.CloseStatus;
@@ -17,10 +14,8 @@ import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
 import plus.easydo.bot.constant.OneBotConstants;
-import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
-import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
-import plus.easydo.bot.websocket.OneBotService;
 
+import java.net.URI;
 import java.util.Objects;
 import java.util.concurrent.ConcurrentLinkedDeque;
 
@@ -37,24 +32,30 @@ public class SandboxWebsocketHandler implements WebSocketHandler {
 
     private static final Cache<String, SandboxMessage> MESSAGE_CACHE = CacheUtil.newFIFOCache(50);
 
-    private static OneBotService oneBotService;
-
-    public static OneBotService getOneBotService() {
-        if (Objects.isNull(oneBotService)) {
-            oneBotService = SpringUtil.getBean(OneBotService.class);
-        }
-        return oneBotService;
-    }
-
 
     @Override
     public void afterConnectionEstablished(WebSocketSession session) {
-        log.info("沙箱客户端连接:" + session.getId());
-        CONCURRENT_LINKED_DEQUE.forEach(value -> closeSession(value));
-        CONCURRENT_LINKED_DEQUE.clear();
-        saveSession(session);
-        for (SandboxMessage sandboxMessage : MESSAGE_CACHE) {
-            sendMessageNotCache(session, sandboxMessage);
+        log.info("沙箱客户端连接:{}", session.getId());
+        URI uri = session.getUri();
+        String query = uri.getQuery();
+        if (Objects.nonNull(query)) {
+            String token = CharSequenceUtil.subAfter(query, OneBotConstants.HEADER_AUTHORIZATION + "=", false);
+            Object loginId = StpUtil.getLoginIdByToken(token);
+            if (Objects.nonNull(loginId)) {
+                log.info("沙箱客户端鉴权成功,保持连接:{}", session.getId());
+                CONCURRENT_LINKED_DEQUE.forEach(value -> closeSession(value));
+                CONCURRENT_LINKED_DEQUE.clear();
+                saveSession(session);
+                for (SandboxMessage sandboxMessage : MESSAGE_CACHE) {
+                    sendMessageNotCache(session, sandboxMessage);
+                }
+            } else {
+                closeSession(session);
+                log.info("沙箱客户端鉴权失败,断开连接:{}", session.getId());
+            }
+        } else {
+            closeSession(session);
+            log.info("沙箱客户端未携带token,断开连接:{}", session.getId());
         }
     }
 
@@ -62,23 +63,6 @@ public class SandboxWebsocketHandler implements WebSocketHandler {
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) {
         Object textMessage = message.getPayload();
         log.info("接收到沙箱客户端消息:" + textMessage);
-        SandboxMessage sandboxMessage = SandboxMessage.builder()
-                .messageId(UUID.fastUUID().toString(true))
-                .isSelf(true)
-                .type("text")
-                .message(String.valueOf(textMessage))
-                .time(LocalDateTimeUtil.format(LocalDateTimeUtil.now(), DatePattern.NORM_DATETIME_PATTERN))
-                .build();
-        cacheMessage(sandboxMessage);
-        sendMessageNotCache(session, sandboxMessage);
-        JSONObject jsonObject = JSONUtil.parseObj(sandboxMessage);
-        jsonObject.set(OneBotConstants.SELF_ID, "jlc-bot-sandbox");
-        jsonObject.set(OneBotConstants.GROUP_ID, "jlc-bot-sandbox");
-        jsonObject.set(OneBotConstants.MESSAGE, textMessage);
-        jsonObject.set(OneBotConstants.RAW_MESSAGE, textMessage);
-        jsonObject.set(OneBotConstants.POST_TYPE, OneBotPostTypeEnum.MESSAGE.getType());
-        jsonObject.set(OneBotConstants.MESSAGE_TYPE, OneBotPostMessageTypeEnum.GROUP.getType());
-        getOneBotService().handlerPost(jsonObject);
     }
 
     public static void sendMessageNotCache(WebSocketSession session, SandboxMessage message) {

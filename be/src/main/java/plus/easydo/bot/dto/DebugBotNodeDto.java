@@ -1,5 +1,6 @@
 package plus.easydo.bot.dto;
 
+import cn.hutool.json.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,5 +19,5 @@ public class DebugBotNodeDto {
 
     private Long id;
 
-    private Object params;
+    private JSONObject params;
 }

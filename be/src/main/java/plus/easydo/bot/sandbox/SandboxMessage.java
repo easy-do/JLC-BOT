@@ -26,4 +26,6 @@ public class SandboxMessage {
 
     private String time;
 
+    private Long confId;
+
 }

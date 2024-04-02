@@ -12,22 +12,22 @@ import defaultSettings from '../config/defaultSettings';
 const isDev = process.env.NODE_ENV === 'development';
 const loginPath = '/login';
 
-const updateUrlInterceptor = (url: string, options: any) => {
-  let authHeader = {};
-  const daCustomUrl = localStorage.getItem('daCustomUrl');
-  if(daCustomUrl && !url.startsWith('http')){
-    url = daCustomUrl + url
-    authHeader = { Authorization: localStorage.getItem('Authorization') };
-  }
-  return {
-    url: `${url}`,
-    options: { ...options, interceptors: true, headers: authHeader},
-  };
-};
+// const updateUrlInterceptor = (url: string, options: any) => {
+//   let authHeader = {};
+//   const daCustomUrl = localStorage.getItem('daCustomUrl');
+//   if(daCustomUrl && !url.startsWith('http')){
+//     url = daCustomUrl + url
+//     authHeader = { Authorization: localStorage.getItem('Authorization') };
+//   }
+//   return {
+//     url: `${url}`,
+//     options: { ...options, interceptors: true, headers: authHeader},
+//   };
+// };
 
 export const request: RequestConfig = {
   // 新增处理请求地址的请求前拦截器
-  requestInterceptors: [updateUrlInterceptor],
+  // requestInterceptors: [updateUrlInterceptor],
 };
 
 /** 获取用户信息比较慢的时候会展示一个 loading */

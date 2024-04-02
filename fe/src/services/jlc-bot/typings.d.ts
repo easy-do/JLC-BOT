@@ -174,7 +174,7 @@ declare namespace API {
 
   type DebugBotNodeDto = {
     id?: number;
-    params?: Record<string, any>;
+    params?: { raw?: Record<string, any>; config?: JSONConfig; empty?: boolean };
   };
 
   type EnableBotScriptDto = {
@@ -583,6 +583,15 @@ declare namespace API {
 
   type runOneJobParams = {
     id: number;
+  };
+
+  type SandboxMessage = {
+    messageId?: string;
+    isSelf?: boolean;
+    type?: string;
+    message?: string;
+    time?: string;
+    confId?: number;
   };
 
   type SetBotNodeDto = {

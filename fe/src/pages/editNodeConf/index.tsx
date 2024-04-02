@@ -24,6 +24,7 @@ import { saveNodeConf, getNodeConf, debugNodeConf } from '@/services/jlc-bot/low
 import { updateNodeConf } from '@/services/jlc-bot/lowCodeController';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import NodeExecutetResultVivew from './nodeExecutetResultVivew';
+import Sandbox from '../sandbox';
 
 
 function EditNodeConf(props: { location: { search: string | string[][] | Record<string, string> | URLSearchParams | undefined; }; }) {
@@ -83,6 +84,24 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
   // 节点debug结果弹框
   const [isDebuModalOpen, setIsDebuModalOpen] = useState(false);
   const [debugResultData, setDebugResultData] = useState<API.CmpStepResult[]>([]);
+
+
+  // 沙盒调试弹框
+  const [sandBoxOpen, setSandBoxOpen] = useState(false);
+  const [sandBoxConfId, setSandBoxConfId] = useState<string>();
+
+  const openSandcoxModel = (confId:string) =>{
+    setSandBoxConfId(confId);
+    setSandBoxOpen(true);
+  }
+
+  const debugModalOpenCallback = (bl:boolean) =>{
+    setIsDebuModalOpen(bl);
+  }
+  const setDebugResultBack = (data :API.CmpStepResult[]) =>{
+    setDebugResultData(data);
+  }
+  
 
 
 
@@ -463,6 +482,22 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
         >
           调试
         </Button>
+        <Button
+          type="primary"
+          icon={<PlayCircleOutlined />}
+          style={{
+            position: 'fixed',
+            cursor: 'pointer',
+            right: '0',
+            top: '400px',
+            zIndex: 99,
+          }}
+          onClick={() => {
+            openSandcoxModel(confId);
+          }}
+        >
+          沙盒
+        </Button>
         <ModalForm
           modalProps={{
             destroyOnClose: true,
@@ -568,6 +603,22 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
             ]}
           />
         </ModalForm>
+        <Modal
+          style={{
+            "minWidth":"50%",
+            "minHeight":"50%"
+          }}
+          keyboard={false}
+          open={sandBoxOpen}
+          onCancel={() => setSandBoxOpen(false)}
+          title="沙盒调试"
+          destroyOnClose={true}
+          maskClosable={false}
+          centered
+          footer={null}
+        >
+        <Sandbox confId={sandBoxConfId} setDebugResult={setDebugResultBack} openDebug={debugModalOpenCallback} />
+      </Modal>
       </div>
     </PageContainer>
   );

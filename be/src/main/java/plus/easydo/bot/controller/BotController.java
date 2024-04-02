@@ -61,7 +61,7 @@ public class BotController {
      */
     @SaCheckLogin
     @Operation(summary = "机器人详情")
-    @PostMapping("/info/{id}")
+    @GetMapping("/info/{id}")
     public R<BotInfo> infoBot(@PathVariable("id") Long id) {
         return DataResult.ok(botService.infoBot(id));
     }

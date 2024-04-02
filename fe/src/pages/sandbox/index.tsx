@@ -3,6 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import styles from './index.less';
 import { atom, useAtom } from 'jotai'
 import { PageContainer } from "@ant-design/pro-layout";
+import cookie from "react-cookies";
+import { sendSandboxMessage } from "@/services/jlc-bot/sandboxController";
+import { PlayCircleOutlined } from "@ant-design/icons";
 
 const countAtom = atom(0)
 const listAtom = atom([])
@@ -12,12 +15,11 @@ function Sandbox(props) {
 
     const [count, setCount] = useAtom(countAtom)
 
-    // 沙箱弹框a
     const [websocket, setWebsocket] = useState<WebSocket>();
-    //   const [sandboxMessageList, setSandboxMessageList] = useState([]);
     const [sandboxMessageList, setSandboxMessageList] = useAtom(listAtom);
     const [messageInput, setMessageInput] = useState<string>();
     const chatContent = useRef<HTMLDivElement>();
+    const [debugResultData, setDebugResultData] = useState<API.CmpStepResult[]>([]);
 
     const setScrollTop = () =>{
         try{
@@ -41,12 +43,13 @@ function Sandbox(props) {
             wsAddr = wsAddr+"ws"
             url = url.replace("http","");
         }
-        url = url.replace("/#/sandbox","");
+        const endIndex = url.indexOf("/#");
+
+        url = url.substring(0,endIndex);
         if(url.endsWith(":8000")){
             url = url.replace("8000","8888");
         }
-        wsAddr = wsAddr + url + '/ws/sandbox';
-
+        wsAddr = wsAddr + url + '/ws/sandbox' + '?authorization='+cookie.load('Authorization');
         const ws = new WebSocket(wsAddr);
         setSandboxMessageList([]);
         ws.onopen = () => {
@@ -55,7 +58,7 @@ function Sandbox(props) {
                 websocket.close();
             }
             setWebsocket(ws);
-            message.success("沙箱服务已连接")
+            message.success("连接沙盒服务")
         }
         ws.onmessage = (messageData) => {
             const newArray = sandboxMessageList;
@@ -67,8 +70,9 @@ function Sandbox(props) {
                     setScrollTop();
             }, 500);
         }
-        ws.onerror = (error) => message.success("沙箱通信异常");
+        ws.onerror = (error) => message.error("沙盒通信异常");
         ws.onclose = () => {
+            message.warning("沙盒服务断开连接")
             setWebsocket(undefined);
         };
     }
@@ -78,12 +82,29 @@ function Sandbox(props) {
         setMessageInput(e.target.value);
     }
 
-    const sendSandboxMessage = () => {
+    const sendMessage = () => {
         if (!messageInput || messageInput == '') {
             message.warn('请先输入消息');
             return;
         }
-        websocket?.send(messageInput);
+        const sandboxMessage = {
+            "isSelf": true,
+            "type": "text",
+            "message": messageInput,
+            "confId" : props.confId
+        }
+        sendSandboxMessage(sandboxMessage).then(res=>{
+            if(res.success){
+                message.success("消息发送成功");
+                setMessageInput(undefined);
+                if(props.setDebugResult){
+                    props.setDebugResult(res.data);
+                    setDebugResultData(res.data);
+                }
+            }else{
+                message.error(res.errorMessage);
+            }
+        })
         setMessageInput(undefined);
     }
 
@@ -91,7 +112,7 @@ function Sandbox(props) {
         if (!websocket) {
             createSandbox();
         }
-    }, [props.open])
+    }, [])
 
 
     return (
@@ -142,12 +163,28 @@ function Sandbox(props) {
                 <div className={styles.inputArea}>
                     <Input placeholder="请输入内容" size="large" onKeyDown={(event) => {
                         if (event.key == 'Enter' && messageInput && messageInput != '') {
-                            sendSandboxMessage();
+                            sendMessage();
                         }
                     }} value={messageInput} onChange={(e: any) => changeMessageInput(e)} />
-                    <Button size="large" type="primary" onClick={sendSandboxMessage}>发送</Button>
+                    <Button size="large" type="primary" onClick={sendMessage}>发送</Button>
                 </div>
             </div>
+            {debugResultData &&  debugResultData.length > 0 && props.confId && <Button
+                type="primary"
+                icon={<PlayCircleOutlined />}
+                style={{
+                    position: 'fixed',
+                    cursor: 'pointer',
+                    left: '0',
+                    top: '360px',
+                    zIndex: 99,
+                }}
+                onClick={() => {
+                    props.openDebug(true);
+                }}
+                >
+                执行日志
+            </Button>}
         </PageContainer>
 
     );
