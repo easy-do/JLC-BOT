@@ -464,7 +464,7 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
           }
           }
         >
-          保存
+          保存配置
         </Button>
         <Button
           type="primary"
@@ -477,10 +477,10 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
             zIndex: 99,
           }}
           onClick={() => {
-            handleDebugConfNameModalVisible(true);
+            openSandcoxModel(confId);
           }}
         >
-          调试
+          沙盒模拟
         </Button>
         <Button
           type="primary"
@@ -493,10 +493,10 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
             zIndex: 99,
           }}
           onClick={() => {
-            openSandcoxModel(confId);
+            handleDebugConfNameModalVisible(true);
           }}
         >
-          沙盒
+          高级模拟
         </Button>
         <ModalForm
           modalProps={{
@@ -577,7 +577,6 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
           onVisibleChange={handleDebugConfNameModalVisible}
           onFinish={(values) => {
             if (confId && sysNodeConf) {
-              console.log(newGraph.toJSON());
               debugNodeConf(values).then(res => {
                 if (res.success) {
                   message.success('调试成功');
@@ -593,8 +592,9 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
           <ProFormText name='id' hidden />
           <ProFormTextArea
             name="params"
-            label="模拟参数(json)"
-            initialValue={'{"data":test}'}
+            label={<a onClick={()=>{window.open("/#/botPostLog");}}>模拟上报数据(查看上报日志)</a>}
+            tooltip={<span >对上报数据结构比较了解或对接非标准上报调试,建议使用此项</span>}
+            initialValue={'{"post_type":"message","self_id":114154,"group_id":154213998,"message_id":114154,"message_type":"group","message":"消息正文"}'}
             rules={[
               {
                 required: true,

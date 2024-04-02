@@ -123,7 +123,13 @@ public class LowCodeServiceImpl implements LowCodeService {
         }
 
         //处理参数格式、parseMessage
-        JSONObject paramsJson = debugBotNodeDto.getParams();
+        JSONObject paramsJson;
+        Object params = debugBotNodeDto.getParams();
+        if(params instanceof JSONObject){
+            paramsJson = (JSONObject) params;
+        }else {
+            paramsJson = JSONUtil.parseObj(params);
+        }
         OneBotUtils.parseMessage(paramsJson, log);
 
         LiteflowResponse res = liteFlowNodeExecuteServer.execute(conf, paramsJson);
