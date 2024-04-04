@@ -15,7 +15,7 @@ import java.util.Objects;
  * @Date 2024-03-31
  * @Description oneBot协议scf-http请求api实现
  */
-@Service("websocketOneBotApi")
+@Service("websocket_one_bot_api")
 public class OneBotApiWebSocketServiceImpl implements OneBotApiService {
 
     private static String sendSocketAwait(String botNumber, String action, JSONObject params) {

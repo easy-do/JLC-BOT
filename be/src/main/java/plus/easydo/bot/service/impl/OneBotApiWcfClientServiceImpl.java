@@ -18,7 +18,7 @@ import java.util.List;
  * @Date 2024-03-31
  * @Description oneBot协议wcf-client请求api实现
  */
-@Service("wcf_clientOneBotApi")
+@Service("wcf_client_one_bot_api")
 public class OneBotApiWcfClientServiceImpl implements OneBotApiService {
 
 

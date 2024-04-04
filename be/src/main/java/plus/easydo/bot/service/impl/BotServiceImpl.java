@@ -232,8 +232,8 @@ public class BotServiceImpl implements BotService {
     @Override
     public OneBotApiService getApiServer(String botNumber) {
         BotInfo bot = OneBotUtils.getBotInfo(botNumber);
-        String invokeType = bot.getInvokeType() + "OneBotApi";
-        OneBotApiService apiService = apiServiceMap.get("sandboxOneBotApi");
+        String invokeType = bot.getInvokeType() + "_one_bot_api";
+        OneBotApiService apiService = apiServiceMap.get(invokeType);
         if (Objects.isNull(apiService)) {
             throw new BaseException("api服务[" + invokeType + "]不存在");
         }

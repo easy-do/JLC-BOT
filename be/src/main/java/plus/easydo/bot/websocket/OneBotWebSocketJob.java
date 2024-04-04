@@ -11,6 +11,7 @@ import org.springframework.web.socket.client.WebSocketClient;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
+import plus.easydo.bot.enums.onebot.OneBotIntergrationPostTypeEnum;
 import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.util.OneBotWebSocketUtils;
 
@@ -40,7 +41,7 @@ public class OneBotWebSocketJob {
         List<BotInfo> botList = OneBotUtils.getBotInfoList();
         for (BotInfo botInfo : botList) {
             // 如果指定使用正向websocket
-            if (CharSequenceUtil.equals(botInfo.getPostType(), "websocket")) {
+            if (CharSequenceUtil.equals(botInfo.getPostType(), OneBotIntergrationPostTypeEnum.WEBSOCKET.getType())) {
                 //如果未连接则尝试创建连接
                 if(Objects.isNull(OneBotWebSocketUtils.getSession(botInfo.getBotNumber()))){
                     WebSocketClient client = new StandardWebSocketClient();

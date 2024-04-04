@@ -18,7 +18,7 @@ import plus.easydo.bot.util.OneBotUtils;
  * @Date 2024-03-31
  * @Description oneBot协议沙盒请求api实现
  */
-@Service("sandboxOneBotApi")
+@Service("sandbox_one_bot_api")
 public class OneBotApiSandboxServiceImpl implements OneBotApiService {
 
     private SandboxMessage buildSandboxMessage(String type, String message) {

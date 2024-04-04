@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
+import plus.easydo.bot.enums.onebot.OneBotIntergrationPostTypeEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.manager.BotPostLogServiceManager;
@@ -49,11 +50,16 @@ public class OneBotController {
 
     @PostMapping("/v11/post")
     public void v11Post(@RequestHeader("x-self-id") String selfId, @RequestHeader("x-signature") String signature, HttpServletRequest request) throws IOException {
-        BotInfo bot = OneBotUtils.getBotInfo(selfId);
-        if (Objects.nonNull(bot)) {
+        BotInfo botInfo = OneBotUtils.getBotInfo(selfId);
+        if (Objects.nonNull(botInfo)) {
+            String postType = OneBotIntergrationPostTypeEnum.HTTP_POST.getType();
+            if (!CharSequenceUtil.equals(botInfo.getPostType(), postType)) {
+                log.warn("bot[{}]未配置[{}]上报,不处理.", botInfo.getBotNumber(),postType);
+                return;
+            }
             // 获取内容长度
             byte[] bodyByte = getBodyByte(request);
-            if (verifySignature(bot.getBotSecret(), bodyByte, signature)) {
+            if (verifySignature(botInfo.getBotSecret(), bodyByte, signature)) {
                 JSONObject messageJson = JSONUtil.parseObj(new String(bodyByte));
                 CompletableFuture.runAsync(() -> botPostLogServiceManager.saveLog(messageJson));
                 CompletableFuture.runAsync(() -> oneBotService.handlerPost(messageJson));
@@ -101,6 +107,12 @@ public class OneBotController {
     public R<Boolean> wcfPost(@RequestBody JSONObject postData, @RequestParam("token") String token) {
         BotInfo botInfo = OneBotUtils.getBotInfoBySecret(token);
         if (Objects.nonNull(botInfo)) {
+            String postType = OneBotIntergrationPostTypeEnum.WCF_HTTP.getType();
+            if (!CharSequenceUtil.equals(botInfo.getPostType(), postType)) {
+                String botNumber = botInfo.getBotNumber();
+                log.warn("bot[{}]未配置[{}]上报,不处理.", postType,botNumber);
+                return DataResult.fail("bot[" + botNumber + "]未配置["+postType+"]上报");
+            }
             JSONObject messageJson = wcfAdApter(postData, botInfo);
             CompletableFuture.runAsync(() -> botPostLogServiceManager.saveLog(messageJson));
             CompletableFuture.runAsync(() -> oneBotService.handlerPost(messageJson));

@@ -14,7 +14,7 @@ import plus.easydo.bot.util.OneBotUtils;
  * @Date 2024-03-31
  * @Description oneBot协议wcf-client请求api实现
  */
-@Service("httpOneBotApi")
+@Service("http_one_bot_api")
 public class OneBotApiHttpServiceImpl implements OneBotApiService {
 
     private static String getRequest(String botNumber, String path) {
