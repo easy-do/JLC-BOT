@@ -10,6 +10,9 @@
 * 支持节点执行详细的全链路在线网页调试、方便高级开发
 * 支持沙盒测试
 
+* gitee https://gitee.com/yuzhanfeng/JLC-BOT
+* github https://github.com/easy-do/JLC-BOT
+
 #### 使用技术
 
 - 后端 spring-boot , sa-token , mybatis-flex , liteflow 
