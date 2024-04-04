@@ -68,6 +68,10 @@
 * 接口文档：http://localhost:8888/doc.html
 * 数据库文件存放地址: 解压目录/data/db
 
+#### 低代码功能示例
+
+* 示例demo 包含 控制群授权、随机美图、随机视频、查询天气、拓展节点等
+* https://www.123pan.com/s/DUoAjv-aBDRA.html 提取码: i4lJ  下载示例配置.7z 解压后再页面导入配置
 
 #### 页面截图展示
 
