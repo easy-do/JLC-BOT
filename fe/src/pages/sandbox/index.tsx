@@ -4,7 +4,7 @@ import styles from './index.less';
 import { atom, useAtom } from 'jotai'
 import { PageContainer } from "@ant-design/pro-layout";
 import cookie from "react-cookies";
-import { sendSandboxMessage } from "@/services/jlc-bot/sandboxController";
+import { sendSandboxMessage } from "@/services/jlc-bot/shahe";
 import { PlayCircleOutlined } from "@ant-design/icons";
 
 const countAtom = atom(0)
@@ -58,7 +58,7 @@ function Sandbox(props) {
                 websocket.close();
             }
             setWebsocket(ws);
-            message.success("连接沙盒服务")
+            message.success("沙盒服务已连接")
         }
         ws.onmessage = (messageData) => {
             const newArray = sandboxMessageList;

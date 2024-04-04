@@ -5,7 +5,7 @@ import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { Button, message, Upload } from 'antd';
 import type { UploadProps } from 'antd';
-import { getNodeConf, pageNodeConf, removeNodeConf,copyNodeConf } from '@/services/jlc-bot/lowCodeController';
+import { getNodeConf, pageNodeConf, removeNodeConf,copyNodeConf } from '@/services/jlc-bot/didaima';
 import { request } from 'umi';
 
 const nodeConf: React.FC = () => {

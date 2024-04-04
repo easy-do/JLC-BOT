@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 添加机器人配置 POST /api/bot/add */
+/** 添加机器人 POST /api/bot/add */
 export async function addBot(body: API.BotInfo, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/bot/add', {
     method: 'POST',
@@ -181,7 +181,7 @@ export async function removeBotConf(
   });
 }
 
-/** 更新机器人配置 POST /api/bot/update */
+/** 更新机器人 POST /api/bot/update */
 export async function updateBot(body: API.BotInfo, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/bot/update', {
     method: 'POST',

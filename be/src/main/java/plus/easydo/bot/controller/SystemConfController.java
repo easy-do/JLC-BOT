@@ -2,6 +2,7 @@ package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,12 +20,13 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
- * 游戏配置 控制层。
+ * 系统配置 控制层。
  *
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
  */
 @RestController
+@Tag(name = "系统配置")
 @RequiredArgsConstructor
 @RequestMapping("/api/conf")
 public class SystemConfController {
@@ -33,7 +35,7 @@ public class SystemConfController {
 
 
     /**
-     * 分页查询游戏配置
+     * 分页查询系统配置
      *
      * @param gameConfigQo gameConfigQo
      * @return 分页对象
@@ -46,10 +48,10 @@ public class SystemConfController {
     }
 
     /**
-     * 根据游戏配置主键获取详细信息。
+     * 根据系统配置主键获取详细信息。
      *
      * @param id daGameConfig主键
-     * @return 游戏配置详情
+     * @return 系统配置详情
      */
     @SaCheckLogin
     @Operation(summary = "详情")
@@ -59,9 +61,9 @@ public class SystemConfController {
     }
 
     /**
-     * 添加 游戏配置
+     * 添加 系统配置
      *
-     * @param systemConf 游戏配置
+     * @param systemConf 系统配置
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
 
@@ -75,7 +77,7 @@ public class SystemConfController {
     /**
      * 更新
      *
-     * @param systemConf 游戏配置
+     * @param systemConf 系统配置
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
     @SaCheckLogin

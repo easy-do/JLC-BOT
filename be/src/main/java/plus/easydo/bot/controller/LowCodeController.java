@@ -3,6 +3,7 @@ package plus.easydo.bot.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.hutool.json.JSONUtil;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,6 +34,7 @@ import java.util.List;
  * @date 2024/3/5
  */
 @RestController
+@Tag(name = "低代码")
 @RequestMapping("/api/lowcode")
 @RequiredArgsConstructor
 public class LowCodeController {

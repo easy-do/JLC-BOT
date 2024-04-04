@@ -210,6 +210,17 @@ declare namespace API {
     id: Record<string, any>;
   };
 
+  type hookGetParams = {
+    action: string;
+    secret: string;
+  };
+
+  type hookPostParams = {
+    action: string;
+    secret: string;
+    paramJson: JSONObject;
+  };
+
   type infoBotParams = {
     id: number;
   };

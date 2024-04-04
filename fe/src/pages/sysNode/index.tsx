@@ -9,7 +9,7 @@ import {
   removeSysNode,
   saveSysNode,
   updateSysNode,
-} from '@/services/jlc-bot/lowCodeSysNodeController';
+} from '@/services/jlc-bot/xitongjiedian';
 import {
   ModalForm,
   ProFormDigit,

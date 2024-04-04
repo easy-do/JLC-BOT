@@ -5,6 +5,7 @@ import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.entity.LiteFlowScript;
 import plus.easydo.bot.entity.LowCodeSysNode;
 import plus.easydo.bot.qo.PageQo;
@@ -35,8 +35,9 @@ import java.util.Map;
  * @since 1.0
  */
 @RestController
-@RequestMapping("/api/sysNode")
+@Tag(name = "系统节点")
 @RequiredArgsConstructor
+@RequestMapping("/api/sysNode")
 public class LowCodeSysNodeController {
 
     private final LowCodeSysNodeService lowCodeSysNodeService;

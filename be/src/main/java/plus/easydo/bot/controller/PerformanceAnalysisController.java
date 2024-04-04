@@ -2,6 +2,7 @@ package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,8 +25,9 @@ import java.util.Map;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/pa")
+@Tag(name = "性能分析")
 @RequiredArgsConstructor
+@RequestMapping("/api/pa")
 public class PerformanceAnalysisController {
 
 
@@ -37,7 +39,7 @@ public class PerformanceAnalysisController {
      * @return 所有数据
      */
     @SaCheckLogin
-    @Operation(summary = "节点执行效率分析")
+    @Operation(summary = "节点执行分析")
     @GetMapping("/nodeExecutePa")
     public R<Map<String, List<NodePAVo>>> nodeExecutePa() {
         return DataResult.ok(performanceAnalysisService.nodeExecutePa());

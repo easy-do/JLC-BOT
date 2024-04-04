@@ -2,6 +2,7 @@ package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import java.util.List;
  * @Description 沙盒相关
  */
 @RestController
+@Tag(name = "沙盒")
 @RequiredArgsConstructor
 @RequestMapping("/api/sandbox")
 public class SandboxController {
@@ -28,7 +30,7 @@ public class SandboxController {
     private final SandboxService sandboxService;
 
     @SaCheckLogin
-    @Operation(summary = "机器人详情")
+    @Operation(summary = "发送沙盒消息")
     @PostMapping("/sendMessage")
     public R<List<CmpStepResult>> sendSandboxMessage(@RequestBody SandboxMessage sandboxMessage) {
         return DataResult.ok(sandboxService.sendMessage(sandboxMessage));

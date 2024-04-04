@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Drawer } from 'antd';
+import { Button, message, Modal, Drawer } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -7,12 +7,10 @@ import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { ModalForm, ProFormItem, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import { enableBotScript, getEnableBotScript, infoBot, pageBot, removeBot, updateBot } from '@/services/jlc-bot/botController';
-import { addBot } from '@/services/jlc-bot/botController';
-import Modal from 'antd/lib/modal/Modal';
+import { enableBotScript, getEnableBotScript, infoBot, addBot, pageBot, removeBot, updateBot } from '@/services/jlc-bot/jiqiren';
 import EditBotConf from './EditBotConf';
-import { botScriptList } from '@/services/jlc-bot/botScriptController';
-import { getBotNode, listNodeConf, setBotNode } from '@/services/jlc-bot/lowCodeController';
+import { botScriptList } from '@/services/jlc-bot/jiqirenjiaoben';
+import { getBotNode, listNodeConf, setBotNode } from '@/services/jlc-bot/didaima';
 
 const platfromBot: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);

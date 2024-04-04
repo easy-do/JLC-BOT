@@ -2,7 +2,7 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** 机器人详情 POST /api/sandbox/sendMessage */
+/** 发送沙盒消息 POST /api/sandbox/sendMessage */
 export async function sendSandboxMessage(
   body: API.SandboxMessage,
   options?: { [key: string]: any },

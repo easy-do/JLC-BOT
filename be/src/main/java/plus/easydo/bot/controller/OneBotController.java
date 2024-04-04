@@ -6,6 +6,7 @@ import cn.hutool.crypto.SecureUtil;
 import cn.hutool.crypto.digest.HMac;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.ServletInputStream;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -40,8 +41,9 @@ import java.util.concurrent.CompletableFuture;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/oneBot")
+@Tag(name = "消息上报")
 @RequiredArgsConstructor
+@RequestMapping("/api/oneBot")
 public class OneBotController {
 
     private final BotPostLogServiceManager botPostLogServiceManager;

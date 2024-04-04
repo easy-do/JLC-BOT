@@ -2,6 +2,7 @@ package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,13 +19,14 @@ import plus.easydo.bot.vo.R;
 import java.util.List;
 
 /**
- * cdk配置 控制层。
+ * 机器人脚本 控制层。
  *
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
  */
 @RestController
 @RequiredArgsConstructor
+@Tag(name = "机器人脚本")
 @RequestMapping("/api/botScript")
 public class BotScriptController {
 

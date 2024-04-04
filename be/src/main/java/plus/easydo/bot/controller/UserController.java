@@ -3,6 +3,7 @@ package plus.easydo.bot.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.dev33.satoken.annotation.SaIgnore;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,8 +24,9 @@ import plus.easydo.bot.vo.R;
  * @date 2023/10/11
  */
 @RestController
-@RequestMapping("/api/user")
+@Tag(name = "用户")
 @RequiredArgsConstructor
+@RequestMapping("/api/user")
 public class UserController {
 
     private final LoginService loginService;

@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import type { EditableFormInstance, ProColumns } from '@ant-design/pro-table';
 import { EditableProTable } from '@ant-design/pro-table';
 import { Button, message } from 'antd';
-import { addBotConf, getBotConf, removeBotConf, updateBotConf } from '@/services/jlc-bot/botController';
+import { addBotConf, getBotConf, removeBotConf, updateBotConf } from '@/services/jlc-bot/jiqiren';
 import { PlusOutlined } from '@ant-design/icons';
 import { ModalForm, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 

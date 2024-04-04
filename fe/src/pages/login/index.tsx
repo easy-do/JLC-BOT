@@ -4,7 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { ProFormText, LoginForm, ModalForm } from '@ant-design/pro-form';
 import { useIntl, history, FormattedMessage, SelectLang, useModel, request } from 'umi';
 import Footer from '@/components/Footer';
-import { login} from '@/services/jlc-bot/userController';
+import { login} from '@/services/jlc-bot/yonghu';
 
 import styles from './index.less';
 import Link from 'antd/lib/typography/Link';

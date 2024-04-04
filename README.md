@@ -17,7 +17,7 @@
 
 - 后端 spring-boot , sa-token , mybatis-flex , liteflow 
 - 前端 antd-pro 、antvx6
-- bot框架 LLOneBot 、 WeChatFerry
+- 协议端 自行发掘
 - 数据库: 默认使用H2DB、当前支持mysql和H2DB (其他数据库是否支持请查阅mybatis-flex官方文档)
 - 使用OneBotV11协议的数据格式进行对接适配、理论上所有v11协议的bot客户端可直接对接
 
@@ -28,15 +28,13 @@
 - liteflow: https://liteflow.cc/
 - antd-pro: https://pro.ant.design/docs/getting-started/
 - antvx6: https://x6.antv.antgroup.com/tutorial/getting-started
-- LLOneBot: https://github.com/LLOneBot/LLOneBot
-- WeChatFerry: https://github.com/lich0821/WeChatFerry
 - OneBot-V11标准: https://github.com/botuniverse/onebot-11
 
 
 #### 支持功能
 
-- 对接方式: httpPost 、正向websocket、反向websocket、 wx本地hook(windows)、WeChatFerry http上报
-- 兼容平台 QQ （centos、windows、docker、mac） 微信(只能windows) 、其他平台(客户端支持什么就可以在什么平台跑)
+- 对接方式: httpPost 、正向websocket、反向websocket、 wcf-hook(windows)、wcf-http上报
+- 兼容平台 centos、windows、docker (wx只能windows)
 - 已支持全部上报事件处理
 - 低代码能力(部署后查看、未完善文档)
 
@@ -72,8 +70,8 @@
 
 * 标准http上报 : http://ip:8888/api/oneBot/v11/post (密钥在机器人页面点击编辑按钮查看和修改)
 * 反向websocket: ws://ip:8888/ws/oneBot (密钥在机器人页面点击编辑按钮查看和修改)
-* 正向websocket: 机器人管理-> 添加机器人 -> 通信地址 填入websocket地址 (密钥在机器人页面点击编辑按钮查看和修改)
-* WeChatFerry rust客户端 http上报: http://ip:8888/api/oneBot/wcfPost?token=xxxx (密钥在机器人页面点击编辑按钮查看和修改)
+* 正向websocket: 机器人管理-> 添加机器人 -> 通信地址 填入协议端的websocket地址 (密钥在机器人页面点击编辑按钮查看和修改)
+* wcf rust客户端 http上报: http://ip:8888/api/oneBot/wcfPost?token=xxxx (密钥在机器人页面点击编辑按钮查看和修改)
 
 #### 低代码功能示例
 

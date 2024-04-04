@@ -2,33 +2,35 @@
 /* eslint-disable */
 // API 更新时间：
 // API 唯一标识：
-import * as userController from './userController';
-import * as jobController from './jobController';
-import * as lowCodeSysNodeController from './lowCodeSysNodeController';
-import * as sandboxController from './sandboxController';
-import * as oneBotController from './oneBotController';
-import * as botNodeExecuteLogController from './botNodeExecuteLogController';
-import * as botNodeConfExecuteLogController from './botNodeConfExecuteLogController';
-import * as lowCodeController from './lowCodeController';
-import * as systemConfController from './systemConfController';
-import * as botScriptController from './botScriptController';
-import * as botPostLogController from './botPostLogController';
-import * as botController from './botController';
-import * as systemController from './systemController';
-import * as performanceAnalysisController from './performanceAnalysisController';
+import * as yonghu from './yonghu';
+import * as dingshirenwu from './dingshirenwu';
+import * as xitongjiedian from './xitongjiedian';
+import * as shahe from './shahe';
+import * as xiaoxishangbao from './xiaoxishangbao';
+import * as jiedianzhixingrizhi from './jiedianzhixingrizhi';
+import * as jiedianpeizhizhixingrizhi from './jiedianpeizhizhixingrizhi';
+import * as didaima from './didaima';
+import * as xitongpeizhi from './xitongpeizhi';
+import * as jiqirenjiaoben from './jiqirenjiaoben';
+import * as shangbaoxiaoxirizhi from './shangbaoxiaoxirizhi';
+import * as jiqiren from './jiqiren';
+import * as webhook from './webhook';
+import * as xitong from './xitong';
+import * as xingnengfenxi from './xingnengfenxi';
 export default {
-  userController,
-  jobController,
-  lowCodeSysNodeController,
-  sandboxController,
-  oneBotController,
-  botNodeExecuteLogController,
-  botNodeConfExecuteLogController,
-  lowCodeController,
-  systemConfController,
-  botScriptController,
-  botPostLogController,
-  botController,
-  systemController,
-  performanceAnalysisController,
+  yonghu,
+  dingshirenwu,
+  xitongjiedian,
+  shahe,
+  xiaoxishangbao,
+  jiedianzhixingrizhi,
+  jiedianpeizhizhixingrizhi,
+  didaima,
+  xitongpeizhi,
+  jiqirenjiaoben,
+  shangbaoxiaoxirizhi,
+  jiqiren,
+  webhook,
+  xitong,
+  xingnengfenxi,
 };

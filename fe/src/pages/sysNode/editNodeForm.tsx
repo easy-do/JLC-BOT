@@ -4,7 +4,7 @@ import Editor from '@monaco-editor/react';
 import { useEffect, useRef, useState } from 'react';
 import { BetaSchemaForm, ProFormInstance } from '@ant-design/pro-form';
 import './index.less';
-import { updateSysNodeFormData } from '@/services/jlc-bot/lowCodeSysNodeController';
+import { updateSysNodeFormData } from '@/services/jlc-bot/xitongjiedian';
 loader.config({ paths: { vs: 'https://cdn.staticfile.org/monaco-editor/0.43.0/min/vs' } });
 
 function EditNodeForm(props) {

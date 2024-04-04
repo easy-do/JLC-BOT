@@ -2,12 +2,11 @@ import React, { useRef, useState } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { addJob, pageJob, runOneJob, startJob, stopJob, removeJob, jobInfo, updateJob } from '@/services/jlc-bot/jobController';
+import { addJob, pageJob, runOneJob, startJob, stopJob, removeJob, jobInfo, updateJob } from '@/services/jlc-bot/dingshirenwu';
 import { Button, Dropdown, FormInstance, message } from 'antd';
-import { CaretUpFilled, PlusOutlined, SettingTwoTone } from '@ant-design/icons';
-import ProForm, { ModalForm, ProFormItem, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import FormItem from 'antd/es/form/FormItem';
-import { CronProps, CronFns } from "qnn-react-cron";
+import { CaretUpFilled, PlusOutlined } from '@ant-design/icons';
+import { ModalForm, ProFormItem, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
+import { CronFns } from "qnn-react-cron";
 import QnnReactCron from "qnn-react-cron";
 
 const SystemJob: React.FC = () => {

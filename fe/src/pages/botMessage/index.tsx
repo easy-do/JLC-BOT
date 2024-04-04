@@ -3,7 +3,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { useAccess } from 'umi';
-import { pageBotMessage } from '@/services/jlc-bot/botController';
+import { pageBotMessage } from '@/services/jlc-bot/jiqiren';
 
 const botMessage: React.FC = () => {
   

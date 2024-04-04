@@ -10,7 +10,7 @@ import ProList from '@ant-design/pro-list';
 import React from 'react';
 
 import { Bar } from '@ant-design/charts';
-import { nodeExecutePa } from '@/services/jlc-bot/performanceAnalysisController';
+import { nodeExecutePa } from '@/services/jlc-bot/xingnengfenxi';
 
 const PageHeaderContent: FC<{ currentUser: API.CurrentUser }> = ({ currentUser }) => {
   const loading = currentUser && Object.keys(currentUser).length;

@@ -5,7 +5,7 @@ import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import { addBotScript, infoBotScript, pageBotScript, removeBotScript, updateBotScript } from '@/services/jlc-bot/botScriptController';
+import { addBotScript, infoBotScript, pageBotScript, removeBotScript, updateBotScript } from '@/services/jlc-bot/jiqirenjiaoben';
 import loader from '@monaco-editor/loader';
 import Editor from '@monaco-editor/react';
 loader.config({ paths: { vs: 'https://cdn.staticfile.org/monaco-editor/0.43.0/min/vs' } });

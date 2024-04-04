@@ -3,7 +3,7 @@ import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { pageConf, saveConf, updateConf } from '@/services/jlc-bot/systemConfController';
+import { pageConf, saveConf, updateConf } from '@/services/jlc-bot/xitongpeizhi';
 import { ModalForm, ProFormDigit, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { PlusOutlined } from '@ant-design/icons';
 

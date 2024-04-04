@@ -2,6 +2,7 @@ package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,12 +27,13 @@ import plus.easydo.bot.vo.R;
 import java.util.List;
 
 /**
- * cdk配置 控制层。
+ * 机器人 控制层。
  *
  * @author mybatis-flex-helper automatic generation
  * @since 1.0
  */
 @RestController
+@Tag(name = "机器人")
 @RequiredArgsConstructor
 @RequestMapping("/api/bot")
 public class BotController {
@@ -73,7 +75,7 @@ public class BotController {
      * @return 分页对象
      */
     @SaCheckLogin
-    @Operation(summary = "添加机器人配置")
+    @Operation(summary = "添加机器人")
     @PostMapping("/add")
     public R<Boolean> addBot(@RequestBody BotInfo botInfo) {
         return DataResult.ok(botService.addBot(botInfo));
@@ -86,7 +88,7 @@ public class BotController {
      * @return 分页对象
      */
     @SaCheckLogin
-    @Operation(summary = "更新机器人配置")
+    @Operation(summary = "更新机器人")
     @PostMapping("/update")
     public R<Boolean> updateBot(@RequestBody BotInfo botInfo) {
         return DataResult.ok(botService.updateBot(botInfo));

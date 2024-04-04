@@ -1,9 +1,8 @@
 import { useIntl } from 'umi';
 import { GithubOutlined } from '@ant-design/icons';
 import { DefaultFooter } from '@ant-design/pro-layout';
-import { version } from '@/services/jlc-bot/systemController';
 import { useMemo, useState } from 'react';
-import { mode } from '@/services/jlc-bot/systemController';
+import { mode, version } from '@/services/jlc-bot/xitong';
 
 const Footer: React.FC = () => {
   const intl = useIntl();
