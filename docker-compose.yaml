@@ -1,0 +1,24 @@
+version: "2.3"
+
+networks:
+  1panel-network:
+    external: true
+services:
+  jlc-bot:
+    image: registry.cn-hangzhou.aliyuncs.com/gebilaoyu/jlc-bot:1.0.1
+    ports:
+      - 8888:8888
+      #- 9997:7777
+    networks:
+      - 1panel-network
+    environment:
+      - TZ=Asia/Shanghai
+      #- MYSQL_HOST=mysql
+      #- MYSQL_USER=jlc_bot
+      #- MYSQL_PASS=jlc_bot
+      - H2DB=/data/db/jlc_bot
+    volumes:
+      - /data/jlc-bot:/data
+    privileged: true
+    restart: unless-stopped
+    container_name: jlc-bot
