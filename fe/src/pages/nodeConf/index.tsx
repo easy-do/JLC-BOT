@@ -3,19 +3,17 @@ import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { Button, message, Upload, UploadProps } from 'antd';
+import { Button, message, Upload } from 'antd';
+import type { UploadProps } from 'antd';
 import { getNodeConf, pageNodeConf, removeNodeConf,copyNodeConf } from '@/services/jlc-bot/lowCodeController';
+import { request } from 'umi';
 
 const nodeConf: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
   const props: UploadProps = {
-    name: 'file',
-    action: '/api/lowcode/importNodeConf',
+    showUploadList: false,
     maxCount: 1,
-    headers: {
-      "Authorization": localStorage.getItem('Authorization')
-    },
     withCredentials: true,
     onChange(info) {
       if (info.file.status !== 'uploading') {
@@ -27,10 +25,26 @@ const nodeConf: React.FC = () => {
         message.error(`${info.file.name} 上传失败.`);
       }
     },
+    customRequest:(options)=>{
+      const formData = new FormData();
+      formData.append('file', options.file as Blob);
+      request<API.RLong>('/api/lowcode/importNodeConf', {
+        method: 'POST',
+        requestType: 'form',
+        data: formData,
+      }).then((res) => {
+        if (res.success) {
+          message.success('导入成功');
+          actionRef.current?.reload();
+        } else {
+          message.error(res.errorMessage);
+        }
+      });
+    },
     beforeUpload: (file) => {
-      const isJlc = file.name.endsWith('.jlc');
+      const isJlc = file.name.endsWith('.jlcbnc');
       if (!isJlc) {
-        message.error(`只支持.jlc文件`);
+        message.error(`请上传.jlcbnc文件`);
       }
       return isJlc || Upload.LIST_IGNORE;
     },
@@ -38,7 +52,7 @@ const nodeConf: React.FC = () => {
 
   /** 国际化配置 */
 
-  const columns: ProColumns<API.DaLowCodeSysNode>[] = [
+  const columns: ProColumns<API.LowCodeSysNode>[] = [
     {
       title: '配置名称',
       dataIndex: 'confName',
@@ -92,7 +106,7 @@ const nodeConf: React.FC = () => {
                 const blob = new Blob([JSON.stringify(nodeConf)]);
                 const objectURL = URL.createObjectURL(blob);
                 let btn = document.createElement('a');
-                btn.download = nodeConf?.confName + '.jlc';
+                btn.download = nodeConf?.confName + '.jlcbnc';
                 btn.href = objectURL;
                 btn.click();
                 URL.revokeObjectURL(objectURL);
@@ -124,7 +138,7 @@ const nodeConf: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.DaLowCodeSysNode, API.RListDaLowCodeSysNode>
+      <ProTable<API.LowCodeSysNode, API.RListLowCodeSysNode>
         headerTitle="节点配置"
         actionRef={actionRef}
         rowKey="id"

@@ -12,7 +12,7 @@ const botMessage: React.FC = () => {
 
   /** 国际化配置 */
 
-  const columns: ProColumns<API.DaBotMessage>[] = [
+  const columns: ProColumns<API.BotMessage>[] = [
     {
       title: '消息id',
       dataIndex: 'messageId',
@@ -51,7 +51,7 @@ const botMessage: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.DaBotMessage, API.RListDaBotMessage>
+      <ProTable<API.BotMessage, API.RListBotMessage>
         headerTitle="历史消息"
         actionRef={actionRef}
         rowKey="id"

@@ -12,7 +12,7 @@ const botRequest: React.FC = () => {
 
   /** 国际化配置 */
 
-  const columns: ProColumns<API.DaBotRequest>[] = [
+  const columns: ProColumns<API.BotRequest>[] = [
     {
       title: '请求类型',
       dataIndex: 'requestType',
@@ -54,7 +54,7 @@ const botRequest: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.DaBotRequest, API.RListDaBotRequest>
+      <ProTable<API.BotRequest, API.RListBotRequest>
         headerTitle="历史请求记录"
         actionRef={actionRef}
         rowKey="id"

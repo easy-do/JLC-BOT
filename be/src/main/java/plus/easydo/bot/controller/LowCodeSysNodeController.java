@@ -1,6 +1,8 @@
 package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +11,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
+import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.entity.LiteFlowScript;
 import plus.easydo.bot.entity.LowCodeSysNode;
 import plus.easydo.bot.qo.PageQo;
@@ -17,6 +22,8 @@ import plus.easydo.bot.service.LowCodeSysNodeService;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
@@ -138,7 +145,7 @@ public class LowCodeSysNodeController {
     @Operation(summary = "详细信息")
     @GetMapping("/info/{id}")
     public R<LowCodeSysNode> getSysNodeInfo(@PathVariable Serializable id) {
-        return DataResult.ok(lowCodeSysNodeService.getById(id));
+        return DataResult.ok(lowCodeSysNodeService.getSysNodeInfo(id));
     }
 
 
@@ -153,5 +160,28 @@ public class LowCodeSysNodeController {
     @PostMapping("/page")
     public R<List<LowCodeSysNode>> pageSysNode(@RequestBody PageQo pageQo) {
         return DataResult.ok(lowCodeSysNodeService.page(new Page<>(pageQo.getCurrent(), pageQo.getPageSize())));
+    }
+
+    /**
+     * 导入系统节点
+     *
+     * @param file file
+     * @return plus.easydo.bot.vo.R<java.lang.Long>
+     * @author laoyu
+     * @date 2024/4/4
+     */
+    @SaCheckLogin
+    @Operation(summary = "导入系统节点")
+    @PostMapping("/importNode")
+    public R<Long> importNode(@RequestParam("file") MultipartFile file) throws IOException {
+        InputStream ip = file.getInputStream();
+        byte[] bytes = ip.readAllBytes();
+        String content = new String(bytes);
+        try {
+            LowCodeSysNode sysNode = JSONUtil.toBean(content, LowCodeSysNode.class);
+            return DataResult.ok(lowCodeSysNodeService.importNode(sysNode));
+        } catch (Exception e) {
+            return DataResult.fail("解析节点内容失败:"+ExceptionUtil.getMessage(e));
+        }
     }
 }

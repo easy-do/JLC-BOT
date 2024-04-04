@@ -12,7 +12,7 @@ const botNotice: React.FC = () => {
 
   /** 国际化配置 */
 
-  const columns: ProColumns<API.DaBotNotice>[] = [
+  const columns: ProColumns<API.BotNotice>[] = [
     {
       title: '通知类型',
       dataIndex: 'noticeType',
@@ -79,7 +79,7 @@ const botNotice: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.DaBotNotice, API.RListDaBotNotice>
+      <ProTable<API.BotNotice, API.RListBotNotice>
         headerTitle="历史通知"
         actionRef={actionRef}
         rowKey="id"

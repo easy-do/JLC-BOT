@@ -30,4 +30,8 @@ public interface LowCodeSysNodeService extends IService<LowCodeSysNode> {
     boolean updateSysNodeScriptData(LiteFlowScript liteFlowScript);
 
     LiteFlowScript getSysNodeScriptData(Serializable id);
+
+    Long importNode(LowCodeSysNode sysNode);
+
+    LowCodeSysNode getSysNodeInfo(Serializable id);
 }

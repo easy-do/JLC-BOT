@@ -1,5 +1,5 @@
 import { FC, useEffect, useState } from 'react';
-import { Skeleton, Tag, Modal, Card, Row, Col } from 'antd';
+import { Skeleton, Tag, Modal, Card } from 'antd';
 
 import { request, useModel } from 'umi';
 import { PageContainer } from '@ant-design/pro-layout';

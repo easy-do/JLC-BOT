@@ -90,4 +90,7 @@ public class LowCodeSysNode {
     @Column(value = "delete_flag", isLogicDelete = true)
     private Boolean deleteFlag;
 
+    @Column(ignore = true)
+    private LiteFlowScript script;
+
 }

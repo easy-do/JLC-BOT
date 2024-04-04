@@ -174,7 +174,7 @@ declare namespace API {
 
   type DebugBotNodeDto = {
     id?: number;
-    params?: { raw?: Record<string, any>; config?: JSONConfig; empty?: boolean };
+    params?: Record<string, any>;
   };
 
   type EnableBotScriptDto = {
@@ -280,6 +280,7 @@ declare namespace API {
     remark?: string;
     systemNode?: boolean;
     deleteFlag?: boolean;
+    script?: LiteFlowScript;
   };
 
   type NodePAVo = {

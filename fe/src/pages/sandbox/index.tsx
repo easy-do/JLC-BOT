@@ -95,7 +95,7 @@ function Sandbox(props) {
         }
         sendSandboxMessage(sandboxMessage).then(res=>{
             if(res.success){
-                message.success("消息发送成功");
+                message.success("消息处理完成");
                 setMessageInput(undefined);
                 if(props.setDebugResult){
                     props.setDebugResult(res.data);

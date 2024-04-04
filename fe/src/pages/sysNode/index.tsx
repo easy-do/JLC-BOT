@@ -1,9 +1,8 @@
 import React, { useRef, useState } from 'react';
-import { PlusOutlined } from '@ant-design/icons';
+import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import { useAccess } from 'umi';
 import {
   getSysNodeInfo,
   pageSysNode,
@@ -18,13 +17,54 @@ import {
   ProFormText,
   ProFormTextArea,
 } from '@ant-design/pro-form';
-import { Button, Dropdown, message } from 'antd';
+import { Button, Dropdown, Upload, message } from 'antd';
+import type { UploadProps } from 'antd';
 import EditNodeForm from './editNodeForm';
 import EditNodeScript from './editNodeScript';
+import { request } from 'umi';
 
 const sysNode: React.FC = () => {
+
   const actionRef = useRef<ActionType>();
-  const access = useAccess();
+
+  const props: UploadProps = {
+    showUploadList: false,
+    maxCount: 1,
+    withCredentials: true,
+    onChange(info) {
+      if (info.file.status !== 'uploading') {
+      }
+      if (info.file.status === 'done') {
+        message.success(`${info.file.name} 上传成功`);
+        actionRef.current?.reload();
+      } else if (info.file.status === 'error') {
+        message.error(`${info.file.name} 上传失败.`);
+      }
+    },
+    customRequest:(options)=>{
+      const formData = new FormData();
+      formData.append('file', options.file as Blob);
+      request<API.RLong>('/api/sysNode/importNode', {
+        method: 'POST',
+        requestType: 'form',
+        data: formData,
+      }).then((res) => {
+        if (res.success) {
+          message.success('导入成功');
+          actionRef.current?.reload();
+        } else {
+          message.error(res.errorMessage);
+        }
+      });
+    },
+    beforeUpload: (file) => {
+      const isJlc = file.name.endsWith('.jlcbsn');
+      if (!isJlc) {
+        message.error(`请上传.jlcbsn文件`);
+      }
+      return isJlc || Upload.LIST_IGNORE;
+    },
+  };
 
   /** 新建窗口的弹窗 */
   const [createModalVisible, handleModalVisible] = useState<boolean>(false);
@@ -59,7 +99,7 @@ const sysNode: React.FC = () => {
       if (res.success) {
         const data = res.data;
         data.nodeName1 = data.nodeName;
-        data.systemNode = data.systemNode+'';
+        data.systemNode = data.systemNode + '';
         setCurrentRow(data);
         handleEditModalVisible(true);
       }
@@ -101,14 +141,14 @@ const sysNode: React.FC = () => {
     });
   };
 
-    /** 编辑脚本的弹窗 */
-    const [editFormScriptModalVisible, handleEditFormScriptModalVisible] = useState<boolean>(false);
-    const [editNodeScriptId, setEditNideScriptId] = useState<string>();
+  /** 编辑脚本的弹窗 */
+  const [editFormScriptModalVisible, handleEditFormScriptModalVisible] = useState<boolean>(false);
+  const [editNodeScriptId, setEditNideScriptId] = useState<string>();
 
-    const openEditFormScriptModal = (id: string) => {
-      setEditNideScriptId(id);
-      handleEditFormScriptModalVisible(true);
-    };
+  const openEditFormScriptModal = (id: string) => {
+    setEditNideScriptId(id);
+    handleEditFormScriptModalVisible(true);
+  };
 
   /** 国际化配置 */
 
@@ -131,9 +171,9 @@ const sysNode: React.FC = () => {
       title: '系统节点',
       dataIndex: 'systemNode',
       valueEnum: {
-        "true": "是",
-        "false": "否"
-      }
+        true: '是',
+        false: '否',
+      },
     },
     {
       title: '备注',
@@ -144,45 +184,67 @@ const sysNode: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-              <Dropdown.Button
-              menu={{
-                items: [
-                  {
-                    key: 'update',
-                    label: '编辑',
-                    onClick: (e) => {
-                      openEditModal(record.id);
+        <Dropdown.Button
+          menu={{
+            items: [
+              {
+                key: 'update',
+                label: '编辑',
+                onClick: () => {
+                  openEditModal(record.id);
+                },
+              },
+              {
+                key: 'editForm',
+                label: '配置表单',
+                onClick: (e) => {
+                  openEditFormDataModal(record.id);
+                },
+              },
+              {
+                key: 'editScript',
+                label: '编辑脚本',
+                disabled: record.systemNode,
+                onClick: (e) => {
+                  openEditFormScriptModal(record.id);
+                },
+              },
+              {
+                key: 'export',
+                label: '导出',
+                onClick: (e) => {
+                  getSysNodeInfo({ id: record.id }).then((res) => {
+                    if (res.success) {
+                      const node = res.data;
+                      const blob = new Blob([JSON.stringify(node)]);
+                      const objectURL = URL.createObjectURL(blob);
+                      let btn = document.createElement('a');
+                      btn.download = node?.nodeName + '.jlcbsn';
+                      btn.href = objectURL;
+                      btn.click();
+                      URL.revokeObjectURL(objectURL);
+                      message.success('导出成功');
+                    } else {
+                      message.warning('导出失败');
                     }
-                  },
-                  {
-                    key: 'editForm',
-                    label: '配置表单',
-                    onClick: (e) => {
-                      openEditFormDataModal(record.id);
-                    }
-                  },
-                  {
-                    key: 'editScript',
-                    label: '编辑脚本',
-                    disabled: record.systemNode,
-                    onClick: (e) => {
-                      openEditFormScriptModal(record.id);
-                    }
-                  },
-                  {
-                    key: 'remove',
-                    label: '删除',
-                    onClick: (e) => {
-                      removeSysNode({ id: record.id }).then((res) => {
-                        actionRef.current.reload();
-                      });
-                    }
-                  },
-    
-                ], onClick: (e) => console.log(e)
-              }}>
-              操作
-            </Dropdown.Button>
+                  });
+                },
+              },
+              {
+                key: 'remove',
+                label: '删除',
+                onClick: (e) => {
+                  removeSysNode({ id: record.id }).then((res) => {
+                    actionRef.current.reload();
+                  });
+                },
+              },
+            ],
+            onClick: (e) => console.log(e),
+          }}
+        >
+          操作
+        </Dropdown.Button>,
       ],
     },
   ];
@@ -203,6 +265,11 @@ const sysNode: React.FC = () => {
         request={pageSysNode}
         columns={columns}
         toolBarRender={() => [
+          <Upload {...props}>
+            <Button type="primary" icon={<UploadOutlined />}>
+              导入配置
+            </Button>
+          </Upload>,
           <Button
             type="primary"
             icon={<PlusOutlined />}
@@ -268,7 +335,7 @@ const sysNode: React.FC = () => {
           name="systemNode"
           label="系统节点"
           tooltip="系统节点为框架自带的节点，非系统节点执行自定义脚本内容"
-          initialValue={"false"}
+          initialValue={'false'}
           options={[
             {
               label: '是',
@@ -277,7 +344,7 @@ const sysNode: React.FC = () => {
             {
               label: '否',
               value: 'false',
-            }
+            },
           ]}
           rules={[
             {
@@ -287,7 +354,7 @@ const sysNode: React.FC = () => {
           ]}
         />
         <ProFormText name="nodeColor" label="节点颜色" />
-        <ProFormText name="nodeIcon" label="节点图标" tooltip="base64或url连接"/>
+        <ProFormText name="nodeIcon" label="节点图标" tooltip="base64或url连接" />
         <ProFormDigit
           name="maxSize"
           label="最大数量"
@@ -398,7 +465,7 @@ const sysNode: React.FC = () => {
           name="systemNode"
           label="系统节点"
           tooltip="系统节点为系统自带节点，代码写死不可直接修改, 非系统节点可动态更新代码逻辑"
-          initialValue={"false"}
+          initialValue={'false'}
           options={[
             {
               label: '是',
@@ -407,7 +474,7 @@ const sysNode: React.FC = () => {
             {
               label: '否',
               value: 'false',
-            }
+            },
           ]}
           rules={[
             {
@@ -417,7 +484,7 @@ const sysNode: React.FC = () => {
           ]}
         />
         <ProFormText name="nodeColor" label="节点颜色" />
-        <ProFormText name="nodeIcon" label="节点图标" tooltip="base64或url连接"/>
+        <ProFormText name="nodeIcon" label="节点图标" tooltip="base64或url连接" />
         <ProFormDigit
           name="maxSize"
           label="最大数量"

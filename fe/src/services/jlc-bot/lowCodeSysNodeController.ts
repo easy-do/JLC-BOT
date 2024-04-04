@@ -16,6 +16,18 @@ export async function getSysNodeScriptData(
   });
 }
 
+/** 导入系统节点 POST /api/sysNode/importNode */
+export async function importNode(body: {}, options?: { [key: string]: any }) {
+  return request<API.RLong>('/api/sysNode/importNode', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 详细信息 GET /api/sysNode/info/${param0} */
 export async function getSysNodeInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
