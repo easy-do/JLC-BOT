@@ -68,6 +68,13 @@
 * 接口文档：http://localhost:8888/doc.html
 * 数据库文件存放地址: 解压目录/data/db
 
+##### 上报地址说明
+
+* 标准http上报 : http://ip:8888/api/oneBot/v11/post (密钥在机器人页面点击编辑按钮查看和修改)
+* 反向websocket: ws://ip:8888/ws/oneBot (密钥在机器人页面点击编辑按钮查看和修改)
+* 正向websocket: 机器人管理-> 添加机器人 -> 通信地址 填入websocket地址 (密钥在机器人页面点击编辑按钮查看和修改)
+* WeChatFerry rust客户端 http上报: http://ip:8888/api/oneBot/wcfPost?token=xxxx (密钥在机器人页面点击编辑按钮查看和修改)
+
 #### 低代码功能示例
 
 * 示例demo 包含 控制群授权、随机美图、随机视频、查询天气、拓展节点等
