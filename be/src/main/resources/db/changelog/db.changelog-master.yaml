@@ -1,3 +1,5 @@
 databaseChangeLog:
   - includeAll:
       path: db/changelog/mysql/
+  - includeAll:
+      path: db/changelog/h2/
