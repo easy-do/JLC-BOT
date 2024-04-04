@@ -48,7 +48,7 @@ mybatis-flex:
   datasource:
     jlc_bot:
       type: druid
-      url: jdbc:h2:file:./data/db/jlc_bot;MODE=MySQL
+      url: jdbc:h2:file:${H2DB:./data/db/jlc_bot};MODE=MySQL
       username: jlc_bot
       password: jlc_bot
       driver-class-name: org.h2.Driver
@@ -117,7 +117,7 @@ liteflow:
   print-execution-log: false #关闭打印日志
   rule-source-ext-data-map:
     type: druid
-    url: jdbc:h2:file:./data/db/jlc_bot;MODE=MySQL
+    url: jdbc:h2:file:${H2DB:./data/db/jlc_bot};MODE=MySQL
     username: jlc_bot
     password: jlc_bot
     driverClassName: org.h2.Driver
