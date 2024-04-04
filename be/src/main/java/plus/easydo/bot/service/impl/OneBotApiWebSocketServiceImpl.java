@@ -6,7 +6,7 @@ import cn.hutool.json.JSONUtil;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.service.OneBotApiService;
-import plus.easydo.bot.websocket.OneBotWebSocketHandler;
+import plus.easydo.bot.util.OneBotWebSocketUtils;
 
 import java.util.Objects;
 
@@ -16,7 +16,7 @@ import java.util.Objects;
  * @Description oneBot协议scf-http请求api实现
  */
 @Service("websocketOneBotApi")
-public class OneBotApiWebsocketServiceImpl implements OneBotApiService {
+public class OneBotApiWebSocketServiceImpl implements OneBotApiService {
 
     private static String sendSocketAwait(String botNumber, String action, JSONObject params) {
         JSONObject message = JSONUtil.createObj();
@@ -26,7 +26,7 @@ public class OneBotApiWebsocketServiceImpl implements OneBotApiService {
         if (Objects.nonNull(params)) {
             message.set("params", params);
         }
-        return OneBotWebSocketHandler.sendMessageAwaitRes(botNumber, messageId, message.toStringPretty());
+        return OneBotWebSocketUtils.sendMessageAwaitRes(botNumber, messageId, message.toStringPretty());
     }
 
     private static void sendSocket(String botNumber, String action, JSONObject params) {
@@ -37,7 +37,7 @@ public class OneBotApiWebsocketServiceImpl implements OneBotApiService {
         if (Objects.nonNull(params)) {
             message.set("params", params);
         }
-        OneBotWebSocketHandler.sendMessage(botNumber, message.toStringPretty());
+        OneBotWebSocketUtils.sendMessage(botNumber, message.toStringPretty());
     }
 
 
@@ -52,7 +52,7 @@ public class OneBotApiWebsocketServiceImpl implements OneBotApiService {
         String messageId = UUID.fastUUID().toString(true);
         message.set("echo", messageId);
         message.set("action", OneBotConstants.GET_GROUP_LIST);
-        return OneBotWebSocketHandler.sendMessageAwaitRes(botNumber, messageId, message.toStringPretty());
+        return OneBotWebSocketUtils.sendMessageAwaitRes(botNumber, messageId, message.toStringPretty());
     }
 
     @Override

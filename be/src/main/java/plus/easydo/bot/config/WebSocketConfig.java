@@ -7,7 +7,7 @@ import org.springframework.web.socket.config.annotation.EnableWebSocket;
 import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
 import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 import plus.easydo.bot.sandbox.SandboxWebsocketHandler;
-import plus.easydo.bot.websocket.OneBotWebSocketHandler;
+import plus.easydo.bot.websocket.OneBotWebSocketServerHandler;
 
 /**
  * @author laoyu
@@ -29,7 +29,7 @@ public class WebSocketConfig implements WebSocketConfigurer {
 
     @Bean
     public WebSocketHandler oneBotWebSocketHandler() {
-        return new OneBotWebSocketHandler();
+        return new OneBotWebSocketServerHandler();
     }
 
     @Bean

@@ -29,6 +29,10 @@ public class OneBotUtils {
     private OneBotUtils() {
     }
 
+    public static List<BotInfo> getBotInfoList() {
+        return CacheManager.BOT_CACHE.entrySet().stream().map(Map.Entry::getValue).toList();
+    }
+
     public static BotInfo getBotInfo(String botNumber) {
         BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
         if (Objects.isNull(bot)) {

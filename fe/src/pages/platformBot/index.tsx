@@ -317,10 +317,6 @@ const platfromBot: React.FC = () => {
               value: 'websocket_reverse',
             },
             {
-              label: 'HTTP',
-              value: 'http',
-            },
-            {
               label: 'HTTP_POST',
               value: 'http_post',
             },
@@ -464,10 +460,6 @@ const platfromBot: React.FC = () => {
             {
               label: '反向websocket',
               value: 'websocket_reverse',
-            },
-            {
-              label: 'HTTP',
-              value: 'http',
             },
             {
               label: 'HTTP_POST',
