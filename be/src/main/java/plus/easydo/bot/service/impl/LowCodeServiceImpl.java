@@ -27,7 +27,7 @@ import plus.easydo.bot.manager.LowCodeBotNodeManager;
 import plus.easydo.bot.manager.LowCodeNodeConfManager;
 import plus.easydo.bot.qo.PageQo;
 import plus.easydo.bot.service.LowCodeService;
-import plus.easydo.bot.util.OneBotUtils;
+import plus.easydo.bot.util.MessageParseUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -130,7 +130,7 @@ public class LowCodeServiceImpl implements LowCodeService {
         }else {
             paramsJson = JSONUtil.parseObj(params);
         }
-        OneBotUtils.parseMessage(paramsJson, log);
+        MessageParseUtil.parseMessage(paramsJson);
 
         LiteflowResponse res = liteFlowNodeExecuteServer.execute(conf, paramsJson);
         Queue<CmpStep> cmpSteps = res.getExecuteStepQueue();

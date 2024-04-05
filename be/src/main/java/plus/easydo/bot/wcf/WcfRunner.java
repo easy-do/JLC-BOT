@@ -81,7 +81,7 @@ public class WcfRunner implements ApplicationRunner {
         messageJson.set(OneBotConstants.SENDER, msg.getSender());
 
         String content = msg.getContent();
-        messageJson.set(OneBotConstants.MESSAGE, OneBotUtils.buildMessageJson(content));
+        messageJson.set(OneBotConstants.MESSAGE, content);
         messageJson.set(OneBotConstants.RAW_MESSAGE, content);
 
         messageJson.set(OneBotConstants.MESSAGE_TYPE, msg.getType());

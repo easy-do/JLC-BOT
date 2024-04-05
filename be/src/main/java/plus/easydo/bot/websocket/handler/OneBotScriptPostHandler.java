@@ -11,7 +11,7 @@ import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotEventScript;
 import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.util.AviatorScriptUtil;
-import plus.easydo.bot.util.OneBotUtils;
+import plus.easydo.bot.util.MessageParseUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,7 @@ public class OneBotScriptPostHandler {
                         Expression expression = AviatorScriptUtil.compile(function.getScriptContent());
 
                         //消息解析
-                        OneBotUtils.parseMessage(postData, log);
+                        MessageParseUtil.parseMessage(postData);
 
                         expression.execute(AviatorEvaluator.newEnv("postData", postData, "botNumber", botNumber));
                         log.info("脚本执行结束===============");

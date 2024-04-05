@@ -11,6 +11,7 @@ import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotMessage;
 import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
 import plus.easydo.bot.manager.BotMessageManager;
+import plus.easydo.bot.util.MessageParseUtil;
 import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.websocket.handler.message.OneBotGroupMessageHandler;
 import plus.easydo.bot.websocket.handler.message.OneBotGroupPrivateMessageHandler;
@@ -60,7 +61,7 @@ public class OneBotPostMessageHandler implements OneBotPostHandler {
             senderId = postData.getStr(OneBotConstants.SENDER);
         }
 
-        OneBotMessageParse oneBotMessageParse = OneBotUtils.parseMessage(message);
+        OneBotMessageParse oneBotMessageParse = MessageParseUtil.parseMessage(message);
         if (oneBotMessageParse.getSegmentSize() != 0) {
             BotMessage botMessage = BotMessage.builder()
                     .sendUser(senderId)

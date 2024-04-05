@@ -132,7 +132,7 @@ public class OneBotController {
         messageJson.set(OneBotConstants.SENDER, sourceMessage.get("sender"));
 
         String content = sourceMessage.getStr("content");
-        messageJson.set(OneBotConstants.MESSAGE, OneBotUtils.buildMessageJson(content));
+        messageJson.set(OneBotConstants.MESSAGE, content);
         messageJson.set(OneBotConstants.RAW_MESSAGE, content);
 
         messageJson.set(OneBotConstants.MESSAGE_TYPE, sourceMessage.get("type"));

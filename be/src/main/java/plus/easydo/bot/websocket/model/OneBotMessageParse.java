@@ -11,10 +11,6 @@ import lombok.Data;
 @Data
 public class OneBotMessageParse {
 
-    /**
-     * OneBot传过来的原文
-     */
-    private String sourceMessage;
 
     /**
      * 消息段大小
@@ -40,13 +36,20 @@ public class OneBotMessageParse {
      * 被艾特人
      */
     private String atUser;
+
     /**
-     * 艾特前面的文字
+     * 前面的文字
      */
-    private String atBeforeText;
+    private String beforeText;
+
     /**
-     * 艾特后面的文字
+     * 后面的文字
      */
-    private String atAfterText;
+    private String afterText;
+
+    /**
+     * 文件
+     */
+    private String file;
 
 }
