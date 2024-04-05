@@ -1,7 +1,6 @@
 package plus.easydo.bot.util;
 
 import cn.hutool.core.text.CharSequenceUtil;
-import cn.hutool.core.util.ReUtil;
 import cn.hutool.json.JSONArray;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
@@ -10,9 +9,10 @@ import plus.easydo.bot.enums.onebot.OneBotMessageTypeEnum;
 import plus.easydo.bot.websocket.model.OneBotMessage;
 import plus.easydo.bot.websocket.model.OneBotMessageParse;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * @author laoyu
@@ -24,8 +24,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 public class MessageParseUtil {
 
 
-    private static final String CENTER_TEXT = "\\[(.*?)\\]";
-    //
     private static final String CQ_PRE = "CQ:";
     /**
      * &=&amp;
@@ -60,7 +58,7 @@ public class MessageParseUtil {
                 OneBotMessageParse messageParse = parseMessage(message);
                 postData.set(OneBotConstants.MESSAGE_PARSE, messageParse);
             } catch (Exception e) {
-//                log.warn("parseMessage失败:{}", ExceptionUtil.getMessage(e));
+                // do nothing
             }
         }
     }
@@ -84,45 +82,57 @@ public class MessageParseUtil {
      * @date 2024/4/5
      */
     private static OneBotMessageParse parseCqMessage(String message) {
-        OneBotMessageParse oneBotMessageParse = new OneBotMessageParse();
-        int deep = 0;
-        StringBuilder typeParse = new StringBuilder();
-        String currentMessage = message;
+        JSONArray array = cqMessageToArrayMessage(message);
+        return parseArrayMessage(array);
+    }
+
+    public static JSONArray cqMessageToArrayMessage(String cqMessage) {
+        JSONArray result = JSONUtil.createArray();
+        String currentMessage = cqMessage;
         do {
-            if (currentMessage.startsWith(L_BRACKET) && currentMessage.endsWith(R_BRACKET)) {
+            if (currentMessage.startsWith(L_BRACKET) && currentMessage.contains(R_BRACKET)) {
                 //截取当前消息段
                 String messageSegments = CharSequenceUtil.subBefore(currentMessage, R_BRACKET, false);
                 //取出中间的内容
-                List<String> group = ReUtil.findAllGroup0(CENTER_TEXT, messageSegments);
-                String centerText = group.get(0);
+                String centerText = CharSequenceUtil.subAfter(messageSegments, L_BRACKET, false);
                 //切割出所有参数
                 List<String> centerTexts = CharSequenceUtil.split(centerText, COMMA);
                 //至少要有两个参数才是一个合法的CQ消息
                 if (centerTexts.size() > 1) {
-                    String cqText = CharSequenceUtil.subBefore(centerText, COMMA, false);
-                    String cqType = CharSequenceUtil.subBefore(cqText, CQ_PRE, false);
-                    typeParse.append(deep > 0 ? UNDERLINE : CharSequenceUtil.EMPTY).append(cqType);
-                    currentMessage = CharSequenceUtil.replace(currentMessage, messageSegments, "");
+                    String cqType = CharSequenceUtil.subAfter(centerTexts.get(0), CQ_PRE, false);
+                    JSONObject oneBotMessage = JSONUtil.createObj();
+                    oneBotMessage.set(OneBotConstants.TYPE, cqType);
+                    JSONObject data = JSONUtil.createObj();
+                    for (int i = 1; i < centerTexts.size(); i++) {
+                        String itext = centerTexts.get(i);
+                        String key = CharSequenceUtil.subBefore(itext, "=", false);
+                        String value = CharSequenceUtil.subAfter(itext, "=", false);
+                        data.set(key, value);
+                    }
+                    oneBotMessage.set(OneBotConstants.DATA, data);
+                    result.add(oneBotMessage);
+                    currentMessage = CharSequenceUtil.replace(currentMessage, messageSegments + R_BRACKET, CharSequenceUtil.EMPTY);
                 } else {
-                    oneBotMessageParse.setSegmentSize(1);
-                    oneBotMessageParse.setType(OneBotMessageTypeEnum.TEXT.getType());
-                    oneBotMessageParse.setSimpleMessage(unescape(message));
-                    oneBotMessageParse.setParseMessage(unescape(message));
-                    return oneBotMessageParse;
+                    JSONObject oneBotMessage = JSONUtil.createObj();
+                    oneBotMessage.set(OneBotConstants.TYPE, OneBotMessageTypeEnum.TEXT.getType());
+                    JSONObject data = JSONUtil.createObj();
+                    data.set(OneBotMessageTypeEnum.TEXT.getType(), cqMessage);
+                    oneBotMessage.set(OneBotConstants.DATA, data);
+                    result.add(oneBotMessage);
+                    return result;
                 }
-                deep++;
             } else {
-                String messageSegments = CharSequenceUtil.subBefore(currentMessage, "[", false);
-                typeParse.append(deep > 0 ? UNDERLINE : CharSequenceUtil.EMPTY).append(OneBotMessageTypeEnum.TEXT.getType());
-                currentMessage = CharSequenceUtil.replace(currentMessage, messageSegments, "");
-                deep++;
+                String messageSegments = CharSequenceUtil.subBefore(currentMessage, L_BRACKET, false);
+                JSONObject oneBotMessage = JSONUtil.createObj();
+                oneBotMessage.set(OneBotConstants.TYPE, OneBotMessageTypeEnum.TEXT.getType());
+                JSONObject data = JSONUtil.createObj();
+                data.set(OneBotMessageTypeEnum.TEXT.getType(), messageSegments);
+                oneBotMessage.set(OneBotConstants.DATA, data);
+                result.add(oneBotMessage);
+                currentMessage = CharSequenceUtil.replace(currentMessage, messageSegments, CharSequenceUtil.EMPTY);
             }
         } while (CharSequenceUtil.isNotBlank(currentMessage));
-        oneBotMessageParse.setSegmentSize(deep);
-        oneBotMessageParse.setType(typeParse.toString());
-        oneBotMessageParse.setSimpleMessage(deep > 1 ? unescape(message) : null);
-        oneBotMessageParse.setParseMessage(deep > 1 ? unescape(message) : null);
-        return oneBotMessageParse;
+        return result;
     }
 
     /**
@@ -180,22 +190,32 @@ public class MessageParseUtil {
             Object messageObj = messageArray.get(i);
             JSONObject oneBotMessage = JSONUtil.parseObj(messageObj);
             String type = oneBotMessage.getStr(OneBotConstants.TYPE);
-            parseType.append(i > 0 ? UNDERLINE : type);
+            parseType.append(i > 0 ? UNDERLINE : "").append(type);
             JSONObject data = oneBotMessage.getJSONObject(OneBotConstants.DATA);
             stringBuilder.append(L_BRACKET).append(CQ_PRE).append(type).append(COMMA);
-            AtomicInteger atomicInteger = new AtomicInteger();
-            data.forEach((key, value) -> {
-                int count = atomicInteger.getAndIncrement();
-                stringBuilder.append(key).append(count > 0 ? "=" : "").append(value).append(COMMA);
-            });
+            HashMap<String, Object> map = data.toBean(HashMap.class);
+            int count = 0;
+            for (Map.Entry<String, Object> entry : map.entrySet()) {
+                stringBuilder.append(entry.getKey()).append("=").append(entry.getValue());
+                if (count > 0) {
+                    stringBuilder.append(COMMA);
+                }
+                count++;
+            }
             stringBuilder.append(R_BRACKET);
         }
         oneBotMessageParse.setParseMessage(stringBuilder.toString());
         oneBotMessageParse.setType(parseType.toString());
+        oneBotMessageParse.setSegmentSize(messageArray.size());
         //就一个消息段
-        if (messageArray.size() == 1 && CharSequenceUtil.equals(oneBotMessageParse.getType(), OneBotMessageTypeEnum.TEXT.getType())) {
-            OneBotMessage oneBotMessage = JSONUtil.toBean(messageArray.get(0).toString(), OneBotMessage.class);
-            oneBotMessageParse.setSimpleMessage(oneBotMessage.getData().getText());
+        if (messageArray.size() == 1) {
+            if (CharSequenceUtil.equals(oneBotMessageParse.getType(), OneBotMessageTypeEnum.TEXT.getType())) {
+                OneBotMessage oneBotMessage = JSONUtil.toBean(messageArray.get(0).toString(), OneBotMessage.class);
+                oneBotMessageParse.setSimpleMessage(oneBotMessage.getData().getText());
+            } else if (CharSequenceUtil.equals(oneBotMessageParse.getType(), OneBotMessageTypeEnum.IMAGE.getType())) {
+                OneBotMessage oneBotMessage = JSONUtil.toBean(messageArray.get(0).toString(), OneBotMessage.class);
+                oneBotMessageParse.setFile(oneBotMessage.getData().getUrl());
+            }
         } else
             //两个的支持解析
             if (messageArray.size() == 2) {
@@ -215,12 +235,10 @@ public class MessageParseUtil {
                     oneBotMessageParse.setAtUser(oneBotMessage2.getData().getQq());
                 } else if (CharSequenceUtil.equals(oneBotMessageParse.getType(), OneBotMessageTypeEnum.TEXT_IMAGE.getType())) {
                     oneBotMessageParse.setBeforeText(oneBotMessage1.getData().getText());
-                    oneBotMessageParse.setFile(oneBotMessage2.getData().getFile());
+                    oneBotMessageParse.setFile(oneBotMessage2.getData().getUrl());
                 } else if (CharSequenceUtil.equals(oneBotMessageParse.getType(), OneBotMessageTypeEnum.IMAGE_TEXT.getType())) {
-                    oneBotMessageParse.setFile(oneBotMessage1.getData().getFile());
+                    oneBotMessageParse.setFile(oneBotMessage1.getData().getUrl());
                     oneBotMessageParse.setAfterText(oneBotMessage2.getData().getText());
-                } else {
-                    oneBotMessageParse.setType(OneBotMessageTypeEnum.OTHER.getType());
                 }
             } else
                 //三个解析
@@ -232,8 +250,6 @@ public class MessageParseUtil {
                         oneBotMessageParse.setAtUser(oneBotMessage2.getData().getQq());
                         oneBotMessageParse.setBeforeText(oneBotMessage1.getData().getText());
                         oneBotMessageParse.setAfterText(oneBotMessage3.getData().getText());
-                    } else {
-                        oneBotMessageParse.setType(OneBotMessageTypeEnum.OTHER.getType());
                     }
                 }
         return oneBotMessageParse;

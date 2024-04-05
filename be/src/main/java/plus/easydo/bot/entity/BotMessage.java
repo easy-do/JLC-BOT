@@ -67,5 +67,11 @@ public class BotMessage {
     @Column(value = "message")
     private String message;
 
+    /**
+     * 消息格式
+     */
+    @Column(value = "message_format")
+    private String messageFormat;
+
 
 }
