@@ -216,38 +216,38 @@
                     </excludes>
                 </configuration>
             </plugin>
-            <plugin>
-                <!--
-                    1. 加密后,方法体被清空,保留方法参数、注解等信息.主要兼容swagger文档注解扫描
-                    2. 方法体被清空后,反编译只能看到方法名和注解,看不到方法体的具体内容
-                    3. 加密后的项目需要设置javaagent来启动,启动过程中解密class,完全内存解密,不留下任何解密后的文件
-                    4. 启动加密后的jar,生成xxx-encrypted.jar,这个就是加密后的jar文件,加密后不可直接执行
-                    5. 无密码启动方式,java -javaagent:xxx-encrypted.jar -jar xxx-encrypted.jar
-                    6. 有密码启动方式,java -javaagent:xxx-encrypted.jar='-pwd= 密码' -jar xxx-encrypted.jar
-                -->
-                <groupId>net.roseboy</groupId>
-                <artifactId>classfinal-maven-plugin</artifactId>
-                <version>1.2.1</version>
-                <configuration>
-                    <!-- #表示启动时不需要密码,事实上对于代码混淆来说,这个密码没什么用,它只是一个启动密码 -->
-                    <password>#</password>
-                    <excludes>org.spring</excludes>
-                    <!-- 加密的包名,多个包用逗号分开 -->
-                    <packages>${groupId}</packages>
-                    <!-- 加密的配置文件,多个包用逗号分开 -->
-                    <cfgfiles>application.yml,job_dict.json</cfgfiles>
-                    <!-- jar包lib下面要加密的jar依赖文件,多个包用逗号分开 -->
-                    <!-- <libjars>hutool-all.jar</libjars> -->
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>classFinal</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+<!--            <plugin>-->
+<!--                &lt;!&ndash;-->
+<!--                    1. 加密后,方法体被清空,保留方法参数、注解等信息.主要兼容swagger文档注解扫描-->
+<!--                    2. 方法体被清空后,反编译只能看到方法名和注解,看不到方法体的具体内容-->
+<!--                    3. 加密后的项目需要设置javaagent来启动,启动过程中解密class,完全内存解密,不留下任何解密后的文件-->
+<!--                    4. 启动加密后的jar,生成xxx-encrypted.jar,这个就是加密后的jar文件,加密后不可直接执行-->
+<!--                    5. 无密码启动方式,java -javaagent:xxx-encrypted.jar -jar xxx-encrypted.jar-->
+<!--                    6. 有密码启动方式,java -javaagent:xxx-encrypted.jar='-pwd= 密码' -jar xxx-encrypted.jar-->
+<!--                &ndash;&gt;-->
+<!--                <groupId>net.roseboy</groupId>-->
+<!--                <artifactId>classfinal-maven-plugin</artifactId>-->
+<!--                <version>1.2.1</version>-->
+<!--                <configuration>-->
+<!--                    &lt;!&ndash; #表示启动时不需要密码,事实上对于代码混淆来说,这个密码没什么用,它只是一个启动密码 &ndash;&gt;-->
+<!--                    <password>#</password>-->
+<!--                    <excludes>org.spring</excludes>-->
+<!--                    &lt;!&ndash; 加密的包名,多个包用逗号分开 &ndash;&gt;-->
+<!--                    <packages>${groupId}</packages>-->
+<!--                    &lt;!&ndash; 加密的配置文件,多个包用逗号分开 &ndash;&gt;-->
+<!--                    <cfgfiles>application.yml,job_dict.json</cfgfiles>-->
+<!--                    &lt;!&ndash; jar包lib下面要加密的jar依赖文件,多个包用逗号分开 &ndash;&gt;-->
+<!--                    &lt;!&ndash; <libjars>hutool-all.jar</libjars> &ndash;&gt;-->
+<!--                </configuration>-->
+<!--                <executions>-->
+<!--                    <execution>-->
+<!--                        <phase>package</phase>-->
+<!--                        <goals>-->
+<!--                            <goal>classFinal</goal>-->
+<!--                        </goals>-->
+<!--                    </execution>-->
+<!--                </executions>-->
+<!--            </plugin>-->
         </plugins>
     </build>
 
