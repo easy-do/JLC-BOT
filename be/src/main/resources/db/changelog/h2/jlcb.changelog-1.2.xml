@@ -8,4 +8,714 @@
             ALTER TABLE bot_message ADD message_format varchar(255) DEFAULT NULL COMMENT '消息格式';
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240406" dbms="h2" failOnError="true">
+        <sql dbms="h2">
+            INSERT INTO LOW_CODE_SYS_NODE (NODE_NAME, GROUP_TYPE, NODE_CODE, NODE_COLOR, REMARK, NODE_ICON, NODE_EXT_DATA, NODE_PORT, MAX_SIZE, FORM_DATA, DELETE_FLAG, SYSTEM_NODE) VALUES('ollama模型', '人工智能', 'ollamaChatNode', '#1296db', '发送群消息，消息支持${xxx}占位替换', 'data:image/png;base64,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', NULL, 'topBottomPorts', 0, '[
+    {
+        "title": "ollama地址",
+        "dataIndex": "baseUrl",
+        "initialValue": "http://localhost:11434",
+        "formItemProps": {
+            "rules": [
+                {
+                    "required": true,
+                    "message": "请输入ollama地址"
+                }
+            ]
+        }
+    },
+    {
+        "title": "模型",
+        "dataIndex": "model",
+        "initialValue": "ollama模型版本,例如 qwen:1.8b",
+        "formItemProps": {
+            "rules": [
+                {
+                    "required": true,
+                    "message": "请输入模型"
+                }
+            ]
+        }
+    },
+    {
+        "title": "聊天内容",
+        "dataIndex": "message",
+        "initialValue": "聊天内容",
+        "formItemProps": {
+            "rules": [
+                {
+                    "required": true,
+                    "message": "请输入聊天内容"
+                }
+            ]
+        }
+    },
+    {
+        "title": "结果存至",
+        "dataIndex": "saveResFiled",
+        "initialValue": "chatResult",
+        "formItemProps": {
+            "rules": [
+                {
+                    "required": true,
+                    "message": "请配置结果暂存字段"
+                }
+            ]
+        }
+    }
+]', 0, 1);
+            INSERT INTO LOW_CODE_NODE_CONF (CONF_DATA, CONF_NAME, NODE_DATA, CREATE_TIME, UPDATE_TIME, DELETE_FLAG, EVENT_TYPE) VALUES('{
+    "654c981f-3532-4116-94af-45c0c5acdbae": {
+        "type": "text"
+    },
+    "c4aaf6f6-eaf0-4f4d-ac1c-1a8d20e97d6b": {
+        "type": "contains",
+        "targetFiled": "messageParse.simpleMessage",
+        "targetValue": "#AI "
+    },
+    "3a93ca94-cfb4-4191-90cd-38ea556a66ad": {
+        "type": "replace",
+        "targetFiled": "messageParse.simpleMessage",
+        "sourceValue": "#AI ",
+        "targetValue": " ",
+        "saveFiled": "message"
+    },
+    "abc36bec-6452-4555-b16a-d11393b6acf1": {
+        "model": "qwen:1.8b",
+        "message": "${message}"
+    },
+    "93edc152-1316-4237-b040-87f38e5e5d1f": {
+        "baseUrl": "http://localhost:11434",
+        "model": "qwen:1.8b",
+        "message": "${message}",
+        "saveResFiled": "chatResult"
+    },
+    "824fa94c-f333-4b16-beb9-b42c1a4c7fc7": {
+        "message": "${chatResult}"
+    }
+}', '模型聊天', '{
+    "cells": [
+        {
+            "position": {
+                "x": 230,
+                "y": 200
+            },
+            "size": {
+                "width": 100,
+                "height": 40
+            },
+            "view": "react-shape-view",
+            "attrs": {
+                "body": {
+                    "stroke": "black"
+                }
+            },
+            "shape": "startNode",
+            "id": "3642e384-2de2-437b-a3ba-0235655b3892",
+            "label": "开始",
+            "color": "#2aa515",
+            "zIndex": 1,
+            "ports": {
+                "groups": {
+                    "bottom": {
+                        "position": "bottom",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    }
+                },
+                "items": [
+                    {
+                        "group": "bottom",
+                        "id": "533006d8-408e-4356-9a33-7c8026a08df6"
+                    }
+                ]
+            }
+        },
+        {
+            "position": {
+                "x": 300,
+                "y": 690
+            },
+            "size": {
+                "width": 100,
+                "height": 40
+            },
+            "view": "react-shape-view",
+            "attrs": {
+                "body": {
+                    "stroke": "black"
+                }
+            },
+            "shape": "endNode",
+            "id": "7c71a708-fc71-46ff-84a1-2495b19a3704",
+            "label": "结束",
+            "color": "#e16531",
+            "zIndex": 2,
+            "ports": {
+                "groups": {
+                    "top": {
+                        "position": "top",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    }
+                },
+                "items": [
+                    {
+                        "group": "top",
+                        "id": "4c20aba2-9dd3-4517-9a1c-ff37eccedbe0"
+                    }
+                ]
+            }
+        },
+        {
+            "position": {
+                "x": 215,
+                "y": 280
+            },
+            "size": {
+                "width": 130,
+                "height": 40
+            },
+            "view": "react-shape-view",
+            "attrs": {
+                "body": {
+                    "stroke": "black"
+                }
+            },
+            "shape": "messageTypeIfNode",
+            "id": "654c981f-3532-4116-94af-45c0c5acdbae",
+            "label": "消息类型判断",
+            "color": "#1296db",
+            "zIndex": 4,
+            "ports": {
+                "groups": {
+                    "top": {
+                        "position": "top",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    },
+                    "right": {
+                        "position": "right",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    },
+                    "left": {
+                        "position": "left",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    }
+                },
+                "items": [
+                    {
+                        "group": "top",
+                        "id": "942d41f3-6543-4153-bb28-4d3a7c11373d"
+                    },
+                    {
+                        "group": "right",
+                        "id": "370de23c-c47f-4f01-9992-2faaf4c418c0"
+                    },
+                    {
+                        "group": "left",
+                        "id": "d04b7b0c-db61-4d5e-933d-457996c818af"
+                    }
+                ]
+            }
+        },
+        {
+            "shape": "edge",
+            "attrs": {
+                "line": {
+                    "stroke": "black"
+                }
+            },
+            "id": "953ad83e-6080-4674-acc2-460c42528c03",
+            "zIndex": 5,
+            "labels": [
+                "继续"
+            ],
+            "source": {
+                "cell": "3642e384-2de2-437b-a3ba-0235655b3892",
+                "port": "533006d8-408e-4356-9a33-7c8026a08df6"
+            },
+            "target": {
+                "cell": "654c981f-3532-4116-94af-45c0c5acdbae"
+            }
+        },
+        {
+            "shape": "edge",
+            "attrs": {
+                "line": {
+                    "stroke": "black"
+                }
+            },
+            "id": "094cd88d-c66d-4166-86b2-b206ee079b31",
+            "zIndex": 7,
+            "labels": [
+                "继续"
+            ],
+            "source": {
+                "cell": "654c981f-3532-4116-94af-45c0c5acdbae",
+                "port": "370de23c-c47f-4f01-9992-2faaf4c418c0"
+            },
+            "target": {
+                "cell": "7c71a708-fc71-46ff-84a1-2495b19a3704"
+            }
+        },
+        {
+            "position": {
+                "x": 140,
+                "y": 360
+            },
+            "size": {
+                "width": 100,
+                "height": 40
+            },
+            "view": "react-shape-view",
+            "attrs": {
+                "body": {
+                    "stroke": "black"
+                }
+            },
+            "shape": "filedIfNode",
+            "id": "c4aaf6f6-eaf0-4f4d-ac1c-1a8d20e97d6b",
+            "label": "字段判断",
+            "color": "#1296db",
+            "zIndex": 8,
+            "ports": {
+                "groups": {
+                    "top": {
+                        "position": "top",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    },
+                    "right": {
+                        "position": "right",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    },
+                    "left": {
+                        "position": "left",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    }
+                },
+                "items": [
+                    {
+                        "group": "top",
+                        "id": "0ce71230-96ef-41dd-89d3-be7f9a7a2c58"
+                    },
+                    {
+                        "group": "right",
+                        "id": "42542262-d9b0-4207-b48f-caceec6bff72"
+                    },
+                    {
+                        "group": "left",
+                        "id": "60c9228d-5f62-42cd-ba11-9c61ff475baf"
+                    }
+                ]
+            }
+        },
+        {
+            "shape": "edge",
+            "attrs": {
+                "line": {
+                    "stroke": "black"
+                }
+            },
+            "id": "922094ed-9af5-4d56-93c9-b7d1df10e523",
+            "zIndex": 9,
+            "labels": [
+                "继续"
+            ],
+            "source": {
+                "cell": "654c981f-3532-4116-94af-45c0c5acdbae",
+                "port": "d04b7b0c-db61-4d5e-933d-457996c818af"
+            },
+            "target": {
+                "cell": "c4aaf6f6-eaf0-4f4d-ac1c-1a8d20e97d6b"
+            }
+        },
+        {
+            "position": {
+                "x": 70,
+                "y": 460
+            },
+            "size": {
+                "width": 100,
+                "height": 40
+            },
+            "view": "react-shape-view",
+            "attrs": {
+                "body": {
+                    "stroke": "black"
+                }
+            },
+            "shape": "filedHandlerNode",
+            "id": "3a93ca94-cfb4-4191-90cd-38ea556a66ad",
+            "label": "字段处理",
+            "color": "#1296db",
+            "zIndex": 10,
+            "ports": {
+                "groups": {
+                    "top": {
+                        "position": "top",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    },
+                    "bottom": {
+                        "position": "bottom",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    }
+                },
+                "items": [
+                    {
+                        "group": "top",
+                        "id": "fe6b55f1-cc30-4cc2-9e0c-6893b90cabe9"
+                    },
+                    {
+                        "group": "bottom",
+                        "id": "cc68c16c-e904-47a1-bfd9-17809bf86494"
+                    }
+                ]
+            }
+        },
+        {
+            "shape": "edge",
+            "attrs": {
+                "line": {
+                    "stroke": "black"
+                }
+            },
+            "id": "352ac077-6810-4f2e-af35-3fe79ac62c7a",
+            "zIndex": 11,
+            "labels": [
+                "继续"
+            ],
+            "source": {
+                "cell": "c4aaf6f6-eaf0-4f4d-ac1c-1a8d20e97d6b",
+                "port": "60c9228d-5f62-42cd-ba11-9c61ff475baf"
+            },
+            "target": {
+                "cell": "3a93ca94-cfb4-4191-90cd-38ea556a66ad",
+                "port": "fe6b55f1-cc30-4cc2-9e0c-6893b90cabe9"
+            }
+        },
+        {
+            "shape": "edge",
+            "attrs": {
+                "line": {
+                    "stroke": "black"
+                }
+            },
+            "id": "f1c25322-271f-4b4b-87ec-a6e0950ce9e6",
+            "zIndex": 14,
+            "labels": [
+                "继续"
+            ],
+            "source": {
+                "cell": "c4aaf6f6-eaf0-4f4d-ac1c-1a8d20e97d6b",
+                "port": "42542262-d9b0-4207-b48f-caceec6bff72"
+            },
+            "target": {
+                "cell": "7c71a708-fc71-46ff-84a1-2495b19a3704"
+            }
+        },
+        {
+            "position": {
+                "x": 70,
+                "y": 545
+            },
+            "size": {
+                "width": 100,
+                "height": 40
+            },
+            "view": "react-shape-view",
+            "attrs": {
+                "body": {
+                    "stroke": "orange"
+                }
+            },
+            "shape": "ollamaChatNode",
+            "id": "93edc152-1316-4237-b040-87f38e5e5d1f",
+            "label": "ollama模型",
+            "color": "#1296db",
+            "zIndex": 15,
+            "ports": {
+                "groups": {
+                    "top": {
+                        "position": "top",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    },
+                    "bottom": {
+                        "position": "bottom",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    }
+                },
+                "items": [
+                    {
+                        "group": "top",
+                        "id": "ece08a1a-99d4-4712-97eb-682bbd7cf6f5"
+                    },
+                    {
+                        "group": "bottom",
+                        "id": "5a706d74-a2f0-47ef-b1d4-2ffa02f942a0"
+                    }
+                ]
+            }
+        },
+        {
+            "position": {
+                "x": 70,
+                "y": 640
+            },
+            "size": {
+                "width": 100,
+                "height": 40
+            },
+            "view": "react-shape-view",
+            "attrs": {
+                "body": {
+                    "stroke": "black"
+                }
+            },
+            "shape": "sendGroupMessageNode",
+            "id": "824fa94c-f333-4b16-beb9-b42c1a4c7fc7",
+            "label": "发送群消息",
+            "color": "#1296db",
+            "zIndex": 16,
+            "ports": {
+                "groups": {
+                    "top": {
+                        "position": "top",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    },
+                    "bottom": {
+                        "position": "bottom",
+                        "attrs": {
+                            "circle": {
+                                "r": 4,
+                                "magnet": true,
+                                "stroke": "#5F95FF",
+                                "strokeWidth": 1,
+                                "fill": "#fff",
+                                "style": {
+                                    "visibility": "hidden"
+                                }
+                            }
+                        }
+                    }
+                },
+                "items": [
+                    {
+                        "group": "top",
+                        "id": "f86f921c-f28f-4dc5-ac91-b8692a4bd95a"
+                    },
+                    {
+                        "group": "bottom",
+                        "id": "81b57f2d-c1f8-4867-bebf-10bfe20dd7b1"
+                    }
+                ]
+            }
+        },
+        {
+            "shape": "edge",
+            "attrs": {
+                "line": {
+                    "stroke": "black"
+                }
+            },
+            "id": "41494112-b1b1-4706-bd70-4b21b58fc9f5",
+            "zIndex": 17,
+            "labels": [
+                "继续"
+            ],
+            "source": {
+                "cell": "3a93ca94-cfb4-4191-90cd-38ea556a66ad",
+                "port": "cc68c16c-e904-47a1-bfd9-17809bf86494"
+            },
+            "target": {
+                "cell": "93edc152-1316-4237-b040-87f38e5e5d1f",
+                "port": "ece08a1a-99d4-4712-97eb-682bbd7cf6f5"
+            }
+        },
+        {
+            "shape": "edge",
+            "attrs": {
+                "line": {
+                    "stroke": "black"
+                }
+            },
+            "id": "b634b88d-cbc4-4506-bc78-a9f353160eff",
+            "zIndex": 18,
+            "labels": [
+                "继续"
+            ],
+            "source": {
+                "cell": "93edc152-1316-4237-b040-87f38e5e5d1f",
+                "port": "5a706d74-a2f0-47ef-b1d4-2ffa02f942a0"
+            },
+            "target": {
+                "cell": "824fa94c-f333-4b16-beb9-b42c1a4c7fc7",
+                "port": "f86f921c-f28f-4dc5-ac91-b8692a4bd95a"
+            }
+        },
+        {
+            "shape": "edge",
+            "attrs": {
+                "line": {
+                    "stroke": "black"
+                }
+            },
+            "id": "83cfe15b-b711-4539-9041-39f72ed9dbfd",
+            "zIndex": 19,
+            "labels": [
+                "继续"
+            ],
+            "source": {
+                "cell": "824fa94c-f333-4b16-beb9-b42c1a4c7fc7",
+                "port": "81b57f2d-c1f8-4867-bebf-10bfe20dd7b1"
+            },
+            "target": {
+                "cell": "7c71a708-fc71-46ff-84a1-2495b19a3704"
+            }
+        }
+    ]
+}', '2024-04-06 01:57:52.476', '2024-04-06 02:39:58.874', 0, 'message');
+
+        </sql>
+    </changeSet>
 </databaseChangeLog>
