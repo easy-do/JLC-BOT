@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Button, Dropdown, message, Modal } from 'antd';
-import type { Edge, Graph } from '@antv/x6';
+import { Edge, Graph } from '@antv/x6';
 import { Dnd } from '@antv/x6-plugin-dnd';
 import { register } from '@antv/x6-react-shape';
 import { portMap } from '../../utils/ports';
