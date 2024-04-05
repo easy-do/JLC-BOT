@@ -35,10 +35,14 @@ const botMessage: React.FC = () => {
       dataIndex: 'selfTime',
     },
     {
+      title: '消息格式',
+      dataIndex: 'messageFormat',
+      ellipsis: true,
+    },
+    {
       title: '消息',
       dataIndex: 'message',
       ellipsis: true,
-      width: 200,
     },
     {
       title: '操作',
