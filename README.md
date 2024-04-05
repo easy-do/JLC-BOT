@@ -38,6 +38,10 @@
 - 已支持全部上报事件处理
 - 低代码能力(部署后查看、未完善文档)
 
+#### 在线文档
+
+https://doc.easydo.plus
+
 
 #### 快速开始
 
@@ -99,10 +103,6 @@
 #### 使用问题反馈和技术交流
 
 http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=jKliJIxAFvZoZxBSw1NnlMjOj8pRR42f&authKey=vnozKSs2ou1MO68VXH1ct2AReURSyIj4jlVe%2BVAlA5h%2F0M1BsdhQP0YN6MqwRwBB&noverify=0&group_code=154213998
-
-#### 文档地址（未完善该框架功能，后续补全）
-
-https://doc.easydo.plus
 
 #### 更新日志
 
