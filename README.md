@@ -30,6 +30,7 @@
 - antd-pro: https://pro.ant.design/docs/getting-started/
 - antvx6: https://x6.antv.antgroup.com/tutorial/getting-started
 - OneBot-V11标准: https://github.com/botuniverse/onebot-11
+- ollama: https://github.com/ollama/ollama
 
 
 #### 支持功能
@@ -54,6 +55,7 @@ https://doc.easydo.plus
 * 访问地址: http://服务器或主机ip:8888
 * 接口文档: http://服务器或主机ip:8888/doc.html
 * 数据库文件存放地址: /data/jlc-bot/db
+* 账号密码：123456789/12345678
 
 ##### docker编排
 
@@ -62,6 +64,7 @@ https://doc.easydo.plus
 * 访问地址: http://服务器或主机ip:8888 
 * 接口文档：http://服务器或主机ip:8888/doc.html
 * 数据库文件存放地址: /data/db
+* 账号密码：123456789/12345678
 
 ##### windows安装使用
 
@@ -70,6 +73,7 @@ https://doc.easydo.plus
 * 访问地址：http://localhost:8888
 * 接口文档：http://localhost:8888/doc.html
 * 数据库文件存放地址: 解压目录/data/db
+* 账号密码：123456789/12345678
 
 ##### 上报地址说明
 
