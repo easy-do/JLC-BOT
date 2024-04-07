@@ -1,5 +1,6 @@
 package plus.easydo.bot.lowcode.node;
 
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONObject;
 import com.yomahub.liteflow.annotation.LiteflowComponent;
 import com.yomahub.liteflow.core.NodeComponent;
@@ -35,10 +36,12 @@ public class OllamaChatNode extends NodeComponent {
             String model = confJson.getStr("model");
             String saveResFiled = confJson.getStr("saveResFiled");
             String baseUrl = confJson.getStr("baseUrl");
-            if (Objects.nonNull(message) && Objects.nonNull(model) && Objects.nonNull(saveResFiled) && Objects.nonNull(baseUrl)) {
+            Float temperature = confJson.getFloat("temperature");
+            if (CharSequenceUtil.isAllNotBlank(message, model, saveResFiled, baseUrl) && Objects.nonNull(temperature)) {
                 message = ParamReplaceUtils.replaceParam(message, paramJson);
                 var ollamaApi = new OllamaApi(baseUrl);
-                var chatClient = new OllamaChatClient(ollamaApi).withDefaultOptions(OllamaOptions.create().withModel(model));
+                var chatClient = new OllamaChatClient(ollamaApi).withDefaultOptions(OllamaOptions.create().withModel(model)
+                        .withTemperature(temperature));
                 String res = chatClient.call(message);
                 paramJson.set(saveResFiled, res);
             } else {
