@@ -47,6 +47,7 @@ declare namespace API {
     selfUser?: string;
     selfTime?: string;
     message?: string;
+    messageFormat?: string;
   };
 
   type BotMessageQo = {
@@ -148,6 +149,12 @@ declare namespace API {
     flag?: string;
   };
 
+  type chatParams = {
+    message: string;
+    baseUrl: string;
+    model: string;
+  };
+
   type CmpStepResult = {
     nodeId?: string;
     nodeName?: string;
@@ -198,7 +205,15 @@ declare namespace API {
     id: number;
   };
 
+  type getHighLevelDevInfoParams = {
+    id: number;
+  };
+
   type getNodeConfParams = {
+    id: number;
+  };
+
+  type getSimpleDevelopInfoParams = {
     id: number;
   };
 
@@ -208,6 +223,17 @@ declare namespace API {
 
   type getSysNodeScriptDataParams = {
     id: Record<string, any>;
+  };
+
+  type HighLevelDevelopConf = {
+    id?: number;
+    confName?: string;
+    eventType?: string;
+    script?: LiteFlowScript;
+  };
+
+  type highLevelDevPageParams = {
+    pageQo: PageQo;
   };
 
   type hookGetParams = {
@@ -306,6 +332,10 @@ declare namespace API {
     pageSize?: number;
   };
 
+  type pageSimpleDevelopParams = {
+    pageQo: PageQo;
+  };
+
   type QuartzJob = {
     id?: number;
     jobName?: string;
@@ -365,6 +395,10 @@ declare namespace API {
     id: number;
   };
 
+  type removeHighLevelDevParams = {
+    id: number;
+  };
+
   type removeJobParams = {
     id: number;
   };
@@ -373,8 +407,21 @@ declare namespace API {
     id: number;
   };
 
+  type removeSimpleDevelopParams = {
+    id: number;
+  };
+
   type removeSysNodeParams = {
     id: Record<string, any>;
+  };
+
+  type RHighLevelDevelopConf = {
+    code?: number;
+    data?: HighLevelDevelopConf;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
   };
 
   type RListBotConf = {
@@ -467,6 +514,15 @@ declare namespace API {
     total?: number;
   };
 
+  type RListHighLevelDevelopConf = {
+    code?: number;
+    data?: HighLevelDevelopConf[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
   type RListLong = {
     code?: number;
     data?: number[];
@@ -497,6 +553,15 @@ declare namespace API {
   type RListQuartzJob = {
     code?: number;
     data?: QuartzJob[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
+  type RListSimpleCmdDevelopConf = {
+    code?: number;
+    data?: SimpleCmdDevelopConf[];
     message?: string;
     errorMessage?: string;
     success?: boolean;
@@ -575,6 +640,15 @@ declare namespace API {
     total?: number;
   };
 
+  type RSimpleCmdDevelopConf = {
+    code?: number;
+    data?: SimpleCmdDevelopConf;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
   type RString = {
     code?: number;
     data?: string;
@@ -609,6 +683,13 @@ declare namespace API {
   type SetBotNodeDto = {
     botId?: number;
     confIdList?: number[];
+  };
+
+  type SimpleCmdDevelopConf = {
+    id?: number;
+    confName?: string;
+    cmd?: string;
+    script?: LiteFlowScript;
   };
 
   type startJobParams = {

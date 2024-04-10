@@ -1,0 +1,129 @@
+package plus.easydo.bot.controller;
+
+import cn.dev33.satoken.annotation.SaCheckLogin;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.service.HighLevelDevelopService;
+import plus.easydo.bot.entity.HighLevelDevelopConf;
+import org.springframework.web.bind.annotation.RestController;
+import plus.easydo.bot.vo.DataResult;
+import plus.easydo.bot.vo.R;
+
+import java.util.List;
+
+/**
+ * 控制层。
+ *
+ * @author mybatis-flex-helper automatic generation
+ * @since 1.0
+ */
+@RestController
+@Tag(name = "高级开发")
+@RequiredArgsConstructor
+@RequestMapping("/api/highLevelDevelop")
+public class HighLevelDevelopController {
+
+    private final HighLevelDevelopService highLevelDevelopService;
+
+
+    /**
+     * 所有列表
+     *
+     * @return plus.easydo.bot.vo.R<java.util.List<plus.easydo.bot.entity.HighLevelDevelopConf>>
+     * @author laoyu
+     * @date 2024-04-10
+     */
+    @SaCheckLogin
+    @Operation(summary = "所有列表")
+    @GetMapping("/list")
+    public R<List<HighLevelDevelopConf>> highLevelDevList() {
+        return DataResult.ok(highLevelDevelopService.highLevelDevList());
+    }
+
+    /**
+     * 分页查询
+     *
+     * @param pageQo pageQo
+     * @return plus.easydo.bot.vo.R<java.util.List<plus.easydo.bot.entity.HighLevelDevelopConf>>
+     * @author laoyu
+     * @date 2024-04-10
+     */
+    @SaCheckLogin
+    @Operation(summary = "分页查询")
+    @GetMapping("/page")
+    public R<List<HighLevelDevelopConf>> highLevelDevPage(PageQo pageQo) {
+        return DataResult.ok(highLevelDevelopService.highLevelDevPage(pageQo));
+    }
+
+    /**
+     * 添加
+     *
+     * @param highLevelDevelopConf highLevelDevelopConf
+     * @return plus.easydo.bot.vo.R<java.lang.Boolean>
+     * @author laoyu
+     * @date 2024-04-10
+     */
+    @SaCheckLogin
+    @Operation(summary = "添加")
+    @PostMapping("/save")
+    public R<Boolean> saveHighLevelDev(@RequestBody HighLevelDevelopConf highLevelDevelopConf) {
+        return DataResult.ok(highLevelDevelopService.saveHighLevelDev(highLevelDevelopConf));
+    }
+
+
+    /**
+     * 删除
+     *
+     * @param id id
+     * @return plus.easydo.bot.vo.R<java.lang.Boolean>
+     * @author laoyu
+     * @date 2024-04-10
+     */
+    @SaCheckLogin
+    @Operation(summary = "删除")
+    @DeleteMapping("/remove/{id}")
+    public R<Boolean> removeHighLevelDev(@PathVariable Long id) {
+        return DataResult.ok(highLevelDevelopService.removeHighLevelDev(id));
+    }
+
+
+    /**
+     * 更新
+     *
+     * @param highLevelDevelopConf highLevelDevelopConf
+     * @return plus.easydo.bot.vo.R<java.lang.Boolean>
+     * @author laoyu
+     * @date 2024-04-10
+     */
+    @SaCheckLogin
+    @Operation(summary = "更新")
+    @PutMapping("/update")
+    public R<Boolean> updateHighLevelDev(@RequestBody HighLevelDevelopConf highLevelDevelopConf) {
+        return DataResult.ok(highLevelDevelopService.updateHighLevelDev(highLevelDevelopConf));
+    }
+
+    /**
+     * 详细信息
+     *
+     * @param id id
+     * @return plus.easydo.bot.vo.R<plus.easydo.bot.entity.HighLevelDevelopConf>
+     * @author laoyu
+     * @date 2024-04-10
+     */
+    @GetMapping("/getInfo/{id}")
+    public R<HighLevelDevelopConf> getHighLevelDevInfo(@PathVariable Long id) {
+        return DataResult.ok(highLevelDevelopService.getHighLevelDevInfo(id));
+    }
+
+
+
+}

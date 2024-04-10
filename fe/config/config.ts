@@ -105,6 +105,14 @@ export default defineConfig({
       component: './sandbox',
     },
     {
+      path: '/simpleCmdDevelop',
+      component: './simpleCmdDevelop',
+    },
+    {
+      path: '/highLevelDevelop',
+      component: './highLevelDevelop',
+    },
+    {
       component: '404',
     },
   ],

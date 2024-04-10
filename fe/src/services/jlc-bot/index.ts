@@ -2,6 +2,8 @@
 /* eslint-disable */
 // API 更新时间：
 // API 唯一标识：
+import * as jiandanzhilingkaifa from './jiandanzhilingkaifa';
+import * as gaojikaifa from './gaojikaifa';
 import * as yonghu from './yonghu';
 import * as dingshirenwu from './dingshirenwu';
 import * as xitongjiedian from './xitongjiedian';
@@ -17,7 +19,10 @@ import * as jiqiren from './jiqiren';
 import * as webhook from './webhook';
 import * as xitong from './xitong';
 import * as xingnengfenxi from './xingnengfenxi';
+import * as ollama from './ollama';
 export default {
+  jiandanzhilingkaifa,
+  gaojikaifa,
   yonghu,
   dingshirenwu,
   xitongjiedian,
@@ -33,4 +38,5 @@ export default {
   webhook,
   xitong,
   xingnengfenxi,
+  ollama,
 };

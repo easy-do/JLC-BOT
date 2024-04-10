@@ -1617,4 +1617,45 @@
             NODE_CODE = 'filedHandlerNode';
     </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240410-1" dbms="h2" failOnError="true">
+    <sql dbms="h2">
+        CREATE TABLE HIGH_LEVEL_DEVELOP_CONF
+        (
+            ID         BIGINT NOT NULL AUTO_INCREMENT,
+            CONF_NAME  CHARACTER VARYING(64)  DEFAULT NULL COMMENT '配置名称',
+            EVENT_TYPE CHARACTER VARYING(64)  DEFAULT NULL COMMENT '事件类型',
+            REMARK     CHARACTER VARYING(100) DEFAULT NULL COMMENT '备注'
+        );
+
+        CREATE TABLE SIMPLE_CMD_DEVELOP_CONF
+        (
+            ID        BIGINT NOT NULL AUTO_INCREMENT,
+            CONF_NAME CHARACTER VARYING(64)  DEFAULT NULL COMMENT '配置名称',
+            CMD       CHARACTER VARYING      DEFAULT NULL COMMENT '指令',
+            REMARK    CHARACTER VARYING(100) DEFAULT NULL COMMENT '备注'
+        );
+
+        CREATE TABLE BOT_SIMPLE_CMD_DEVELOP
+        (
+            CONF_ID    bigint(20)  DEFAULT NULL COMMENT '配置id',
+            BOT_NUMBER varchar(65) DEFAULT NULL COMMENT '机器人编码'
+        );
+        CREATE TABLE BOT_HIGH_LEVEL_DEVELOP
+        (
+            CONF_ID    bigint(20)  DEFAULT NULL COMMENT '配置id',
+            BOT_NUMBER varchar(65) DEFAULT NULL COMMENT '机器人编码'
+        );
+    </sql>
+    </changeSet>
+    <changeSet author="yuzhanfeng" id="20240410-2" dbms="h2" failOnError="true">
+    <sql dbms="h2">
+        UPDATE
+            SYSTEM_CONF
+        SET
+            CONF_DATA = '[{"name":"首页","path":"/home"},{"name":"系统管理","path":"/systemManager","children":[{"name":"系统配置","path":"/conf"},{"name":"系统节点","path":"/sysNode"},{"name":"定时任务","path":"/systemJob"}]},{"name":"机器人管理","path":"/botManager","children":[{"name":"机器人","path":"/platformBot"},{"name":"机器人脚本","path":"/botScript"}]},{"name":"系统日志","path":"/systemLog","children":[{"name":"消息记录","path":"/botMessage"},{"name":"请求记录","path":"/botRequest"},{"name":"通知记录","path":"/botNotice"},{"name":"上报日志","path":"/botPostLog"},{"name":"节点执行日志","path":"/nodeExecuteLog"},{"name":"节点配置日志","path":"/nodeConfExecuteLog"}]},{"name":"低代码开发","path":"/nodeConf"},{"name":"简单指令开发","path":"/simpleCmdDevelop"},{"name":"高级开发","path":"/highLevelDevelop"},{"name":"沙盒测试","path":"/sandbox"}]'
+        WHERE
+            CONF_KEY = 'menu';
+    </sql>
+    </changeSet>
+
 </databaseChangeLog>
