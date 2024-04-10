@@ -95,7 +95,8 @@ public class FiledHandlerNode extends NodeComponent {
                     paramJson.set(saveFiled, CharSequenceUtil.trimEnd(String.valueOf(value)));
                     break;
                 case "removeAll":
-                    paramJson.set(saveFiled, CharSequenceUtil.removeAll(String.valueOf(value)));
+                    Assert.notNull(targetValue, "目标值为空");
+                    paramJson.set(saveFiled, CharSequenceUtil.removeAll(String.valueOf(value),targetValue));
                     break;
                 case "removePrefix":
                     Assert.notNull(targetValue, "前缀未定义");

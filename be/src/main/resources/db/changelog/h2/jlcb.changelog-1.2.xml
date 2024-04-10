@@ -1428,4 +1428,193 @@
 }', '2024-04-06 01:57:52.476', '2024-04-07 23:23:23.456', 0, 'message');
     </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240410" dbms="h2" failOnError="true">
+    <sql dbms="h2">
+        UPDATE
+            LOW_CODE_SYS_NODE
+        SET
+            FORM_DATA = '[
+    {
+        "title": "判断类型",
+        "dataIndex": "type",
+        "valueType": "select",
+        "initValue": "equals",
+        "valueEnum": {
+            "contains": {
+                "text": "包含(文本)"
+            },
+            "startWith": {
+                "text": "指定内容开头"
+            },
+            "endWith": {
+                "text": "指定内容结尾"
+            },
+            "equals": {
+                "text": "等于(文本)"
+            },
+            "notEquals": {
+                "text": "不等于(文本)"
+            },
+            "isNull": {
+                "text": "为空"
+            },
+            "isNotNull": {
+                "text": "不为空"
+            },
+            "isBlank": {
+                "text": "为空字符(文本)"
+            },
+            "isNotBlank": {
+                "text": "不为空字符(文本)"
+            },
+            "lengthEquals": {
+                "text": "长度等于(文本)"
+            },
+            "toListContains": {
+                "text": "文本转数组后判断是否包含(约定英文逗号分割)"
+            }
+        },
+        "formItemProps": {
+            "rules": [
+                {
+                    "required": true,
+                    "message": "请选择判断类型"
+                }
+            ]
+        }
+    },
+    {
+        "title": "要判断字段",
+        "dataIndex": "targetFiled",
+        "initialValue": "输入要判断的目标字段，例如：message",
+        "formItemProps": {
+            "rules": [
+                {
+                    "required": true,
+                    "message": "输入要判断的目标字段"
+                }
+            ]
+        }
+    },
+    {
+        "title": "要判断内容",
+        "dataIndex": "targetValue",
+        "initialValue": "包含、等于、不等于这类判断时生效"
+    }
+]',
+            DELETE_FLAG = 0,
+            SYSTEM_NODE = 1
+        WHERE
+            NODE_CODE = 'filedIfNode';
+        UPDATE
+            LOW_CODE_SYS_NODE
+        SET
+            FORM_DATA = '[
+    {
+        "title": "操作类型",
+        "dataIndex": "type",
+        "valueType": "select",
+        "initialValue": "replace",
+        "valueEnum": {
+            "replace": {
+                "text": "替换内容(文本)"
+            },
+            "subBefore": {
+                "text": "截取前面(文本)"
+            },
+            "subAfter": {
+                "text": "截取后面(文本)"
+            },
+            "split": {
+                "text": "符号分割(文本转数组)"
+            },
+            "appendBefore": {
+                "text": "前面拼接内容(文本)"
+            },
+            "appendAfter": {
+                "text": "后面拼接内容(文本)"
+            },
+            "strLength": {
+                "text": "文本长度(数字)"
+            },
+            "listLength": {
+                "text": "集合长度(数字)"
+            },
+            "toJson": {
+                "text": "转JSON结构(json文本转json)"
+            },
+            "toListRemove": {
+                "text": "转数组后删除某个元素(文本转数组后删除匹配的元素)"
+            },
+            "trim": {
+                "text": "去除空格"
+            },
+            "trimStart": {
+                "text": "去除开始空格"
+            },
+            "trimEnd": {
+                "text": "去除结尾空格"
+            },
+            "removeAll": {
+                "text": "删除所有指定内容"
+            },
+            "removePrefix": {
+                "text": "删除指定前缀"
+            },
+            "removeSuffix": {
+                "text": "删除指定后缀"
+            }
+        },
+        "formItemProps": {
+            "rules": [
+                {
+                    "required": true,
+                    "message": "请选择处理类型"
+                }
+            ]
+        }
+    },
+    {
+        "title": "要处理的字段",
+        "dataIndex": "targetFiled",
+        "initialValue": "输入想要处理的字段，例如：message",
+        "formItemProps": {
+            "rules": [
+                {
+                    "required": true,
+                    "message": "请输入要处理的字段"
+                }
+            ]
+        }
+    },
+    {
+        "title": "要操作的内容",
+        "dataIndex": "sourceValue",
+        "initialValue": "替换/拼接时生效，填写需要被操作的文本内容"
+    },
+    {
+        "title": "目标值",
+        "dataIndex": "targetValue",
+        "initialValue": "分隔符、替换、拼接、删除的内容"
+    },
+    {
+        "title": "赋值字段",
+        "dataIndex": "saveFiled",
+        "initialValue": "处理后的结果将保存到指定字段",
+        "formItemProps": {
+            "rules": [
+                {
+                    "required": true,
+                    "message": "请输入赋值字段"
+                }
+            ]
+        }
+    }
+]',
+            DELETE_FLAG = 0,
+            SYSTEM_NODE = 1
+        WHERE
+            NODE_CODE = 'filedHandlerNode';
+    </sql>
+    </changeSet>
 </databaseChangeLog>
