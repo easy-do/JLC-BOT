@@ -115,5 +115,15 @@ public class GlobalExceptionHandler {
         return DataResult.fail(HttpStatus.UNAUTHORIZED, "无接口权限");
     }
 
+    /**
+     * 基础异常
+     *
+     * @param e e
+     * @return R R
+     */
+    @ExceptionHandler(IllegalArgumentException.class)
+    public R<Object> illegalArgumentException(IllegalArgumentException e) {
+        return DataResult.fail(e.getMessage());
+    }
 
 }

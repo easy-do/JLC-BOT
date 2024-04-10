@@ -1,5 +1,6 @@
 package plus.easydo.bot.lowcode.node;
 
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
@@ -10,7 +11,6 @@ import lombok.extern.slf4j.Slf4j;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.util.ParamReplaceUtils;
 
-import java.util.Objects;
 
 /**
  * @author yuzhanfeng
@@ -28,105 +28,94 @@ public class FiledHandlerNode extends NodeComponent {
         String tag = getTag();
         JSONObject confJson = nodeConf.getJSONObject(tag);
         log.debug("字段处理节点: param:{},conf:{}", paramJson, confJson);
-        if (Objects.nonNull(paramJson) && Objects.nonNull(confJson)) {
+        try {
+            Assert.notNull(paramJson, "参数配置为空");
+            Assert.notNull(confJson, "节点配置为空");
             String type = confJson.getStr("type");
-            if (Objects.nonNull(type)) {
-                Object targetFiled = confJson.getByPath("targetFiled");
-                String saveFiled = confJson.getStr("saveFiled");
-                if (Objects.nonNull(targetFiled) && Objects.nonNull(saveFiled)) {
-                    Object value = paramJson.getByPath(String.valueOf(targetFiled));
-                    String targetValue = confJson.getStr("targetValue");
-                    String sourceValue = confJson.getStr("sourceValue");
-                    if (Objects.nonNull(value)) {
-                        // 开始根据类型执行不同逻辑
-                        switch (type) {
-                            case "replace":
-                                if (Objects.nonNull(targetValue) && Objects.nonNull(sourceValue)) {
-                                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
-                                    paramJson.set(saveFiled, StrUtil.replace(String.valueOf(value), sourceValue, targetValue));
-                                } else {
-                                    log.warn("字段处理节点未完整执行,原因:要替换字段为空或要替换的内容未配置");
-                                    throw new BaseException("要替换字段为空或要替换的内容未配置");
-                                }
-                                break;
-                            case "subBefore":
-                                if (Objects.nonNull(targetValue)) {
-                                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
-                                    paramJson.set(saveFiled, CharSequenceUtil.subBefore(String.valueOf(value), targetValue, false));
-                                } else {
-                                    log.debug("字段处理节点未完整执行,原因:要处理字段为空或分隔符未配置");
-                                    throw new BaseException("要处理字段为空或分隔符未配置");
-                                }
-                                break;
-                            case "subAfter":
-                                if (Objects.nonNull(targetValue)) {
-                                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
-                                    paramJson.set(saveFiled, CharSequenceUtil.subAfter(String.valueOf(value), targetValue, false));
-                                } else {
-                                    log.warn("字段处理节点未完整执行,原因:要处理字段为空或分隔符未配置");
-                                    throw new BaseException("要处理字段为空或分隔符未配置");
-                                }
-                                break;
-                            case "split":
-                                if (Objects.nonNull(targetValue)) {
-                                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
-                                    paramJson.set(saveFiled, CharSequenceUtil.split(String.valueOf(value), targetValue));
-                                } else {
-                                    log.warn("字段处理节点未完整执行,原因:要处理字段为空或分隔符未配置");
-                                    throw new BaseException("要处理字段为空或分隔符未配置");
-                                }
-                                break;
-                            case "appendBefore":
-                                if (Objects.nonNull(targetValue)) {
-                                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
-                                    paramJson.set(saveFiled, targetValue + value);
-                                } else {
-                                    log.warn("字段处理节点未完整执行,原因:要处理字段为空或分隔符未配置");
-                                    throw new BaseException("要处理字段为空或分隔符未配置");
-                                }
-                                break;
-                            case "appendAfter":
-                                if (Objects.nonNull(targetValue)) {
-                                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
-                                    paramJson.set(saveFiled, value + targetValue);
-                                } else {
-                                    log.warn("字段处理节点未完整执行,原因:要处理字段为空或分隔符未配置");
-                                    throw new BaseException("要处理字段为空或分隔符未配置");
-                                }
-                                break;
-                            case "strLength":
-                                paramJson.set(saveFiled, String.valueOf(value).length());
-                                break;
-                            case "listLength":
-                                if (Objects.nonNull(targetValue)) {
-                                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
-                                    paramJson.set(saveFiled, CharSequenceUtil.split(String.valueOf(value), targetValue).size());
-                                } else {
-                                    log.warn("字段处理节点未完整执行,原因:要处理字段为空或分隔符未配置");
-                                    throw new BaseException("要处理字段为空或分隔符未配置");
-                                }
-                                break;
-                            case "toJson":
-                                paramJson.set(saveFiled, JSONUtil.parseObj(value));
-                                break;
-                            default:
-                                throw new BaseException("没有匹配到类型[" + type + "]");
-                        }
-                    } else {
-                        log.warn("字段处理节点未完整执行,原因:目标字段不存在");
-                        throw new BaseException("目标字段不存在");
-                    }
-                } else {
-                    log.warn("字段处理节点未完整执行,原因:目标字段获赋值字段未定义");
-                    throw new BaseException("目标字段获赋值字段未定义");
-                }
-            } else {
-                log.warn("字段处理节点未完整执行,原因:判断类型未设置");
-                throw new BaseException("判断类型未设置");
+            Assert.notNull(type, "处理类型未设置");
+            Object targetFiled = confJson.getByPath("targetFiled");
+            String saveFiled = confJson.getStr("saveFiled");
+            Assert.notNull(targetFiled, "目标字段未定义");
+            Assert.notNull(saveFiled, "赋值字段未定义");
+            Object value = paramJson.getByPath(String.valueOf(targetFiled));
+            Assert.notNull(value, "目标字段不存在");
+            //要操作的内容
+            String sourceValue = confJson.getStr("sourceValue");
+            //目标值
+            String targetValue = confJson.getStr("targetValue");
+            // 开始根据类型执行不同逻辑
+            switch (type) {
+                case "replace":
+                    Assert.notNull(sourceValue, "要操作的内容为空");
+                    Assert.notNull(targetValue, "目标值为空");
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    sourceValue = ParamReplaceUtils.replaceParam(sourceValue, paramJson);
+                    paramJson.set(saveFiled, StrUtil.replace(String.valueOf(value), sourceValue, targetValue));
+                    break;
+                case "subBefore":
+                    Assert.notNull(targetValue, "分隔符为空");
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    paramJson.set(saveFiled, CharSequenceUtil.subBefore(String.valueOf(value), targetValue, false));
+                    break;
+                case "subAfter":
+                    Assert.notNull(targetValue, "分隔符为空");
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    paramJson.set(saveFiled, CharSequenceUtil.subAfter(String.valueOf(value), targetValue, false));
+                    break;
+                case "split":
+                    Assert.notNull(targetValue, "分隔符为空");
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    paramJson.set(saveFiled, CharSequenceUtil.split(String.valueOf(value), targetValue));
+                    break;
+                case "appendBefore":
+                    Assert.notNull(targetValue, "目标值为空");
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    paramJson.set(saveFiled, targetValue + value);
+                    break;
+                case "appendAfter":
+                    Assert.notNull(targetValue, "目标值为空");
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    paramJson.set(saveFiled, value + targetValue);
+                    break;
+                case "strLength":
+                    paramJson.set(saveFiled, String.valueOf(value).length());
+                    break;
+                case "listLength":
+                    Assert.notNull(targetValue, "分隔符为空");
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    paramJson.set(saveFiled, CharSequenceUtil.split(String.valueOf(value), targetValue).size());
+                    break;
+                case "trim":
+                    paramJson.set(saveFiled, CharSequenceUtil.trim(String.valueOf(value)));
+                    break;
+                case "trimStart":
+                    paramJson.set(saveFiled, CharSequenceUtil.trimStart(String.valueOf(value)));
+                    break;
+                case "trimEnd":
+                    paramJson.set(saveFiled, CharSequenceUtil.trimEnd(String.valueOf(value)));
+                    break;
+                case "removeAll":
+                    paramJson.set(saveFiled, CharSequenceUtil.removeAll(String.valueOf(value)));
+                    break;
+                case "removePrefix":
+                    Assert.notNull(targetValue, "前缀未定义");
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    paramJson.set(saveFiled, CharSequenceUtil.removePrefix(String.valueOf(value), targetValue));
+                    break;
+                case "removeSuffix":
+                    Assert.notNull(targetValue, "后缀未定义");
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    paramJson.set(saveFiled, CharSequenceUtil.removeSuffix(String.valueOf(value), targetValue));
+                    break;
+                case "toJson":
+                    paramJson.set(saveFiled, JSONUtil.parseObj(value));
+                    break;
+                default:
+                    throw new BaseException("没有匹配到类型[" + type + "]");
             }
-        } else {
-            log.warn("字段处理节点未完整执行,原因:参数或节点配置为空,param:{},conf:{}", paramJson, confJson);
-            throw new BaseException("参数或节点配置为空");
+        } catch (Exception e) {
+            log.warn("字段处理节点未完整执行,原因:{}", e.getMessage());
+            throw e;
         }
     }
 

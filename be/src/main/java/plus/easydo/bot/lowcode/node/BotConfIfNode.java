@@ -1,5 +1,6 @@
 package plus.easydo.bot.lowcode.node;
 
+import cn.hutool.core.lang.Assert;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
@@ -24,7 +25,7 @@ import java.util.Objects;
 @LiteflowComponent(id = "botConfIfNode", name = "判断机器人配置")
 public class BotConfIfNode extends NodeIfComponent {
 
-    private static final String TARGET_VALUE_NOT_CONFIG = "要判断的内容未配置";
+    private static final String TARGET_VALUE_NOT_CONFIG = "目标值为空";
 
     @Override
     public boolean processIf() {
@@ -34,78 +35,64 @@ public class BotConfIfNode extends NodeIfComponent {
         String tag = getTag();
         JSONObject confJson = nodeConf.getJSONObject(tag);
         log.debug("判断机器人配置: param:{},conf:{}", paramJson, confJson);
-        if (Objects.nonNull(paramJson) && Objects.nonNull(confJson)) {
+        try {
+            Assert.notNull(paramJson, "参数配置为空");
+            Assert.notNull(confJson, "节点配置为空");
             String botNumber = paramJson.getStr(OneBotConstants.SELF_ID);
             String confKey = confJson.getStr("confKey");
             String type = confJson.getStr("type");
-            if (Objects.nonNull(confKey) && Objects.nonNull(type)) {
-                String confValue = BotConfUtil.getBotConfNull(botNumber, confKey);
-                String targetValue = confJson.getStr("targetValue");
+            Assert.notNull(confKey, "机器人配置的key为空");
+            Assert.notNull(type, "判断类型为空");
+            String confValue = BotConfUtil.getBotConfNull(botNumber, confKey);
+            String targetValue = confJson.getStr("targetValue");
 
-                // 开始根据类型执行不同逻辑
-                switch (type) {
-                    case "isNull" -> {
-                        return Objects.isNull(confValue);
-                    }
-                    case "isNotNull" -> {
-                        return Objects.nonNull(confValue);
-                    }
-                    case "isBlank" -> {
-                        return Objects.isNull(confValue) || CharSequenceUtil.isBlank(confValue);
-                    }
-                    case "isNotBlank" -> {
-                        return Objects.nonNull(confValue) && CharSequenceUtil.isNotBlank(confValue);
-                    }
-                    case "contains" -> {
-                        return Objects.nonNull(confValue) && CharSequenceUtil.contains(confValue, targetValue);
-                    }
-                    case "equals" -> {
-                        if (checkTargetValue(targetValue)) {
-                            targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
-                            return Objects.nonNull(confValue) && CharSequenceUtil.equals(confValue, targetValue);
-                        } else {
-                            throwNotConfigTargetValue();
-                        }
-                    }
-                    case "notEquals" -> {
-                        if (checkTargetValue(targetValue)) {
-                            targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
-                            return Objects.isNull(confValue) || !CharSequenceUtil.equals(confValue, targetValue);
-                        } else {
-                            throwNotConfigTargetValue();
-                        }
-                    }
-                    case "lengthEquals" -> {
-                        if (checkTargetValue(targetValue)) {
-                            targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
-                            return Objects.nonNull(confValue) && confValue.length() == Integer.parseInt(targetValue);
-                        } else {
-                            throwNotConfigTargetValue();
-                        }
-                    }
-                    case "toListContains" -> {
-                        if (checkTargetValue(targetValue)) {
-                            targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
-                            if (Objects.nonNull(confValue)) {
-                                List<String> list = StrUtil.split(confValue, ",");
-                                return list.contains(targetValue);
-                            }
-                            return false;
-                        } else {
-                            throwNotConfigTargetValue();
-                        }
-                    }
-                    default -> throw new BaseException("没有匹配到类型[" + type + "]");
+            // 开始根据类型执行不同逻辑
+            switch (type) {
+                case "isNull" -> {
+                    return Objects.isNull(confValue);
                 }
-            } else {
-                log.warn("配置信息不全,conf:{}", confJson);
-                throw new BaseException("配置信息不全");
+                case "isNotNull" -> {
+                    return Objects.nonNull(confValue);
+                }
+                case "isBlank" -> {
+                    return Objects.isNull(confValue) || CharSequenceUtil.isBlank(confValue);
+                }
+                case "isNotBlank" -> {
+                    return Objects.nonNull(confValue) && CharSequenceUtil.isNotBlank(confValue);
+                }
+                case "contains" -> {
+                    return Objects.nonNull(confValue) && CharSequenceUtil.contains(confValue, targetValue);
+                }
+                case "equals" -> {
+                    Assert.notNull(targetValue, TARGET_VALUE_NOT_CONFIG);
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    return Objects.nonNull(confValue) && CharSequenceUtil.equals(confValue, targetValue);
+                }
+                case "notEquals" -> {
+                    Assert.notNull(targetValue, TARGET_VALUE_NOT_CONFIG);
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    return Objects.isNull(confValue) || !CharSequenceUtil.equals(confValue, targetValue);
+                }
+                case "lengthEquals" -> {
+                    Assert.notNull(targetValue, TARGET_VALUE_NOT_CONFIG);
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    return Objects.nonNull(confValue) && confValue.length() == Integer.parseInt(targetValue);
+                }
+                case "toListContains" -> {
+                    Assert.notNull(targetValue, TARGET_VALUE_NOT_CONFIG);
+                    targetValue = ParamReplaceUtils.replaceParam(targetValue, paramJson);
+                    if (Objects.nonNull(confValue)) {
+                        List<String> list = StrUtil.split(confValue, ",");
+                        return list.contains(targetValue);
+                    }
+                    return false;
+                }
+                default -> throw new BaseException("没有匹配到类型[" + type + "]");
             }
-        } else {
-            log.warn("判断机器人配置节点未完整执行,原因:参数或节点配置为空,param:{},conf:{}", paramJson, confJson);
-            throw new BaseException("参数或节点配置为空");
+        } catch (Exception e) {
+            log.warn("判断机器人配置节点未完整执行,原因:{}", e.getMessage());
+            throw e;
         }
-        return false;
     }
 
 
@@ -113,18 +100,6 @@ public class BotConfIfNode extends NodeIfComponent {
     public void onSuccess() throws Exception {
         JLCLiteFlowContext context = getContextBean(JLCLiteFlowContext.class);
         context.getNodeParamCache().put(getTag(), context.getParam());
-    }
-
-    private boolean checkTargetValue(String targetValue) {
-        boolean res = CharSequenceUtil.isNotBlank(targetValue);
-        if (!res) {
-            log.warn("配置判断节点未完整执行,原因:要判断的内容未配置");
-        }
-        return res;
-    }
-
-    private void throwNotConfigTargetValue() {
-        throw new BaseException(TARGET_VALUE_NOT_CONFIG);
     }
 
 }
