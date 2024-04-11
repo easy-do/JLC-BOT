@@ -96,18 +96,6 @@ public class LowCodeSysNodeController {
         return DataResult.ok(lowCodeSysNodeService.updateSysNodeFormData(lowCodeSysNode));
     }
 
-    /**
-     * 根据主键更新系统节点信息
-     *
-     * @param lowCodeSysNode 系统节点信息
-     * @return {@code true} 更新成功，{@code false} 更新失败
-     */
-    @SaCheckLogin
-    @Operation(summary = "更新脚本配置")
-    @PostMapping("/updateScriptData")
-    public R<Boolean> updateSysNodeScriptData(@RequestBody LiteFlowScript lowCodeSysNode) {
-        return DataResult.ok(lowCodeSysNodeService.updateSysNodeScriptData(lowCodeSysNode));
-    }
 
     /**
      * 根据系统节点信息主键获取详细信息。

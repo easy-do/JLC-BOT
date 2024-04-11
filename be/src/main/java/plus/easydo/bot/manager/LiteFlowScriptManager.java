@@ -4,7 +4,8 @@ package plus.easydo.bot.manager;
 import cn.hutool.core.text.CharSequenceUtil;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
-import com.yomahub.liteflow.script.ScriptExecutorFactory;
+import com.yomahub.liteflow.core.FlowExecutor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.constant.LiteFlowConstants;
@@ -24,10 +25,13 @@ import static plus.easydo.bot.entity.table.LiteFlowScriptTableDef.LITE_FLOW_SCRI
  * @since 1.0
  */
 @Service
+@RequiredArgsConstructor
 public class LiteFlowScriptManager extends ServiceImpl<LiteFlowScriptMapper, LiteFlowScript> {
 
     @Value("${spring.application.name:jlc-bot}")
     private String applicationName;
+
+    private final FlowExecutor flowExecutor;
 
     public void createData(LowCodeSysNode lowCodeSysNode) {
         LiteFlowScript entity = LiteFlowScript.builder()
@@ -35,6 +39,7 @@ public class LiteFlowScriptManager extends ServiceImpl<LiteFlowScriptMapper, Lit
                 .applicationName(applicationName)
                 .scriptId(lowCodeSysNode.getNodeCode())
                 .scriptName(lowCodeSysNode.getNodeName())
+                .scriptType("script")
                 .scriptLanguage("java")
                 .scriptData("")
                 .enable(true)
@@ -42,7 +47,7 @@ public class LiteFlowScriptManager extends ServiceImpl<LiteFlowScriptMapper, Lit
         buildScriptData(lowCodeSysNode, entity);
         boolean res = save(entity);
         if (res) {
-            ScriptExecutorFactory.loadInstance().getScriptExecutor("java").load(entity.getScriptId(), entity.getScriptData());
+            flowExecutor.reloadRule();
         }
     }
 
@@ -51,13 +56,14 @@ public class LiteFlowScriptManager extends ServiceImpl<LiteFlowScriptMapper, Lit
                 .applicationName(applicationName)
                 .scriptId(LowCodeConstants.HIGH_LEVEL_DEVELOP+highLevelDevelopConf.getId())
                 .scriptName(highLevelDevelopConf.getConfName())
-                .scriptLanguage("java")
-                .scriptData(LiteFlowConstants.SCRIPT_DATA)
+                .scriptLanguage(highLevelDevelopConf.getScriptLanguage())
+                .scriptType("script")
+                .scriptData(LiteFlowConstants.SCRIPT_DATA_MAP.get(highLevelDevelopConf.getScriptLanguage()))
                 .enable(true)
                 .build();
         boolean res = save(entity);
         if (res) {
-            ScriptExecutorFactory.loadInstance().getScriptExecutor("java").load(entity.getScriptId(), entity.getScriptData());
+            flowExecutor.reloadRule();
         }
     }
     public void createData(SimpleCmdDevelopConf simpleCmdDevelopConf) {
@@ -65,33 +71,34 @@ public class LiteFlowScriptManager extends ServiceImpl<LiteFlowScriptMapper, Lit
                 .applicationName(applicationName)
                 .scriptId(LowCodeConstants.SIMPLE_CMD_DEVELOP + simpleCmdDevelopConf.getId())
                 .scriptName(simpleCmdDevelopConf.getConfName())
-                .scriptLanguage("java")
-                .scriptData(LiteFlowConstants.SCRIPT_DATA)
+                .scriptType("script")
+                .scriptLanguage(simpleCmdDevelopConf.getScriptLanguage())
+                .scriptData(LiteFlowConstants.SCRIPT_DATA_MAP.get(simpleCmdDevelopConf.getScriptLanguage()))
                 .enable(true)
                 .build();
         boolean res = save(entity);
         if (res) {
-            ScriptExecutorFactory.loadInstance().getScriptExecutor("java").load(entity.getScriptId(), entity.getScriptData());
+            flowExecutor.reloadRule();
         }
     }
 
     private void buildScriptData(LowCodeSysNode lowCodeSysNode, LiteFlowScript liteFlowScript) {
         boolean nodeType = CharSequenceUtil.containsAny(lowCodeSysNode.getNodeCode(), "if", "If");
         liteFlowScript.setScriptType(nodeType ? LiteFlowConstants.IF_SCRIPT : LiteFlowConstants.SCRIPT);
-        liteFlowScript.setScriptData(nodeType ? LiteFlowConstants.IF_SCRIPT_DATA : LiteFlowConstants.SCRIPT_DATA);
+        liteFlowScript.setScriptData(nodeType ? LiteFlowConstants.JAVA_IF_SCRIPT_DATA : LiteFlowConstants.JAVA_SCRIPT_DATA);
     }
 
     public boolean updateScriptData(LiteFlowScript liteFlowScript) {
         boolean res = updateById(liteFlowScript);
         if (res) {
-            ScriptExecutorFactory.loadInstance().getScriptExecutor("java").load(liteFlowScript.getScriptId(), liteFlowScript.getScriptData());
-        }
+            flowExecutor.reloadRule();        }
         return res;
     }
 
     public void removeByScriptId(String id) {
         QueryWrapper query = query().where(LITE_FLOW_SCRIPT.SCRIPT_ID.eq(id));
         remove(query);
+        flowExecutor.reloadRule();
     }
 
     public LiteFlowScript getByScriptId(String id) {

@@ -1657,5 +1657,10 @@
             CONF_KEY = 'menu';
     </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240411" dbms="h2" failOnError="true">
+    <sql dbms="h2">
+        ALTER TABLE SIMPLE_CMD_DEVELOP_CONF ADD CMD_TYPE CHARACTER(32) DEFAULT NULL COMMENT '指令类型';
+    </sql>
+    </changeSet>
 
 </databaseChangeLog>

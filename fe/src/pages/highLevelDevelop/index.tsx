@@ -9,11 +9,13 @@ import {
   ProFormText,
   ProFormTextArea,
 } from '@ant-design/pro-form';
-import { Button, Dropdown, Upload, message } from 'antd';
+import { Button, Dropdown, Upload, message, Modal } from 'antd';
 import type { UploadProps } from 'antd';
 import EditScript from './editScript';
 import { request } from 'umi';
-import { getHighLevelDevInfo, highLevelDevPage, removeHighLevelDev, saveHighLevelDev, updateHighLevelDev } from '@/services/jlc-bot/gaojikaifa';
+import { debugHighLevelDevelop, getHighLevelDevInfo, highLevelDevPage, removeHighLevelDev, saveHighLevelDev, updateHighLevelDev } from '@/services/jlc-bot/gaojikaifa';
+
+import ProDescriptions from '@ant-design/pro-descriptions';
 
 const sysNode: React.FC = () => {
 
@@ -33,10 +35,10 @@ const sysNode: React.FC = () => {
         message.error(`${info.file.name} 上传失败.`);
       }
     },
-    customRequest:(options)=>{
+    customRequest: (options) => {
       const formData = new FormData();
       formData.append('file', options.file as Blob);
-      request<API.RLong>('/api/sysNode/importNode', {
+      request<API.RLong>('/api/highLevelDevelop/importConf', {
         method: 'POST',
         requestType: 'form',
         data: formData,
@@ -50,9 +52,9 @@ const sysNode: React.FC = () => {
       });
     },
     beforeUpload: (file) => {
-      const isJlc = file.name.endsWith('.jlcbsn');
+      const isJlc = file.name.endsWith('.jlchdev');
       if (!isJlc) {
-        message.error(`请上传.jlcbsn文件`);
+        message.error(`请上传.jlchdev文件`);
       }
       return isJlc || Upload.LIST_IGNORE;
     },
@@ -85,14 +87,15 @@ const sysNode: React.FC = () => {
   const [editModalVisible, handleEditModalVisible] = useState<boolean>(false);
   const [currentRow, setCurrentRow] = useState<API.HighLevelDevelopConf>();
 
-  const openEditModal = (id: string) => {
-    getHighLevelDevInfo({ id: id }).then((res) => {
-      if (res.success) {
-        const data = res.data;
-        setCurrentRow(data);
-        handleEditModalVisible(true);
-      }
-    });
+  const openEditModal = (id: number) => {
+    getHighLevelDevInfo
+      ({ id: id }).then((res) => {
+        if (res.success) {
+          const data = res.data;
+          setCurrentRow(data);
+          handleEditModalVisible(true);
+        }
+      });
   };
 
   /**
@@ -119,11 +122,27 @@ const sysNode: React.FC = () => {
 
   /** 编辑脚本的弹窗 */
   const [editFormScriptModalVisible, handleEditFormScriptModalVisible] = useState<boolean>(false);
-  const [editNodeScriptId, setEditNideScriptId] = useState<string>();
+  const [editNodeScriptId, setEditScriptId] = useState<number>();
 
-  const openEditFormScriptModal = (id: string) => {
-    setEditNideScriptId(id);
+  const openEditFormScriptModal = (id: number) => {
+    setEditScriptId(id);
     handleEditFormScriptModalVisible(true);
+  };
+
+  /** 调试配置弹窗 */
+  const [debugModalVisible, handleDebugModalVisible] = useState<boolean>(false);
+  const [debugResult, setDebugResult] = useState<API.CmpStepResult>();
+  const [debugResultModalVisible, handleDebugResultModalVisible] = useState<boolean>(false);
+
+  const openDebugModal = (id: number) => {
+    getHighLevelDevInfo
+      ({ id: id }).then((res) => {
+        if (res.success) {
+          const data = res.data;
+          setCurrentRow(data);
+          handleDebugModalVisible(true);
+        }
+      });
   };
 
   /** 国际化配置 */
@@ -149,7 +168,7 @@ const sysNode: React.FC = () => {
             items: [
               {
                 key: 'update',
-                label: '编辑',
+                label: '编辑信息',
                 onClick: () => {
                   openEditModal(record.id);
                 },
@@ -159,6 +178,14 @@ const sysNode: React.FC = () => {
                 label: '编辑脚本',
                 onClick: (e) => {
                   openEditFormScriptModal(record.id);
+                },
+              },
+              {
+                key: 'debug',
+                label: '调试配置',
+                onClick: (e) => {
+                  openDebugModal(record.id);
+
                 },
               },
               {
@@ -257,7 +284,35 @@ const sysNode: React.FC = () => {
           rules={[
             {
               required: true,
-              message: '请输入节点名称',
+              message: '请输入配置名称',
+            },
+          ]}
+        />
+        <ProFormSelect
+          name="eventType"
+          label="事件类型"
+          rules={[
+            {
+              required: true,
+              message: '请选择事件类型',
+            },
+          ]}
+          options={[
+            {
+              label: '所有事件',
+              value: 'all',
+            },
+            {
+              label: '接消息',
+              value: 'message',
+            },
+            {
+              label: '通知',
+              value: 'notice',
+            },
+            {
+              label: '元事件',
+              value: 'meta_event',
             },
           ]}
         />
@@ -270,18 +325,26 @@ const sysNode: React.FC = () => {
               value: 'java',
             },
             {
+              label: 'groovy',
+              value: 'groovy',
+            },
+            {
               label: 'python',
               value: 'python',
             },
             {
               label: 'lua',
               value: 'lua',
+            },
+            {
+              label: 'aviator',
+              value: 'aviator',
             }
           ]}
           rules={[
             {
               required: true,
-              message: '请选择port类型',
+              message: '请选择编程语言',
             },
           ]}
         />
@@ -301,7 +364,7 @@ const sysNode: React.FC = () => {
           destroyOnClose: true,
         }}
         initialValues={currentRow}
-        title="编辑节点"
+        title="编辑信息"
         visible={editModalVisible}
         onVisibleChange={handleEditModalVisible}
         onFinish={async (value) => {
@@ -321,7 +384,35 @@ const sysNode: React.FC = () => {
           rules={[
             {
               required: true,
-              message: '请输入节点名称',
+              message: '请输入配置名称',
+            },
+          ]}
+        />
+        <ProFormSelect
+          name="eventType"
+          label="事件类型"
+          rules={[
+            {
+              required: true,
+              message: '请选择事件类型',
+            },
+          ]}
+          options={[
+            {
+              label: '所有事件',
+              value: 'all',
+            },
+            {
+              label: '接消息',
+              value: 'message',
+            },
+            {
+              label: '通知',
+              value: 'notice',
+            },
+            {
+              label: '元事件',
+              value: 'meta_event',
             },
           ]}
         />
@@ -334,18 +425,26 @@ const sysNode: React.FC = () => {
               value: 'java',
             },
             {
+              label: 'groovy',
+              value: 'groovy',
+            },
+            {
               label: 'python',
               value: 'python',
             },
             {
               label: 'lua',
               value: 'lua',
+            },
+            {
+              label: 'aviator',
+              value: 'aviator',
             }
           ]}
           rules={[
             {
               required: true,
-              message: '请选择port类型',
+              message: '请选择编程语言',
             },
           ]}
         />
@@ -360,6 +459,100 @@ const sysNode: React.FC = () => {
           ]}
         />
       </ModalForm>
+      <ModalForm
+        modalProps={{
+          destroyOnClose: true,
+        }}
+        initialValues={currentRow}
+        title="调试配置"
+        visible={debugModalVisible}
+        onVisibleChange={handleDebugModalVisible}
+        onFinish={(values) => {
+          if (currentRow) {
+            debugHighLevelDevelop(values).then(res => {
+              if (res.success) {
+                setDebugResult(res.data);
+                handleDebugResultModalVisible(true);
+                message.success('调试成功');
+
+              }
+            })
+          } else {
+
+          }
+        }}
+      >
+        <ProFormText name='id' hidden />
+        <ProFormTextArea
+          name="params"
+          label={<a onClick={() => { window.open("/#/botPostLog"); }}>模拟上报数据(查看上报日志)</a>}
+          tooltip={<span >对上报数据结构比较了解或对接非标准上报调试,建议使用此项</span>}
+          initialValue={'{"post_type":"message","self_id":114154,"group_id":154213998,"message_id":114154,"message_type":"group","message":"' + currentRow?.cmd + '"}'}
+          rules={[
+            {
+              required: true,
+              message: '请填写模拟参数',
+            },
+          ]}
+        />
+      </ModalForm>
+      <Modal
+        open={debugResultModalVisible}
+        destroyOnClose
+        onOk={() => {
+          handleDebugResultModalVisible(false);
+        }}
+        onCancel={() => {
+          handleDebugResultModalVisible(false);
+        }}
+        width={"50%"}
+      >
+        <ProDescriptions
+          column={2}
+          title="调试结果"
+          tooltip="配置执行详情"
+        >
+          <ProDescriptions.Item
+            label="状态"
+            valueEnum={{
+              false: {
+                text: '失败',
+                status: 'Error',
+              },
+              true: {
+                text: '成功',
+                status: 'Success',
+              }
+            }}
+          >
+            {debugResult?.success}
+          </ProDescriptions.Item>
+          <ProDescriptions.Item
+            label="总耗时(毫秒)"
+            valueType="text"
+          >
+            {debugResult?.timeSpent}
+          </ProDescriptions.Item>
+          <ProDescriptions.Item
+            label="开始时间"
+            valueType="text"
+          >
+            {debugResult?.startTime}
+          </ProDescriptions.Item>
+          <ProDescriptions.Item
+            label="结束时间"
+            valueType="text"
+          >
+            {debugResult?.endTime}
+          </ProDescriptions.Item>
+          <ProDescriptions.Item
+            label="详细"
+            valueType="text"
+          >
+            {debugResult?.message}
+          </ProDescriptions.Item>
+        </ProDescriptions>
+      </Modal>
       <EditScript
         visible={editFormScriptModalVisible}
         handleVisible={handleEditFormScriptModalVisible}

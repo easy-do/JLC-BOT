@@ -114,18 +114,3 @@ export async function updateSysNodeFormData(
     ...(options || {}),
   });
 }
-
-/** 更新脚本配置 POST /api/sysNode/updateScriptData */
-export async function updateSysNodeScriptData(
-  body: API.LiteFlowScript,
-  options?: { [key: string]: any },
-) {
-  return request<API.RBoolean>('/api/sysNode/updateScriptData', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}

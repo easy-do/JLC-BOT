@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.LowCodeNodeConf;
-import plus.easydo.bot.lowcode.node.LiteFlowNodeExecuteServer;
+import plus.easydo.bot.lowcode.execute.LiteFlowNodeExecuteServer;
 import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.util.MessageParseUtil;
 import plus.easydo.bot.util.OneBotUtils;

@@ -179,7 +179,7 @@ declare namespace API {
     mode?: string;
   };
 
-  type DebugBotNodeDto = {
+  type DebugDto = {
     id?: number;
     params?: Record<string, any>;
   };
@@ -229,6 +229,8 @@ declare namespace API {
     id?: number;
     confName?: string;
     eventType?: string;
+    remark?: string;
+    scriptLanguage?: string;
     script?: LiteFlowScript;
   };
 
@@ -376,6 +378,15 @@ declare namespace API {
   type RBotNodeDto = {
     code?: number;
     data?: BotNodeDto;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
+  type RCmpStepResult = {
+    code?: number;
+    data?: CmpStepResult;
     message?: string;
     errorMessage?: string;
     success?: boolean;
@@ -689,6 +700,9 @@ declare namespace API {
     id?: number;
     confName?: string;
     cmd?: string;
+    cmdType?: string;
+    remark?: string;
+    scriptLanguage?: string;
     script?: LiteFlowScript;
   };
 

@@ -1,8 +1,9 @@
-package plus.easydo.bot.lowcode;
+package plus.easydo.bot.lowcode.execute;
 
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import com.yomahub.liteflow.builder.el.LiteFlowChainELBuilder;
 import com.yomahub.liteflow.core.FlowExecutor;
 import com.yomahub.liteflow.flow.LiteflowResponse;
@@ -15,7 +16,9 @@ import plus.easydo.bot.entity.BotNodeExecuteLog;
 import plus.easydo.bot.entity.SimpleCmdDevelopConf;
 import plus.easydo.bot.lowcode.node.JLCLiteFlowContext;
 import plus.easydo.bot.manager.BotNodeExecuteLogManager;
+import plus.easydo.bot.websocket.model.OneBotMessageParse;
 
+import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 
@@ -33,9 +36,27 @@ public class SimpleCmdDevelopExecuteServer {
     private final BotNodeExecuteLogManager nodeExecuteLogManager;
 
     public LiteflowResponse execute(SimpleCmdDevelopConf simpleCmdDevelopConf, JSONObject paramsJson) {
+        //匹配指令规则
+        String cmdType = simpleCmdDevelopConf.getCmdType();
+        String cmd = simpleCmdDevelopConf.getCmd();
         String message = paramsJson.getStr(OneBotConstants.MESSAGE);
-        if(CharSequenceUtil.equals(simpleCmdDevelopConf.getCmd(),message)){
-            //将EL表达式
+        String messageParseStr = paramsJson.getStr(OneBotConstants.MESSAGE_PARSE);
+        boolean isProcess = false;
+        switch (cmdType) {
+            case "equals" -> isProcess = CharSequenceUtil.equals(cmd, message);
+            case "contains" -> isProcess = CharSequenceUtil.contains(message, cmd);
+            case "startWith" -> isProcess = CharSequenceUtil.startWith(message, cmd);
+            case "endWith" -> isProcess = CharSequenceUtil.endWith(message, cmd);
+            default -> {
+                if (Objects.nonNull(messageParseStr)) {
+                    OneBotMessageParse messageParse = JSONUtil.toBean(messageParseStr, OneBotMessageParse.class);
+                    isProcess = CharSequenceUtil.equals(messageParse.getType(), cmdType);
+                }
+
+            }
+        }
+        if (isProcess) {
+            //EL表达式
             String elData = "THEN(" + LowCodeConstants.SIMPLE_CMD_DEVELOP + simpleCmdDevelopConf.getId() + ");";
             String chainName = LowCodeConstants.SIMPLE_CMD_DEVELOP + "Chain" + simpleCmdDevelopConf.getId();
             LiteFlowChainELBuilder.createChain().setChainName(chainName).setEL(elData).build();

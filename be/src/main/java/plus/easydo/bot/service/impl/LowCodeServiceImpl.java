@@ -14,14 +14,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.dto.BotNodeDto;
-import plus.easydo.bot.dto.DebugBotNodeDto;
+import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.dto.SetBotNodeDto;
 import plus.easydo.bot.entity.LowCodeBotNode;
 import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.lowcode.node.JLCLiteFlowContext;
-import plus.easydo.bot.lowcode.node.LiteFlowNodeExecuteServer;
+import plus.easydo.bot.lowcode.execute.LiteFlowNodeExecuteServer;
 import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.manager.LowCodeBotNodeManager;
 import plus.easydo.bot.manager.LowCodeNodeConfManager;
@@ -116,15 +116,15 @@ public class LowCodeServiceImpl implements LowCodeService {
     }
 
     @Override
-    public List<CmpStepResult> debugNodeConf(DebugBotNodeDto debugBotNodeDto) {
-        LowCodeNodeConf conf = lowCodeNodeConfManager.getById(debugBotNodeDto.getId());
+    public List<CmpStepResult> debugNodeConf(DebugDto debugDto) {
+        LowCodeNodeConf conf = lowCodeNodeConfManager.getById(debugDto.getId());
         if (Objects.isNull(conf)) {
             throw new BaseException("配置不存在");
         }
 
         //处理参数格式、parseMessage
         JSONObject paramsJson;
-        Object params = debugBotNodeDto.getParams();
+        Object params = debugDto.getParams();
         if(params instanceof JSONObject){
             paramsJson = (JSONObject) params;
         }else {

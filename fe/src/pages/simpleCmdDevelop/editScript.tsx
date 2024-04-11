@@ -4,7 +4,8 @@ import Editor from '@monaco-editor/react';
 import { useEffect, useRef, useState } from 'react';
 import { ProFormInstance } from '@ant-design/pro-form';
 import './index.less';
-import { getSysNodeScriptData, updateSysNodeScriptData } from '@/services/jlc-bot/xitongjiedian';
+import { getSimpleDevelopInfo } from '@/services/jlc-bot/jiandanzhilingkaifa';
+import { updateLiteFlowScript } from '@/services/jlc-bot/liteflowScript';
 loader.config({ paths: { vs: 'https://cdn.staticfile.org/monaco-editor/0.43.0/min/vs' } });
 
 function EditScript(props) {
@@ -24,10 +25,10 @@ function EditScript(props) {
 
   useEffect(() => {
     if (props.visible) {
-      getSysNodeScriptData({id:props.editNodeScriptId}).then(res=>{
+      getSimpleDevelopInfo({id:props.editNodeScriptId }).then((res) => {
         if(res.success && res.data){
-          setCureentScript(res.data);
-          setCureentContext(res.data.scriptData);
+          setCureentScript(res.data.script);
+          setCureentContext(res.data.script.scriptData);
           setSuccessVisible(true);
           message.success("加载脚本成功");
         }else{
@@ -35,7 +36,7 @@ function EditScript(props) {
           setSuccessVisible(false);
           props.handleVisible(false);
         }
-      })
+      });
     }
   }, [props?.editFormScriptId,props.visible]);
 
@@ -47,7 +48,7 @@ function EditScript(props) {
       width={'80%'}
       onOk={() => {
         cureentScript.scriptData = cureentContext;
-        updateSysNodeScriptData(cureentScript).then(res=>{
+        updateLiteFlowScript(cureentScript).then(res=>{
           if(res.success && res.data){
             message.success(res.message);
           }else{
@@ -66,7 +67,7 @@ function EditScript(props) {
             // width="70%"
             defaultValue={cureentContext}
             onChange={handleEditorChange}
-            defaultLanguage="java"
+            defaultLanguage={cureentScript?.scriptLanguage}
           />
     </Modal>
   );

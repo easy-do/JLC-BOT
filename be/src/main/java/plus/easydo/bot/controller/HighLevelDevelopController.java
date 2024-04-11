@@ -1,6 +1,8 @@
 package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.hutool.core.exceptions.ExceptionUtil;
+import cn.hutool.json.JSONUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import plus.easydo.bot.dto.DebugDto;
+import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.qo.PageQo;
 import plus.easydo.bot.service.HighLevelDevelopService;
 import plus.easydo.bot.entity.HighLevelDevelopConf;
@@ -18,6 +24,8 @@ import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -122,6 +130,37 @@ public class HighLevelDevelopController {
     @GetMapping("/getInfo/{id}")
     public R<HighLevelDevelopConf> getHighLevelDevInfo(@PathVariable Long id) {
         return DataResult.ok(highLevelDevelopService.getHighLevelDevInfo(id));
+    }
+
+    /**
+     * 导入配置
+     *
+     * @param file file
+     * @return plus.easydo.bot.vo.R<java.lang.Long>
+     * @author laoyu
+     * @date 2024-04-11
+     */
+    @SaCheckLogin
+    @Operation(summary = "导入配置")
+    @PostMapping("/importConf")
+    public R<Long> importHighLevelDevelop(@RequestParam("file") MultipartFile file) throws IOException {
+        InputStream ip = file.getInputStream();
+        byte[] bytes = ip.readAllBytes();
+        String content = new String(bytes);
+        try {
+            HighLevelDevelopConf conf = JSONUtil.toBean(content, HighLevelDevelopConf.class);
+            return DataResult.ok(highLevelDevelopService.importConf(conf));
+        } catch (Exception e) {
+            return DataResult.fail("解析配置内容失败:"+ ExceptionUtil.getMessage(e));
+        }
+    }
+
+
+    @SaCheckLogin
+    @Operation(summary = "调试配置")
+    @PostMapping("/debug")
+    public R<CmpStepResult> debugHighLevelDevelop(@RequestBody DebugDto debugDto) {
+        return DataResult.ok(highLevelDevelopService.debug(debugDto));
     }
 
 

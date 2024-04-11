@@ -2,7 +2,10 @@ package plus.easydo.bot.service;
 
 
 import com.mybatisflex.core.paginate.Page;
+import com.yomahub.liteflow.flow.LiteflowResponse;
+import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.entity.SimpleCmdDevelopConf;
+import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.qo.PageQo;
 
 import java.util.List;
@@ -26,4 +29,8 @@ public interface SimpleDevelopService {
     boolean updateSimpleDevelop(SimpleCmdDevelopConf simpleCmdDevelopConf);
 
     boolean removeSimpleDevelop(Long id);
+
+    Long importConf(SimpleCmdDevelopConf conf);
+
+    CmpStepResult debug(DebugDto debugDto);
 }

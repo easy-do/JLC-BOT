@@ -4,7 +4,8 @@ import Editor from '@monaco-editor/react';
 import { useEffect, useRef, useState } from 'react';
 import { ProFormInstance } from '@ant-design/pro-form';
 import './index.less';
-import { getSysNodeScriptData, updateSysNodeScriptData } from '@/services/jlc-bot/xitongjiedian';
+import { getSysNodeScriptData } from '@/services/jlc-bot/xitongjiedian';
+import { updateLiteFlowScript } from '@/services/jlc-bot/liteflowScript';
 loader.config({ paths: { vs: 'https://cdn.staticfile.org/monaco-editor/0.43.0/min/vs' } });
 
 function EditNodeScript(props) {
@@ -47,7 +48,7 @@ function EditNodeScript(props) {
       width={'80%'}
       onOk={() => {
         cureentScript.scriptData = cureentContext;
-        updateSysNodeScriptData(cureentScript).then(res=>{
+        updateLiteFlowScript(cureentScript).then(res=>{
           if(res.success && res.data){
             message.success(res.message);
           }else{

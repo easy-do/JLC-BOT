@@ -17,7 +17,7 @@ export async function copyNodeConf(
 }
 
 /** 调试节点配置 POST /api/lowcode/debugNodeConf */
-export async function debugNodeConf(body: API.DebugBotNodeDto, options?: { [key: string]: any }) {
+export async function debugNodeConf(body: API.DebugDto, options?: { [key: string]: any }) {
   return request<API.RListCmpStepResult>('/api/lowcode/debugNodeConf', {
     method: 'POST',
     headers: {

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import plus.easydo.bot.dto.BotNodeDto;
-import plus.easydo.bot.dto.DebugBotNodeDto;
+import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.dto.SetBotNodeDto;
 import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
@@ -189,7 +189,7 @@ public class LowCodeController {
     /**
      * 调试节点配置
      *
-     * @param debugBotNodeDto debugBotNodeDto
+     * @param debugDto debugDto
      * @return plus.easydo.bot.vo.R<java.util.List < plus.easydo.bot.lowcode.model.CmpStepResult>>
      * @author laoyu
      * @date 2024-03-27
@@ -197,8 +197,8 @@ public class LowCodeController {
     @SaCheckLogin
     @Operation(summary = "调试节点配置")
     @PostMapping("/debugNodeConf")
-    public R<List<CmpStepResult>> debugNodeConf(@RequestBody DebugBotNodeDto debugBotNodeDto) {
-        return DataResult.ok(lowCodeService.debugNodeConf(debugBotNodeDto));
+    public R<List<CmpStepResult>> debugNodeConf(@RequestBody DebugDto debugDto) {
+        return DataResult.ok(lowCodeService.debugNodeConf(debugDto));
     }
 
     /**

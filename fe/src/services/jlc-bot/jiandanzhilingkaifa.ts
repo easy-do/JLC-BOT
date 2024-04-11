@@ -2,6 +2,18 @@
 /* eslint-disable */
 import { request } from 'umi';
 
+/** 调试配置 POST /api/simpleCmdDevelop/debug */
+export async function debugSimpleCmdDevelop(body: API.DebugDto, options?: { [key: string]: any }) {
+  return request<API.RCmpStepResult>('/api/simpleCmdDevelop/debug', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 此处后端没有提供注释 GET /api/simpleCmdDevelop/getInfo/${param0} */
 export async function getSimpleDevelopInfo(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -12,6 +24,18 @@ export async function getSimpleDevelopInfo(
   return request<API.RSimpleCmdDevelopConf>(`/api/simpleCmdDevelop/getInfo/${param0}`, {
     method: 'GET',
     params: { ...queryParams },
+    ...(options || {}),
+  });
+}
+
+/** 导入配置 POST /api/simpleCmdDevelop/importConf */
+export async function importSimpleCmdDevelop(body: {}, options?: { [key: string]: any }) {
+  return request<API.RLong>('/api/simpleCmdDevelop/importConf', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }

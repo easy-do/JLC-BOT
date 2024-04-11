@@ -555,14 +555,6 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
                 label: '元事件',
                 value: 'meta_event',
               },
-              {
-                label: '游戏角色消息',
-                value: 'game_user_send_msg',
-              },
-              {
-                label: '装备拾取事件',
-                value: 'pick_up_item_event',
-              },
             ]}
           />
         </ModalForm>

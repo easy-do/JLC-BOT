@@ -12,6 +12,7 @@ import * as xiaoxishangbao from './xiaoxishangbao';
 import * as jiedianzhixingrizhi from './jiedianzhixingrizhi';
 import * as jiedianpeizhizhixingrizhi from './jiedianpeizhizhixingrizhi';
 import * as didaima from './didaima';
+import * as liteflowScript from './liteflowScript';
 import * as xitongpeizhi from './xitongpeizhi';
 import * as jiqirenjiaoben from './jiqirenjiaoben';
 import * as shangbaoxiaoxirizhi from './shangbaoxiaoxirizhi';
@@ -31,6 +32,7 @@ export default {
   jiedianzhixingrizhi,
   jiedianpeizhizhixingrizhi,
   didaima,
+  liteflowScript,
   xitongpeizhi,
   jiqirenjiaoben,
   shangbaoxiaoxirizhi,

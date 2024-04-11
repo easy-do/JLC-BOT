@@ -9,13 +9,13 @@ import lombok.NoArgsConstructor;
 /**
  * @author yuzhanfeng
  * @Date 2024-03-06
- * @Description 调试节点参数封装
+ * @Description 调试参数封装
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class DebugBotNodeDto {
+public class DebugDto {
 
     private Long id;
 

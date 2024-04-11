@@ -1,5 +1,7 @@
 package plus.easydo.bot.entity;
 
+import com.mybatisflex.annotation.Id;
+import com.mybatisflex.annotation.KeyType;
 import lombok.Data;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
@@ -24,6 +26,7 @@ public class SimpleCmdDevelopConf {
      * 编号
      */
     @Column(value = "id")
+    @Id(keyType = KeyType.Auto)
     private Long id;
 
     /**
@@ -33,10 +36,22 @@ public class SimpleCmdDevelopConf {
     private String confName;
 
     /**
-     * 命令
+     * 指令
      */
     @Column(value = "cmd")
     private String cmd;
+
+    /**
+     * 指令类型
+     */
+    @Column(value = "cmd_type")
+    private String cmdType;
+
+    @Column(value = "remark")
+    private String remark;
+
+    @Column(ignore = true)
+    private String scriptLanguage;
 
     @Column(ignore = true)
     private LiteFlowScript script;

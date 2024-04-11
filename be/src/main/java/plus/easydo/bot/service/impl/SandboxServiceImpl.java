@@ -10,12 +10,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.constant.LowCodeConstants;
 import plus.easydo.bot.constant.OneBotConstants;
-import plus.easydo.bot.dto.DebugBotNodeDto;
+import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
-import plus.easydo.bot.lowcode.node.LiteFlowNodeExecuteServer;
+import plus.easydo.bot.lowcode.execute.LiteFlowNodeExecuteServer;
 import plus.easydo.bot.sandbox.SandboxMessage;
 import plus.easydo.bot.sandbox.SandboxWebsocketHandler;
 import plus.easydo.bot.service.BotService;
@@ -81,7 +81,7 @@ public class SandboxServiceImpl implements SandboxService {
             oneBotService.handlerPost(postData);
             return Collections.EMPTY_LIST;
         } else {
-            return lowCodeService.debugNodeConf(DebugBotNodeDto.builder().id(confIf).params(postData).build());
+            return lowCodeService.debugNodeConf(DebugDto.builder().id(confIf).params(postData).build());
         }
     }
 }
