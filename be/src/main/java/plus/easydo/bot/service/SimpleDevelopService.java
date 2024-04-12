@@ -2,8 +2,8 @@ package plus.easydo.bot.service;
 
 
 import com.mybatisflex.core.paginate.Page;
-import com.yomahub.liteflow.flow.LiteflowResponse;
 import plus.easydo.bot.dto.DebugDto;
+import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.SimpleCmdDevelopConf;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.qo.PageQo;
@@ -33,4 +33,10 @@ public interface SimpleDevelopService {
     Long importConf(SimpleCmdDevelopConf conf);
 
     CmpStepResult debug(DebugDto debugDto);
+
+    void initCache();
+
+    List<Long> getSimpleCmdDevelop(Long botId);
+
+    boolean setBotSimpleCmdDevelop(SetBotConfIdDto setBotConfIdDto);
 }

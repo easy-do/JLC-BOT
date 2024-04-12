@@ -3,6 +3,7 @@ package plus.easydo.bot.service;
 
 import com.mybatisflex.core.paginate.Page;
 import plus.easydo.bot.dto.DebugDto;
+import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.HighLevelDevelopConf;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.qo.PageQo;
@@ -32,4 +33,10 @@ public interface HighLevelDevelopService {
     Long importConf(HighLevelDevelopConf conf);
 
     CmpStepResult debug(DebugDto debugDto);
+
+    void initCache();
+
+    List<Long> getBotHighLevelDevelop(Long botId);
+
+    boolean setBotHighLevelDevelop(SetBotConfIdDto setBotConfIdDto);
 }

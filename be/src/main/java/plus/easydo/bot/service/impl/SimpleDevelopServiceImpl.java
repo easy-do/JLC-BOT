@@ -9,15 +9,20 @@ import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.yomahub.liteflow.flow.LiteflowResponse;
 import com.yomahub.liteflow.flow.entity.CmpStep;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import plus.easydo.bot.constant.LowCodeConstants;
 import plus.easydo.bot.dto.DebugDto;
+import plus.easydo.bot.dto.SetBotConfIdDto;
+import plus.easydo.bot.entity.BotSimpleCmdDevelop;
 import plus.easydo.bot.entity.LiteFlowScript;
 import plus.easydo.bot.entity.SimpleCmdDevelopConf;
 import plus.easydo.bot.lowcode.execute.SimpleCmdDevelopExecuteServer;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
+import plus.easydo.bot.manager.BotSimpleCmdDevelopManager;
+import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.manager.LiteFlowScriptManager;
 import plus.easydo.bot.manager.SimpleDevelopConfManager;
 import plus.easydo.bot.qo.PageQo;
@@ -25,8 +30,10 @@ import plus.easydo.bot.service.SimpleDevelopService;
 import plus.easydo.bot.util.MessageParseUtil;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.stream.Collectors;
 
 /**
  * 服务层实现。
@@ -43,6 +50,8 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
     private final LiteFlowScriptManager liteFlowScriptManager;
 
     private final SimpleCmdDevelopExecuteServer simpleCmdDevelopExecuteServer;
+
+    private final BotSimpleCmdDevelopManager botSimpleCmdDevelopManager;
 
     @Override
     public List<SimpleCmdDevelopConf> listSimpleDevelop() {
@@ -72,6 +81,7 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
         boolean res = simpleDevelopConfManager.save(simpleCmdDevelopConf);
         if (res) {
             liteFlowScriptManager.createData(simpleCmdDevelopConf);
+            initCache();
         }
         return res;
     }
@@ -85,6 +95,7 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
             liteFlowScript.setScriptLanguage(simpleCmdDevelopConf.getScriptLanguage());
             liteFlowScript.setScriptName(simpleCmdDevelopConf.getConfName());
             liteFlowScriptManager.updateScriptData(liteFlowScript);
+            initCache();
         }
         return res;
     }
@@ -94,6 +105,7 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
         boolean res = simpleDevelopConfManager.removeById(id);
         if (res) {
             liteFlowScriptManager.removeByScriptId(LowCodeConstants.SIMPLE_CMD_DEVELOP + id);
+            initCache();
         }
         return res;
     }
@@ -104,6 +116,7 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
         boolean res = simpleDevelopConfManager.save(conf);
         if (res) {
             liteFlowScriptManager.createData(conf);
+            initCache();
         }
         return conf.getId();
     }
@@ -126,5 +139,40 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
         }else {
             return CmpStepResult.builder().success(false).message("执行响应为空").build();
         }
+    }
+
+    @PostConstruct
+    @Override
+    public void initCache() {
+        //缓存节点配置缓存
+        List<SimpleCmdDevelopConf> confList = simpleDevelopConfManager.list();
+        CacheManager.SIMPLE_CMD_DEV_CONF_CACHE.clear();
+        confList.forEach(conf -> CacheManager.SIMPLE_CMD_DEV_CONF_CACHE.put(conf.getId(), conf));
+        //缓存机器人与节点关联缓存
+        List<BotSimpleCmdDevelop> list = botSimpleCmdDevelopManager.list();
+        Map<Long, List<BotSimpleCmdDevelop>> groupMap = list.stream().collect(Collectors.groupingBy(BotSimpleCmdDevelop::getBotId));
+        CacheManager.BOT_SIMPLE_CMD_DEV_CONF_CACHE.clear();
+        groupMap.forEach((key, value) -> CacheManager.BOT_SIMPLE_CMD_DEV_CONF_CACHE.put(key, value.stream().map(BotSimpleCmdDevelop::getConfId).toList()));
+    }
+
+    @Override
+    public List<Long> getSimpleCmdDevelop(Long botId) {
+        return botSimpleCmdDevelopManager.listByBotId(botId).stream().map(BotSimpleCmdDevelop::getConfId).toList();
+    }
+
+    @Override
+    public boolean setBotSimpleCmdDevelop(SetBotConfIdDto setBotConfIdDto) {
+        Long botId = setBotConfIdDto.getBotId();
+        Assert.notNull(botId, "机器人id不能为空");
+        List<Long> confIdList = setBotConfIdDto.getConfIdList();
+        if (Objects.isNull(confIdList) || confIdList.isEmpty()) {
+            return botSimpleCmdDevelopManager.clearByBotId(botId);
+        }
+        botSimpleCmdDevelopManager.clearByBotId(botId);
+        boolean res = botSimpleCmdDevelopManager.setBotSimpleCmdDevelop(botId, confIdList);
+        if (res) {
+            initCache();
+        }
+        return res;
     }
 }

@@ -6,13 +6,12 @@
 
 
     <select id="nodeExecutePa" resultType="plus.easydo.bot.vo.NodePAVo">
-        SELECT node_name AS nodeName, AVG(execute_time) AS executeTime FROM low_code_bot_node_execute_log group by node_code order by executeTime;
-    </select>
+        SELECT CONCAT(node_name,'(',node_code,')') AS nodeName, AVG(execute_time) AS executeTime FROM low_code_bot_node_execute_log group by nodeName order by executeTime    </select>
     <select id="nodeExecuteTop" resultType="plus.easydo.bot.vo.NodePAVo">
-        SELECT node_name AS nodeName, count(*) AS count FROM low_code_bot_node_execute_log group by node_code order by count desc;
+        SELECT CONCAT(node_name,'(',node_code,')') AS nodeName, count(*) AS count FROM low_code_bot_node_execute_log group by nodeName order by count desc;
     </select>
     <select id="nodeExecuteMax" resultType="plus.easydo.bot.vo.NodePAVo">
-        SELECT node_name AS nodeName, MAX(execute_time) AS count FROM low_code_bot_node_execute_log group by node_code order by count;
+        SELECT CONCAT(node_name,'(',node_code,')') AS nodeName, MAX(execute_time) AS count FROM low_code_bot_node_execute_log group by nodeName order by count;
     </select>
 
 </mapper>

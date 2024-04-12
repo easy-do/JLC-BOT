@@ -10,13 +10,13 @@ import java.util.List;
 /**
  * @author yuzhanfeng
  * @Date 2024-03-07
- * @Description 设置机器人与节点配置关联关系参数
+ * @Description 设置机器人与配置关联关系参数
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class SetBotNodeDto {
+public class SetBotConfIdDto {
 
     private Long botId;
 

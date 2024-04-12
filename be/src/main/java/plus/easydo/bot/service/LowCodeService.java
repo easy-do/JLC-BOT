@@ -3,7 +3,7 @@ package plus.easydo.bot.service;
 import com.mybatisflex.core.paginate.Page;
 import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.dto.DebugDto;
-import plus.easydo.bot.dto.SetBotNodeDto;
+import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.qo.PageQo;
@@ -34,7 +34,7 @@ public interface LowCodeService {
 
     void initLowCodeNodeCache();
 
-    boolean setBotNode(SetBotNodeDto setBotNodeDto);
+    boolean setBotNode(SetBotConfIdDto setBotConfIdDto);
 
     List<LowCodeNodeConf> listNodeConf();
 

@@ -25,12 +25,12 @@ public class OneBotWebSocketClientHandler extends StandardWebSocketClient implem
     @Override
     public void afterConnectionEstablished(WebSocketSession session) throws Exception {
         this.session = session;
-        log.info("oneBot正向websocket建立连接:" + session.getId());
+        log.info("oneBot正向websocket建立连接:{}", session.getId());
     }
 
     @Override
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) throws Exception {
-        log.debug("接收到oneBot正向websocket消息:" + message.getPayload());
+        log.debug("接收到oneBot正向websocket消息:{}", message.getPayload());
         OneBotWebSocketUtils.handlerPostMessage(message);
     }
 

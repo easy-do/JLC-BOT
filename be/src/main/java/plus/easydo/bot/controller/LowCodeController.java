@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.dto.DebugDto;
-import plus.easydo.bot.dto.SetBotNodeDto;
+import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.qo.PageQo;
@@ -127,21 +127,6 @@ public class LowCodeController {
     }
 
     /**
-     * 获取机器人的节点配置
-     *
-     * @param botId botId
-     * @return vo.plus.easydo.lowcode.bot.R<java.util.List < java.lang.Long>>
-     * @author laoyu
-     * @date 2024-03-07
-     */
-    @SaCheckLogin
-    @Operation(summary = "获取机器人的节点配置")
-    @GetMapping("/getBotNode/{id}")
-    public R<List<Long>> getBotNode(@PathVariable("id") Long botId) {
-        return DataResult.ok(lowCodeService.getBotNode(botId));
-    }
-
-    /**
      * 保存配置
      *
      * @param botNodeDto botNodeDto
@@ -202,9 +187,24 @@ public class LowCodeController {
     }
 
     /**
+     * 获取机器人的节点配置
+     *
+     * @param botId botId
+     * @return vo.plus.easydo.lowcode.bot.R<java.util.List < java.lang.Long>>
+     * @author laoyu
+     * @date 2024-03-07
+     */
+    @SaCheckLogin
+    @Operation(summary = "获取机器人的节点配置")
+    @GetMapping("/getBotNode/{id}")
+    public R<List<Long>> getBotNode(@PathVariable("id") Long botId) {
+        return DataResult.ok(lowCodeService.getBotNode(botId));
+    }
+
+    /**
      * 设置机器人与节点配置关联关系
      *
-     * @param setBotNodeDto setBotNodeDto
+     * @param setBotConfIdDto setBotConfIdDto
      * @return vo.plus.easydo.lowcode.bot.R<java.lang.Object>
      * @author laoyu
      * @date 2024-03-07
@@ -212,7 +212,7 @@ public class LowCodeController {
     @SaCheckLogin
     @Operation(summary = "设置机器人与节点配置关联关系")
     @PostMapping("/setBotNode")
-    public R<Boolean> setBotNode(@RequestBody SetBotNodeDto setBotNodeDto) {
-        return DataResult.ok(lowCodeService.setBotNode(setBotNodeDto));
+    public R<Boolean> setBotNode(@RequestBody SetBotConfIdDto setBotConfIdDto) {
+        return DataResult.ok(lowCodeService.setBotNode(setBotConfIdDto));
     }
 }

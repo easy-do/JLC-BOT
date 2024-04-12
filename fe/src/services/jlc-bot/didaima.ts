@@ -115,7 +115,7 @@ export async function saveNodeConf(body: API.BotNodeDto, options?: { [key: strin
 }
 
 /** 设置机器人与节点配置关联关系 POST /api/lowcode/setBotNode */
-export async function setBotNode(body: API.SetBotNodeDto, options?: { [key: string]: any }) {
+export async function setBotNode(body: API.SetBotConfIdDto, options?: { [key: string]: any }) {
   return request<API.RBoolean>('/api/lowcode/setBotNode', {
     method: 'POST',
     headers: {

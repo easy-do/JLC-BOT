@@ -117,7 +117,7 @@ public class LowCodeSysNodeServiceImpl extends ServiceImpl<LowCodeSysNodeMapper,
     @Override
     public Long importNode(LowCodeSysNode sysNode) {
         saveSysNode(sysNode);
-        if(!sysNode.getSystemNode()){
+        if(Boolean.FALSE.equals(sysNode.getSystemNode())){
             liteFlowScriptManager.updateScriptData(sysNode.getScript());
         }
         return sysNode.getId();
@@ -126,7 +126,7 @@ public class LowCodeSysNodeServiceImpl extends ServiceImpl<LowCodeSysNodeMapper,
     @Override
     public LowCodeSysNode getSysNodeInfo(Serializable id) {
         LowCodeSysNode node = getById(id);
-        if(Objects.nonNull(node) && !node.getSystemNode()){
+        if(Objects.nonNull(node) && Boolean.FALSE.equals(node.getSystemNode())){
             node.setScript(liteFlowScriptManager.getById(id));
         }
         return node;

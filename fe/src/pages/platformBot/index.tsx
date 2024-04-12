@@ -1,5 +1,5 @@
 import { PlusOutlined } from '@ant-design/icons';
-import { Button, message, Modal, Drawer } from 'antd';
+import { Button, message, Modal, Drawer, Dropdown } from 'antd';
 import React, { useState, useRef } from 'react';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
@@ -11,6 +11,8 @@ import { enableBotScript, getEnableBotScript, infoBot, addBot, pageBot, removeBo
 import EditBotConf from './EditBotConf';
 import { botScriptList } from '@/services/jlc-bot/jiqirenjiaoben';
 import { getBotNode, listNodeConf, setBotNode } from '@/services/jlc-bot/didaima';
+import { getBotSimpleCmdDevelop, listSimpleDevelop, setBotSimpleCmdDevelop } from '@/services/jlc-bot/jiandanzhilingkaifa';
+import { getBotHighLevelDevelop, highLevelDevList, setBotHighLevelDevelop } from '@/services/jlc-bot/gaojikaifa';
 
 const platfromBot: React.FC = () => {
   const [showDetail, setShowDetail] = useState<boolean>(false);
@@ -89,7 +91,7 @@ const platfromBot: React.FC = () => {
 
   /** 启用低代码窗口的弹窗 */
   const [enableBotNodeModalVisible, handleEnableBotNodeModalVisible] = useState<boolean>(false);
-  const [enableBotNodeData, setEnableBotNodeData] = useState<API.SetBotNodeDto>({
+  const [enableBotNodeData, setEnableBotNodeData] = useState<API.SetBotConfIdDto>({
     botId: undefined,
     confIdList: [],
   });
@@ -104,6 +106,42 @@ const platfromBot: React.FC = () => {
       }
     });
   };
+  
+    /** 启用简单指令窗口的弹窗 */
+    const [enableBotSimpleModalVisible, handleEnableBotSimpleModalVisible] = useState<boolean>(false);
+    const [enableBotSimpleData, setEnableBotSimpleData] = useState<API.SetBotConfIdDto>({
+      botId: undefined,
+      confIdList: [],
+    });
+  
+    const openEnableBotSimpleModal = (id: string) => {
+      getBotSimpleCmdDevelop({ id: id }).then((res) => {
+        if (res.success) {
+          setEnableBotSimpleData({ botId: id, confIdList: res.data });
+          handleEnableBotSimpleModalVisible(true);
+        } else {
+          message.warn(res.errorMessage);
+        }
+      });
+    };
+  
+      /** 启用高级开发窗口的弹窗 */
+      const [enableBotHighLevelModalVisible, handleEnableBotHighLevelModalVisible] = useState<boolean>(false);
+      const [enableBotHighLevelData, setEnableBotHighLevelData] = useState<API.SetBotConfIdDto>({
+        botId: undefined,
+        confIdList: [],
+      });
+    
+      const openEnableBotHighLevelModal = (id: string) => {
+        getBotHighLevelDevelop({ id: id }).then((res) => {
+          if (res.success) {
+            setEnableBotHighLevelData({ botId: id, confIdList: res.data });
+            handleEnableBotHighLevelModalVisible(true);
+          } else {
+            message.warn(res.errorMessage);
+          }
+        });
+      };
 
 
   /** 国际化配置 */
@@ -126,48 +164,70 @@ const platfromBot: React.FC = () => {
       dataIndex: 'option',
       valueType: 'option',
       render: (_, record) => [
-        <a
-          key="id"
-          onClick={() => {
-            openEditModal(record.id);
-          }}
-        >
-          编辑信息
-        </a>,
-        <a
-          key="id"
-          onClick={() => {
-            openEditBotConfModal(record.id);
-          }}
-        >
-          编辑配置
-        </a>,
-        <a
-          key="id"
-          onClick={() => {
-            openEnableBotScriptModal(record.id);
-          }}
-        >
-          启用脚本
-        </a>,
-        <a
-          key="id"
-          onClick={() => {
-            openEnableBotNodeModal(record.id);
-          }}
-        >
-          启用流程
-        </a>,
-        <a
-          key="id"
-          onClick={() => {
-            removeBot([record.id]).then((res) => {
-              actionRef.current.reload();
-            });
-          }}
-        >
-          删除
-        </a>
+        <Dropdown.Button
+        menu={{
+          items: [
+            {
+              key: 'update',
+              label: '编辑信息',
+              onClick: () => {
+                openEditModal(record.id);
+              },
+            },
+            {
+              key: 'editBotConf',
+              label: '编辑配置',
+              onClick: (e) => {
+                openEditBotConfModal(record.id);
+              },
+            },
+            {
+              key: 'enableBotScrip',
+              label: '启用脚本',
+              onClick: (e) => {
+                openEnableBotScriptModal(record.id);
+
+              },
+            },
+            {
+              key: 'enableBotNode',
+              label: '低代码',
+              onClick: (e) => {
+                openEnableBotNodeModal(record.id);(record.id);
+
+              },
+            },
+            {
+              key: 'enableBotSimple',
+              label: '简单指令',
+              onClick: (e) => {
+                openEnableBotSimpleModal(record.id);(record.id);
+
+              },
+            },
+            {
+              key: 'enableBotHighLevel',
+              label: '高级开发',
+              onClick: (e) => {
+                openEnableBotHighLevelModal(record.id);(record.id);
+
+              },
+            },
+            {
+              key: 'remove',
+              label: '删除',
+              onClick: (e) => {
+                removeBot([record.id]).then((res) => {
+                  actionRef.current.reload();
+                });
+              },
+            },
+          ],
+          onClick: (e) => console.log(e),
+        }}
+      >
+        操作
+      </Dropdown.Button>
       ],
     },
   ];
@@ -576,7 +636,7 @@ const platfromBot: React.FC = () => {
         modalProps={{
           destroyOnClose: true,
         }}
-        title="启用流程"
+        title="启用低代码"
         visible={enableBotNodeModalVisible}
         initialValues={enableBotNodeData}
         onVisibleChange={handleEnableBotNodeModalVisible}
@@ -596,7 +656,7 @@ const platfromBot: React.FC = () => {
         <ProFormText hidden name="botId" />
         <ProFormSelect
           name="confIdList"
-          label="流程"
+          label="低代码流程"
           mode="multiple"
           debounceTime={10000}
           fieldProps={{
@@ -610,6 +670,90 @@ const platfromBot: React.FC = () => {
             },
           }}
           request={() => listNodeConf({}).then(res => {
+            return res.data
+          })}
+        />
+      </ModalForm>
+      <ModalForm
+        modalProps={{
+          destroyOnClose: true,
+        }}
+        title="启用简单指令"
+        visible={enableBotSimpleModalVisible}
+        initialValues={enableBotSimpleData}
+        onVisibleChange={handleEnableBotSimpleModalVisible}
+        onFinish={(value) => {
+          console.log(value);
+          setBotSimpleCmdDevelop(value).then((res) => {
+            if (res.success) {
+              message.success('更新成功');
+              handleEnableBotSimpleModalVisible(false);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          });
+        }}
+      >
+        <ProFormText hidden name="botId" />
+        <ProFormSelect
+          name="confIdList"
+          label="简单指令配置"
+          mode="multiple"
+          debounceTime={10000}
+          fieldProps={{
+            suffixIcon: null,
+            showSearch: true,
+            labelInValue: false,
+            autoClearSearchValue: true,
+            fieldNames: {
+              label: 'confName',
+              value: 'id',
+            },
+          }}
+          request={() => listSimpleDevelop({}).then(res => {
+            return res.data
+          })}
+        />
+      </ModalForm>
+      <ModalForm
+        modalProps={{
+          destroyOnClose: true,
+        }}
+        title="启用高级开发"
+        visible={enableBotHighLevelModalVisible}
+        initialValues={enableBotHighLevelData}
+        onVisibleChange={handleEnableBotHighLevelModalVisible}
+        onFinish={(value) => {
+          console.log(value);
+          setBotHighLevelDevelop(value).then((res) => {
+            if (res.success) {
+              message.success('更新成功');
+              handleEnableBotHighLevelModalVisible(false);
+              if (actionRef.current) {
+                actionRef.current.reload();
+              }
+            }
+          });
+        }}
+      >
+        <ProFormText hidden name="botId" />
+        <ProFormSelect
+          name="confIdList"
+          label="高级开发配置"
+          mode="multiple"
+          debounceTime={10000}
+          fieldProps={{
+            suffixIcon: null,
+            showSearch: true,
+            labelInValue: false,
+            autoClearSearchValue: true,
+            fieldNames: {
+              label: 'confName',
+              value: 'id',
+            },
+          }}
+          request={() => highLevelDevList({}).then(res => {
             return res.data
           })}
         />

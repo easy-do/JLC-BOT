@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import plus.easydo.bot.dto.DebugDto;
+import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.qo.PageQo;
 import plus.easydo.bot.service.HighLevelDevelopService;
@@ -161,6 +162,36 @@ public class HighLevelDevelopController {
     @PostMapping("/debug")
     public R<CmpStepResult> debugHighLevelDevelop(@RequestBody DebugDto debugDto) {
         return DataResult.ok(highLevelDevelopService.debug(debugDto));
+    }
+
+    /**
+     * 获取机器人高级开发配置
+     *
+     * @param botId botId
+     * @return plus.easydo.bot.vo.R<java.util.List<java.lang.Long>>
+     * @author laoyu
+     * @date 2024/4/12
+     */
+    @SaCheckLogin
+    @Operation(summary = "获取机器人的节点配置")
+    @GetMapping("/getBotHighLevelDevelop/{id}")
+    public R<List<Long>> getBotHighLevelDevelop(@PathVariable("id") Long botId) {
+        return DataResult.ok(highLevelDevelopService.getBotHighLevelDevelop(botId));
+    }
+
+    /**
+     * 设置机器人高级开发配置
+     *
+     * @param setBotConfIdDto setBotConfIdDto
+     * @return plus.easydo.bot.vo.R<java.lang.Boolean>
+     * @author laoyu
+     * @date 2024/4/12
+     */
+    @SaCheckLogin
+    @Operation(summary = "设置机器人与节点配置关联关系")
+    @PostMapping("/setBotHighLevelDevelop")
+    public R<Boolean> setBotHighLevelDevelop(@RequestBody SetBotConfIdDto setBotConfIdDto) {
+        return DataResult.ok(highLevelDevelopService.setBotHighLevelDevelop(setBotConfIdDto));
     }
 
 

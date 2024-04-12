@@ -6,9 +6,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.constant.OneBotConstants;
+import plus.easydo.bot.websocket.handler.OneBotHighLevelPostHandler;
 import plus.easydo.bot.websocket.handler.OneBotNodePostHandler;
 import plus.easydo.bot.websocket.handler.OneBotPostHandler;
 import plus.easydo.bot.websocket.handler.OneBotScriptPostHandler;
+import plus.easydo.bot.websocket.handler.OneBotSimpleCmdPostHandler;
 
 import java.util.Map;
 import java.util.Objects;
@@ -31,6 +33,10 @@ public class OneBotService {
 
     private final OneBotNodePostHandler oneBotNodePostHandler;
 
+    private final OneBotSimpleCmdPostHandler oneBotSimpleCmdPostHandler;
+
+    private final OneBotHighLevelPostHandler oneBotHighLevelPostHandler;
+
     public void handlerPost(JSONObject postData) {
         String postType = postData.getStr(OneBotConstants.POST_TYPE);
         if (CharSequenceUtil.isNotBlank(postType)) {
@@ -41,5 +47,7 @@ public class OneBotService {
         }
         CompletableFuture.runAsync(() -> oneBotScriptPostHandler.handler(postType, postData));
         CompletableFuture.runAsync(() -> oneBotNodePostHandler.handler(postType, postData));
+        CompletableFuture.runAsync(() -> oneBotHighLevelPostHandler.handler(postType, postData));
+        CompletableFuture.runAsync(() -> oneBotSimpleCmdPostHandler.handler(postType, postData));
     }
 }

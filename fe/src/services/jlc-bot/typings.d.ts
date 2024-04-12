@@ -193,7 +193,15 @@ declare namespace API {
     botNumber: string;
   };
 
+  type getBotHighLevelDevelopParams = {
+    id: number;
+  };
+
   type getBotNodeParams = {
+    id: number;
+  };
+
+  type getBotSimpleCmdDevelopParams = {
     id: number;
   };
 
@@ -691,7 +699,7 @@ declare namespace API {
     confId?: number;
   };
 
-  type SetBotNodeDto = {
+  type SetBotConfIdDto = {
     botId?: number;
     confIdList?: number[];
   };

@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.dto.BotNodeDto;
 import plus.easydo.bot.dto.DebugDto;
-import plus.easydo.bot.dto.SetBotNodeDto;
+import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.LowCodeBotNode;
 import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.exception.BaseException;
@@ -150,12 +150,12 @@ public class LowCodeServiceImpl implements LowCodeService {
     }
 
     @Override
-    public boolean setBotNode(SetBotNodeDto setBotNodeDto) {
-        Long botId = setBotNodeDto.getBotId();
+    public boolean setBotNode(SetBotConfIdDto setBotConfIdDto) {
+        Long botId = setBotConfIdDto.getBotId();
         if (Objects.isNull(botId)) {
             throw new BaseException("机器人id不能为空");
         }
-        List<Long> confIdList = setBotNodeDto.getConfIdList();
+        List<Long> confIdList = setBotConfIdDto.getConfIdList();
         if (Objects.isNull(confIdList) || confIdList.isEmpty()) {
             return lowCodeBotNodeManager.clearBotConf(botId);
         }
