@@ -16,6 +16,8 @@ import plus.easydo.bot.util.OneBotUtils;
 import java.util.List;
 import java.util.Objects;
 
+import static plus.easydo.bot.entity.table.BotConfTableDef.BOT_CONF;
+
 /**
  * @author laoyu
  * @version 1.0
@@ -46,8 +48,8 @@ public class OneBotHighLevelPostHandler {
 
                         //预处理参数、parseMessage
                         MessageParseUtil.parseMessage(postData);
-                        postData.set("botNumber", botNumber);
-                        postData.set("botConf", CacheManager.BOT_CONF_CACHE.get(botNumber));
+                        postData.set(OneBotConstants.BOT_NUMBER, botNumber);
+                        postData.set(OneBotConstants.BOT_CONF, CacheManager.BOT_CONF_CACHE.get(botNumber));
 
                         //执行处理
                         highLevelDevelopExecuteServer.execute(highLevelDevelopConf, postData);

@@ -22,6 +22,7 @@ import type { UploadProps } from 'antd';
 import EditNodeForm from './editNodeForm';
 import EditNodeScript from './editNodeScript';
 import { request } from 'umi';
+import EditLiteFlowScript from '@/components/EditLiteFlowScript';
 
 const sysNode: React.FC = () => {
 
@@ -143,11 +144,18 @@ const sysNode: React.FC = () => {
 
   /** 编辑脚本的弹窗 */
   const [editFormScriptModalVisible, handleEditFormScriptModalVisible] = useState<boolean>(false);
-  const [editNodeScriptId, setEditNideScriptId] = useState<string>();
+  const [editScript, setEditScript] = useState<API.LiteFlowScript>();
 
   const openEditFormScriptModal = (id: string) => {
-    setEditNideScriptId(id);
-    handleEditFormScriptModalVisible(true);
+    getSysNodeInfo({id:id }).then((res) => {
+      if(res.success && res.data){
+        message.success("加载脚本成功");
+        setEditScript(res.data.script);
+        handleEditFormScriptModalVisible(true);
+      }else{
+        message.warning("加载失败,未找到脚本");
+      }
+    });
   };
 
   /** 国际化配置 */
@@ -545,10 +553,10 @@ const sysNode: React.FC = () => {
         handleVisible={handleEditFormDataModalVisible}
         currentRow={currentRow}
       />
-      <EditNodeScript
+      <EditLiteFlowScript
         visible={editFormScriptModalVisible}
         handleVisible={handleEditFormScriptModalVisible}
-        editNodeScriptId={editNodeScriptId}
+        script={editScript}
       />
     </PageContainer>
   );

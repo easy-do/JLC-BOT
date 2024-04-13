@@ -12,17 +12,12 @@ import com.yomahub.liteflow.flow.entity.CmpStep;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import plus.easydo.bot.constant.LowCodeConstants;
 import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.BotHighLevelDevelop;
 import plus.easydo.bot.entity.HighLevelDevelopConf;
 import plus.easydo.bot.entity.LiteFlowScript;
-import plus.easydo.bot.entity.LowCodeBotNode;
-import plus.easydo.bot.entity.LowCodeNodeConf;
-import plus.easydo.bot.entity.SimpleCmdDevelopConf;
-import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.lowcode.execute.HighLevelDevelopExecuteServer;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.manager.BotHighLevelDevelopManager;
@@ -68,7 +63,6 @@ public class HighLevelDevelopServiceImpl implements HighLevelDevelopService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean saveHighLevelDev(HighLevelDevelopConf highLevelDevelopConf) {
         boolean res = highLevelDevelopConfManager.save(highLevelDevelopConf);
         if(res){
@@ -89,7 +83,6 @@ public class HighLevelDevelopServiceImpl implements HighLevelDevelopService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean updateHighLevelDev(HighLevelDevelopConf highLevelDevelopConf) {
         boolean res = highLevelDevelopConfManager.updateById(highLevelDevelopConf);
         if (res){
@@ -115,7 +108,6 @@ public class HighLevelDevelopServiceImpl implements HighLevelDevelopService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public Long importConf(HighLevelDevelopConf conf) {
         boolean res = highLevelDevelopConfManager.save(conf);
         if(res){
@@ -136,6 +128,7 @@ public class HighLevelDevelopServiceImpl implements HighLevelDevelopService {
             Queue<CmpStep> cmpSteps = response.getExecuteStepQueue();
             CmpStep cmpStep = cmpSteps.poll();
             CmpStepResult cmpStepResult = BeanUtil.copyProperties(cmpStep, CmpStepResult.class);
+            cmpStepResult.setParam(paramsJson);
             if (cmpStep != null && !cmpStep.isSuccess()) {
                 cmpStepResult.setMessage(ExceptionUtil.getMessage(cmpStep.getException()));
             }

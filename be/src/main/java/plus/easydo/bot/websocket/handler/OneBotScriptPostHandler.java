@@ -49,7 +49,7 @@ public class OneBotScriptPostHandler {
                         //消息解析
                         MessageParseUtil.parseMessage(postData);
 
-                        expression.execute(AviatorEvaluator.newEnv("postData", postData, "botNumber", botNumber));
+                        expression.execute(AviatorEvaluator.newEnv("postData", postData, OneBotConstants.BOT_NUMBER, botNumber));
                         log.info("脚本执行结束===============");
                     } catch (Exception e) {
                         log.warn("执行脚本异常：{}", ExceptionUtil.getMessage(e));

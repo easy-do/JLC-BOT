@@ -28,4 +28,6 @@ public class SandboxMessage {
 
     private Long confId;
 
+    private String confType;
+
 }

@@ -1,11 +1,10 @@
-import ProTable, { ActionType, ProColumns } from "@ant-design/pro-table";
-import { Modal } from "antd";
-import { useEffect, useRef, useState } from "react";
+import type { ActionType, ProColumns } from '@ant-design/pro-table';
+import ProTable from '@ant-design/pro-table';
+import { Modal } from 'antd';
+import { useRef } from 'react';
 
 function NodeExecutetResultVivew(props: any) {
-
   const actionRef = useRef<ActionType>();
-
 
   const columns: ProColumns<API.CmpStepResult>[] = [
     {
@@ -21,8 +20,8 @@ function NodeExecutetResultVivew(props: any) {
       dataIndex: 'success',
       valueEnum: {
         false: { text: '失败', status: 'Error' },
-        true: { text: '成功', status: 'Success' }
-      }
+        true: { text: '成功', status: 'Success' },
+      },
     },
     {
       title: '耗时(ms)',
@@ -41,30 +40,30 @@ function NodeExecutetResultVivew(props: any) {
       dataIndex: 'param',
       ellipsis: true,
       renderText(text, record, index, action) {
-          return record.param ? JSON.stringify(record.param) : '';
+        return record.param ? JSON.stringify(record.param) : '';
       },
     },
     {
       title: '详细信息',
       dataIndex: 'message',
-      ellipsis: true
+      ellipsis: true,
     },
   ];
 
-    return(
-        <Modal
-          title="节点执行结果"
-          open={props.visible}
-          destroyOnClose
-          onOk={() => {
-            props.handleVisible(false);
-          }}
-          onCancel={() => {
-            props.handleVisible(false);
-          }}
-          width={"50%"}
-        >
-        <ProTable<API.CmpStepResult, API.CmpStepResult>
+  return (
+    <Modal
+      title="节点执行结果"
+      open={props.visible}
+      destroyOnClose
+      onOk={() => {
+        props.handleVisible(false);
+      }}
+      onCancel={() => {
+        props.handleVisible(false);
+      }}
+      width={'50%'}
+    >
+      <ProTable<API.CmpStepResult, API.CmpStepResult>
         toolBarRender={false}
         actionRef={actionRef}
         rowKey="nodeId"
@@ -73,8 +72,8 @@ function NodeExecutetResultVivew(props: any) {
         dataSource={props.resultList}
         columns={columns}
       />
-        </Modal>
-    );
+    </Modal>
+  );
 }
 
 export default NodeExecutetResultVivew;

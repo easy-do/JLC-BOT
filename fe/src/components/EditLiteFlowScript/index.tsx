@@ -2,13 +2,12 @@ import { Modal, message } from 'antd';
 import loader from '@monaco-editor/loader';
 import Editor from '@monaco-editor/react';
 import { useEffect, useRef, useState } from 'react';
-import { ProFormInstance } from '@ant-design/pro-form';
-import './index.less';
-import { getSimpleDevelopInfo } from '@/services/jlc-bot/jiandanzhilingkaifa';
 import { updateLiteFlowScript } from '@/services/jlc-bot/liteflowScript';
-loader.config({ paths: { vs: 'https://cdn.staticfile.org/monaco-editor/0.43.0/min/vs' } });
+loader.config({ paths: { vs: 'https://cdn.staticfile.org/monaco-editor/0.45.0/min/vs' } });
 
-function EditScript(props) {
+
+
+function EditLiteFlowScript(props: { script: API.LiteFlowScript; visible: boolean; handleVisible: (arg0: boolean) => void; }) {
 
   const [cureentContext, setCureentContext] = useState<string>('');
 
@@ -16,8 +15,20 @@ function EditScript(props) {
 
   const [successVisible, setSuccessVisible] = useState<boolean>(false);
 
-  const formRef = useRef<ProFormInstance>();
+  const editorRef = useRef(null);
 
+  function handleEditorDidMount(editor: any, monaco: any) {
+    editorRef.current = editor;
+    monaco.languages.registerCompletionItemProvider('java', {
+      provideCompletionItems: function(_model: any, __position: any) {
+          return {
+              suggestions: [
+                  { label: 'System.out.println', kind: monaco.languages.CompletionItemKind.Method, insertText: 'System.out.println();' },
+              ]
+          };
+      }
+  });
+  }
 
   const handleEditorChange = (value: string, event: any) => {
     setCureentContext(value);
@@ -25,24 +36,15 @@ function EditScript(props) {
 
   useEffect(() => {
     if (props.visible) {
-      getSimpleDevelopInfo({id:props.editNodeScriptId }).then((res) => {
-        if(res.success && res.data){
-          setCureentScript(res.data.script);
-          setCureentContext(res.data.script.scriptData);
-          setSuccessVisible(true);
-          message.success("加载脚本成功");
-        }else{
-          message.warning("加载失败,未找到脚本");
-          setSuccessVisible(false);
-          props.handleVisible(false);
-        }
-      });
+        setCureentScript(props.script);
+        setCureentContext(props.script.scriptData);
+        setSuccessVisible(true);
     }
-  }, [props?.editFormScriptId,props.visible]);
+  }, [props?.script,props.visible]);
 
   return (
     <Modal
-      title="脚本配置"
+      title="代码编辑"
       open={props.visible && successVisible}
       destroyOnClose
       width={'80%'}
@@ -67,10 +69,11 @@ function EditScript(props) {
             // width="70%"
             defaultValue={cureentContext}
             onChange={handleEditorChange}
+            onMount={handleEditorDidMount}
             defaultLanguage={cureentScript?.scriptLanguage}
           />
     </Modal>
   );
 }
 
-export default EditScript;
+export default EditLiteFlowScript;

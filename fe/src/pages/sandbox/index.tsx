@@ -10,7 +10,7 @@ import { PlayCircleOutlined } from "@ant-design/icons";
 const countAtom = atom(0)
 const listAtom = atom([])
 
-function Sandbox(props) {
+function Sandbox(props: { confId: any; confType: string; setDebugResult: (data: API.CmpStepResult[]) => void; openDebug: (arg0: boolean) => void; }) {
 
 
     const [count, setCount] = useAtom(countAtom)
@@ -91,7 +91,8 @@ function Sandbox(props) {
             "isSelf": true,
             "type": "text",
             "message": messageInput,
-            "confId" : props.confId
+            "confId" : props.confId,
+            "confType" : props.confType
         }
         sendSandboxMessage(sandboxMessage).then(res=>{
             if(res.success){

@@ -4,15 +4,16 @@ package plus.easydo.bot.service.impl;
 import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.yomahub.liteflow.flow.LiteflowResponse;
 import com.yomahub.liteflow.flow.entity.CmpStep;
+import com.yomahub.liteflow.slot.Slot;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import plus.easydo.bot.constant.LowCodeConstants;
 import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.dto.SetBotConfIdDto;
@@ -20,6 +21,7 @@ import plus.easydo.bot.entity.BotSimpleCmdDevelop;
 import plus.easydo.bot.entity.LiteFlowScript;
 import plus.easydo.bot.entity.SimpleCmdDevelopConf;
 import plus.easydo.bot.lowcode.execute.SimpleCmdDevelopExecuteServer;
+import plus.easydo.bot.lowcode.model.CmpContextBean;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.manager.BotSimpleCmdDevelopManager;
 import plus.easydo.bot.manager.CacheManager;
@@ -29,6 +31,9 @@ import plus.easydo.bot.qo.PageQo;
 import plus.easydo.bot.service.SimpleDevelopService;
 import plus.easydo.bot.util.MessageParseUtil;
 
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -76,7 +81,6 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean saveSimpleDevelop(SimpleCmdDevelopConf simpleCmdDevelopConf) {
         boolean res = simpleDevelopConfManager.save(simpleCmdDevelopConf);
         if (res) {
@@ -87,7 +91,6 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public boolean updateSimpleDevelop(SimpleCmdDevelopConf simpleCmdDevelopConf) {
         boolean res = simpleDevelopConfManager.updateById(simpleCmdDevelopConf);
         if (res) {
@@ -111,7 +114,6 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
     }
 
     @Override
-    @Transactional(rollbackFor = Exception.class)
     public Long importConf(SimpleCmdDevelopConf conf) {
         boolean res = simpleDevelopConfManager.save(conf);
         if (res) {
@@ -132,9 +134,21 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
             Queue<CmpStep> cmpSteps = response.getExecuteStepQueue();
             CmpStep cmpStep = cmpSteps.poll();
             CmpStepResult cmpStepResult = BeanUtil.copyProperties(cmpStep, CmpStepResult.class);
+            cmpStepResult.setParam(paramsJson);
             if (cmpStep != null && !cmpStep.isSuccess()) {
                 cmpStepResult.setMessage(ExceptionUtil.getMessage(cmpStep.getException()));
             }
+            Slot slot = response.getSlot();
+            List<CmpContextBean> cmpContextBeanList = new ArrayList<>();
+            List<Object> contextBeanList = slot.getContextBeanList();
+            contextBeanList.forEach(o -> {
+                Class<?> clazz = o.getClass();
+                String name = clazz.getSimpleName();
+                Method[] methods = clazz.getMethods();
+                List<String> methodNameList = Arrays.stream(methods).map(Method::getName).toList();
+                cmpContextBeanList.add(CmpContextBean.builder().name(StrUtil.lowerFirst(name)).methods(methodNameList).build());
+            });
+            cmpStepResult.setContextBeanList(cmpContextBeanList);
             return cmpStepResult;
         }else {
             return CmpStepResult.builder().success(false).message("执行响应为空").build();

@@ -20,13 +20,19 @@ import { listSysNode } from '@/services/jlc-bot/xitongjiedian';
 import { PageContainer } from '@ant-design/pro-layout';
 import EditEdgeData from './editEdgeData';
 import EditNodeData from './editNodeData';
-import { saveNodeConf, getNodeConf, debugNodeConf, updateNodeConf } from '@/services/jlc-bot/didaima';
+import {
+  saveNodeConf,
+  getNodeConf,
+  debugNodeConf,
+  updateNodeConf,
+} from '@/services/jlc-bot/didaima';
 import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import NodeExecutetResultVivew from './nodeExecutetResultVivew';
+import NodeExecutetResultVivew from '../sandbox/nodeExecutetResultVivew';
 import Sandbox from '../sandbox';
 
-
-function EditNodeConf(props: { location: { search: string | string[][] | Record<string, string> | URLSearchParams | undefined; }; }) {
+function EditNodeConf(props: {
+  location: { search: string | string[][] | Record<string, string> | URLSearchParams | undefined };
+}) {
   let graph: Graph;
   const dndRef = useRef();
   const graphRef = useRef();
@@ -40,10 +46,10 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
   const editEdgeLableFlag = new Map();
   const [sysNodeConf, setSysNodeConf] = useState<API.LowCodeNodeConf>();
   const [nodeConf, setNodeConf] = useState<any>({});
-  const searchParams = new URLSearchParams(props.location.search); let confId = searchParams.get('confId');
+  const searchParams = new URLSearchParams(props.location.search);
+  let confId = searchParams.get('confId');
 
   const [ulData, setUlData] = useState([]);
-
 
   //编辑节点弹窗
   const [isEditNodeOpen, setIsEditNodeModalOpen] = useState(false);
@@ -53,12 +59,12 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
     const sysNode = sysNodeCodeMap.get(shape);
     setCurrentSysNode(sysNode);
     setIsEditNodeModalOpen(true);
-  }
+  };
 
   const openEditEdgModal = (edge: React.SetStateAction<undefined> | Edge<Edge.Properties>) => {
     setCurrentEdgeData(edge);
     setIsEditEdgeModalOpen(true);
-  }
+  };
 
   // 编辑连线弹框
   const [isEditEdgeModalOpen, setIsEditEdgeModalOpen] = useState(false);
@@ -71,38 +77,34 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
   const [debugConfNameModalVisible, handleDebugConfNameModalVisible] = useState<boolean>(false);
 
   const getAndInitNodeConf = () => {
-    getNodeConf({ id: confId }).then(res => {
+    getNodeConf({ id: confId }).then((res) => {
       if (res.success) {
         setSysNodeConf(res.data);
         setNodeConf(res.data?.nodeConf);
         graph.fromJSON(res.data.nodes);
       }
-    })
-  }
+    });
+  };
 
   // 节点debug结果弹框
   const [isDebuModalOpen, setIsDebuModalOpen] = useState(false);
   const [debugResultData, setDebugResultData] = useState<API.CmpStepResult[]>([]);
 
-
   // 沙盒调试弹框
   const [sandBoxOpen, setSandBoxOpen] = useState(false);
   const [sandBoxConfId, setSandBoxConfId] = useState<string>();
 
-  const openSandcoxModel = (confId:string) =>{
+  const openSandcoxModel = (confId: string) => {
     setSandBoxConfId(confId);
     setSandBoxOpen(true);
-  }
+  };
 
-  const debugModalOpenCallback = (bl:boolean) =>{
+  const debugModalOpenCallback = (bl: boolean) => {
     setIsDebuModalOpen(bl);
-  }
-  const setDebugResultBack = (data :API.CmpStepResult[]) =>{
+  };
+  const setDebugResultBack = (data: API.CmpStepResult[]) => {
     setDebugResultData(data);
-  }
-  
-
-
+  };
 
   // 初始化antvx的window开发工具hook
   // window.__x6_instances__ = [];
@@ -112,12 +114,12 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
     //判断是否节点数量已达到上限
     const nodes = graph.getNodes();
     let count = 0;
-    nodes.map(node => {
+    nodes.map((node) => {
       const shape = node.getProp('shape');
       if (shape == val.nodeCode) {
         count++;
       }
-    })
+    });
     if (val.maxSize > 0 && count >= val.maxSize) {
       message.warning('已放置最大数量');
       return;
@@ -149,20 +151,30 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
             <li>
               {key}
               <ul>
-                {value.map((val: { nodeCode: React.Key | null | undefined; nodeName: boolean | React.ReactChild | React.ReactFragment | React.ReactPortal | null | undefined; }) => {
-
-                  return (
-                    <div
-                      style={{ marginTop: '10px' }}
-                      key={val.nodeCode}
-                      onMouseDown={(e) => {
-                        startDrag(e, val);
-                      }}
-                    >
-                      {val.nodeName}
-                    </div>
-                  );
-                })}
+                {value.map(
+                  (val: {
+                    nodeCode: React.Key | null | undefined;
+                    nodeName:
+                      | boolean
+                      | React.ReactChild
+                      | React.ReactFragment
+                      | React.ReactPortal
+                      | null
+                      | undefined;
+                  }) => {
+                    return (
+                      <div
+                        style={{ marginTop: '10px' }}
+                        key={val.nodeCode}
+                        onMouseDown={(e) => {
+                          startDrag(e, val);
+                        }}
+                      >
+                        {val.nodeName}
+                      </div>
+                    );
+                  },
+                )}
               </ul>
             </li>,
           );
@@ -228,7 +240,9 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
                   background: color,
                 }}
               >
-                {image ? <img style={{ width: '15px', marginRight: '5px' }} src={image} alt="Icon" /> : null}
+                {image ? (
+                  <img style={{ width: '15px', marginRight: '5px' }} src={image} alt="Icon" />
+                ) : null}
                 {label}
               </div>
             </Dropdown>
@@ -371,7 +385,7 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
             //拿到源头的节点和portId
             const sourceNode = edge.getSourceNode();
             const sourcePortId = edge.getSourcePortId();
-            const edgeId = edge.getProp("id")
+            const edgeId = edge.getProp('id');
             if (sourcePortId && !editEdgeLableFlag.get(edgeId)) {
               //拿到port信息
               const port = sourceNode?.getPort(sourcePortId);
@@ -390,8 +404,6 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
             }
           }
         });
-
-
 
         /** 单击节点 */
         graph.on('node:click', ({ node }) => {
@@ -415,7 +427,6 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
     });
   }, []);
 
-
   return (
     <PageContainer>
       <div className="Flow">
@@ -429,14 +440,23 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
             </div>
           </div>
           {/* 画布 */}
-          <div id="graph-container" ref={containerRef}></div>
+          <div id="graph-container" ref={containerRef} />
         </div>
         {/* 编辑节点组件 */}
-        <EditNodeData node={currentNode} sysNode={currentSysNode} visible={isEditNodeOpen} handleVisible={setIsEditNodeModalOpen} nodeConf={nodeConf} setNodeConf={setNodeConf} />
+        <EditNodeData
+          node={currentNode}
+          sysNode={currentSysNode}
+          visible={isEditNodeOpen}
+          handleVisible={setIsEditNodeModalOpen}
+          nodeConf={nodeConf}
+          setNodeConf={setNodeConf}
+        />
         {/* 编辑连线组件 */}
-        <EditEdgeData visible={isEditEdgeModalOpen} handleVisible={setIsEditEdgeModalOpen} edgeData={currentEdgeData} />
-        {/* debug执行结果 */}
-        <NodeExecutetResultVivew visible={isDebuModalOpen} handleVisible={setIsDebuModalOpen} resultList={debugResultData} />
+        <EditEdgeData
+          visible={isEditEdgeModalOpen}
+          handleVisible={setIsEditEdgeModalOpen}
+          edgeData={currentEdgeData}
+        />
         {/* 小地图 */}
         <div
           id="minimap"
@@ -447,7 +467,7 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
             top: '100px',
             zIndex: 99,
           }}
-        ></div>
+        />
         <Button
           type="primary"
           icon={<SaveOutlined />}
@@ -460,8 +480,7 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
           }}
           onClick={() => {
             handleEditConfNameModalVisible(true);
-          }
-          }
+          }}
         >
           保存配置
         </Button>
@@ -507,15 +526,25 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
           onVisibleChange={handleEditConfNameModalVisible}
           onFinish={(values) => {
             if (confId && sysNodeConf) {
-              updateNodeConf({ id: confId, confName: values.confName, eventType: values.eventType, nodes: newGraph.toJSON(), nodeConf: nodeConf }).then(res => {
+              updateNodeConf({
+                id: confId,
+                confName: values.confName,
+                eventType: values.eventType,
+                nodes: newGraph.toJSON(),
+                nodeConf: nodeConf,
+              }).then((res) => {
                 message.success(res.message);
-              })
+              });
             } else {
-              saveNodeConf({ nodes: newGraph.toJSON(), confName: values.confName, nodeConf: nodeConf }).then(res => {
+              saveNodeConf({
+                nodes: newGraph.toJSON(),
+                confName: values.confName,
+                nodeConf: nodeConf,
+              }).then((res) => {
                 message.success(res.message);
                 confId = res.data + '';
                 getAndInitNodeConf();
-              })
+              });
             }
           }}
         >
@@ -568,24 +597,33 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
           onVisibleChange={handleDebugConfNameModalVisible}
           onFinish={(values) => {
             if (confId && sysNodeConf) {
-              debugNodeConf(values).then(res => {
+              debugNodeConf(values).then((res) => {
                 if (res.success) {
                   message.success('调试成功');
                   setDebugResultData(res.data);
                   setIsDebuModalOpen(true);
                 }
-              })
+              });
             } else {
-
             }
           }}
         >
-          <ProFormText name='id' hidden />
+          <ProFormText name="id" hidden />
           <ProFormTextArea
             name="params"
-            label={<a onClick={()=>{window.open("/#/botPostLog");}}>模拟上报数据(查看上报日志)</a>}
-            tooltip={<span >对上报数据结构比较了解或对接非标准上报调试,建议使用此项</span>}
-            initialValue={'{"post_type":"message","self_id":114154,"group_id":154213998,"message_id":114154,"message_type":"group","message":"消息正文"}'}
+            label={
+              <a
+                onClick={() => {
+                  window.open('/#/botPostLog');
+                }}
+              >
+                模拟上报数据(查看上报日志)
+              </a>
+            }
+            tooltip={<span>对上报数据结构比较了解或对接非标准上报调试,建议使用此项</span>}
+            initialValue={
+              '{"post_type":"message","self_id":114154,"group_id":154213998,"message_id":114154,"message_type":"group","message":"消息正文"}'
+            }
             rules={[
               {
                 required: true,
@@ -594,10 +632,16 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
             ]}
           />
         </ModalForm>
+        {/* debug执行结果 */}
+        <NodeExecutetResultVivew
+          visible={isDebuModalOpen}
+          handleVisible={setIsDebuModalOpen}
+          resultList={debugResultData}
+        />
         <Modal
           style={{
-            "minWidth":"50%",
-            "minHeight":"50%"
+            minWidth: '50%',
+            minHeight: '50%',
           }}
           keyboard={false}
           open={sandBoxOpen}
@@ -608,13 +652,16 @@ function EditNodeConf(props: { location: { search: string | string[][] | Record<
           centered
           footer={null}
         >
-        <Sandbox confId={sandBoxConfId} setDebugResult={setDebugResultBack} openDebug={debugModalOpenCallback} />
-      </Modal>
+          <Sandbox
+            confId={sandBoxConfId}
+            confType={'lowcodeNode'}
+            setDebugResult={setDebugResultBack}
+            openDebug={debugModalOpenCallback}
+          />
+        </Modal>
       </div>
     </PageContainer>
   );
 }
 
 export default EditNodeConf;
-
-

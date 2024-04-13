@@ -3,21 +3,23 @@ import { PlusOutlined, UploadOutlined } from '@ant-design/icons';
 import { PageContainer } from '@ant-design/pro-layout';
 import type { ProColumns, ActionType } from '@ant-design/pro-table';
 import ProTable from '@ant-design/pro-table';
-import {
-  ModalForm,
-  ProFormSelect,
-  ProFormText,
-  ProFormTextArea,
-} from '@ant-design/pro-form';
+import { ModalForm, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
 import { Button, Dropdown, Upload, message, Modal } from 'antd';
 import type { UploadProps } from 'antd';
-import EditScript from './editScript';
 import { request } from 'umi';
-import { debugSimpleCmdDevelop, getSimpleDevelopInfo, pageSimpleDevelop, removeSimpleDevelop, saveSimpleDevelop, updateSimpleDevelop } from '@/services/jlc-bot/jiandanzhilingkaifa';
+import {
+  debugSimpleCmdDevelop,
+  getSimpleDevelopInfo,
+  pageSimpleDevelop,
+  removeSimpleDevelop,
+  saveSimpleDevelop,
+  updateSimpleDevelop,
+} from '@/services/jlc-bot/jiandanzhilingkaifa';
 import ProDescriptions from '@ant-design/pro-descriptions';
+import EditLiteFlowScript from '@/components/EditLiteFlowScript';
+import Sandbox from '../sandbox';
 
 const sysNode: React.FC = () => {
-
   const actionRef = useRef<ActionType>();
 
   const props: UploadProps = {
@@ -87,14 +89,13 @@ const sysNode: React.FC = () => {
   const [currentRow, setCurrentRow] = useState<API.SimpleCmdDevelopConf>();
 
   const openEditModal = (id: number) => {
-    getSimpleDevelopInfo
-      ({ id: id }).then((res) => {
-        if (res.success) {
-          const data = res.data;
-          setCurrentRow(data);
-          handleEditModalVisible(true);
-        }
-      });
+    getSimpleDevelopInfo({ id: id }).then((res) => {
+      if (res.success) {
+        const data = res.data;
+        setCurrentRow(data);
+        handleEditModalVisible(true);
+      }
+    });
   };
 
   /**
@@ -118,14 +119,20 @@ const sysNode: React.FC = () => {
     }
   };
 
-
   /** 编辑脚本的弹窗 */
   const [editFormScriptModalVisible, handleEditFormScriptModalVisible] = useState<boolean>(false);
-  const [editNodeScriptId, setEditScriptId] = useState<number>();
+  const [editScript, setEditScript] = useState<API.LiteFlowScript>();
 
   const openEditFormScriptModal = (id: number) => {
-    setEditScriptId(id);
-    handleEditFormScriptModalVisible(true);
+    getSimpleDevelopInfo({ id: id }).then((res) => {
+      if (res.success && res.data) {
+        message.success('加载脚本成功');
+        setEditScript(res.data.script);
+        handleEditFormScriptModalVisible(true);
+      } else {
+        message.warning('加载失败,未找到脚本');
+      }
+    });
   };
 
   /** 调试配置弹窗 */
@@ -134,14 +141,32 @@ const sysNode: React.FC = () => {
   const [debugResultModalVisible, handleDebugResultModalVisible] = useState<boolean>(false);
 
   const openDebugModal = (id: number) => {
-    getSimpleDevelopInfo
-      ({ id: id }).then((res) => {
-        if (res.success) {
-          const data = res.data;
-          setCurrentRow(data);
-          handleDebugModalVisible(true);
-        }
-      });
+    getSimpleDevelopInfo({ id: id }).then((res) => {
+      if (res.success) {
+        const data = res.data;
+        setCurrentRow(data);
+        handleDebugModalVisible(true);
+      }
+    });
+  };
+
+
+  // 沙盒调试弹框
+  const [sandBoxOpen, setSandBoxOpen] = useState(false);
+  const [sandBoxConfId, setSandBoxConfId] = useState<string>();
+
+  const openSandcoxModel = (confId: string) => {
+    setSandBoxConfId(confId);
+    setSandBoxOpen(true);
+  };
+
+  const debugModalOpenCallback = (bl: boolean) => {
+    handleDebugResultModalVisible(bl);
+  };
+  const setDebugResultBack = (data: API.CmpStepResult[]) => {
+    if(data && data.length > 0){
+      setDebugResult(data[0]);
+    }
   };
 
   /** 国际化配置 */
@@ -180,11 +205,17 @@ const sysNode: React.FC = () => {
                 },
               },
               {
+                key: 'sandbox',
+                label: '沙盒调试',
+                onClick: (e) => {
+                  openSandcoxModel(record.id);
+                },
+              },
+              {
                 key: 'debug',
-                label: '调试配置',
+                label: '高级调试',
                 onClick: (e) => {
                   openDebugModal(record.id);
-
                 },
               },
               {
@@ -362,7 +393,7 @@ const sysNode: React.FC = () => {
             {
               label: 'aviator',
               value: 'aviator',
-            }
+            },
           ]}
           rules={[
             {
@@ -486,7 +517,7 @@ const sysNode: React.FC = () => {
             {
               label: 'aviator',
               value: 'aviator',
-            }
+            },
           ]}
           rules={[
             {
@@ -516,25 +547,35 @@ const sysNode: React.FC = () => {
         onVisibleChange={handleDebugModalVisible}
         onFinish={(values) => {
           if (currentRow) {
-            debugSimpleCmdDevelop(values).then(res => {
+            debugSimpleCmdDevelop(values).then((res) => {
               if (res.success) {
                 setDebugResult(res.data);
                 handleDebugResultModalVisible(true);
                 message.success('调试成功');
-
               }
-            })
+            });
           } else {
-
           }
         }}
       >
-        <ProFormText name='id' hidden />
+        <ProFormText name="id" hidden />
         <ProFormTextArea
           name="params"
-          label={<a onClick={() => { window.open("/#/botPostLog"); }}>模拟上报数据(查看上报日志)</a>}
-          tooltip={<span >对上报数据结构比较了解或对接非标准上报调试,建议使用此项</span>}
-          initialValue={'{"post_type":"message","self_id":114154,"group_id":154213998,"message_id":114154,"message_type":"group","message":"' + currentRow?.cmd + '"}'}
+          label={
+            <a
+              onClick={() => {
+                window.open('/#/botPostLog');
+              }}
+            >
+              模拟上报数据(查看上报日志)
+            </a>
+          }
+          tooltip={<span>对上报数据结构比较了解或对接非标准上报调试,建议使用此项</span>}
+          initialValue={
+            '{"post_type":"message","self_id":114154,"group_id":154213998,"message_id":114154,"message_type":"group","message":"' +
+            currentRow?.cmd +
+            '"}'
+          }
           rules={[
             {
               required: true,
@@ -552,13 +593,9 @@ const sysNode: React.FC = () => {
         onCancel={() => {
           handleDebugResultModalVisible(false);
         }}
-        width={"50%"}
+        width={'50%'}
       >
-        <ProDescriptions
-          column={2}
-          title="调试结果"
-          tooltip="配置执行详情"
-        >
+        <ProDescriptions column={2} title="调试结果" tooltip="配置执行详情">
           <ProDescriptions.Item
             label="状态"
             valueEnum={{
@@ -569,42 +606,54 @@ const sysNode: React.FC = () => {
               true: {
                 text: '成功',
                 status: 'Success',
-              }
+              },
             }}
           >
             {debugResult?.success}
           </ProDescriptions.Item>
-          <ProDescriptions.Item
-            label="总耗时(毫秒)"
-            valueType="text"
-          >
+          <ProDescriptions.Item label="总耗时(毫秒)" valueType="text">
             {debugResult?.timeSpent}
           </ProDescriptions.Item>
-          <ProDescriptions.Item
-            label="开始时间"
-            valueType="text"
-          >
+          <ProDescriptions.Item label="开始时间" valueType="text">
             {debugResult?.startTime}
           </ProDescriptions.Item>
-          <ProDescriptions.Item
-            label="结束时间"
-            valueType="text"
-          >
+          <ProDescriptions.Item label="结束时间" valueType="text">
             {debugResult?.endTime}
           </ProDescriptions.Item>
-          <ProDescriptions.Item
-            label="详细"
-            valueType="text"
-          >
+          <ProDescriptions.Item label="上下文" valueType="text" span={4}>
+            {debugResult?.param && JSON.stringify(debugResult?.param)}
+          </ProDescriptions.Item>
+          <ProDescriptions.Item label="详细" valueType="text">
             {debugResult?.message}
           </ProDescriptions.Item>
         </ProDescriptions>
       </Modal>
-      <EditScript
+      <EditLiteFlowScript
         visible={editFormScriptModalVisible}
         handleVisible={handleEditFormScriptModalVisible}
-        editNodeScriptId={editNodeScriptId}
+        script={editScript}
       />
+      <Modal
+        style={{
+          minWidth: '50%',
+          minHeight: '50%',
+        }}
+        keyboard={false}
+        open={sandBoxOpen}
+        onCancel={() => setSandBoxOpen(false)}
+        title="沙盒调试"
+        destroyOnClose={true}
+        maskClosable={false}
+        centered
+        footer={null}
+      >
+        <Sandbox
+          confId={sandBoxConfId}
+          confType={'simpleCmdDevelop'}
+          setDebugResult={setDebugResultBack}
+          openDebug={debugModalOpenCallback}
+        />
+      </Modal>
     </PageContainer>
   );
 };

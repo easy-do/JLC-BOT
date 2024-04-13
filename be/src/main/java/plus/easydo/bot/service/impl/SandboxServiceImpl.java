@@ -1,5 +1,6 @@
 package plus.easydo.bot.service.impl;
 
+import cn.hutool.core.collection.ListUtil;
 import cn.hutool.core.date.DatePattern;
 import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.lang.UUID;
@@ -15,17 +16,18 @@ import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
-import plus.easydo.bot.lowcode.execute.LiteFlowNodeExecuteServer;
 import plus.easydo.bot.sandbox.SandboxMessage;
 import plus.easydo.bot.sandbox.SandboxWebsocketHandler;
 import plus.easydo.bot.service.BotService;
+import plus.easydo.bot.service.HighLevelDevelopService;
 import plus.easydo.bot.service.LowCodeService;
 import plus.easydo.bot.service.SandboxService;
+import plus.easydo.bot.service.SimpleDevelopService;
 import plus.easydo.bot.websocket.OneBotService;
 
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
+
 
 /**
  * @author yuzhanfeng
@@ -42,9 +44,11 @@ public class SandboxServiceImpl implements SandboxService {
 
     private final OneBotService oneBotService;
 
-    private final LiteFlowNodeExecuteServer liteFlowNodeExecuteServer;
-
     private final LowCodeService lowCodeService;
+
+    private final SimpleDevelopService simpleDevelopService;
+
+    private final HighLevelDevelopService highLevelDevelopService;
 
 
     @PostConstruct
@@ -76,12 +80,26 @@ public class SandboxServiceImpl implements SandboxService {
         postData.set(OneBotConstants.RAW_MESSAGE, sandboxMessage.getMessage());
         postData.set(OneBotConstants.POST_TYPE, OneBotPostTypeEnum.MESSAGE.getType());
         postData.set(OneBotConstants.MESSAGE_TYPE, OneBotPostMessageTypeEnum.GROUP.getType());
-        Long confIf = sandboxMessage.getConfId();
-        if (Objects.isNull(confIf)) {
+        Long confId = sandboxMessage.getConfId();
+        if (Objects.isNull(confId)) {
             oneBotService.handlerPost(postData);
-            return Collections.EMPTY_LIST;
+            return ListUtil.empty();
         } else {
-            return lowCodeService.debugNodeConf(DebugDto.builder().id(confIf).params(postData).build());
+            postData.set(OneBotConstants.BOT_NUMBER, LowCodeConstants.JLC_BOT_SANDBOX);
+            String confType = sandboxMessage.getConfType();
+            return switch (confType) {
+                case LowCodeConstants.LOWCODE_NODE ->
+                        lowCodeService.debugNodeConf(DebugDto.builder().id(confId).params(postData).build());
+                case LowCodeConstants.SIMPLE_CMD_DEVELOP ->{
+                    CmpStepResult result = simpleDevelopService.debug(DebugDto.builder().id(confId).params(postData).build());
+                    yield result.isSuccess() ? ListUtil.of(result) : ListUtil.empty();
+                }
+                case LowCodeConstants.HIGH_LEVEL_DEVELOP ->{
+                    CmpStepResult result = highLevelDevelopService.debug(DebugDto.builder().id(confId).params(postData).build());
+                    yield result.isSuccess() ? ListUtil.of(result) : ListUtil.empty();
+                }
+                default -> ListUtil.empty();
+            };
         }
     }
 }

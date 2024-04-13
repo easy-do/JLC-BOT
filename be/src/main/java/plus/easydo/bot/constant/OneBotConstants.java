@@ -16,6 +16,8 @@ public class OneBotConstants {
 
     public static final String POST_TYPE = "post_type";
     public static final String MESSAGE_TYPE = "message_type";
+    public static final String BOT_NUMBER = "botNumber";
+    public static final String BOT_CONF = "botConf";
     public static final String TYPE = "type";
     public static final String DATA = "data";
     public static final String GROUP_ID = "group_id";

@@ -45,8 +45,8 @@ public class OneBotSimpleCmdPostHandler {
                         SimpleCmdDevelopConf simpleCmdDevelopConf = CacheManager.SIMPLE_CMD_DEV_CONF_CACHE.get(highLevelId);
                         //预处理参数、parseMessage
                         MessageParseUtil.parseMessage(postData);
-                        postData.set("botNumber", botNumber);
-                        postData.set("botConf", CacheManager.BOT_CONF_CACHE.get(botNumber));
+                        postData.set(OneBotConstants.BOT_NUMBER, botNumber);
+                        postData.set(OneBotConstants.BOT_CONF, CacheManager.BOT_CONF_CACHE.get(botNumber));
                         //执行处理
                         simpleCmdDevelopExecuteServer.execute(simpleCmdDevelopConf, postData);
                     });
