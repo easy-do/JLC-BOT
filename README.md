@@ -10,6 +10,10 @@
 * 支持节点执行详细的全链路在线网页调试、方便高级开发
 * 支持沙盒测试
 * 支持调用ollama模型聊天
+* **支持多语言开发高级功能**(java groovy python lua aviator)
+* 简单指令开发支持
+* 高级开发支持
+* 可直接查看系统可用api
 
 * gitee https://gitee.com/yuzhanfeng/JLC-BOT
 * github https://github.com/easy-do/JLC-BOT
@@ -38,9 +42,9 @@
 - 对接方式: httpPost 、正向websocket、反向websocket、 wcf-hook(windows)、wcf-http上报
 - 兼容平台 centos、windows、docker (wx只能windows)
 - 已支持全部上报事件处理
-- 低代码能力(部署后查看、未完善文档)
+- 低代码能力
 
-#### 在线文档
+#### 文档&更新日志
 
 https://doc.easydo.plus
 
@@ -109,21 +113,16 @@ https://doc.easydo.plus
 
 <img src="./img/img_4.png">
 
+* 高级调试
+
+<img src="./img/img_5.png">
+<img src="./img/img_6.png">
+<img src="./img/img_7.png">
+
 #### 使用问题反馈和技术交流
 
 http://qm.qq.com/cgi-bin/qm/qr?_wv=1027&k=jKliJIxAFvZoZxBSw1NnlMjOj8pRR42f&authKey=vnozKSs2ou1MO68VXH1ct2AReURSyIj4jlVe%2BVAlA5h%2F0M1BsdhQP0YN6MqwRwBB&noverify=0&group_code=154213998
 
-#### 更新日志
-
-* 省略.....
-* 添加沙盒机器人测试 2024.3.31
-* 添加上报日志管理 2024.4.1
-* 添加java脚本节点支持 2024.4.1
-* 补全所有对接方式 2024.4.4
-* 添加系统节点导入导出 2024.4.4
-* 支持并切换至H2DB数据库 2024.4.4
-* 全面优化CQ码 2024.4.5
-* 支持调用ollama模型 2024.4.6
 
 
 
