@@ -8,6 +8,7 @@ import com.yomahub.liteflow.core.NodeComponent;
 import lombok.extern.slf4j.Slf4j;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.exception.BaseException;
+import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
 import plus.easydo.bot.util.BotConfUtil;
 import plus.easydo.bot.util.ParamReplaceUtils;
 

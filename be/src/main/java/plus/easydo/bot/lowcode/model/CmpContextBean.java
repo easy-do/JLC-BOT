@@ -20,5 +20,16 @@ public class CmpContextBean {
 
     private String name;
 
-    private List<String> methods;
+    private String desc;
+
+    private List<CmpContextBeanMethod> methods;
+
+    @Data
+    @Builder
+    public static class CmpContextBeanMethod {
+        private String name;
+        private String returnType;
+        private String demo;
+        private String desc;
+    }
 }

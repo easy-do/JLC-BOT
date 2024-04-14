@@ -22,7 +22,7 @@ public class LiteFlowConstants {
             import com.yomahub.liteflow.core.NodeComponent;
             import com.yomahub.liteflow.script.ScriptExecuteWrap;
             import com.yomahub.liteflow.script.body.JaninoCommonScriptBody;
-            import plus.easydo.bot.lowcode.node.JLCLiteFlowContext;
+            import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
             import plus.easydo.bot.util.ParamReplaceUtils;
                         
             /**
@@ -71,7 +71,7 @@ public class LiteFlowConstants {
             import com.yomahub.liteflow.core.NodeComponent;
             import com.yomahub.liteflow.script.ScriptExecuteWrap;
             import com.yomahub.liteflow.script.body.JaninoIfScriptBody;
-            import plus.easydo.bot.lowcode.node.JLCLiteFlowContext;
+            import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
             import plus.easydo.bot.util.ParamReplaceUtils;
                         
             import java.util.Objects;

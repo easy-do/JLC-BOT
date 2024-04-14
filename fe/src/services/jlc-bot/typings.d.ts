@@ -155,6 +155,16 @@ declare namespace API {
     model: string;
   };
 
+  type CmpContextBean = {
+    name?: string;
+    methods?: CmpContextBeanMethod[];
+  };
+
+  type CmpContextBeanMethod = {
+    name?: string;
+    desc?: string;
+  };
+
   type CmpStepResult = {
     nodeId?: string;
     nodeName?: string;
@@ -166,6 +176,7 @@ declare namespace API {
     message?: string;
     param?: { raw?: Record<string, any>; config?: JSONConfig; empty?: boolean };
     rollbackTimeSpent?: number;
+    contextBeanList?: CmpContextBean[];
   };
 
   type copyNodeConfParams = {
@@ -697,6 +708,7 @@ declare namespace API {
     message?: string;
     time?: string;
     confId?: number;
+    confType?: string;
   };
 
   type SetBotConfIdDto = {

@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.ollama.OllamaChatClient;
 import org.springframework.ai.ollama.api.OllamaApi;
 import org.springframework.ai.ollama.api.OllamaOptions;
+import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
 import plus.easydo.bot.util.ParamReplaceUtils;
 
 

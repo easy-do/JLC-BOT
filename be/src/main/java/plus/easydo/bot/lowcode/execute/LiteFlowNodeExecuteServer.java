@@ -16,8 +16,8 @@ import plus.easydo.bot.entity.BotNodeConfExecuteLog;
 import plus.easydo.bot.entity.BotNodeExecuteLog;
 import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.exception.BaseException;
+import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
 import plus.easydo.bot.lowcode.model.Node;
-import plus.easydo.bot.lowcode.node.JLCLiteFlowContext;
 import plus.easydo.bot.manager.BotNodeConfExecuteLogManager;
 import plus.easydo.bot.manager.BotNodeExecuteLogManager;
 
@@ -67,6 +67,7 @@ public class LiteFlowNodeExecuteServer {
         context.setParam(paramsJson);
         String confData = lowCodeNodeConf.getConfData();
         context.setNodeConf(JSONUtil.parseObj(confData));
+
         //执行并返回结果
         LiteflowResponse res = flowExecutor.execute2Resp(chainName, "", context);
         CompletableFuture.runAsync(() -> saveExecuteLog(lowCodeNodeConf, res));

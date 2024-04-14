@@ -622,7 +622,7 @@ function EditNodeConf(props: {
             }
             tooltip={<span>对上报数据结构比较了解或对接非标准上报调试,建议使用此项</span>}
             initialValue={
-              '{"post_type":"message","self_id":114154,"group_id":154213998,"message_id":114154,"message_type":"group","message":"消息正文"}'
+              '{"post_type":"message","self_id":"jlc-bot-sandbox","group_id":"jlc-bot-sandbox","message_id":114154,"message_type":"group","message":"消息正文"}'
             }
             rules={[
               {

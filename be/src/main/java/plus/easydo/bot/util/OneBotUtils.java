@@ -69,6 +69,15 @@ public class OneBotUtils {
         return time;
     }
 
+    public static String getParamBotNumber(JSONObject paramJson) {
+        String botNumber = paramJson.getStr(OneBotConstants.BOT_NUMBER);
+        if (Objects.nonNull(botNumber)) {
+            return botNumber;
+        } else {
+            return paramJson.getStr(OneBotConstants.SELF_ID);
+        }
+    }
+
     public static JSONArray buildMessageJson(String message) {
         JSONArray arr = JSONUtil.createArray();
         JSONObject obj = JSONUtil.createObj();

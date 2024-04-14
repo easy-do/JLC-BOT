@@ -14,8 +14,8 @@ import plus.easydo.bot.constant.LowCodeConstants;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotNodeExecuteLog;
 import plus.easydo.bot.entity.SimpleCmdDevelopConf;
-import plus.easydo.bot.lowcode.node.JLCLiteFlowContext;
 import plus.easydo.bot.manager.BotNodeExecuteLogManager;
+import plus.easydo.bot.util.LiteFlowUtils;
 import plus.easydo.bot.websocket.model.OneBotMessageParse;
 
 import java.util.Objects;
@@ -60,11 +60,12 @@ public class SimpleCmdDevelopExecuteServer {
             String elData = "THEN(" + LowCodeConstants.SIMPLE_CMD_DEVELOP + simpleCmdDevelopConf.getId() + ");";
             String chainName = LowCodeConstants.SIMPLE_CMD_DEVELOP + "Chain" + simpleCmdDevelopConf.getId();
             LiteFlowChainELBuilder.createChain().setChainName(chainName).setEL(elData).build();
+
             //初始化上下文
-            JLCLiteFlowContext context = new JLCLiteFlowContext();
-            context.setParam(paramsJson);
+            Object[] contexts = LiteFlowUtils.buildContext(paramsJson);
+
             //执行并返回结果
-            LiteflowResponse res = flowExecutor.execute2Resp(chainName, "", context);
+            LiteflowResponse res = flowExecutor.execute2Resp(chainName, "", contexts);
             CompletableFuture.runAsync(() -> saveExecuteLog(simpleCmdDevelopConf, res));
             return res;
         }

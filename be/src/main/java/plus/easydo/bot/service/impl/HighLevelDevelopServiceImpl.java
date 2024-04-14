@@ -26,6 +26,7 @@ import plus.easydo.bot.manager.HighLevelDevelopConfManager;
 import plus.easydo.bot.manager.LiteFlowScriptManager;
 import plus.easydo.bot.qo.PageQo;
 import plus.easydo.bot.service.HighLevelDevelopService;
+import plus.easydo.bot.util.LiteFlowUtils;
 import plus.easydo.bot.util.MessageParseUtil;
 
 import java.util.List;
@@ -132,6 +133,8 @@ public class HighLevelDevelopServiceImpl implements HighLevelDevelopService {
             if (cmpStep != null && !cmpStep.isSuccess()) {
                 cmpStepResult.setMessage(ExceptionUtil.getMessage(cmpStep.getException()));
             }
+            //构建可用上下文
+            LiteFlowUtils.buildContextBeanList(response, cmpStepResult);
             return cmpStepResult;
         }else {
             return CmpStepResult.builder().success(false).message("执行响应为空").build();

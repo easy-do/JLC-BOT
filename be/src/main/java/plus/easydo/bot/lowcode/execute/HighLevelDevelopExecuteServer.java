@@ -11,8 +11,8 @@ import org.springframework.stereotype.Component;
 import plus.easydo.bot.constant.LowCodeConstants;
 import plus.easydo.bot.entity.BotNodeExecuteLog;
 import plus.easydo.bot.entity.HighLevelDevelopConf;
-import plus.easydo.bot.lowcode.node.JLCLiteFlowContext;
 import plus.easydo.bot.manager.BotNodeExecuteLogManager;
+import plus.easydo.bot.util.LiteFlowUtils;
 
 import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
@@ -36,11 +36,12 @@ public class HighLevelDevelopExecuteServer {
         String elData = "THEN("+ LowCodeConstants.HIGH_LEVEL_DEVELOP+highLevelDevelopConf.getId() +");";
         String chainName = LowCodeConstants.HIGH_LEVEL_DEVELOP+"Chain" + highLevelDevelopConf.getId();
         LiteFlowChainELBuilder.createChain().setChainName(chainName).setEL(elData).build();
+
         //初始化上下文
-        JLCLiteFlowContext context = new JLCLiteFlowContext();
-        context.setParam(paramsJson);
+        Object[] contexts = LiteFlowUtils.buildContext(paramsJson);
+
         //执行并返回结果
-        LiteflowResponse res = flowExecutor.execute2Resp(chainName, "", context);
+        LiteflowResponse res = flowExecutor.execute2Resp(chainName, "", contexts);
         CompletableFuture.runAsync(() -> saveExecuteLog(highLevelDevelopConf, res));
         return res;
     }

@@ -16,9 +16,9 @@ import {
   updateHighLevelDev,
 } from '@/services/jlc-bot/gaojikaifa';
 
-import ProDescriptions from '@ant-design/pro-descriptions';
 import EditLiteFlowScript from '@/components/EditLiteFlowScript';
 import Sandbox from '../sandbox';
+import OneNodeExecuteResultVivew from '../sandbox/oneNodeExecuteResultVivew';
 
 const sysNode: React.FC = () => {
   const actionRef = useRef<ActionType>();
@@ -525,7 +525,7 @@ const sysNode: React.FC = () => {
           }
           tooltip={<span>对上报数据结构比较了解或对接非标准上报调试,建议使用此项</span>}
           initialValue={
-            '{"post_type":"message","self_id":114154,"group_id":154213998,"message_id":114154,"message_type":"group","message":"测试内容"}'
+            '{"post_type":"message","self_id":"jlc-bot-sandbox","group_id":"jlc-bot-sandbox","message_id":114154,"message_type":"group","message":"测试内容"}'
           }
           rules={[
             {
@@ -535,50 +535,7 @@ const sysNode: React.FC = () => {
           ]}
         />
       </ModalForm>
-      <Modal
-        open={debugResultModalVisible}
-        destroyOnClose
-        onOk={() => {
-          handleDebugResultModalVisible(false);
-        }}
-        onCancel={() => {
-          handleDebugResultModalVisible(false);
-        }}
-        width={'50%'}
-      >
-        <ProDescriptions column={2} title="调试结果" tooltip="配置执行详情">
-          <ProDescriptions.Item
-            label="状态"
-            valueEnum={{
-              false: {
-                text: '失败',
-                status: 'Error',
-              },
-              true: {
-                text: '成功',
-                status: 'Success',
-              },
-            }}
-          >
-            {debugResult?.success}
-          </ProDescriptions.Item>
-          <ProDescriptions.Item label="总耗时(毫秒)" valueType="text">
-            {debugResult?.timeSpent}
-          </ProDescriptions.Item>
-          <ProDescriptions.Item label="开始时间" valueType="text">
-            {debugResult?.startTime}
-          </ProDescriptions.Item>
-          <ProDescriptions.Item label="结束时间" valueType="text">
-            {debugResult?.endTime}
-          </ProDescriptions.Item>
-          <ProDescriptions.Item label="上下文" valueType="text" span={4}>
-            {debugResult?.param && JSON.stringify(debugResult?.param)}
-          </ProDescriptions.Item>
-          <ProDescriptions.Item label="详细" valueType="text">
-            {debugResult?.message}
-          </ProDescriptions.Item>
-        </ProDescriptions>
-      </Modal>
+      <OneNodeExecuteResultVivew visible={debugResultModalVisible} handleVisible={handleDebugResultModalVisible} debugResult={debugResult}/>
       <EditLiteFlowScript
         visible={editFormScriptModalVisible}
         handleVisible={handleEditFormScriptModalVisible}

@@ -6,6 +6,7 @@ import cn.hutool.json.JSONObject;
 import com.yomahub.liteflow.annotation.LiteflowComponent;
 import com.yomahub.liteflow.core.NodeComponent;
 import lombok.extern.slf4j.Slf4j;
+import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
 import plus.easydo.bot.util.ParamReplaceUtils;
 
 

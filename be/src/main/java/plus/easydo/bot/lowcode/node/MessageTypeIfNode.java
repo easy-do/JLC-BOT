@@ -7,6 +7,7 @@ import com.yomahub.liteflow.annotation.LiteflowComponent;
 import com.yomahub.liteflow.core.NodeIfComponent;
 import lombok.extern.slf4j.Slf4j;
 import plus.easydo.bot.constant.OneBotConstants;
+import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
 import plus.easydo.bot.websocket.model.OneBotMessageParse;
 
 import java.util.Objects;
