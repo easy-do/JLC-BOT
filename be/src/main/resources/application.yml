@@ -114,7 +114,7 @@ knife4j:
     language: zh_cn
 
 liteflow:
-  print-execution-log: true #关闭打印日志
+  print-execution-log: false #关闭打印日志
   rule-source-ext-data-map:
     type: druid
     url: jdbc:h2:file:${H2DB:./data/db/jlc_bot};MODE=MySQL
