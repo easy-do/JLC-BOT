@@ -18,6 +18,7 @@ import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.BotHighLevelDevelop;
 import plus.easydo.bot.entity.HighLevelDevelopConf;
 import plus.easydo.bot.entity.LiteFlowScript;
+import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.lowcode.execute.HighLevelDevelopExecuteServer;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.manager.BotHighLevelDevelopManager;
@@ -67,8 +68,13 @@ public class HighLevelDevelopServiceImpl implements HighLevelDevelopService {
     public boolean saveHighLevelDev(HighLevelDevelopConf highLevelDevelopConf) {
         boolean res = highLevelDevelopConfManager.save(highLevelDevelopConf);
         if(res){
-            liteFlowScriptManager.createData(highLevelDevelopConf);
-            initCache();
+            try {
+                liteFlowScriptManager.createData(highLevelDevelopConf);
+                initCache();
+            }catch (Exception e){
+                highLevelDevelopConfManager.removeById(highLevelDevelopConf.getId());
+                throw new BaseException("创建脚本失败:"+e.getMessage());
+            }
         }
         return res;
     }
@@ -85,13 +91,20 @@ public class HighLevelDevelopServiceImpl implements HighLevelDevelopService {
 
     @Override
     public boolean updateHighLevelDev(HighLevelDevelopConf highLevelDevelopConf) {
+        HighLevelDevelopConf old = highLevelDevelopConfManager.getById(highLevelDevelopConf.getId());
         boolean res = highLevelDevelopConfManager.updateById(highLevelDevelopConf);
         if (res){
             LiteFlowScript liteFlowScript = liteFlowScriptManager.getByScriptId(LowCodeConstants.HIGH_LEVEL_DEVELOP + highLevelDevelopConf.getId());
+
             liteFlowScript.setScriptLanguage(highLevelDevelopConf.getScriptLanguage());
             liteFlowScript.setScriptName(highLevelDevelopConf.getConfName());
-            liteFlowScriptManager.updateScriptData(liteFlowScript);
-            initCache();
+            try {
+                liteFlowScriptManager.updateScriptData(liteFlowScript);
+                initCache();
+            }catch (Exception e){
+                highLevelDevelopConfManager.updateById(old);
+                throw new BaseException("更新脚本失败:"+e.getMessage());
+            }
         }
         return res;
     }
@@ -112,8 +125,13 @@ public class HighLevelDevelopServiceImpl implements HighLevelDevelopService {
     public Long importConf(HighLevelDevelopConf conf) {
         boolean res = highLevelDevelopConfManager.save(conf);
         if(res){
-            liteFlowScriptManager.createData(conf);
-            initCache();
+            try {
+                liteFlowScriptManager.createData(conf);
+                initCache();
+            }catch (Exception e){
+                highLevelDevelopConfManager.removeById(conf.getId());
+                throw new BaseException("创建脚本失败:"+e.getMessage());
+            }
         }
         return conf.getId();
     }

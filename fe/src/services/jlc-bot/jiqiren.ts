@@ -50,21 +50,6 @@ export async function cleanBotRequest(options?: { [key: string]: any }) {
   });
 }
 
-/** 启用脚本 POST /api/bot/enableBotScript */
-export async function enableBotScript(
-  body: API.EnableBotScriptDto,
-  options?: { [key: string]: any },
-) {
-  return request<API.RBoolean>('/api/bot/enableBotScript', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    data: body,
-    ...(options || {}),
-  });
-}
-
 /** 获取机器人配置 GET /api/bot/getBotConf/${param0} */
 export async function getBotConf(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
@@ -74,20 +59,6 @@ export async function getBotConf(
   const { botNumber: param0, ...queryParams } = params;
   return request<API.RListBotConf>(`/api/bot/getBotConf/${param0}`, {
     method: 'GET',
-    params: { ...queryParams },
-    ...(options || {}),
-  });
-}
-
-/** 已开启脚本 POST /api/bot/getEnableBotScript/${param0} */
-export async function getEnableBotScript(
-  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
-  params: API.getEnableBotScriptParams,
-  options?: { [key: string]: any },
-) {
-  const { id: param0, ...queryParams } = params;
-  return request<API.RListLong>(`/api/bot/getEnableBotScript/${param0}`, {
-    method: 'POST',
     params: { ...queryParams },
     ...(options || {}),
   });

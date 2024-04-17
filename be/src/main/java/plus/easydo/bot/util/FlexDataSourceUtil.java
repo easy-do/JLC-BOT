@@ -40,4 +40,9 @@ public class FlexDataSourceUtil {
         return dataSource;
     }
 
+    public DruidDataSource getFirstDataSource(){
+        Map<String, Map<String, String>> datasourceMap = mybatisFlexProperties.getDatasource();
+        return getDataSource(datasourceMap.keySet().iterator().next());
+    }
+
 }

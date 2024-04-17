@@ -23,7 +23,7 @@ public class JLCBotApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(JLCBotApplication.class, args);
-        //初始化jython环境变量 https://www.jython.org/download
+//        //初始化jython环境变量 https://www.jython.org/download
         Properties props = new Properties();
         Properties properties = System.getProperties();
         props.put("python.home", "./jython2.7.3");

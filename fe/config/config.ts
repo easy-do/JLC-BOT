@@ -56,10 +56,6 @@ export default defineConfig({
       component: './platformBot',
     },
     {
-      path: '/botScript',
-      component: './botScript',
-    },
-    {
       path: '/botMessage',
       component: './botMessage',
     },

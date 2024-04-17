@@ -3,7 +3,7 @@ package plus.easydo.bot.lowcode.node.dev;
 import cn.hutool.json.JSONObject;
 import com.yomahub.liteflow.core.NodeComponent;
 import com.yomahub.liteflow.script.ScriptExecuteWrap;
-import com.yomahub.liteflow.script.body.JaninoIfScriptBody;
+import com.yomahub.liteflow.script.body.JaninoBooleanScriptBody;
 import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
 
 import java.util.Objects;
@@ -12,7 +12,7 @@ import java.util.Objects;
  * @author laoyu
  * @Description 判断脚本节点 https://liteflow.cc/pages/2b8afb/#%E4%BB%8B%E7%BB%8D
  */
-public class IfScriptNode implements JaninoIfScriptBody {
+public class IfScriptNode implements JaninoBooleanScriptBody {
 
     /**
      * 脚本逻辑在body方法内写

@@ -18,6 +18,7 @@ import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.BotSimpleCmdDevelop;
 import plus.easydo.bot.entity.LiteFlowScript;
 import plus.easydo.bot.entity.SimpleCmdDevelopConf;
+import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.lowcode.execute.SimpleCmdDevelopExecuteServer;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.manager.BotSimpleCmdDevelopManager;
@@ -79,21 +80,32 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
     public boolean saveSimpleDevelop(SimpleCmdDevelopConf simpleCmdDevelopConf) {
         boolean res = simpleDevelopConfManager.save(simpleCmdDevelopConf);
         if (res) {
-            liteFlowScriptManager.createData(simpleCmdDevelopConf);
-            initCache();
+            try {
+                liteFlowScriptManager.createData(simpleCmdDevelopConf);
+                initCache();
+            }catch (Exception e){
+                simpleDevelopConfManager.removeById(simpleCmdDevelopConf.getId());
+                throw new BaseException("创建脚本失败:"+e.getMessage());
+            }
         }
         return res;
     }
 
     @Override
     public boolean updateSimpleDevelop(SimpleCmdDevelopConf simpleCmdDevelopConf) {
+        SimpleCmdDevelopConf old = simpleDevelopConfManager.getById(simpleCmdDevelopConf.getId());
         boolean res = simpleDevelopConfManager.updateById(simpleCmdDevelopConf);
         if (res) {
             LiteFlowScript liteFlowScript = liteFlowScriptManager.getByScriptId(LowCodeConstants.SIMPLE_CMD_DEVELOP + simpleCmdDevelopConf.getId());
             liteFlowScript.setScriptLanguage(simpleCmdDevelopConf.getScriptLanguage());
             liteFlowScript.setScriptName(simpleCmdDevelopConf.getConfName());
-            liteFlowScriptManager.updateScriptData(liteFlowScript);
-            initCache();
+            try {
+                liteFlowScriptManager.updateScriptData(liteFlowScript);
+                initCache();
+            }catch (Exception e){
+                simpleDevelopConfManager.updateById(old);
+                throw new BaseException("更新脚本失败:"+e.getMessage());
+            }
         }
         return res;
     }
@@ -112,8 +124,13 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
     public Long importConf(SimpleCmdDevelopConf conf) {
         boolean res = simpleDevelopConfManager.save(conf);
         if (res) {
-            liteFlowScriptManager.createData(conf);
-            initCache();
+            try {
+                liteFlowScriptManager.createData(conf);
+                initCache();
+            }catch (Exception e){
+                simpleDevelopConfManager.removeById(conf.getId());
+                throw new BaseException("创建脚本失败:"+e.getMessage());
+            }
         }
         return conf.getId();
     }

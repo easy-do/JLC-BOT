@@ -9,7 +9,6 @@ import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.websocket.handler.OneBotHighLevelPostHandler;
 import plus.easydo.bot.websocket.handler.OneBotNodePostHandler;
 import plus.easydo.bot.websocket.handler.OneBotPostHandler;
-import plus.easydo.bot.websocket.handler.OneBotScriptPostHandler;
 import plus.easydo.bot.websocket.handler.OneBotSimpleCmdPostHandler;
 
 import java.util.Map;
@@ -29,8 +28,6 @@ public class OneBotService {
     @Autowired
     private Map<String, OneBotPostHandler> postHandlerMap;
 
-    private final OneBotScriptPostHandler oneBotScriptPostHandler;
-
     private final OneBotNodePostHandler oneBotNodePostHandler;
 
     private final OneBotSimpleCmdPostHandler oneBotSimpleCmdPostHandler;
@@ -45,9 +42,8 @@ public class OneBotService {
                 CompletableFuture.runAsync(() -> postDataHandler.handlerPost(postData));
             }
         }
-        CompletableFuture.runAsync(() -> oneBotScriptPostHandler.handler(postType, postData));
         CompletableFuture.runAsync(() -> oneBotNodePostHandler.handler(postType, postData));
-        CompletableFuture.runAsync(() -> oneBotHighLevelPostHandler.handler(postType, postData));
         CompletableFuture.runAsync(() -> oneBotSimpleCmdPostHandler.handler(postType, postData));
+        CompletableFuture.runAsync(() -> oneBotHighLevelPostHandler.handler(postType, postData));
     }
 }

@@ -114,7 +114,8 @@ knife4j:
     language: zh_cn
 
 liteflow:
-  print-execution-log: false #关闭打印日志
+  print-execution-log: true #关闭打印日志
+  parse-mode: PARSE_ONE_ON_FIRST_EXEC
   rule-source-ext-data-map:
     type: druid
     url: jdbc:h2:file:${H2DB:./data/db/jlc_bot};MODE=MySQL
@@ -145,3 +146,8 @@ liteflow:
     pollingEnabled: false
     pollingStartSeconds: 0
     pollingIntervalSeconds: 5
+
+logging:
+  level:
+    root: info  #debug
+    plus.easydo: info  #debug

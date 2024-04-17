@@ -5,7 +5,7 @@ import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import com.yomahub.liteflow.annotation.LiteflowComponent;
-import com.yomahub.liteflow.core.NodeIfComponent;
+import com.yomahub.liteflow.core.NodeBooleanComponent;
 import lombok.extern.slf4j.Slf4j;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
@@ -22,12 +22,12 @@ import java.util.Objects;
  */
 @Slf4j
 @LiteflowComponent(id = "filedIfNode", name = "字段判断")
-public class FiledIfNode extends NodeIfComponent {
+public class FiledIfNode extends NodeBooleanComponent {
 
     private static final String TARGET_VALUE_NOT_CONFIG = "目标值为空";
 
     @Override
-    public boolean processIf() {
+    public boolean processBoolean() {
         JLCLiteFlowContext context = getContextBean(JLCLiteFlowContext.class);
         JSONObject paramJson = context.getParam();
         JSONObject nodeConf = context.getNodeConf();

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<appender name="std_plain" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %magenta(%-5level) %green([%-50.50class]) %cyan(%msg) %n</pattern>
+		</encoder>
+	</appender>
+
+	<!-- error日志 -->
+	<appender name="ERROR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<prudent>true</prudent>
+		<append>true</append>
+		<encoder>
+			<pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %magenta(%-5level) %green([%-50.50class]) %cyan(%msg) %n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 添加.gz 历史日志会启用压缩 大大缩小日志文件所占空间 -->
+			<!--<fileNamePattern>/home/hfw-client/hfw_log/stdout.log.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+			<fileNamePattern>./logs/error-%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>7</maxHistory><!--  保留7天日志 -->
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>ERROR</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+	<!-- file日志 -->
+	<appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<prudent>true</prudent>
+		<append>true</append>
+		<encoder>
+			<pattern>%date [%level] [%thread] %logger{60} [%file : %line] %msg%n</pattern>
+		</encoder>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<!-- 添加.gz 历史日志会启用压缩 大大缩小日志文件所占空间 -->
+			<!--<fileNamePattern>/home/hfw-client/hfw_log/stdout.log.%d{yyyy-MM-dd}.log</fileNamePattern>-->
+			<fileNamePattern>./logs/%d{yyyy-MM-dd}.log</fileNamePattern>
+			<maxHistory>7</maxHistory><!--  保留7天日志 -->
+		</rollingPolicy>
+		<filter class="ch.qos.logback.classic.filter.LevelFilter">
+			<level>INFO</level>
+			<onMatch>ACCEPT</onMatch>
+			<onMismatch>DENY</onMismatch>
+		</filter>
+	</appender>
+
+
+	<root level="info">
+		<appender-ref ref="ERROR"/>
+		<appender-ref ref="FILE"/>
+		<appender-ref ref="std_plain"/>
+	</root>
+</configuration>

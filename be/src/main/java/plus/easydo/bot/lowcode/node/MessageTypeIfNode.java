@@ -4,7 +4,8 @@ import cn.hutool.core.lang.Assert;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONObject;
 import com.yomahub.liteflow.annotation.LiteflowComponent;
-import com.yomahub.liteflow.core.NodeIfComponent;
+import com.yomahub.liteflow.core.NodeBooleanComponent;
+import com.yomahub.liteflow.core.NodeBooleanComponent;
 import lombok.extern.slf4j.Slf4j;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
@@ -20,10 +21,10 @@ import java.util.Objects;
  */
 @Slf4j
 @LiteflowComponent(id = "messageTypeIfNode", name = "消息类型判断")
-public class MessageTypeIfNode extends NodeIfComponent {
+public class MessageTypeIfNode extends NodeBooleanComponent {
 
     @Override
-    public boolean processIf() {
+    public boolean processBoolean() {
         JLCLiteFlowContext context = getContextBean(JLCLiteFlowContext.class);
         JSONObject paramJson = context.getParam();
         JSONObject nodeConf = context.getNodeConf();

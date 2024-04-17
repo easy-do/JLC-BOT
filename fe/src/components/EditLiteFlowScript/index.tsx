@@ -17,6 +17,14 @@ function EditLiteFlowScript(props: { script: API.LiteFlowScript; visible: boolea
 
   const editorRef = useRef(null);
 
+  const languageMap = new Map<string,string>();
+  languageMap.set('java','java');
+  languageMap.set('js','javascript');
+  languageMap.set('groovy','java');
+  languageMap.set('python','python');
+  languageMap.set('lua','lua');
+  languageMap.set('aviator','aviator');
+
   function handleEditorDidMount(editor: any, monaco: any) {
     editorRef.current = editor;
     monaco.languages.registerCompletionItemProvider('java', {
@@ -70,7 +78,7 @@ function EditLiteFlowScript(props: { script: API.LiteFlowScript; visible: boolea
             defaultValue={cureentContext}
             onChange={handleEditorChange}
             onMount={handleEditorDidMount}
-            defaultLanguage={cureentScript?.scriptLanguage}
+            defaultLanguage={languageMap.get(cureentScript?.scriptLanguage) || cureentScript?.scriptLanguage}
           />
     </Modal>
   );

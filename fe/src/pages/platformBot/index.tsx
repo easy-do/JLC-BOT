@@ -7,9 +7,8 @@ import ProTable from '@ant-design/pro-table';
 import type { ProDescriptionsItemProps } from '@ant-design/pro-descriptions';
 import ProDescriptions from '@ant-design/pro-descriptions';
 import { ModalForm, ProFormItem, ProFormSelect, ProFormText, ProFormTextArea } from '@ant-design/pro-form';
-import { enableBotScript, getEnableBotScript, infoBot, addBot, pageBot, removeBot, updateBot } from '@/services/jlc-bot/jiqiren';
+import { infoBot, addBot, pageBot, removeBot, updateBot } from '@/services/jlc-bot/jiqiren';
 import EditBotConf from './EditBotConf';
-import { botScriptList } from '@/services/jlc-bot/jiqirenjiaoben';
 import { getBotNode, listNodeConf, setBotNode } from '@/services/jlc-bot/didaima';
 import { getBotSimpleCmdDevelop, listSimpleDevelop, setBotSimpleCmdDevelop } from '@/services/jlc-bot/jiandanzhilingkaifa';
 import { getBotHighLevelDevelop, highLevelDevList, setBotHighLevelDevelop } from '@/services/jlc-bot/gaojikaifa';
@@ -65,24 +64,6 @@ const platfromBot: React.FC = () => {
       if (res.success) {
         setCurrentRow(res.data);
         handleEditBotConfModalVisible(true);
-      } else {
-        message.warn(res.errorMessage);
-      }
-    });
-  };
-
-  /** 启用脚本窗口的弹窗 */
-  const [enableBotScriptModalVisible, handleEnableBotScriptModalVisible] = useState<boolean>(false);
-  const [enableScriptData, setEnableScriptData] = useState<API.EnableBotScriptDto>({
-    botId: '',
-    scriptIds: [],
-  });
-
-  const openEnableBotScriptModal = (id: string) => {
-    getEnableBotScript({ id: id }).then((res) => {
-      if (res.success) {
-        setEnableScriptData({ botId: id, scriptIds: res.data });
-        handleEnableBotScriptModalVisible(true);
       } else {
         message.warn(res.errorMessage);
       }
@@ -179,14 +160,6 @@ const platfromBot: React.FC = () => {
               label: '编辑配置',
               onClick: (e) => {
                 openEditBotConfModal(record.id);
-              },
-            },
-            {
-              key: 'enableBotScrip',
-              label: '启用脚本',
-              onClick: (e) => {
-                openEnableBotScriptModal(record.id);
-
               },
             },
             {
@@ -590,48 +563,6 @@ const platfromBot: React.FC = () => {
       >
         <EditBotConf botNumber={currentRow?.botNumber} visible={editBotConfModalVisible} />
       </Modal>
-      <ModalForm
-        modalProps={{
-          destroyOnClose: true,
-        }}
-        title="启用脚本"
-        visible={enableBotScriptModalVisible}
-        initialValues={enableScriptData}
-        onVisibleChange={handleEnableBotScriptModalVisible}
-        onFinish={(value) => {
-          console.log(value);
-          enableBotScript(value).then((res) => {
-            if (res.success) {
-              message.success('更新成功');
-              handleEnableBotScriptModalVisible(false);
-              if (actionRef.current) {
-                actionRef.current.reload();
-              }
-            }
-          });
-        }}
-      >
-        <ProFormText hidden name="botId" />
-        <ProFormSelect
-          name="scriptIds"
-          label="启用脚本"
-          mode="multiple"
-          debounceTime={10000}
-          fieldProps={{
-            suffixIcon: null,
-            showSearch: true,
-            labelInValue: false,
-            autoClearSearchValue: true,
-            fieldNames: {
-              label: 'scriptName',
-              value: 'id',
-            },
-          }}
-          request={() => botScriptList({}).then(res => {
-            return res.data
-          })}
-        />
-      </ModalForm>
       <ModalForm
         modalProps={{
           destroyOnClose: true,

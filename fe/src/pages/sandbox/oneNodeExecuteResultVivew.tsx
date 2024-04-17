@@ -98,6 +98,7 @@ function OneNodeExecuteResultVivew(props: { visible: boolean; handleVisible: (da
           },
           {
             title: '描述',
+            ellipsis: true,
             dataIndex: 'desc',
           },
           {
@@ -147,7 +148,10 @@ function OneNodeExecuteResultVivew(props: { visible: boolean; handleVisible: (da
           {
             title: '示例',
             ellipsis: true,
-            dataIndex: 'demo'
+            dataIndex: 'demo',
+            render: (text, record) => {
+              return currentContextBean?.name+'.'+record.demo;
+            }
           },
         ]}
       />

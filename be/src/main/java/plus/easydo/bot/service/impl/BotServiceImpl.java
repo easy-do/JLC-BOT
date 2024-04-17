@@ -6,25 +6,21 @@ import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import plus.easydo.bot.dto.EnableBotScriptDto;
 import plus.easydo.bot.entity.BotConf;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.BotMessage;
 import plus.easydo.bot.entity.BotNotice;
 import plus.easydo.bot.entity.BotRequest;
-import plus.easydo.bot.entity.BotScriptBot;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.manager.BotConfManager;
 import plus.easydo.bot.manager.BotInfoManager;
 import plus.easydo.bot.manager.BotMessageManager;
 import plus.easydo.bot.manager.BotNoticeManager;
 import plus.easydo.bot.manager.BotRequestManager;
-import plus.easydo.bot.manager.BotScriptBotManager;
 import plus.easydo.bot.qo.BotMessageQo;
 import plus.easydo.bot.qo.BotNoticeQo;
 import plus.easydo.bot.qo.BotQo;
 import plus.easydo.bot.qo.BotRequestQo;
-import plus.easydo.bot.service.BotScriptService;
 import plus.easydo.bot.service.BotService;
 import plus.easydo.bot.service.OneBotApiService;
 import plus.easydo.bot.util.BotConfUtil;
@@ -55,10 +51,6 @@ public class BotServiceImpl implements BotService {
     private final BotRequestManager botRequestManager;
 
     private final BotNoticeManager botNoticeManager;
-
-    private final BotScriptBotManager botScriptBotManager;
-
-    private final BotScriptService botScriptService;
 
     @Autowired
     private Map<String, OneBotApiService> apiServiceMap;
@@ -191,33 +183,6 @@ public class BotServiceImpl implements BotService {
     @Override
     public BotInfo getByBotNumber(String botNumber) {
         return botInfoManager.getByBotNumber(botNumber);
-    }
-
-    @Override
-    public List<Long> getEnableBotScript(Long id) {
-        BotInfo botInfo = botInfoManager.getById(id);
-        if (Objects.isNull(botInfo)) {
-            throw new BaseException("机器人不存在");
-        }
-        return botScriptBotManager.getBotScript(botInfo.getBotNumber()).stream().map(BotScriptBot::getScriptId).toList();
-    }
-
-    @Override
-    public boolean enableBotScript(EnableBotScriptDto enableBotScriptDto) {
-        BotInfo botInfo = botInfoManager.getById(enableBotScriptDto.getBotId());
-        boolean res;
-        if (Objects.isNull(botInfo)) {
-            throw new BaseException("机器人不存在");
-        }
-        if (Objects.isNull(enableBotScriptDto.getScriptIds()) || enableBotScriptDto.getScriptIds().isEmpty()) {
-            return botScriptBotManager.clearBotScript(botInfo.getBotNumber());
-        }
-        botScriptBotManager.clearBotScript(botInfo.getBotNumber());
-        res = botScriptBotManager.saveBotScript(botInfo.getBotNumber(), enableBotScriptDto.getScriptIds());
-        if (res) {
-            botScriptService.initBotEventScriptCache();
-        }
-        return res;
     }
 
     @Override

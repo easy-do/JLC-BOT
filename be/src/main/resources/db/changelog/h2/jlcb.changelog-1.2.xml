@@ -1680,5 +1680,11 @@
                 CONF_KEY = 'menu';
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240415" dbms="h2" failOnError="true">
+        <sql dbms="h2">
+            DROP TABLE BOT_SCRIPT;
+            DROP TABLE BOT_SCRIPT_BOT;
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>

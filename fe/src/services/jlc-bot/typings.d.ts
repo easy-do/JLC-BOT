@@ -8,24 +8,6 @@ declare namespace API {
     remark?: string;
   };
 
-  type BotEventScript = {
-    id?: number;
-    scriptName?: string;
-    eventType?: string;
-    scriptType?: string;
-    scriptContent?: string;
-    remark?: string;
-  };
-
-  type BotEventScriptQo = {
-    current?: number;
-    pageSize?: number;
-    scriptName?: string;
-    eventType?: string;
-    scriptType?: string;
-    remark?: string;
-  };
-
   type BotInfo = {
     id?: number;
     botNumber?: string;
@@ -157,11 +139,14 @@ declare namespace API {
 
   type CmpContextBean = {
     name?: string;
+    desc?: string;
     methods?: CmpContextBeanMethod[];
   };
 
   type CmpContextBeanMethod = {
     name?: string;
+    returnType?: string;
+    demo?: string;
     desc?: string;
   };
 
@@ -195,11 +180,6 @@ declare namespace API {
     params?: Record<string, any>;
   };
 
-  type EnableBotScriptDto = {
-    botId?: number;
-    scriptIds?: number[];
-  };
-
   type getBotConfParams = {
     botNumber: string;
   };
@@ -218,10 +198,6 @@ declare namespace API {
 
   type getConfInfoParams = {
     id: Record<string, any>;
-  };
-
-  type getEnableBotScriptParams = {
-    id: number;
   };
 
   type getHighLevelDevInfoParams = {
@@ -269,10 +245,6 @@ declare namespace API {
   };
 
   type infoBotParams = {
-    id: number;
-  };
-
-  type infoBotScriptParams = {
     id: number;
   };
 
@@ -376,15 +348,6 @@ declare namespace API {
     total?: number;
   };
 
-  type RBotEventScript = {
-    code?: number;
-    data?: BotEventScript;
-    message?: string;
-    errorMessage?: string;
-    success?: boolean;
-    total?: number;
-  };
-
   type RBotInfo = {
     code?: number;
     data?: BotInfo;
@@ -457,15 +420,6 @@ declare namespace API {
   type RListBotConf = {
     code?: number;
     data?: BotConf[];
-    message?: string;
-    errorMessage?: string;
-    success?: boolean;
-    total?: number;
-  };
-
-  type RListBotEventScript = {
-    code?: number;
-    data?: BotEventScript[];
     message?: string;
     errorMessage?: string;
     success?: boolean;

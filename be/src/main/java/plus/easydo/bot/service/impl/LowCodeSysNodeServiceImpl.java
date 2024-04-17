@@ -77,7 +77,12 @@ public class LowCodeSysNodeServiceImpl extends ServiceImpl<LowCodeSysNodeMapper,
         checkNodeName(lowCodeSysNode.getNodeName());
         boolean res = save(lowCodeSysNode);
         if (res && Boolean.FALSE.equals(lowCodeSysNode.getSystemNode())) {
-            liteFlowScriptManager.createData(lowCodeSysNode);
+            try {
+                liteFlowScriptManager.createData(lowCodeSysNode);
+            }catch (Exception e){
+                removeById(lowCodeSysNode.getId());
+                throw new BaseException("创建脚本失败:"+e.getMessage());
+            }
         }
         return res;
     }
@@ -118,7 +123,12 @@ public class LowCodeSysNodeServiceImpl extends ServiceImpl<LowCodeSysNodeMapper,
     public Long importNode(LowCodeSysNode sysNode) {
         saveSysNode(sysNode);
         if(Boolean.FALSE.equals(sysNode.getSystemNode())){
-            liteFlowScriptManager.updateScriptData(sysNode.getScript());
+            try {
+                liteFlowScriptManager.createData(sysNode);
+            }catch (Exception e){
+                removeById(sysNode.getId());
+                return null;
+            }
         }
         return sysNode.getId();
     }

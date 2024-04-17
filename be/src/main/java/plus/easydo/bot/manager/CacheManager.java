@@ -1,7 +1,6 @@
 package plus.easydo.bot.manager;
 
 
-import plus.easydo.bot.entity.BotEventScript;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.HighLevelDevelopConf;
 import plus.easydo.bot.entity.LowCodeNodeConf;
@@ -44,18 +43,6 @@ public class CacheManager {
      * 机器人配置缓存
      */
     public static final Map<String, Map<String, String>> BOT_CONF_CACHE = new HashMap<>();
-    /**
-     * 事件与脚本对应关系
-     */
-    public static final Map<String, List<Long>> EVENT_SCRIPT_ID_CACHE = new HashMap<>();
-    /**
-     * 机器人与脚本对应关系
-     */
-    public static final Map<String, List<Long>> BOT_SCRIPT_ID_CACHE = new HashMap<>();
-    /**
-     * 所有脚本缓存
-     */
-    public static final Map<Long, BotEventScript> EVENT_SCRIPT_CACHE = new HashMap<>();
     /**
      * 所有节点配置缓存
      */

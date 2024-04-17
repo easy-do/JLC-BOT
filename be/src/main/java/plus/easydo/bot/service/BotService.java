@@ -1,7 +1,6 @@
 package plus.easydo.bot.service;
 
 import com.mybatisflex.core.paginate.Page;
-import plus.easydo.bot.dto.EnableBotScriptDto;
 import plus.easydo.bot.entity.BotConf;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.BotMessage;
@@ -55,10 +54,6 @@ public interface BotService {
     BotConf getByBotNumberAndKey(String botNumber, String key);
 
     BotInfo getByBotNumber(String botNumber);
-
-    List<Long> getEnableBotScript(Long id);
-
-    boolean enableBotScript(EnableBotScriptDto enableBotScriptDto);
 
     boolean removeBotConfLike(String botNumber, String key);
 

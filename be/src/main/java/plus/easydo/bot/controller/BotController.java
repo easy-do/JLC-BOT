@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import plus.easydo.bot.dto.EnableBotScriptDto;
 import plus.easydo.bot.entity.BotConf;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.BotMessage;
@@ -224,34 +223,6 @@ public class BotController {
     @GetMapping("/cleanBotNotice")
     public R<Boolean> cleanBotNotice() {
         return DataResult.ok(botService.cleanBotNotice());
-    }
-
-    /**
-     * 开启脚本
-     *
-     * @param enableBotScriptDto
-     * @return
-     */
-    @SaCheckLogin
-    @Operation(summary = "启用脚本")
-    @PostMapping("/enableBotScript")
-    public R<Boolean> enableBotScript(@RequestBody EnableBotScriptDto enableBotScriptDto) {
-        return DataResult.ok(botService.enableBotScript(enableBotScriptDto));
-    }
-
-    /**
-     * 已开启脚本
-     *
-     * @param id id
-     * @return vo.plus.easydo.lowcode.bot.R<java.util.List < java.lang.Long>>
-     * @author laoyu
-     * @date 2024/2/24
-     */
-    @SaCheckLogin
-    @Operation(summary = "已开启脚本")
-    @PostMapping("/getEnableBotScript/{id}")
-    public R<List<Long>> getEnableBotScript(@PathVariable("id") Long id) {
-        return DataResult.ok(botService.getEnableBotScript(id));
     }
 
 }

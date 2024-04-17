@@ -379,12 +379,16 @@ const sysNode: React.FC = () => {
               value: 'java',
             },
             {
-              label: 'groovy',
-              value: 'groovy',
-            },
-            {
               label: 'python',
               value: 'python',
+            },
+            {
+              label: 'js',
+              value: 'js',
+            },
+            {
+              label: 'groovy',
+              value: 'groovy',
             },
             {
               label: 'lua',

@@ -14,7 +14,6 @@ import * as jiedianpeizhizhixingrizhi from './jiedianpeizhizhixingrizhi';
 import * as didaima from './didaima';
 import * as liteflowScript from './liteflowScript';
 import * as xitongpeizhi from './xitongpeizhi';
-import * as jiqirenjiaoben from './jiqirenjiaoben';
 import * as shangbaoxiaoxirizhi from './shangbaoxiaoxirizhi';
 import * as jiqiren from './jiqiren';
 import * as webhook from './webhook';
@@ -34,7 +33,6 @@ export default {
   didaima,
   liteflowScript,
   xitongpeizhi,
-  jiqirenjiaoben,
   shangbaoxiaoxirizhi,
   jiqiren,
   webhook,

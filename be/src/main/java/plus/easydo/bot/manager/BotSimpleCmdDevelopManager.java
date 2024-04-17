@@ -2,7 +2,6 @@ package plus.easydo.bot.manager;
 
 
 import com.mybatisflex.core.query.QueryWrapper;
-import plus.easydo.bot.entity.BotHighLevelDevelop;
 import plus.easydo.bot.mapper.BotSimpleCmdDevelopMapper;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.entity.BotSimpleCmdDevelop;
