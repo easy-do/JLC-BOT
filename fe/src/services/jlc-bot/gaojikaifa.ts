@@ -123,13 +123,13 @@ export async function setBotHighLevelDevelop(
   });
 }
 
-/** 更新 PUT /api/highLevelDevelop/update */
+/** 更新 POST /api/highLevelDevelop/update */
 export async function updateHighLevelDev(
   body: API.HighLevelDevelopConf,
   options?: { [key: string]: any },
 ) {
   return request<API.RBoolean>('/api/highLevelDevelop/update', {
-    method: 'PUT',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },

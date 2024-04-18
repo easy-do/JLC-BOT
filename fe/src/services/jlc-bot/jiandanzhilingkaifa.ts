@@ -123,13 +123,13 @@ export async function setBotSimpleCmdDevelop(
   });
 }
 
-/** 更新 PUT /api/simpleCmdDevelop/update */
+/** 更新 POST /api/simpleCmdDevelop/update */
 export async function updateSimpleDevelop(
   body: API.SimpleCmdDevelopConf,
   options?: { [key: string]: any },
 ) {
   return request<API.RBoolean>('/api/simpleCmdDevelop/update', {
-    method: 'PUT',
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
