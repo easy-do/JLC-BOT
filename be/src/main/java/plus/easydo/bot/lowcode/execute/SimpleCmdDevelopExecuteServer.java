@@ -39,20 +39,18 @@ public class SimpleCmdDevelopExecuteServer {
         //匹配指令规则
         String cmdType = simpleCmdDevelopConf.getCmdType();
         String cmd = simpleCmdDevelopConf.getCmd();
-        String message = paramsJson.getStr(OneBotConstants.MESSAGE);
         String messageParseStr = paramsJson.getStr(OneBotConstants.MESSAGE_PARSE);
+        OneBotMessageParse messageParse = JSONUtil.toBean(messageParseStr, OneBotMessageParse.class);
         boolean isProcess = false;
         switch (cmdType) {
-            case "equals" -> isProcess = CharSequenceUtil.equals(cmd, message);
-            case "contains" -> isProcess = CharSequenceUtil.contains(message, cmd);
-            case "startWith" -> isProcess = CharSequenceUtil.startWith(message, cmd);
-            case "endWith" -> isProcess = CharSequenceUtil.endWith(message, cmd);
+            case "equals" -> isProcess = CharSequenceUtil.equals(cmd, messageParse.getSimpleMessage());
+            case "contains" -> isProcess = CharSequenceUtil.contains(messageParse.getSimpleMessage(), cmd);
+            case "startWith" -> isProcess = CharSequenceUtil.startWith(messageParse.getSimpleMessage(), cmd);
+            case "endWith" -> isProcess = CharSequenceUtil.endWith(messageParse.getSimpleMessage(), cmd);
             default -> {
                 if (Objects.nonNull(messageParseStr)) {
-                    OneBotMessageParse messageParse = JSONUtil.toBean(messageParseStr, OneBotMessageParse.class);
                     isProcess = CharSequenceUtil.equals(messageParse.getType(), cmdType);
                 }
-
             }
         }
         if (isProcess) {

@@ -37,11 +37,11 @@ public class OneBotSimpleCmdPostHandler {
             String botNumber = postData.getStr(OneBotConstants.SELF_ID);
             BotInfo botInfo = OneBotUtils.getBotInfo(botNumber);
             if (Objects.nonNull(botInfo)) {
-                List<Long> highLevelIdList = CacheManager.BOT_SIMPLE_CMD_DEV_CONF_CACHE.get(botInfo.getId());
-                if (Objects.nonNull(highLevelIdList)) {
-                    log.debug("机器人节点处理器,为机器人[{}]找到{}个高级开发配置", botNumber, highLevelIdList.size());
+                List<Long> simpleIds = CacheManager.BOT_SIMPLE_CMD_DEV_CONF_CACHE.get(botInfo.getId());
+                if (Objects.nonNull(simpleIds)) {
+                    log.debug("机器人节点处理器,为机器人[{}]找到{}个简单指令开发配置", botNumber, simpleIds.size());
                     //开始执行流程
-                    highLevelIdList.forEach(highLevelId -> {
+                    simpleIds.forEach(highLevelId -> {
                         SimpleCmdDevelopConf simpleCmdDevelopConf = CacheManager.SIMPLE_CMD_DEV_CONF_CACHE.get(highLevelId);
                         //预处理参数、parseMessage
                         MessageParseUtil.parseMessage(postData);
