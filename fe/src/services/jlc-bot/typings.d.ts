@@ -150,6 +150,11 @@ declare namespace API {
     desc?: string;
   };
 
+  type CmpLog = {
+    type?: string;
+    context?: string;
+  };
+
   type CmpStepResult = {
     nodeId?: string;
     nodeName?: string;
@@ -162,6 +167,7 @@ declare namespace API {
     param?: { raw?: Record<string, any>; config?: JSONConfig; empty?: boolean };
     rollbackTimeSpent?: number;
     contextBeanList?: CmpContextBean[];
+    logs?: CmpLog[];
   };
 
   type copyNodeConfParams = {

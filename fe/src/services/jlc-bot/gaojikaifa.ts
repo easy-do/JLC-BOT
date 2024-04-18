@@ -79,7 +79,7 @@ export async function highLevelDevPage(
   });
 }
 
-/** 删除 DELETE /api/highLevelDevelop/remove/${param0} */
+/** 删除 GET /api/highLevelDevelop/remove/${param0} */
 export async function removeHighLevelDev(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.removeHighLevelDevParams,
@@ -87,7 +87,7 @@ export async function removeHighLevelDev(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<API.RBoolean>(`/api/highLevelDevelop/remove/${param0}`, {
-    method: 'DELETE',
+    method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
   });

@@ -79,7 +79,7 @@ export async function pageSimpleDevelop(
   });
 }
 
-/** 删除 DELETE /api/simpleCmdDevelop/remove/${param0} */
+/** 删除 GET /api/simpleCmdDevelop/remove/${param0} */
 export async function removeSimpleDevelop(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.removeSimpleDevelopParams,
@@ -87,7 +87,7 @@ export async function removeSimpleDevelop(
 ) {
   const { id: param0, ...queryParams } = params;
   return request<API.RBoolean>(`/api/simpleCmdDevelop/remove/${param0}`, {
-    method: 'DELETE',
+    method: 'GET',
     params: { ...queryParams },
     ...(options || {}),
   });

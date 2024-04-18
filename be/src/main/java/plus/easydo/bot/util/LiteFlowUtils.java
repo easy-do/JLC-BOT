@@ -3,7 +3,6 @@ package plus.easydo.bot.util;
 import cn.hutool.core.lang.Tuple;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
-import com.yomahub.liteflow.context.ContextBean;
 import com.yomahub.liteflow.flow.LiteflowResponse;
 import com.yomahub.liteflow.slot.Slot;
 import plus.easydo.bot.lowcode.context.BotApiContext;
@@ -12,6 +11,7 @@ import plus.easydo.bot.lowcode.context.ContextBeanDesc;
 import plus.easydo.bot.lowcode.context.ContextBeanMethodDesc;
 import plus.easydo.bot.lowcode.context.DbApiContext;
 import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
+import plus.easydo.bot.lowcode.context.LogContext;
 import plus.easydo.bot.lowcode.model.CmpContextBean;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 
@@ -38,6 +38,9 @@ public class LiteFlowUtils {
         JLCLiteFlowContext context = new JLCLiteFlowContext();
         context.setParam(paramsJson);
         list.add(context);
+        //日志
+        LogContext logContext = new LogContext(context);
+        list.add(logContext);
         //获取api服务
         BotApiContext apiContext = new BotApiContext(OneBotUtils.getParamBotNumber(paramsJson));
         list.add(apiContext);
@@ -56,7 +59,11 @@ public class LiteFlowUtils {
             contextBeanList.forEach(tuple -> {
                 //获得使用时的名称
                 String name = tuple.get(0);
-                Class<?> clazz = tuple.get(1).getClass();
+                Object object = tuple.get(1);
+                if (object instanceof JLCLiteFlowContext context) {
+                    cmpStepResult.setLogs(context.getLogCache());
+                }
+                Class<?> clazz = object.getClass();
                 //获取上下文的描述信息
                 String desc = "";
                 ContextBeanDesc contextBeanDesc = clazz.getAnnotation(ContextBeanDesc.class);

@@ -34,4 +34,5 @@ public class CmpStepResult {
     private JSONObject param;
     private Long rollbackTimeSpent;
     private List<CmpContextBean> contextBeanList;
+    private List<CmpLog> logs;
 }

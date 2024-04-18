@@ -21,6 +21,10 @@ function OneNodeExecuteResultVivew(props: { visible: boolean; handleVisible: (da
   }
 
 
+    //日志信息弹窗
+    const [logVivewModalVisible, handleLogVivewModalVisible] = useState<boolean>(false);
+
+
 
   return (
     <><Modal
@@ -66,6 +70,9 @@ function OneNodeExecuteResultVivew(props: { visible: boolean; handleVisible: (da
         <ProDescriptions.Item label="其他信息" valueType="text">
           {props.debugResult?.message}
         </ProDescriptions.Item>
+        <ProDescriptions.Item label="日志" valueType="text">
+          <Button type={'primary'} onClick={()=>{handleLogVivewModalVisible(true)}}>查看</Button>
+        </ProDescriptions.Item>
         <ProDescriptions.Item label="上下文实例" valueType="text">
           <Button type={'primary'} onClick={()=>{handleContextBeanModalVisible(true)}}>查看</Button>
         </ProDescriptions.Item>
@@ -82,7 +89,7 @@ function OneNodeExecuteResultVivew(props: { visible: boolean; handleVisible: (da
       onCancel={() => {
         handleContextBeanModalVisible(false);
       } }
-      width={'50%'}
+      width={'90%'}
      >
       <ProTable<API.CmpContextBean, API.CmpContextBean>
         toolBarRender={false}
@@ -152,6 +159,38 @@ function OneNodeExecuteResultVivew(props: { visible: boolean; handleVisible: (da
             render: (text, record) => {
               return currentContextBean?.name+'.'+record.demo;
             }
+          },
+        ]}
+      />
+     </Modal>
+     <Modal
+      title="日志信息"
+      open={logVivewModalVisible}
+      destroyOnClose
+      onOk={() => {
+        handleLogVivewModalVisible(false);
+      } }
+      onCancel={() => {
+        handleLogVivewModalVisible(false);
+      } }
+      width={'90%'}
+     >
+      <ProTable<API.CmpLog, API.CmpLog>
+        toolBarRender={false}
+        // actionRef={actionRef}
+        rowKey="name"
+        search={false}
+        pagination={false}
+        dataSource={props.debugResult?.logs}
+        columns={[
+          {
+            title: '日志级别',
+            dataIndex: 'type',
+          },
+          {
+            title: '内容',
+            ellipsis: true,
+            dataIndex: 'context',
           },
         ]}
       />
