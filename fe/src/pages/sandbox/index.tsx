@@ -21,10 +21,10 @@ function Sandbox(props: { confId: any; confType: string; setDebugResult: (data: 
     const chatContent = useRef<HTMLDivElement>();
     const [debugResultData, setDebugResultData] = useState<API.CmpStepResult[]>([]);
 
-    const setScrollTop = () =>{
-        try{
+    const setScrollTop = () => {
+        try {
             chatContent.current.scrollTop = chatContent.current?.scrollHeight;
-        }catch(error){
+        } catch (error) {
 
         }
     }
@@ -32,24 +32,24 @@ function Sandbox(props: { confId: any; confType: string; setDebugResult: (data: 
     const createSandbox = () => {
         let wsAddr = '';
         //http://xxxxx:xxx/#/sandbox
-        let url = window.location.href+"";
-        console.log("当前游览器访问地址",url);
+        let url = window.location.href + "";
+        console.log("当前游览器访问地址", url);
 
-        if(url.startsWith("https")){
-            wsAddr = wsAddr+"wss"
-            url = url.replace("https","");
+        if (url.startsWith("https")) {
+            wsAddr = wsAddr + "wss"
+            url = url.replace("https", "");
         }
-        if(url.startsWith("http")){
-            wsAddr = wsAddr+"ws"
-            url = url.replace("http","");
+        if (url.startsWith("http")) {
+            wsAddr = wsAddr + "ws"
+            url = url.replace("http", "");
         }
         const endIndex = url.indexOf("/#");
 
-        url = url.substring(0,endIndex);
-        if(url.endsWith(":8000")){
-            url = url.replace("8000","8888");
+        url = url.substring(0, endIndex);
+        if (url.endsWith(":8000")) {
+            url = url.replace("8000", "8888");
         }
-        wsAddr = wsAddr + url + '/ws/sandbox' + '?authorization='+cookie.load('Authorization');
+        wsAddr = wsAddr + url + '/ws/sandbox' + '?authorization=' + cookie.load('Authorization');
         const ws = new WebSocket(wsAddr);
         setSandboxMessageList([]);
         ws.onopen = () => {
@@ -67,7 +67,7 @@ function Sandbox(props: { confId: any; confType: string; setDebugResult: (data: 
             setCount(newArray.length);
             setScrollTop();
             setTimeout(() => {
-                    setScrollTop();
+                setScrollTop();
             }, 500);
         }
         ws.onerror = (error) => message.error("沙盒通信异常");
@@ -91,18 +91,18 @@ function Sandbox(props: { confId: any; confType: string; setDebugResult: (data: 
             "isSelf": true,
             "type": "text",
             "message": messageInput,
-            "confId" : props.confId,
-            "confType" : props.confType
+            "confId": props.confId,
+            "confType": props.confType
         }
-        sendSandboxMessage(sandboxMessage).then(res=>{
-            if(res.success){
+        sendSandboxMessage(sandboxMessage).then(res => {
+            if (res.success) {
                 message.success("消息处理完成");
                 setMessageInput(undefined);
-                if(props.setDebugResult){
+                if (props.setDebugResult) {
                     props.setDebugResult(res.data);
                     setDebugResultData(res.data);
                 }
-            }else{
+            } else {
                 message.error(res.errorMessage);
             }
         })
@@ -130,7 +130,7 @@ function Sandbox(props: { confId: any; confType: string; setDebugResult: (data: 
                                         <div className={styles.name}>{'JLC-BOT'}</div>
                                         <div className={styles.textCon}>
                                             {
-                                                chatItem?.type == 'image' && <div className={styles.text} ><img style={{ "objectFit": "contain","height": "50%", "width": "25%", "borderRadius": "0px" }} src={chatItem?.message} /></div>
+                                                chatItem?.type == 'image' && <div className={styles.text} ><img style={{ "objectFit": "contain", "height": "50%", "width": "25%", "borderRadius": "0px" }} src={chatItem?.message} /></div>
                                             }
                                             {
                                                 chatItem?.type == 'text' && <div className={styles.text} >{chatItem?.message}</div>
@@ -170,7 +170,7 @@ function Sandbox(props: { confId: any; confType: string; setDebugResult: (data: 
                     <Button size="large" type="primary" onClick={sendMessage}>发送</Button>
                 </div>
             </div>
-            {debugResultData &&  debugResultData.length > 0 && props.confId && <Button
+            {debugResultData && debugResultData.length > 0 && props.confId && <Button
                 type="primary"
                 icon={<PlayCircleOutlined />}
                 style={{
@@ -183,7 +183,7 @@ function Sandbox(props: { confId: any; confType: string; setDebugResult: (data: 
                 onClick={() => {
                     props.openDebug(true);
                 }}
-                >
+            >
                 执行日志
             </Button>}
         </PageContainer>

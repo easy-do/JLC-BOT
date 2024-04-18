@@ -142,6 +142,10 @@ public class LiteFlowConstants {
     public static final String JAVASCRIPT_SCRIPT_DATA = """
             logUtil.info('js script start .....');
             
+            //上下文
+            let param = jLCLiteFlowContext.getParam();
+            logUtil.info(param);
+            
             // sendGroupMessage: function
             // getGroupList: function
             // sendGroupFile: function
@@ -182,6 +186,9 @@ public class LiteFlowConstants {
               logUtil.info(`${key}: ${typeof botConfApi[key]}`);
             });
             botConfApi.saveBotConf('testKey','testVaue');
+            //直接调用java工具类静态方法
+            var strUtil = Java.type('cn.hutool.core.util.StrUtil');
+            logUtil.info(strUtil.equals('123','123'));
             """;
     public static final String PYTHON_SCRIPT_DATA = """
             import json

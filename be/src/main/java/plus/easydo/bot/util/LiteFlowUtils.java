@@ -1,17 +1,12 @@
 package plus.easydo.bot.util;
 
 import cn.hutool.core.lang.Tuple;
+import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import com.yomahub.liteflow.flow.LiteflowResponse;
 import com.yomahub.liteflow.slot.Slot;
-import plus.easydo.bot.lowcode.context.BotApiContext;
-import plus.easydo.bot.lowcode.context.BotConfApiContext;
-import plus.easydo.bot.lowcode.context.ContextBeanDesc;
-import plus.easydo.bot.lowcode.context.ContextBeanMethodDesc;
-import plus.easydo.bot.lowcode.context.DbApiContext;
-import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
-import plus.easydo.bot.lowcode.context.LogContext;
+import plus.easydo.bot.lowcode.context.*;
 import plus.easydo.bot.lowcode.model.CmpContextBean;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 
@@ -71,7 +66,7 @@ public class LiteFlowUtils {
                     desc = contextBeanDesc.value();
                 }
                 //构建方法信息
-                Method[] methods = clazz.getDeclaredMethods();
+                Method[] methods = ReflectUtil.getPublicMethods(clazz);
                 List<CmpContextBean.CmpContextBeanMethod> methodNameList = Arrays.stream(methods).map(method -> {
                     Class<?> returnClazz = method.getReturnType();
                     String returnType = returnClazz.getSimpleName();
