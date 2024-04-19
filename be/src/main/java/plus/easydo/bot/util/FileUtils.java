@@ -97,5 +97,40 @@ public class FileUtils {
         return homePath + "/win32-x86-64/wcf.exe";
     }
 
+    public static String copyJython() {
+        String homePath = getHomePath();
+        try {
+            String os = System.getProperty("os.name");
+            String installPath;
+            String jythonPath;
+            if (os.toLowerCase().startsWith("win")) {
+                installPath = homePath + "/jython-installer-2.7.3.jar";
+                jythonPath = homePath + "/jython2.7.3";
+                log.info("当前系统为Windows,首次运行请使用 <jython-install.bat> 安装jython环境");
+            }else {
+                installPath = homePath + "/data/jython-installer-2.7.3.jar";
+                jythonPath = "/data/jython2.7.3";
+                log.info("docker环境下需手动执行命令<docker exec -it jlc-bot java -jar /data/jython-installer-2.7.3.jar>安装jython环境");
+            }
+            if (!FileUtil.exist(jythonPath)) {
+                FileUtil.mkdir(jythonPath);
+            }
+            if (FileUtil.exist(installPath)) {
+                return jythonPath;
+            }
+            ClassPathResource installResource = new ClassPathResource("/lib/jython-installer-2.7.3.jar");
+            //将安装文件复制出来
+            BufferedOutputStream tempPathOp = FileUtil.getOutputStream(installPath);
+            InputStream zipIp = installResource.getInputStream();
+            IoUtil.copy(zipIp, tempPathOp);
+            IoUtil.close(zipIp);
+            IoUtil.close(tempPathOp);
+            log.info("已将Jython安装程序复制到路径:{}",installPath);
+            return jythonPath;
+        }catch (Exception e){
+            log.error("复制jython文件失败:{}",e.getMessage());
+        }
+        return homePath;
+    }
 
 }

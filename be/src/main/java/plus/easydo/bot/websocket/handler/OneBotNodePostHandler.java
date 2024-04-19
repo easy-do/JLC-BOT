@@ -16,7 +16,6 @@ import plus.easydo.bot.util.OneBotUtils;
 import java.util.List;
 import java.util.Objects;
 
-import static plus.easydo.bot.entity.table.BotConfTableDef.BOT_CONF;
 
 /**
  * @author laoyu

@@ -25,25 +25,25 @@ public class LogContext {
     @ContextBeanMethodDesc("打印调试日志")
     public void debug(Object obj){
         log.debug(LOG_CONTEXT,obj);
-        jlcLiteFlowContext.getLogCache().add(CmpLog.builder().type("debug").context(obj.toString()).build());
+        jlcLiteFlowContext.getLogCache().add(CmpLog.builder().type("debug").context(String.valueOf(obj)).build());
     }
 
     @ContextBeanMethodDesc("打印详情日志")
     public void info(Object obj){
         log.info(LOG_CONTEXT,obj);
-        jlcLiteFlowContext.getLogCache().add(CmpLog.builder().type("info").context(obj.toString()).build());
+        jlcLiteFlowContext.getLogCache().add(CmpLog.builder().type("info").context(String.valueOf(obj)).build());
     }
 
     @ContextBeanMethodDesc("打印警告日志")
     public void warn(Object obj){
         log.warn(LOG_CONTEXT,obj);
-        jlcLiteFlowContext.getLogCache().add(CmpLog.builder().type("warn").context(obj.toString()).build());
+        jlcLiteFlowContext.getLogCache().add(CmpLog.builder().type("warn").context(String.valueOf(obj)).build());
     }
 
     @ContextBeanMethodDesc("打印异常日志")
     public void error(Object obj){
         log.error(LOG_CONTEXT,obj);
-        jlcLiteFlowContext.getLogCache().add(CmpLog.builder().type("error").context(obj.toString()).build());
+        jlcLiteFlowContext.getLogCache().add(CmpLog.builder().type("error").context(String.valueOf(obj)).build());
     }
 
 }
