@@ -50,6 +50,32 @@ public class OneBotApiUtils {
     }
 
     /**
+     * 发送消息
+     *
+     * @param message message
+     * @return java.lang.String
+     * @author laoyu
+     * @date 2024-02-21
+     */
+    public static void sendMessage(String botNumber, String message) {
+        getApiServer(botNumber).sendMessage(botNumber, message);
+    }
+
+
+    /**
+     * 发送私聊消息
+     *
+     * @param userId userId
+     * @param message message
+     * @return java.lang.String
+     * @author laoyu
+     * @date 2024-02-21
+     */
+    public static void sendPrivateMessage(String botNumber, String userId, String message) {
+        getApiServer(botNumber).sendPrivateMessage(botNumber, userId, message);
+    }
+
+    /**
      * 发送群消息
      *
      * @param groupId groupId

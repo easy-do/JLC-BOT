@@ -57,6 +57,16 @@ public class OneBotApiWcfHttpServiceImpl implements OneBotApiService {
     }
 
     @Override
+    public void sendMessage(String botNumber, String message) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void sendPrivateMessage(String botNumber, String userId, String message) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
     public void sendGroupMessage(String botNumber, String groupId, String message) {
         JSONObject body = JSONUtil.createObj();
         body.set("aters", "");

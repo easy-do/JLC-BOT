@@ -45,9 +45,18 @@ public class OneBotApiSandboxServiceImpl implements OneBotApiService {
     }
 
     @Override
+    public void sendMessage(String botNumber, String message) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "消息:" + message));
+    }
+
+    @Override
+    public void sendPrivateMessage(String botNumber, String userId, String message) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "私聊消息:" + message));
+    }
+
+    @Override
     public void sendGroupMessage(String botNumber, String groupId, String message) {
         SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "群消息:" + message));
-
     }
 
     @Override

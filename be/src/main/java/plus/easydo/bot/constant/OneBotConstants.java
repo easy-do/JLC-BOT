@@ -39,6 +39,8 @@ public class OneBotConstants {
     public static final String HEADER_AUTHORIZATION_VALUE_PRE = "Bearer ";
     public static final String GET_GROUP_LIST = "get_group_list";
     public static final String SEND_GROUP_MSG = "send_group_msg";
+    public static final String SEND_MSG = "send_msg";
+    public static final String SEND_PRIVATE_MSG = "send_private_msg";
     public static final String DELETE_MSG = "delete_msg";
     public static final String SET_GROUP_BAN = "set_group_ban";
     public static final String SET_GROUP_WHOLE_BAN = "set_group_whole_ban";

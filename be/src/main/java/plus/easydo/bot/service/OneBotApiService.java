@@ -28,6 +28,28 @@ public interface OneBotApiService {
      */
     String getGroupList(String botNumber);
 
+    /**
+     * 发送群消息
+     *
+     * @param botNumber botNumber
+     * @param message   message
+     * @author laoyu
+     * @date 2024-03-31
+     */
+    void sendMessage(String botNumber, String message);
+
+
+    /**
+     * 发送群消息
+     *
+     * @param botNumber botNumber
+     * @param userId   userId
+     * @param message   message
+     * @author laoyu
+     * @date 2024-03-31
+     */
+    void sendPrivateMessage(String botNumber, String userId, String message);
+
 
     /**
      * 发送群消息
@@ -39,6 +61,7 @@ public interface OneBotApiService {
      * @date 2024-03-31
      */
     void sendGroupMessage(String botNumber, String groupId, String message);
+
 
     /**
      * 向群组发送文件

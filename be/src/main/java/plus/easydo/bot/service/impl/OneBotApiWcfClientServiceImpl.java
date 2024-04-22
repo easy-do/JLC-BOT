@@ -57,6 +57,16 @@ public class OneBotApiWcfClientServiceImpl implements OneBotApiService {
     }
 
     @Override
+    public void sendMessage(String botNumber, String message) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void sendPrivateMessage(String botNumber, String userId, String message) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
     public void sendGroupMessage(String botNumber, String groupId, String message) {
         Client client = OneBotWcfClientUtils.getClient(botNumber);
         client.sendText(message, groupId, "");
@@ -76,7 +86,7 @@ public class OneBotApiWcfClientServiceImpl implements OneBotApiService {
 
     @Override
     public void setGroupBan(String botNumber, String groupId, String userId, Long duration) {
-        throw new BaseException("暂暂不支持的api");
+        throw new BaseException("暂不支持的api");
     }
 
     @Override

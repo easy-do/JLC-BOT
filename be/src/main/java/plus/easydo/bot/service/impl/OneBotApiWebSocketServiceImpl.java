@@ -1,8 +1,10 @@
 package plus.easydo.bot.service.impl;
 
 import cn.hutool.core.lang.UUID;
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.service.OneBotApiService;
@@ -15,6 +17,7 @@ import java.util.Objects;
  * @Date 2024-03-31
  * @Description oneBot协议scf-http请求api实现
  */
+@Slf4j
 @Service("websocket_one_bot_api")
 public class OneBotApiWebSocketServiceImpl implements OneBotApiService {
 
@@ -56,10 +59,48 @@ public class OneBotApiWebSocketServiceImpl implements OneBotApiService {
     }
 
     @Override
+    public void sendMessage(String botNumber, String message) {
+        if (JSONUtil.isTypeJSON(message)) {
+            try {
+                JSONObject jsonMessage = JSONUtil.parseObj(message);
+                sendSocket(botNumber, OneBotConstants.SEND_MSG, jsonMessage);
+            }catch (Exception e) {
+                //do nothing
+                log.error("发送消息失败", e);
+            }
+        }
+    }
+
+    @Override
+    public void sendPrivateMessage(String botNumber, String userId, String message) {
+        JSON jsonMessage = null;
+        if (JSONUtil.isTypeJSON(message)) {
+            try {
+                jsonMessage = JSONUtil.parse(message);
+            }catch (Exception e) {
+                //do nothing
+            }
+        }
+        JSONObject body = JSONUtil.createObj();
+        body.set("user_id", userId);
+        body.set("message", Objects.nonNull(jsonMessage)?jsonMessage:message);
+        body.set("auto_escape", false);
+        sendSocket(botNumber, OneBotConstants.SEND_PRIVATE_MSG, body);
+    }
+
+    @Override
     public void sendGroupMessage(String botNumber, String groupId, String message) {
+        JSON jsonMessage = null;
+        if (JSONUtil.isTypeJSON(message)) {
+            try {
+                jsonMessage = JSONUtil.parse(message);
+            }catch (Exception e) {
+                //do nothing
+            }
+        }
         JSONObject body = JSONUtil.createObj();
         body.set("group_id", groupId);
-        body.set("message", message);
+        body.set("message", Objects.nonNull(jsonMessage)?jsonMessage:message);
         body.set("auto_escape", false);
         sendSocket(botNumber, OneBotConstants.SEND_GROUP_MSG, body);
     }

@@ -31,6 +31,15 @@ public class BotApiContext {
         return OneBotApiUtils.getGroupList(botNumber);
     }
 
+    @ContextBeanMethodDesc("发送消息")
+    public void sendMessage(String message) {
+        OneBotApiUtils.sendMessage(botNumber, message);
+    }
+
+    @ContextBeanMethodDesc("发送私聊消息")
+    public void sendPrivateMessage(String userId, String message) {
+        OneBotApiUtils.sendPrivateMessage(botNumber, userId, message);
+    }
 
     @ContextBeanMethodDesc("发送群消息")
     public void sendGroupMessage(String groupId, String message) {

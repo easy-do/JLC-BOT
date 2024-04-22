@@ -1,21 +1,25 @@
 package plus.easydo.bot.service.impl;
 
 import cn.hutool.http.HttpRequest;
+import cn.hutool.json.JSON;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.service.OneBotApiService;
 import plus.easydo.bot.util.OneBotUtils;
 
+import java.util.Objects;
+
 /**
  * @author yuzhanfeng
  * @Date 2024-03-31
  * @Description oneBot协议wcf-client请求api实现
  */
+@Slf4j
 @Service("http_one_bot_api")
-
 public class OneBotApiHttpServiceImpl implements OneBotApiService {
 
     private static String getRequest(String botNumber, String path) {
@@ -44,10 +48,48 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
     }
 
     @Override
-    public void sendGroupMessage(String botNumber, String groupId, String message) {
+    public void sendMessage(String botNumber, String message) {
+        if (JSONUtil.isTypeJSON(message)) {
+            try {
+                JSONObject jsonMessage = JSONUtil.parseObj(message);
+                postRequest(botNumber, OneBotConstants.SEND_MSG, jsonMessage);
+            }catch (Exception e) {
+                //do nothing
+                log.error("发送消息失败", e);
+            }
+        }
+    }
+
+    @Override
+    public void sendPrivateMessage(String botNumber, String userId, String message) {
+        JSON jsonMessage = null;
+        if (JSONUtil.isTypeJSON(message)) {
+            try {
+                jsonMessage = JSONUtil.parse(message);
+            }catch (Exception e) {
+                //do nothing
+            }
+        }
         JSONObject body = JSONUtil.createObj();
-        body.set("group_id", groupId);
-        body.set("message", message);
+        body.set("user_id", userId);
+        body.set("message", Objects.nonNull(jsonMessage)?jsonMessage:message);
+        body.set("auto_escape", false);
+        postRequest(botNumber, OneBotConstants.SEND_PRIVATE_MSG, body);
+    }
+
+    @Override
+    public void sendGroupMessage(String botNumber, String groupId, String message) {
+        JSON jsonMessage = null;
+        if (JSONUtil.isTypeJSON(message)) {
+            try {
+                jsonMessage = JSONUtil.parse(message);
+            }catch (Exception e) {
+                //do nothing
+            }
+        }
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.GROUP_ID, groupId);
+        body.set("message", Objects.nonNull(jsonMessage)?jsonMessage:message);
         body.set("auto_escape", false);
         postRequest(botNumber, OneBotConstants.SEND_GROUP_MSG, body);
     }
@@ -67,7 +109,7 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
     @Override
     public void setGroupBan(String botNumber, String groupId, String userId, Long duration) {
         JSONObject body = JSONUtil.createObj();
-        body.set("group_id", groupId);
+        body.set(OneBotConstants.GROUP_ID, groupId);
         body.set("user_id", userId);
         body.set("duration", duration * 60);
         postRequest(botNumber, OneBotConstants.SET_GROUP_BAN, body);
@@ -76,7 +118,7 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
     @Override
     public void setGroupWholeBan(String botNumber, String groupId, boolean enable) {
         JSONObject body = JSONUtil.createObj();
-        body.set("group_id", groupId);
+        body.set(OneBotConstants.GROUP_ID, groupId);
         body.set("enable", enable);
         postRequest(botNumber, OneBotConstants.SET_GROUP_WHOLE_BAN, body);
     }
@@ -84,7 +126,7 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
     @Override
     public void setGroupKick(String botNumber, String groupId, String userId, boolean rejectAddRequest) {
         JSONObject body = JSONUtil.createObj();
-        body.set("group_id", groupId);
+        body.set(OneBotConstants.GROUP_ID, groupId);
         body.set("user_id", userId);
         body.set("reject_add_request", rejectAddRequest);
         postRequest(botNumber, OneBotConstants.SET_GROUP_KICK, body);
