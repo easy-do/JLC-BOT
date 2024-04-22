@@ -143,7 +143,7 @@ public class MessageParseUtil {
      * @author laoyu
      * @date 2024/4/5
      */
-    private static String unescape(String message) {
+    public static String unescape(String message) {
         message = CharSequenceUtil.replace(message, L_BRACKET_ESCAPE, L_BRACKET);
         message = CharSequenceUtil.replace(message, R_BRACKET_ESCAPE, R_BRACKET);
         message = CharSequenceUtil.replace(message, COMMA_ESCAPE, COMMA);
@@ -159,7 +159,7 @@ public class MessageParseUtil {
      * @author laoyu
      * @date 2024/4/5
      */
-    private static String escape(String message) {
+    public static String escape(String message) {
         message = CharSequenceUtil.replace(message, L_BRACKET, L_BRACKET_ESCAPE);
         message = CharSequenceUtil.replace(message, R_BRACKET, R_BRACKET_ESCAPE);
         message = CharSequenceUtil.replace(message, COMMA, COMMA_ESCAPE);
