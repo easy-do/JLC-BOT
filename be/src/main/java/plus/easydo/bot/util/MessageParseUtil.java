@@ -88,51 +88,68 @@ public class MessageParseUtil {
 
     public static JSONArray cqMessageToArrayMessage(String cqMessage) {
         JSONArray result = JSONUtil.createArray();
-        String currentMessage = cqMessage;
-        do {
-            if (currentMessage.startsWith(L_BRACKET) && currentMessage.contains(R_BRACKET)) {
-                //截取当前消息段
-                String messageSegments = CharSequenceUtil.subBefore(currentMessage, R_BRACKET, false);
-                //取出中间的内容
-                String centerText = CharSequenceUtil.subAfter(messageSegments, L_BRACKET, false);
-                //切割出所有参数
-                List<String> centerTexts = CharSequenceUtil.split(centerText, COMMA);
-                //至少要有两个参数才是一个合法的CQ消息
-                if (centerTexts.size() > 1) {
-                    String cqType = CharSequenceUtil.subAfter(centerTexts.get(0), CQ_PRE, false);
-                    JSONObject oneBotMessage = JSONUtil.createObj();
-                    oneBotMessage.set(OneBotConstants.TYPE, cqType);
-                    JSONObject data = JSONUtil.createObj();
-                    for (int i = 1; i < centerTexts.size(); i++) {
-                        String itext = centerTexts.get(i);
-                        String key = CharSequenceUtil.subBefore(itext, "=", false);
-                        String value = CharSequenceUtil.subAfter(itext, "=", false);
-                        data.set(key, value);
+        //解码转义
+        String currentMessage = unescape(cqMessage);
+        //判断是否存在CQ码
+        if (currentMessage.contains(L_BRACKET) && currentMessage.contains(R_BRACKET)) {
+            do {
+                //判断是否CQ码开头
+                if (currentMessage.startsWith(L_BRACKET) && currentMessage.contains(R_BRACKET)) {
+                    //截取当前消息段
+                    String messageSegments = CharSequenceUtil.subBefore(currentMessage, R_BRACKET, false);
+                    //取出中间的内容
+                    String centerText = CharSequenceUtil.subAfter(messageSegments, L_BRACKET, false);
+                    //切割出所有参数
+                    List<String> centerTexts = CharSequenceUtil.split(centerText, COMMA);
+                    //至少要有两个参数才是一个合法的CQ消息
+                    if (centerTexts.size() > 1) {
+                        String cqType = CharSequenceUtil.subAfter(centerTexts.get(0), CQ_PRE, false);
+                        JSONObject oneBotMessage = JSONUtil.createObj();
+                        oneBotMessage.set(OneBotConstants.TYPE, cqType);
+                        JSONObject data = JSONUtil.createObj();
+                        for (int i = 1; i < centerTexts.size(); i++) {
+                            String itext = centerTexts.get(i);
+                            String key = CharSequenceUtil.subBefore(itext, "=", false);
+                            String value = CharSequenceUtil.subAfter(itext, "=", false);
+                            data.set(key, value);
+                        }
+                        oneBotMessage.set(OneBotConstants.DATA, data);
+                        result.add(oneBotMessage);
+                        currentMessage = CharSequenceUtil.replace(currentMessage, messageSegments + R_BRACKET, CharSequenceUtil.EMPTY);
+                    } else {
+                        //因为解析CQ发现不合法,直接返回整体是个文本消息
+                        //不存在CQ码，直接整个返回
+                        result.add(buildTextMessage(cqMessage));
+                        return result;
                     }
-                    oneBotMessage.set(OneBotConstants.DATA, data);
-                    result.add(oneBotMessage);
-                    currentMessage = CharSequenceUtil.replace(currentMessage, messageSegments + R_BRACKET, CharSequenceUtil.EMPTY);
                 } else {
+                    //不是CQ码开头则认为当前有一段文字,截取并解析文字
+                    String messageSegments = CharSequenceUtil.subBefore(currentMessage, L_BRACKET, false);
                     JSONObject oneBotMessage = JSONUtil.createObj();
                     oneBotMessage.set(OneBotConstants.TYPE, OneBotMessageTypeEnum.TEXT.getType());
                     JSONObject data = JSONUtil.createObj();
-                    data.set(OneBotMessageTypeEnum.TEXT.getType(), cqMessage);
+                    data.set(OneBotMessageTypeEnum.TEXT.getType(), escape(messageSegments));
                     oneBotMessage.set(OneBotConstants.DATA, data);
                     result.add(oneBotMessage);
-                    return result;
+                    //截取完当前文字段后，将当前消息段替换掉
+                    currentMessage = CharSequenceUtil.replace(currentMessage, messageSegments, CharSequenceUtil.EMPTY);
                 }
-            } else {
-                String messageSegments = CharSequenceUtil.subBefore(currentMessage, L_BRACKET, false);
-                JSONObject oneBotMessage = JSONUtil.createObj();
-                oneBotMessage.set(OneBotConstants.TYPE, OneBotMessageTypeEnum.TEXT.getType());
-                JSONObject data = JSONUtil.createObj();
-                data.set(OneBotMessageTypeEnum.TEXT.getType(), messageSegments);
-                oneBotMessage.set(OneBotConstants.DATA, data);
-                result.add(oneBotMessage);
-                currentMessage = CharSequenceUtil.replace(currentMessage, messageSegments, CharSequenceUtil.EMPTY);
-            }
-        } while (CharSequenceUtil.isNotBlank(currentMessage));
+            } while (CharSequenceUtil.isNotBlank(currentMessage));
+        } else {
+            //不存在CQ码，直接整个返回
+            result.add(buildTextMessage(cqMessage));
+            return result;
+        }
         return result;
+    }
+
+    private static JSONObject buildTextMessage(String cqMessage) {
+        JSONObject oneBotMessage = JSONUtil.createObj();
+        oneBotMessage.set(OneBotConstants.TYPE, OneBotMessageTypeEnum.TEXT.getType());
+        JSONObject data = JSONUtil.createObj();
+        data.set(OneBotMessageTypeEnum.TEXT.getType(), cqMessage);
+        oneBotMessage.set(OneBotConstants.DATA, data);
+        return oneBotMessage;
     }
 
     /**
