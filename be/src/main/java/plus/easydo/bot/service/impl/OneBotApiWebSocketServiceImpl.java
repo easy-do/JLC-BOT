@@ -60,7 +60,7 @@ public class OneBotApiWebSocketServiceImpl implements OneBotApiService {
         JSONObject body = JSONUtil.createObj();
         body.set("group_id", groupId);
         body.set("message", message);
-        body.set("auto_escape", true);
+        body.set("auto_escape", false);
         sendSocket(botNumber, OneBotConstants.SEND_GROUP_MSG, body);
     }
 
