@@ -59,7 +59,7 @@ mybatis-flex:
 #      password: ${MYSQL_PASS:88888888}
 
 jcl:
-  current-version: 2024.04.19
+  current-version: 2024.04.23
   wcf-enable: ${WCF_ENABLE:false} # wcf开关，使用wcf客户端模式hook本地微信则设置为 true
   mode: ${MODE:default}
 
