@@ -98,4 +98,34 @@ public class OneBotApiWcfClientServiceImpl implements OneBotApiService {
     public void setGroupKick(String botNumber, String groupId, String userId, boolean rejectAddRequest) {
         throw new BaseException("暂不支持的api");
     }
+
+    @Override
+    public void setGroupAddRequest(String botNumber, String flag, String type, boolean approve, String remark) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void setGroupAdmin(String botNumber, String groupId, String userId, boolean enable) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void setGroupLeave(String botNumber, String groupId, boolean isDismiss) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void setGroupCard(String botNumber, String groupId, String userId, String card) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void setGroupName(String botNumber, String groupId, String groupName) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void setFriendAddRequest(String botNumber, String flag, boolean approve, String remark) {
+        throw new BaseException("暂不支持的api");
+    }
 }

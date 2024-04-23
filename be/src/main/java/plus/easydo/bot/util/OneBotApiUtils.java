@@ -14,11 +14,11 @@ import java.util.Objects;
  */
 public class OneBotApiUtils {
 
+    private static BotService botService;
+
+
     private OneBotApiUtils() {
     }
-
-
-    private static BotService botService;
 
     public static OneBotApiService getApiServer(String botNumber) {
         if (Objects.isNull(botService)) {
@@ -65,7 +65,7 @@ public class OneBotApiUtils {
     /**
      * 发送私聊消息
      *
-     * @param userId userId
+     * @param userId  userId
      * @param message message
      * @return java.lang.String
      * @author laoyu
@@ -143,5 +143,90 @@ public class OneBotApiUtils {
      */
     public static void setGroupKick(String botNumber, String groupId, String userId, boolean rejectAddRequest) {
         getApiServer(botNumber).setGroupKick(botNumber, groupId, userId, rejectAddRequest);
+    }
+
+
+    /**
+     * 退群
+     *
+     * @param botNumber  botNumber
+     * @param groupId    群号
+     * @param is_dismiss 是否解散，如果登录号是群主，则仅在此项为 true 时能够解散
+     * @return void
+     * @author laoyu
+     * @date 2024/4/23
+     */
+    public static void setGroupLeave(String botNumber, String groupId, boolean is_dismiss) {
+        getApiServer(botNumber).setGroupLeave(botNumber, groupId, is_dismiss);
+    }
+
+    /**
+     * 处理群组请求
+     *
+     * @param botNumber botNumber
+     * @param flag      flag
+     * @param type      type
+     * @param approve   approve
+     * @param remark    remark
+     * @author laoyu
+     * @date 2024/4/23
+     */
+    public static void setGroupAddRequest(String botNumber, String flag, String type, boolean approve, String remark) {
+        getApiServer(botNumber).setGroupAddRequest(botNumber, flag, type, approve, remark);
+    }
+
+    /**
+     * 设置管理员
+     *
+     * @param botNumber botNumber
+     * @param groupId   groupId
+     * @param userId    userId
+     * @param enable    enable
+     * @author laoyu
+     * @date 2024/4/23
+     */
+    public static void setGroupAdmin(String botNumber, String groupId, String userId, boolean enable) {
+        getApiServer(botNumber).setGroupAdmin(botNumber, groupId, userId, enable);
+    }
+
+    /**
+     * 设置群名片
+     *
+     * @param botNumber botNumber
+     * @param groupId   groupId
+     * @param userId    userId
+     * @param card      card
+     * @return void
+     * @author laoyu
+     * @date 2024/4/23
+     */
+    public static void setGroupCard(String botNumber, String groupId, String userId, String card) {
+        getApiServer(botNumber).setGroupCard(botNumber, groupId, userId, card);
+    }
+
+    /**
+     * 设置群名称
+     *
+     * @param botNumber botNumber
+     * @param groupId   groupId
+     * @param groupName groupName
+     * @author laoyu
+     * @date 2024/4/23
+     */
+    public static void setGroupName(String botNumber, String groupId, String groupName) {
+        getApiServer(botNumber).setGroupName(botNumber, groupId, groupName);
+    }
+
+
+    /**
+     * 设置好友添加请求
+     *
+     * @param botNumber 机器人号码
+     * @param flag      标识
+     * @param approve   是否同意好友请求
+     * @param remark    备注信息
+     */
+    public static void setFriendAddRequest(String botNumber, String flag, boolean approve, String remark) {
+        getApiServer(botNumber).setFriendAddRequest(botNumber, flag, approve, remark);
     }
 }

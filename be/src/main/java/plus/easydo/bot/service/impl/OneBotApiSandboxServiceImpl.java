@@ -98,4 +98,38 @@ public class OneBotApiSandboxServiceImpl implements OneBotApiService {
         SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "将[" + groupId + "]用户[" + userId + "]移出群组" + rejectAddRequestText));
 
     }
+
+    @Override
+    public void setGroupAddRequest(String botNumber, String flag, String type, boolean approve, String remark) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "处理群组请求"+"flag:"+flag+",type:"+type+",approve"+approve+",remark:"+remark));
+    }
+
+    @Override
+    public void setGroupAdmin(String botNumber, String groupId, String userId, boolean enable) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "设置群管理员"+"groupId:"+groupId+",userId:"+userId+",enable"+enable));
+
+    }
+
+    @Override
+    public void setGroupLeave(String botNumber, String groupId, boolean isDismiss) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "退出群组"+"groupId:"+groupId+",isDismiss:"+isDismiss));
+
+    }
+
+    @Override
+    public void setGroupCard(String botNumber, String groupId, String userId, String card) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "设置群名片"+"groupId:"+groupId+",userId:"+userId+",card"+card));
+
+    }
+
+    @Override
+    public void setGroupName(String botNumber, String groupId, String groupName) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "设置群名"+"groupId:"+groupId+",groupName:"+groupName));
+
+    }
+
+    @Override
+    public void setFriendAddRequest(String botNumber, String flag, boolean approve, String remark) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "处理好友请求"+"flag:"+flag+",approve"+approve+",remark:"+remark));
+    }
 }

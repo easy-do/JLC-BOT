@@ -71,9 +71,9 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
             }
         }
         JSONObject body = JSONUtil.createObj();
-        body.set("user_id", userId);
-        body.set("message", Objects.nonNull(jsonMessage)?jsonMessage:message);
-        body.set("auto_escape", false);
+        body.set(OneBotConstants.USER_ID, userId);
+        body.set(OneBotConstants.MESSAGE, Objects.nonNull(jsonMessage)?jsonMessage:message);
+        body.set(OneBotConstants.AUTO_ESCAPE, false);
         postRequest(botNumber, OneBotConstants.SEND_PRIVATE_MSG, body);
     }
 
@@ -89,8 +89,8 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
         }
         JSONObject body = JSONUtil.createObj();
         body.set(OneBotConstants.GROUP_ID, groupId);
-        body.set("message", Objects.nonNull(jsonMessage)?jsonMessage:message);
-        body.set("auto_escape", false);
+        body.set(OneBotConstants.MESSAGE, Objects.nonNull(jsonMessage)?jsonMessage:message);
+        body.set(OneBotConstants.AUTO_ESCAPE, false);
         postRequest(botNumber, OneBotConstants.SEND_GROUP_MSG, body);
     }
 
@@ -102,7 +102,7 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
     @Override
     public void deleteMsg(String botNumber, String messageId) {
         JSONObject body = JSONUtil.createObj();
-        body.set("message_id", messageId);
+        body.set(OneBotConstants.MESSAGE_ID, messageId);
         postRequest(botNumber, OneBotConstants.DELETE_MSG, body);
     }
 
@@ -110,8 +110,8 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
     public void setGroupBan(String botNumber, String groupId, String userId, Long duration) {
         JSONObject body = JSONUtil.createObj();
         body.set(OneBotConstants.GROUP_ID, groupId);
-        body.set("user_id", userId);
-        body.set("duration", duration * 60);
+        body.set(OneBotConstants.USER_ID, userId);
+        body.set(OneBotConstants.DURATION, duration * 60);
         postRequest(botNumber, OneBotConstants.SET_GROUP_BAN, body);
     }
 
@@ -119,7 +119,7 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
     public void setGroupWholeBan(String botNumber, String groupId, boolean enable) {
         JSONObject body = JSONUtil.createObj();
         body.set(OneBotConstants.GROUP_ID, groupId);
-        body.set("enable", enable);
+        body.set(OneBotConstants.ENABLE, enable);
         postRequest(botNumber, OneBotConstants.SET_GROUP_WHOLE_BAN, body);
     }
 
@@ -127,8 +127,61 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
     public void setGroupKick(String botNumber, String groupId, String userId, boolean rejectAddRequest) {
         JSONObject body = JSONUtil.createObj();
         body.set(OneBotConstants.GROUP_ID, groupId);
-        body.set("user_id", userId);
-        body.set("reject_add_request", rejectAddRequest);
+        body.set(OneBotConstants.USER_ID, userId);
+        body.set(OneBotConstants.REJECT_ADD_REQUEST, rejectAddRequest);
         postRequest(botNumber, OneBotConstants.SET_GROUP_KICK, body);
+    }
+
+    @Override
+    public void setGroupAddRequest(String botNumber, String flag, String type, boolean approve, String remark) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.FLAG, flag);
+        body.set(OneBotConstants.TYPE, type);
+        body.set(OneBotConstants.APPROVE, approve);
+        body.set(OneBotConstants.REASON, remark);
+        postRequest(botNumber, OneBotConstants.SET_GROUP_ADD_REQUEST, body);
+    }
+
+    @Override
+    public void setGroupAdmin(String botNumber, String groupId, String userId, boolean enable) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.GROUP_ID, groupId);
+        body.set(OneBotConstants.USER_ID, userId);
+        body.set(OneBotConstants.ENABLE, enable);
+        postRequest(botNumber, OneBotConstants.SET_GROUP_ADMIN, body);
+    }
+
+    @Override
+    public void setGroupLeave(String botNumber, String groupId, boolean isDismiss) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.GROUP_ID, groupId);
+        body.set(OneBotConstants.IS_DISMISS, isDismiss);
+        postRequest(botNumber, OneBotConstants.SET_GROUP_LEAVE, body);
+    }
+
+    @Override
+    public void setGroupCard(String botNumber, String groupId, String userId, String card) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.GROUP_ID, groupId);
+        body.set(OneBotConstants.USER_ID, userId);
+        body.set(OneBotConstants.CARD, card);
+        postRequest(botNumber, OneBotConstants.SET_GROUP_CARD, body);
+    }
+
+    @Override
+    public void setGroupName(String botNumber, String groupId, String groupName) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.GROUP_ID, groupId);
+        body.set(OneBotConstants.GROUP_NAME, groupName);
+        postRequest(botNumber, OneBotConstants.SET_GROUP_NAME, body);
+    }
+
+    @Override
+    public void setFriendAddRequest(String botNumber, String flag, boolean approve, String remark) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.FLAG, flag);
+        body.set(OneBotConstants.APPROVE, approve);
+        body.set(OneBotConstants.REASON, remark);
+        postRequest(botNumber, OneBotConstants.SET_FRIEND_ADD_REQUEST, body);
     }
 }
