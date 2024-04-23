@@ -126,7 +126,9 @@ public class HighLevelDevelopServiceImpl implements HighLevelDevelopService {
         boolean res = highLevelDevelopConfManager.save(conf);
         if(res){
             try {
-                liteFlowScriptManager.createData(conf);
+                LiteFlowScript liteFlowScript = liteFlowScriptManager.createData(conf);
+                liteFlowScript.setScriptData(conf.getScript().getScriptData());
+                liteFlowScriptManager.updateScriptData(liteFlowScript);
                 initCache();
             }catch (Exception e){
                 highLevelDevelopConfManager.removeById(conf.getId());

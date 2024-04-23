@@ -581,6 +581,10 @@ function EditNodeConf(props: {
                 value: 'notice',
               },
               {
+                label: '请求',
+                value: 'request',
+              },
+              {
                 label: '元事件',
                 value: 'meta_event',
               },

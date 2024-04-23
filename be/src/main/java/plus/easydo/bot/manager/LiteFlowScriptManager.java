@@ -57,7 +57,7 @@ public class LiteFlowScriptManager extends ServiceImpl<LiteFlowScriptMapper, Lit
         }
     }
 
-    public void createData(HighLevelDevelopConf highLevelDevelopConf) {
+    public LiteFlowScript createData(HighLevelDevelopConf highLevelDevelopConf) {
         LiteFlowScript entity = LiteFlowScript.builder()
                 .applicationName(applicationName)
                 .scriptId(LowCodeConstants.HIGH_LEVEL_DEVELOP+highLevelDevelopConf.getId())
@@ -71,14 +71,16 @@ public class LiteFlowScriptManager extends ServiceImpl<LiteFlowScriptMapper, Lit
         if (res) {
             try {
                 flowExecutor.reloadRule();
+                return entity;
             }catch (Exception e) {
                 removeById(entity.getId());
                 throw e;
             }
         }
+        return null;
     }
 
-    public void createData(SimpleCmdDevelopConf simpleCmdDevelopConf) {
+    public LiteFlowScript createData(SimpleCmdDevelopConf simpleCmdDevelopConf) {
         LiteFlowScript entity = LiteFlowScript.builder()
                 .applicationName(applicationName)
                 .scriptId(LowCodeConstants.SIMPLE_CMD_DEVELOP + simpleCmdDevelopConf.getId())
@@ -92,11 +94,13 @@ public class LiteFlowScriptManager extends ServiceImpl<LiteFlowScriptMapper, Lit
         if (res) {
             try {
                 flowExecutor.reloadRule();
+                return entity;
             }catch (Exception e) {
                 removeById(entity.getId());
                 throw e;
             }
         }
+        return null;
     }
 
     private void buildScriptData(LowCodeSysNode lowCodeSysNode, LiteFlowScript liteFlowScript) {

@@ -125,7 +125,9 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
         boolean res = simpleDevelopConfManager.save(conf);
         if (res) {
             try {
-                liteFlowScriptManager.createData(conf);
+                LiteFlowScript newScript = liteFlowScriptManager.createData(conf);
+                newScript.setScriptData(conf.getScript().getScriptData());
+                liteFlowScriptManager.updateScriptData(newScript);
                 initCache();
             }catch (Exception e){
                 simpleDevelopConfManager.removeById(conf.getId());
