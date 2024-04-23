@@ -5,8 +5,10 @@ import cn.hutool.cache.CacheUtil;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.extra.spring.SpringUtil;
+import cn.hutool.http.HttpUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketMessage;
 import org.springframework.web.socket.WebSocketSession;
@@ -18,7 +20,9 @@ import plus.easydo.bot.manager.BotPostLogServiceManager;
 import plus.easydo.bot.websocket.OneBotService;
 
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
@@ -138,5 +142,24 @@ public class OneBotWebSocketUtils {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+    public static String getSessionParam(WebSocketSession session, String key){
+        HttpHeaders handshakeHeaders = session.getHandshakeHeaders();
+        List<String> selfId = handshakeHeaders.get(key);
+        if (Objects.nonNull(selfId) && !selfId.isEmpty()) {
+            return selfId.get(0);
+        }
+        return getQueryParam(session.getUri().getQuery(), key);
+    }
+
+    public static String getQueryParam(String queryParamUrl, String key) {
+        Map<String, List<String>> queryParam = HttpUtil.decodeParams(queryParamUrl, Charset.defaultCharset());
+        if(Objects.nonNull(queryParam)) {
+            List<String> values = queryParam.get(key);
+            if(Objects.nonNull(values) && !values.isEmpty()) {
+                return values.get(0);
+            }
+        }
+        return null;
     }
 }

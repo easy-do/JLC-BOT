@@ -32,10 +32,9 @@ public class OneBotWebSocketServerHandler implements WebSocketHandler {
     public void afterConnectionEstablished(WebSocketSession session) {
         log.info("oneBot反向websocket建立连接:" + session.getId());
         //鉴权
-        HttpHeaders handshakeHeaders = session.getHandshakeHeaders();
-        List<String> selfId = handshakeHeaders.get(OneBotConstants.HEADER_SELF_ID);
-        if (Objects.nonNull(selfId) && !selfId.isEmpty()) {
-            BotInfo botInfo = OneBotUtils.getBotInfo(selfId.get(0));
+        String selfId = OneBotWebSocketUtils.getSessionParam(session,OneBotConstants.HEADER_SELF_ID);
+        if (Objects.nonNull(selfId)) {
+            BotInfo botInfo = OneBotUtils.getBotInfo(selfId);
             if (Objects.nonNull(botInfo)) {
                 //判断是否指定了反向websocket
                 String postType = OneBotIntergrationPostTypeEnum.WEBSOCKET_REVERSE.getType();
@@ -46,10 +45,10 @@ public class OneBotWebSocketServerHandler implements WebSocketHandler {
                 }
                 String botSecret = botInfo.getBotSecret();
                 if (CharSequenceUtil.isNotBlank(botSecret)) {
-                    List<String> authorization = handshakeHeaders.get(OneBotConstants.HEADER_AUTHORIZATION);
-                    if (Objects.nonNull(authorization) && !authorization.isEmpty()) {
-                        if (CharSequenceUtil.equals(OneBotConstants.HEADER_AUTHORIZATION_VALUE_PRE + botSecret, authorization.get(0))) {
-                            log.info("oneBot反向websocket鉴权成功,保持会话连接.");
+                    String authorization = OneBotWebSocketUtils.getSessionParam(session, OneBotConstants.HEADER_AUTHORIZATION);
+                    if (Objects.nonNull(authorization)) {
+                        if (CharSequenceUtil.equals(OneBotConstants.HEADER_AUTHORIZATION_VALUE_PRE + botSecret, authorization)) {
+                            log.info("[{}]oneBot反向websocket鉴权成功,保持会话连接.",botInfo.getBotNumber());
                             OneBotWebSocketUtils.saveSession(session, botInfo);
                         } else {
                             log.warn("oneBot反向websocket鉴权失败,断开会话.");
@@ -60,13 +59,16 @@ public class OneBotWebSocketServerHandler implements WebSocketHandler {
                         OneBotWebSocketUtils.closeSession(session);
                     }
                 } else {
-                    log.warn("oneBot反向websocket未设置密钥,跳过鉴权,保持会话连接.");
+                    log.warn("[{}]oneBot反向websocket未设置密钥,跳过鉴权,保持会话连接.",botInfo.getBotNumber());
                     OneBotWebSocketUtils.saveSession(session, botInfo);
                 }
             } else {
-                log.warn("oneBot反向websocket匹配失败,断开会话.");
+                log.warn("oneBot反向websocket匹配失败,未找到机器人,断开会话.");
                 OneBotWebSocketUtils.closeSession(session);
             }
+        }else {
+            log.warn("oneBot反向websocket请求头未传递{},断开会话.", OneBotConstants.HEADER_SELF_ID);
+            OneBotWebSocketUtils.closeSession(session);
         }
     }
 
