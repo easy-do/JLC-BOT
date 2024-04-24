@@ -1,9 +1,11 @@
 package plus.easydo.bot.service;
 
 
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.service.IService;
 import plus.easydo.bot.entity.LiteFlowScript;
 import plus.easydo.bot.entity.LowCodeSysNode;
+import plus.easydo.bot.qo.SysNodeQo;
 
 import java.io.Serializable;
 import java.util.List;
@@ -32,4 +34,6 @@ public interface LowCodeSysNodeService extends IService<LowCodeSysNode> {
     Long importNode(LowCodeSysNode sysNode);
 
     LowCodeSysNode getSysNodeInfo(Serializable id);
+
+    Page<LowCodeSysNode> pageSysNode(SysNodeQo sysNodeQo);
 }

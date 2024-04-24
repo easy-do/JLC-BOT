@@ -174,9 +174,7 @@ const sysNode: React.FC = () => {
   const columns: ProColumns<API.SimpleCmdDevelopConf>[] = [
     {
       title: '配置名称',
-      renderText(_text, record) {
-        return record.confName;
-      },
+      dataIndex: 'confName',
     },
     {
       title: '备注',

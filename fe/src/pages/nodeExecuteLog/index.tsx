@@ -19,7 +19,7 @@ const NodeExecuteLog: React.FC = () => {
     },
     {
       title: '节点名称',
-      dataIndex: 'confName',
+      dataIndex: 'nodeName',
     },
     {
       title: '发生时间',

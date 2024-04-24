@@ -58,12 +58,18 @@ const nodeConf: React.FC = () => {
       dataIndex: 'confName',
     },
     {
+      title: '事件类型',
+      dataIndex: 'eventType',
+    },
+    {
       title: '创建时间',
       dataIndex: 'createTime',
+      search:false
     },
     {
       title: '更新时间',
       dataIndex: 'updateTime',
+      search:false
     },
     {
       title: '操作',

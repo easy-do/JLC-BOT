@@ -25,7 +25,7 @@ import plus.easydo.bot.manager.BotHighLevelDevelopManager;
 import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.manager.HighLevelDevelopConfManager;
 import plus.easydo.bot.manager.LiteFlowScriptManager;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.HighLevelDevelopConfQo;
 import plus.easydo.bot.service.HighLevelDevelopService;
 import plus.easydo.bot.util.LiteFlowUtils;
 import plus.easydo.bot.util.MessageParseUtil;
@@ -55,8 +55,8 @@ public class HighLevelDevelopServiceImpl implements HighLevelDevelopService {
     private final BotHighLevelDevelopManager botHighLevelDevelopManager;
 
     @Override
-    public Page<HighLevelDevelopConf> highLevelDevPage(PageQo pageQo) {
-        return highLevelDevelopConfManager.page(new Page<>(pageQo.getCurrent(),pageQo.getPageSize()));
+    public Page<HighLevelDevelopConf> highLevelDevPage(HighLevelDevelopConfQo highLevelDevelopConfQo) {
+        return highLevelDevelopConfManager.highLevelDevPage(highLevelDevelopConfQo);
     }
 
     @Override

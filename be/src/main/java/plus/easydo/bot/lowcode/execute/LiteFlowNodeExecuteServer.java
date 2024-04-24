@@ -60,7 +60,7 @@ public class LiteFlowNodeExecuteServer {
 
         String elData = stringBuilder.toString();
         String chainName = "botChain" + lowCodeNodeConf.getId();
-        LiteFlowChainELBuilder.createChain().setChainName(chainName).setEL(elData).build();
+        LiteFlowChainELBuilder.createChain().setChainId(chainName).setEL(elData).build();
 
         //初始化上下文
         JLCLiteFlowContext context = new JLCLiteFlowContext();

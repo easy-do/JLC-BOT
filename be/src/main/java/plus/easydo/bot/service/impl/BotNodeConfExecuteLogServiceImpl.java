@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.entity.BotNodeConfExecuteLog;
 import plus.easydo.bot.manager.BotNodeConfExecuteLogManager;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.NodeConfExecuteLogQo;
 import plus.easydo.bot.service.BotNodeConfExecuteLogService;
 
 /**
@@ -22,8 +22,8 @@ public class BotNodeConfExecuteLogServiceImpl implements BotNodeConfExecuteLogSe
     private final BotNodeConfExecuteLogManager botNodeConfExecuteLogManager;
 
     @Override
-    public Page<BotNodeConfExecuteLog> pageNodeConfExecuteLog(PageQo pageQo) {
-        return botNodeConfExecuteLogManager.pageNodeConfExecuteLog(pageQo);
+    public Page<BotNodeConfExecuteLog> pageNodeConfExecuteLog(NodeConfExecuteLogQo nodeConfExecuteLogQo) {
+        return botNodeConfExecuteLogManager.pageNodeConfExecuteLog(nodeConfExecuteLogQo);
     }
 
     @Override

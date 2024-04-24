@@ -77,7 +77,7 @@ export async function listNodeConf(options?: { [key: string]: any }) {
 }
 
 /** 分页查询节点配置 POST /api/lowcode/pageNodeConf */
-export async function pageNodeConf(body: API.PageQo, options?: { [key: string]: any }) {
+export async function pageNodeConf(body: API.NodeConfQo, options?: { [key: string]: any }) {
   return request<API.RListLowCodeNodeConf>('/api/lowcode/pageNodeConf', {
     method: 'POST',
     headers: {

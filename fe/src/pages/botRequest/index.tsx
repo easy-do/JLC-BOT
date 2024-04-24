@@ -35,6 +35,7 @@ const botRequest: React.FC = () => {
     },
     {
       title: '接收时间',
+      search: false,
       dataIndex: 'selfTime',
     },
     {

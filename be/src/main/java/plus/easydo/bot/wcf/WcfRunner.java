@@ -13,7 +13,7 @@ import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
-import plus.easydo.bot.manager.BotPostLogServiceManager;
+import plus.easydo.bot.manager.BotPostLogManager;
 import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.util.OneBotWcfClientUtils;
 import plus.easydo.bot.websocket.OneBotService;
@@ -30,7 +30,7 @@ import java.util.concurrent.CompletableFuture;
 @RequiredArgsConstructor
 public class WcfRunner implements ApplicationRunner {
 
-    private final BotPostLogServiceManager botPostLogServiceManager;
+    private final BotPostLogManager botPostLogManager;
 
     private final OneBotService oneBotService;
 
@@ -54,7 +54,7 @@ public class WcfRunner implements ApplicationRunner {
                             Wcf.WxMsg msg = client.getMsg();
                             try {
                                 JSONObject messageJson = wcfAdApter(msg, client);
-                                CompletableFuture.runAsync(() -> botPostLogServiceManager.saveLog(messageJson));
+                                CompletableFuture.runAsync(() -> botPostLogManager.saveLog(messageJson));
                                 CompletableFuture.runAsync(() -> oneBotService.handlerPost(messageJson));
                             } catch (Exception e) {
                                 log.error("wcf消息处理异常,{}", ExceptionUtil.getMessage(e));

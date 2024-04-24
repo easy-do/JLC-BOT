@@ -6,7 +6,7 @@ import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.NodeConfQo;
 
 import java.util.List;
 
@@ -26,7 +26,7 @@ public interface LowCodeService {
 
     BotNodeDto getNodeConf(Long id);
 
-    Page<LowCodeNodeConf> pageNodeConf(PageQo pageQo);
+    Page<LowCodeNodeConf> pageNodeConf(NodeConfQo nodeConfQo);
 
     boolean removeNodeConf(Long id);
 

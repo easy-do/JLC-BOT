@@ -22,7 +22,7 @@ import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.enums.onebot.OneBotIntergrationPostTypeEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostMessageTypeEnum;
 import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
-import plus.easydo.bot.manager.BotPostLogServiceManager;
+import plus.easydo.bot.manager.BotPostLogManager;
 import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
@@ -46,7 +46,7 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping("/api/oneBot")
 public class OneBotController {
 
-    private final BotPostLogServiceManager botPostLogServiceManager;
+    private final BotPostLogManager botPostLogManager;
 
     private final OneBotService oneBotService;
 
@@ -63,7 +63,7 @@ public class OneBotController {
             byte[] bodyByte = getBodyByte(request);
             if (verifySignature(botInfo.getBotSecret(), bodyByte, signature)) {
                 JSONObject messageJson = JSONUtil.parseObj(new String(bodyByte));
-                CompletableFuture.runAsync(() -> botPostLogServiceManager.saveLog(messageJson));
+                CompletableFuture.runAsync(() -> botPostLogManager.saveLog(messageJson));
                 CompletableFuture.runAsync(() -> oneBotService.handlerPost(messageJson));
             }
         }
@@ -116,7 +116,7 @@ public class OneBotController {
                 return DataResult.fail("bot[" + botNumber + "]未配置["+postType+"]上报");
             }
             JSONObject messageJson = wcfAdApter(postData, botInfo);
-            CompletableFuture.runAsync(() -> botPostLogServiceManager.saveLog(messageJson));
+            CompletableFuture.runAsync(() -> botPostLogManager.saveLog(messageJson));
             CompletableFuture.runAsync(() -> oneBotService.handlerPost(messageJson));
             return DataResult.ok();
         }

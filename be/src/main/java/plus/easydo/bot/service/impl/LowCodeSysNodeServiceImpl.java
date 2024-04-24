@@ -1,6 +1,7 @@
 package plus.easydo.bot.service.impl;
 
 
+import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,7 @@ import plus.easydo.bot.entity.LowCodeSysNode;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.manager.LiteFlowScriptManager;
 import plus.easydo.bot.mapper.LowCodeSysNodeMapper;
+import plus.easydo.bot.qo.SysNodeQo;
 import plus.easydo.bot.service.LowCodeSysNodeService;
 
 import java.io.Serializable;
@@ -140,5 +142,16 @@ public class LowCodeSysNodeServiceImpl extends ServiceImpl<LowCodeSysNodeMapper,
             node.setScript(liteFlowScriptManager.getById(id));
         }
         return node;
+    }
+
+    @Override
+    public Page<LowCodeSysNode> pageSysNode(SysNodeQo sysNodeQo) {
+        QueryWrapper queryWrapper = query();
+        queryWrapper.where(LOW_CODE_SYS_NODE.NODE_NAME.eq(sysNodeQo.getNodeName()));
+        queryWrapper.where(LOW_CODE_SYS_NODE.GROUP_TYPE.eq(sysNodeQo.getGroupType()));
+        queryWrapper.where(LOW_CODE_SYS_NODE.NODE_CODE.eq(sysNodeQo.getNodeCode()));
+        queryWrapper.where(LOW_CODE_SYS_NODE.SYSTEM_NODE.eq(sysNodeQo.getSystemNode()));
+        queryWrapper.where(LOW_CODE_SYS_NODE.REMARK.like(sysNodeQo.getRemark()));
+        return page(new Page<>(sysNodeQo.getCurrent(), sysNodeQo.getPageSize()), queryWrapper);
     }
 }

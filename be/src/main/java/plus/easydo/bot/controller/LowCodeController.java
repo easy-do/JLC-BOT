@@ -18,7 +18,7 @@ import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.NodeConfQo;
 import plus.easydo.bot.service.LowCodeService;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
@@ -45,7 +45,7 @@ public class LowCodeController {
     /**
      * 分页查询节点配置
      *
-     * @param pageQo pageQo
+     * @param nodeConfQo pageQo
      * @return vo.plus.easydo.lowcode.bot.R<java.util.List < model.bot.lowcode.plus.easydo.lowcode.bot.BotNodeDto>>
      * @author laoyu
      * @date 2024-03-06
@@ -53,8 +53,8 @@ public class LowCodeController {
     @SaCheckLogin
     @Operation(summary = "分页查询节点配置")
     @PostMapping("/pageNodeConf")
-    public R<List<LowCodeNodeConf>> pageNodeConf(@RequestBody PageQo pageQo) {
-        return DataResult.ok(lowCodeService.pageNodeConf(pageQo));
+    public R<List<LowCodeNodeConf>> pageNodeConf(@RequestBody NodeConfQo nodeConfQo) {
+        return DataResult.ok(lowCodeService.pageNodeConf(nodeConfQo));
     }
 
     /**

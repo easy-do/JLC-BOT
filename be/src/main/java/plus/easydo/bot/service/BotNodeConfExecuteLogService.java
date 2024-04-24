@@ -3,7 +3,7 @@ package plus.easydo.bot.service;
 
 import com.mybatisflex.core.paginate.Page;
 import plus.easydo.bot.entity.BotNodeConfExecuteLog;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.NodeConfExecuteLogQo;
 
 
 /**
@@ -14,7 +14,7 @@ import plus.easydo.bot.qo.PageQo;
  */
 public interface BotNodeConfExecuteLogService {
 
-    Page<BotNodeConfExecuteLog> pageNodeConfExecuteLog(PageQo pageQo);
+    Page<BotNodeConfExecuteLog> pageNodeConfExecuteLog(NodeConfExecuteLogQo nodeConfExecuteLogQo);
 
     boolean cleanNodeConfExecuteLog();
 }

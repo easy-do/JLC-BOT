@@ -62,18 +62,18 @@ export async function listSimpleDevelop(options?: { [key: string]: any }) {
   });
 }
 
-/** 分页查询 GET /api/simpleCmdDevelop/page */
+/** 分页查询 POST /api/simpleCmdDevelop/page */
 export async function pageSimpleDevelop(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.pageSimpleDevelopParams,
   options?: { [key: string]: any },
 ) {
   return request<API.RListSimpleCmdDevelopConf>('/api/simpleCmdDevelop/page', {
-    method: 'GET',
+    method: 'POST',
     params: {
       ...params,
-      pageQo: undefined,
-      ...params['pageQo'],
+      simpleCmdDevelopConfQo: undefined,
+      ...params['simpleCmdDevelopConfQo'],
     },
     ...(options || {}),
   });

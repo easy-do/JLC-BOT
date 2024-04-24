@@ -35,7 +35,7 @@ public class HighLevelDevelopExecuteServer {
         //将EL表达式
         String elData = "THEN("+ LowCodeConstants.HIGH_LEVEL_DEVELOP+highLevelDevelopConf.getId() +");";
         String chainName = LowCodeConstants.HIGH_LEVEL_DEVELOP+"Chain" + highLevelDevelopConf.getId();
-        LiteFlowChainELBuilder.createChain().setChainName(chainName).setEL(elData).build();
+        LiteFlowChainELBuilder.createChain().setChainId(chainName).setEL(elData).build();
 
         //初始化上下文
         Object[] contexts = LiteFlowUtils.buildContext(paramsJson);

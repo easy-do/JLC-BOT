@@ -51,7 +51,7 @@ export async function listSysNode(options?: { [key: string]: any }) {
 }
 
 /** 分页 POST /api/sysNode/page */
-export async function pageSysNode(body: API.PageQo, options?: { [key: string]: any }) {
+export async function pageSysNode(body: API.SysNodeQo, options?: { [key: string]: any }) {
   return request<API.RListLowCodeSysNode>('/api/sysNode/page', {
     method: 'POST',
     headers: {

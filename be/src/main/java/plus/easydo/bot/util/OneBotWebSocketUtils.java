@@ -16,7 +16,7 @@ import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.enums.onebot.OneBotPostTypeEnum;
 import plus.easydo.bot.exception.BaseException;
-import plus.easydo.bot.manager.BotPostLogServiceManager;
+import plus.easydo.bot.manager.BotPostLogManager;
 import plus.easydo.bot.websocket.OneBotService;
 
 import java.io.IOException;
@@ -44,7 +44,7 @@ public class OneBotWebSocketUtils {
 
     private static OneBotService oneBotService;
 
-    private static BotPostLogServiceManager botPostLogServiceManager;
+    private static BotPostLogManager botPostLogManager;
 
     private OneBotWebSocketUtils() {
     }
@@ -56,11 +56,11 @@ public class OneBotWebSocketUtils {
         return oneBotService;
     }
 
-    private static BotPostLogServiceManager getBotPostLogServiceManager() {
+    private static BotPostLogManager getBotPostLogServiceManager() {
         if (Objects.isNull(oneBotService)) {
-            return SpringUtil.getBean(BotPostLogServiceManager.class);
+            return SpringUtil.getBean(BotPostLogManager.class);
         }
-        return botPostLogServiceManager;
+        return botPostLogManager;
     }
 
     public static void handlerPostMessage(WebSocketMessage<?> message) {

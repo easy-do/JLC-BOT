@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.SimpleCmdDevelopConf;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.SimpleCmdDevelopConfQo;
 import plus.easydo.bot.service.SimpleDevelopService;
-import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
 
@@ -60,16 +60,16 @@ public class SimpleDevelopConfController {
     /**
      * 分页查询
      *
-     * @param pageQo pageQo
+     * @param simpleCmdDevelopConfQo pageQo
      * @return plus.easydo.bot.vo.R<java.util.List<plus.easydo.bot.entity.SimpleCmdDevelopConf>>
      * @author laoyu
      * @date 2024-04-10
      */
     @SaCheckLogin
     @Operation(summary = "分页查询")
-    @GetMapping("/page")
-    public R<List<SimpleCmdDevelopConf>> pageSimpleDevelop(PageQo pageQo) {
-        return DataResult.ok(simpleDevelopService.pageSimpleDevelop(pageQo));
+    @PostMapping("/page")
+    public R<List<SimpleCmdDevelopConf>> pageSimpleDevelop(SimpleCmdDevelopConfQo simpleCmdDevelopConfQo) {
+        return DataResult.ok(simpleDevelopService.pageSimpleDevelop(simpleCmdDevelopConfQo));
     }
 
     /**

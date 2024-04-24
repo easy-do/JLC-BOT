@@ -48,5 +48,10 @@ public class BotMessageQo extends PageQo {
      */
     private String message;
 
+    /**
+     * 消息格式
+     */
+    private String messageFormat;
+
 
 }

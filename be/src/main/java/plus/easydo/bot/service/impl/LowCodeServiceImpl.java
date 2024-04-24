@@ -25,7 +25,7 @@ import plus.easydo.bot.lowcode.model.CmpStepResult;
 import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.manager.LowCodeBotNodeManager;
 import plus.easydo.bot.manager.LowCodeNodeConfManager;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.NodeConfQo;
 import plus.easydo.bot.service.LowCodeService;
 import plus.easydo.bot.util.MessageParseUtil;
 
@@ -102,8 +102,8 @@ public class LowCodeServiceImpl implements LowCodeService {
     }
 
     @Override
-    public Page<LowCodeNodeConf> pageNodeConf(PageQo pageQo) {
-        return lowCodeNodeConfManager.pageNodeConf(pageQo);
+    public Page<LowCodeNodeConf> pageNodeConf(NodeConfQo nodeConfQo) {
+        return lowCodeNodeConfManager.pageNodeConf(nodeConfQo);
     }
 
     @Override

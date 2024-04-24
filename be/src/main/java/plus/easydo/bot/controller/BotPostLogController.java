@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import plus.easydo.bot.entity.BotPostLog;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.PostLogQo;
 import plus.easydo.bot.service.BotPostLogService;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
@@ -43,7 +43,7 @@ public class BotPostLogController {
     @SaCheckLogin
     @PostMapping("/page")
     @Operation(summary = "分页查询")
-    public R<List<BotPostLog>> pagePostLog(@RequestBody PageQo pageQo) {
+    public R<List<BotPostLog>> pagePostLog(@RequestBody PostLogQo pageQo) {
         return DataResult.ok(botPostLogService.pagePostLog(pageQo));
     }
 

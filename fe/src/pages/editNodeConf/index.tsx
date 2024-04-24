@@ -539,6 +539,7 @@ function EditNodeConf(props: {
               saveNodeConf({
                 nodes: newGraph.toJSON(),
                 confName: values.confName,
+                eventType: values.eventType,
                 nodeConf: nodeConf,
               }).then((res) => {
                 message.success(res.message);

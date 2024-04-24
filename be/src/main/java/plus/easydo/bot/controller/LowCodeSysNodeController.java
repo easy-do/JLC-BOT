@@ -3,7 +3,6 @@ package plus.easydo.bot.controller;
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.json.JSONUtil;
-import com.mybatisflex.core.paginate.Page;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
@@ -17,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import plus.easydo.bot.entity.LiteFlowScript;
 import plus.easydo.bot.entity.LowCodeSysNode;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.SysNodeQo;
 import plus.easydo.bot.service.LowCodeSysNodeService;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
@@ -141,14 +140,14 @@ public class LowCodeSysNodeController {
     /**
      * 分页查询系统节点信息
      *
-     * @param pageQo 分页对象
+     * @param sysNodeQo 分页对象
      * @return 分页对象
      */
     @SaCheckLogin
     @Operation(summary = "分页")
     @PostMapping("/page")
-    public R<List<LowCodeSysNode>> pageSysNode(@RequestBody PageQo pageQo) {
-        return DataResult.ok(lowCodeSysNodeService.page(new Page<>(pageQo.getCurrent(), pageQo.getPageSize())));
+    public R<List<LowCodeSysNode>> pageSysNode(@RequestBody SysNodeQo sysNodeQo) {
+        return DataResult.ok(lowCodeSysNodeService.pageSysNode(sysNodeQo));
     }
 
     /**

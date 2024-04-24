@@ -6,7 +6,7 @@ import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.SimpleCmdDevelopConf;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.SimpleCmdDevelopConfQo;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public interface SimpleDevelopService {
 
     List<SimpleCmdDevelopConf> listSimpleDevelop();
 
-    Page<SimpleCmdDevelopConf> pageSimpleDevelop(PageQo pageQo);
+    Page<SimpleCmdDevelopConf> pageSimpleDevelop(SimpleCmdDevelopConfQo simpleCmdDevelopConfQo);
 
     SimpleCmdDevelopConf getSimpleDevelopInfo(Long id);
 

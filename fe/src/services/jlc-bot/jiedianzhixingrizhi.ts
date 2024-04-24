@@ -11,7 +11,10 @@ export async function cleanNodeExecuteLog(options?: { [key: string]: any }) {
 }
 
 /** 分页查询 POST /api/nodeExecuteLog/page */
-export async function pageNodeExecuteLog(body: API.PageQo, options?: { [key: string]: any }) {
+export async function pageNodeExecuteLog(
+  body: API.NodeExecuteLogQo,
+  options?: { [key: string]: any },
+) {
   return request<API.RListBotNodeExecuteLog>('/api/nodeExecuteLog/page', {
     method: 'POST',
     headers: {

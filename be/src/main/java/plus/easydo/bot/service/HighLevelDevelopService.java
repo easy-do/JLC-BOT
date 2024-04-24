@@ -6,7 +6,7 @@ import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.dto.SetBotConfIdDto;
 import plus.easydo.bot.entity.HighLevelDevelopConf;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.HighLevelDevelopConfQo;
 
 import java.util.List;
 
@@ -18,7 +18,7 @@ import java.util.List;
  */
 public interface HighLevelDevelopService {
 
-    Page<HighLevelDevelopConf> highLevelDevPage(PageQo pageQo);
+    Page<HighLevelDevelopConf> highLevelDevPage(HighLevelDevelopConfQo highLevelDevelopConfQo);
 
     List<HighLevelDevelopConf> highLevelDevList();
 

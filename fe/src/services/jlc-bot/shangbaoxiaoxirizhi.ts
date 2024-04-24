@@ -11,7 +11,7 @@ export async function cleanPostLog(options?: { [key: string]: any }) {
 }
 
 /** 分页查询 POST /api/botPostLog/page */
-export async function pagePostLog(body: API.PageQo, options?: { [key: string]: any }) {
+export async function pagePostLog(body: API.PostLogQo, options?: { [key: string]: any }) {
   return request<API.RListBotPostLog>('/api/botPostLog/page', {
     method: 'POST',
     headers: {

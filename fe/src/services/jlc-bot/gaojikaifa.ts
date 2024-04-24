@@ -62,18 +62,18 @@ export async function highLevelDevList(options?: { [key: string]: any }) {
   });
 }
 
-/** 分页查询 GET /api/highLevelDevelop/page */
+/** 分页查询 POST /api/highLevelDevelop/page */
 export async function highLevelDevPage(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.highLevelDevPageParams,
   options?: { [key: string]: any },
 ) {
   return request<API.RListHighLevelDevelopConf>('/api/highLevelDevelop/page', {
-    method: 'GET',
+    method: 'POST',
     params: {
       ...params,
-      pageQo: undefined,
-      ...params['pageQo'],
+      highLevelDevelopConfQo: undefined,
+      ...params['highLevelDevelopConfQo'],
     },
     ...(options || {}),
   });

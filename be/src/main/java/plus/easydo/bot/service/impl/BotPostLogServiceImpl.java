@@ -5,8 +5,8 @@ import com.mybatisflex.core.paginate.Page;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import plus.easydo.bot.entity.BotPostLog;
-import plus.easydo.bot.manager.BotPostLogServiceManager;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.manager.BotPostLogManager;
+import plus.easydo.bot.qo.PostLogQo;
 import plus.easydo.bot.service.BotPostLogService;
 
 /**
@@ -19,15 +19,15 @@ import plus.easydo.bot.service.BotPostLogService;
 @RequiredArgsConstructor
 public class BotPostLogServiceImpl implements BotPostLogService {
 
-    private final BotPostLogServiceManager botPostLogServiceManager;
+    private final BotPostLogManager botPostLogManager;
 
     @Override
-    public Page<BotPostLog> pagePostLog(PageQo pageQo) {
-        return botPostLogServiceManager.page(new Page<>(pageQo.getCurrent(), pageQo.getPageSize()));
+    public Page<BotPostLog> pagePostLog(PostLogQo pageQo) {
+        return botPostLogManager.pagePostLog(pageQo);
     }
 
     @Override
     public boolean cleanPostLog() {
-        return botPostLogServiceManager.clean();
+        return botPostLogManager.clean();
     }
 }

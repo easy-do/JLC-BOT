@@ -3,7 +3,7 @@ package plus.easydo.bot.service;
 
 import com.mybatisflex.core.paginate.Page;
 import plus.easydo.bot.entity.BotPostLog;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.PostLogQo;
 
 
 /**
@@ -14,7 +14,7 @@ import plus.easydo.bot.qo.PageQo;
  */
 public interface BotPostLogService {
 
-    Page<BotPostLog> pagePostLog(PageQo pageQo);
+    Page<BotPostLog> pagePostLog(PostLogQo pageQo);
 
     boolean cleanPostLog();
 }

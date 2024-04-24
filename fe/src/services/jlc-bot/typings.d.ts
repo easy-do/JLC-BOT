@@ -41,6 +41,7 @@ declare namespace API {
     selfUser?: string;
     selfTime?: string;
     message?: string;
+    messageFormat?: string;
   };
 
   type BotNodeConfExecuteLog = {
@@ -235,8 +236,16 @@ declare namespace API {
     script?: LiteFlowScript;
   };
 
+  type HighLevelDevelopConfQo = {
+    current?: number;
+    pageSize?: number;
+    confName?: string;
+    eventType?: string;
+    remark?: string;
+  };
+
   type highLevelDevPageParams = {
-    pageQo: PageQo;
+    highLevelDevelopConfQo: HighLevelDevelopConfQo;
   };
 
   type hookGetParams = {
@@ -319,6 +328,31 @@ declare namespace API {
     script?: LiteFlowScript;
   };
 
+  type NodeConfExecuteLogQo = {
+    current?: number;
+    pageSize?: number;
+    confId?: number;
+    confName?: string;
+    executeTime?: number;
+  };
+
+  type NodeConfQo = {
+    current?: number;
+    pageSize?: number;
+    confName?: string;
+    eventType?: string;
+  };
+
+  type NodeExecuteLogQo = {
+    current?: number;
+    pageSize?: number;
+    confId?: number;
+    confName?: string;
+    nodeCode?: string;
+    nodeName?: string;
+    executeTime?: number;
+  };
+
   type NodePAVo = {
     nodeName?: string;
     confName?: string;
@@ -332,7 +366,14 @@ declare namespace API {
   };
 
   type pageSimpleDevelopParams = {
-    pageQo: PageQo;
+    simpleCmdDevelopConfQo: SimpleCmdDevelopConfQo;
+  };
+
+  type PostLogQo = {
+    current?: number;
+    pageSize?: number;
+    message?: string;
+    platform?: string;
   };
 
   type QuartzJob = {
@@ -686,12 +727,31 @@ declare namespace API {
     script?: LiteFlowScript;
   };
 
+  type SimpleCmdDevelopConfQo = {
+    current?: number;
+    pageSize?: number;
+    confName?: string;
+    cmd?: string;
+    cmdType?: string;
+    remark?: string;
+  };
+
   type startJobParams = {
     id: number;
   };
 
   type stopJobParams = {
     id: number;
+  };
+
+  type SysNodeQo = {
+    current?: number;
+    pageSize?: number;
+    nodeName?: string;
+    groupType?: string;
+    nodeCode?: string;
+    remark?: string;
+    systemNode?: boolean;
   };
 
   type SystemConf = {

@@ -57,7 +57,7 @@ public class SimpleCmdDevelopExecuteServer {
             //EL表达式
             String elData = "THEN(" + LowCodeConstants.SIMPLE_CMD_DEVELOP + simpleCmdDevelopConf.getId() + ");";
             String chainName = LowCodeConstants.SIMPLE_CMD_DEVELOP + "Chain" + simpleCmdDevelopConf.getId();
-            LiteFlowChainELBuilder.createChain().setChainName(chainName).setEL(elData).build();
+            LiteFlowChainELBuilder.createChain().setChainId(chainName).setEL(elData).build();
 
             //初始化上下文
             Object[] contexts = LiteFlowUtils.buildContext(paramsJson);

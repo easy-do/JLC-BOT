@@ -7,7 +7,7 @@ import com.mybatisflex.spring.service.impl.ServiceImpl;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.entity.BotNodeExecuteLog;
 import plus.easydo.bot.mapper.BotNodeExecuteLogMapper;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.NodeExecuteLogQo;
 import plus.easydo.bot.vo.NodePAVo;
 
 import java.util.List;
@@ -36,9 +36,15 @@ public class BotNodeExecuteLogManager extends ServiceImpl<BotNodeExecuteLogMappe
         return remove(query);
     }
 
-    public Page<BotNodeExecuteLog> pageNodeConfExecuteLog(PageQo pageQo) {
-        QueryWrapper query = query().orderBy(BOT_NODE_EXECUTE_LOG.CREATE_TIME,false);
-        return page(new Page<>(pageQo.getCurrent(), pageQo.getPageSize()),query);
+    public Page<BotNodeExecuteLog> pageNodeConfExecuteLog(NodeExecuteLogQo nodeExecuteLogQo) {
+        QueryWrapper queryWrapper = query();
+        queryWrapper.where(BOT_NODE_EXECUTE_LOG.CONF_ID.eq(nodeExecuteLogQo.getConfId()));
+        queryWrapper.where(BOT_NODE_EXECUTE_LOG.CONF_NAME.eq(nodeExecuteLogQo.getConfName()));
+        queryWrapper.where(BOT_NODE_EXECUTE_LOG.NODE_CODE.eq(nodeExecuteLogQo.getNodeCode()));
+        queryWrapper.where(BOT_NODE_EXECUTE_LOG.NODE_NAME.eq(nodeExecuteLogQo.getNodeName()));
+        queryWrapper.where(BOT_NODE_EXECUTE_LOG.EXECUTE_TIME.eq(nodeExecuteLogQo.getExecuteTime()));
+        queryWrapper.orderBy(BOT_NODE_EXECUTE_LOG.CREATE_TIME, false);
+        return page(new Page<>(nodeExecuteLogQo.getCurrent(), nodeExecuteLogQo.getPageSize()), queryWrapper);
     }
 
     public List<NodePAVo> nodeExecuteMax() {

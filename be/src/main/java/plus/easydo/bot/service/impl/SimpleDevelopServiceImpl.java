@@ -25,7 +25,7 @@ import plus.easydo.bot.manager.BotSimpleCmdDevelopManager;
 import plus.easydo.bot.manager.CacheManager;
 import plus.easydo.bot.manager.LiteFlowScriptManager;
 import plus.easydo.bot.manager.SimpleDevelopConfManager;
-import plus.easydo.bot.qo.PageQo;
+import plus.easydo.bot.qo.SimpleCmdDevelopConfQo;
 import plus.easydo.bot.service.SimpleDevelopService;
 import plus.easydo.bot.util.LiteFlowUtils;
 import plus.easydo.bot.util.MessageParseUtil;
@@ -60,8 +60,8 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
     }
 
     @Override
-    public Page<SimpleCmdDevelopConf> pageSimpleDevelop(PageQo pageQo) {
-        return simpleDevelopConfManager.page(new Page<>(pageQo.getCurrent(), pageQo.getPageSize()));
+    public Page<SimpleCmdDevelopConf> pageSimpleDevelop(SimpleCmdDevelopConfQo simpleCmdDevelopConfQo) {
+        return simpleDevelopConfManager.pageSimpleDevelop(simpleCmdDevelopConfQo);
     }
 
     @Override

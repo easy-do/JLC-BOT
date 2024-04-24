@@ -12,14 +12,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.dto.SetBotConfIdDto;
-import plus.easydo.bot.lowcode.model.CmpStepResult;
-import plus.easydo.bot.qo.PageQo;
-import plus.easydo.bot.service.HighLevelDevelopService;
 import plus.easydo.bot.entity.HighLevelDevelopConf;
-import org.springframework.web.bind.annotation.RestController;
+import plus.easydo.bot.lowcode.model.CmpStepResult;
+import plus.easydo.bot.qo.HighLevelDevelopConfQo;
+import plus.easydo.bot.service.HighLevelDevelopService;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
 
@@ -59,16 +59,16 @@ public class HighLevelDevelopController {
     /**
      * 分页查询
      *
-     * @param pageQo pageQo
+     * @param highLevelDevelopConfQo pageQo
      * @return plus.easydo.bot.vo.R<java.util.List<plus.easydo.bot.entity.HighLevelDevelopConf>>
      * @author laoyu
      * @date 2024-04-10
      */
     @SaCheckLogin
     @Operation(summary = "分页查询")
-    @GetMapping("/page")
-    public R<List<HighLevelDevelopConf>> highLevelDevPage(PageQo pageQo) {
-        return DataResult.ok(highLevelDevelopService.highLevelDevPage(pageQo));
+    @PostMapping("/page")
+    public R<List<HighLevelDevelopConf>> highLevelDevPage(HighLevelDevelopConfQo highLevelDevelopConfQo) {
+        return DataResult.ok(highLevelDevelopService.highLevelDevPage(highLevelDevelopConfQo));
     }
 
     /**

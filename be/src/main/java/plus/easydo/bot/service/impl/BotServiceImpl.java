@@ -114,17 +114,17 @@ public class BotServiceImpl implements BotService {
 
     @Override
     public Page<BotMessage> pageBotMessage(BotMessageQo botMessageQo) {
-        return botMessageManager.page(new Page<>(botMessageQo.getCurrent(), botMessageQo.getPageSize()));
+        return botMessageManager.pageBotMessage(botMessageQo);
     }
 
     @Override
     public Page<BotRequest> pageBotRequest(BotRequestQo botRequestQo) {
-        return botRequestManager.page(new Page<>(botRequestQo.getCurrent(), botRequestQo.getPageSize()));
+        return botRequestManager.pageBotRequest(botRequestQo);
     }
 
     @Override
     public Page<BotNotice> pageBotNotice(BotNoticeQo botNoticeQo) {
-        return botNoticeManager.page(new Page<>(botNoticeQo.getCurrent(), botNoticeQo.getPageSize()));
+        return botNoticeManager.pageBotNotice(botNoticeQo);
     }
 
     @Override
