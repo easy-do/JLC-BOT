@@ -1,25 +1,21 @@
 package plus.easydo.bot.lowcode.execute;
 
-import cn.hutool.core.date.LocalDateTimeUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.yomahub.liteflow.builder.el.LiteFlowChainELBuilder;
 import com.yomahub.liteflow.core.FlowExecutor;
 import com.yomahub.liteflow.flow.LiteflowResponse;
-import com.yomahub.liteflow.flow.entity.CmpStep;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.constant.LowCodeConstants;
 import plus.easydo.bot.constant.OneBotConstants;
-import plus.easydo.bot.entity.BotNodeExecuteLog;
 import plus.easydo.bot.entity.SimpleCmdDevelopConf;
 import plus.easydo.bot.manager.BotNodeExecuteLogManager;
 import plus.easydo.bot.util.LiteFlowUtils;
 import plus.easydo.bot.websocket.model.OneBotMessageParse;
 
 import java.util.Objects;
-import java.util.Queue;
 import java.util.concurrent.CompletableFuture;
 
 /**
@@ -64,26 +60,10 @@ public class SimpleCmdDevelopExecuteServer {
 
             //执行并返回结果
             LiteflowResponse res = flowExecutor.execute2Resp(chainName, "", contexts);
-            CompletableFuture.runAsync(() -> saveExecuteLog(simpleCmdDevelopConf, res));
+            CompletableFuture.runAsync(() -> nodeExecuteLogManager.saveExecuteLog(res, simpleCmdDevelopConf.getId(), simpleCmdDevelopConf.getConfName()));
             return res;
         }
         return null;
     }
 
-    private void saveExecuteLog(SimpleCmdDevelopConf simpleCmdDevelopConf, LiteflowResponse res) {
-        Queue<CmpStep> cmpSteps = res.getExecuteStepQueue();
-        long timeNum = 0L;
-        for (CmpStep cmpStep : cmpSteps) {
-            com.yomahub.liteflow.flow.element.Node node = cmpStep.getRefNode();
-            nodeExecuteLogManager.save(BotNodeExecuteLog.builder()
-                    .confId(simpleCmdDevelopConf.getId())
-                    .confName(simpleCmdDevelopConf.getConfName())
-                    .nodeCode(node.getId())
-                    .nodeName(node.getName())
-                    .executeTime(timeNum)
-                    .createTime(LocalDateTimeUtil.now())
-                    .build());
-            timeNum += cmpStep.getTimeSpent();
-        }
-    }
 }

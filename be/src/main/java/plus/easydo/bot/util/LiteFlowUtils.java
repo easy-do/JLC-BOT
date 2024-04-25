@@ -1,12 +1,21 @@
 package plus.easydo.bot.util;
 
+import cn.hutool.core.bean.BeanUtil;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Tuple;
 import cn.hutool.core.util.ReflectUtil;
 import cn.hutool.core.util.StrUtil;
 import cn.hutool.json.JSONObject;
 import com.yomahub.liteflow.flow.LiteflowResponse;
+import com.yomahub.liteflow.flow.entity.CmpStep;
 import com.yomahub.liteflow.slot.Slot;
-import plus.easydo.bot.lowcode.context.*;
+import plus.easydo.bot.lowcode.context.BotApiContext;
+import plus.easydo.bot.lowcode.context.BotConfApiContext;
+import plus.easydo.bot.lowcode.context.ContextBeanDesc;
+import plus.easydo.bot.lowcode.context.ContextBeanMethodDesc;
+import plus.easydo.bot.lowcode.context.DbApiContext;
+import plus.easydo.bot.lowcode.context.JLCLiteFlowContext;
+import plus.easydo.bot.lowcode.context.LogContext;
 import plus.easydo.bot.lowcode.model.CmpContextBean;
 import plus.easydo.bot.lowcode.model.CmpStepResult;
 
@@ -16,6 +25,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.Queue;
 
 /**
  * @author yuzhanfeng
@@ -90,6 +100,23 @@ public class LiteFlowUtils {
                 cmpContextBeanList.add(CmpContextBean.builder().name(StrUtil.lowerFirst(name)).desc(desc).methods(methodNameList).build());
             });
             cmpStepResult.setContextBeanList(cmpContextBeanList);
+        }
+    }
+
+    public static CmpStepResult getCmpStepResult(JSONObject paramsJson, LiteflowResponse response) {
+        if (Objects.nonNull(response)) {
+            Queue<CmpStep> cmpSteps = response.getExecuteStepQueue();
+            CmpStep cmpStep = cmpSteps.poll();
+            CmpStepResult cmpStepResult = BeanUtil.copyProperties(cmpStep, CmpStepResult.class);
+            cmpStepResult.setParam(paramsJson);
+            if (cmpStep != null && !cmpStep.isSuccess()) {
+                cmpStepResult.setMessage(ExceptionUtil.getMessage(cmpStep.getException()));
+            }
+            //构建可用上下文
+            buildContextBeanList(response, cmpStepResult);
+            return cmpStepResult;
+        } else {
+            return CmpStepResult.builder().success(false).message("执行响应为空").build();
         }
     }
 }

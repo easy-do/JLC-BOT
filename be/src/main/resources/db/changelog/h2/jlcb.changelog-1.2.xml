@@ -1686,5 +1686,15 @@
             DROP TABLE BOT_SCRIPT_BOT;
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240425" dbms="h2" failOnError="true">
+        <sql dbms="h2">
+            CREATE TABLE WEBHOOKS_CONF
+            (
+                ID        BIGINT NOT NULL AUTO_INCREMENT,
+                CONF_NAME CHARACTER VARYING(64)  DEFAULT NULL COMMENT '配置名称',
+                REMARK    CHARACTER VARYING(100) DEFAULT NULL COMMENT '备注'
+            );
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>

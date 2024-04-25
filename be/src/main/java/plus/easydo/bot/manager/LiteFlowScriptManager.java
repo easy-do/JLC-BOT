@@ -14,6 +14,7 @@ import plus.easydo.bot.entity.HighLevelDevelopConf;
 import plus.easydo.bot.entity.LiteFlowScript;
 import plus.easydo.bot.entity.LowCodeSysNode;
 import plus.easydo.bot.entity.SimpleCmdDevelopConf;
+import plus.easydo.bot.entity.WebhooksConf;
 import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.mapper.LiteFlowScriptMapper;
 
@@ -88,6 +89,29 @@ public class LiteFlowScriptManager extends ServiceImpl<LiteFlowScriptMapper, Lit
                 .scriptType("script")
                 .scriptLanguage(simpleCmdDevelopConf.getScriptLanguage())
                 .scriptData(LiteFlowConstants.SCRIPT_DATA_MAP.get(simpleCmdDevelopConf.getScriptLanguage()))
+                .enable(true)
+                .build();
+        boolean res = save(entity);
+        if (res) {
+            try {
+                flowExecutor.reloadRule();
+                return entity;
+            } catch (Exception e) {
+                removeById(entity.getId());
+                throw e;
+            }
+        }
+        return null;
+    }
+
+    public LiteFlowScript createData(WebhooksConf webhooksConf) {
+        LiteFlowScript entity = LiteFlowScript.builder()
+                .applicationName(applicationName)
+                .scriptId(LowCodeConstants.WEBHOOKS + webhooksConf.getId())
+                .scriptName(webhooksConf.getConfName())
+                .scriptType("script")
+                .scriptLanguage(webhooksConf.getScriptLanguage())
+                .scriptData(LiteFlowConstants.SCRIPT_DATA_MAP.get(webhooksConf.getScriptLanguage()))
                 .enable(true)
                 .build();
         boolean res = save(entity);

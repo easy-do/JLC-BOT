@@ -1,9 +1,12 @@
 package plus.easydo.bot.manager;
 
 
+import cn.hutool.core.date.LocalDateTimeUtil;
 import com.mybatisflex.core.paginate.Page;
 import com.mybatisflex.core.query.QueryWrapper;
 import com.mybatisflex.spring.service.impl.ServiceImpl;
+import com.yomahub.liteflow.flow.LiteflowResponse;
+import com.yomahub.liteflow.flow.entity.CmpStep;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.entity.BotNodeExecuteLog;
 import plus.easydo.bot.mapper.BotNodeExecuteLogMapper;
@@ -11,6 +14,7 @@ import plus.easydo.bot.qo.NodeExecuteLogQo;
 import plus.easydo.bot.vo.NodePAVo;
 
 import java.util.List;
+import java.util.Queue;
 
 import static plus.easydo.bot.entity.table.BotNodeExecuteLogTableDef.BOT_NODE_EXECUTE_LOG;
 
@@ -49,5 +53,22 @@ public class BotNodeExecuteLogManager extends ServiceImpl<BotNodeExecuteLogMappe
 
     public List<NodePAVo> nodeExecuteMax() {
         return mapper.nodeExecuteMax();
+    }
+
+    public void saveExecuteLog(LiteflowResponse res, Long confId, String confName) {
+        Queue<CmpStep> cmpSteps = res.getExecuteStepQueue();
+        long timeNum = 0L;
+        for (CmpStep cmpStep : cmpSteps) {
+            com.yomahub.liteflow.flow.element.Node node = cmpStep.getRefNode();
+            save(BotNodeExecuteLog.builder()
+                    .confId(confId)
+                    .confName(confName)
+                    .nodeCode(node.getId())
+                    .nodeName(node.getName())
+                    .executeTime(timeNum)
+                    .createTime(LocalDateTimeUtil.now())
+                    .build());
+            timeNum += cmpStep.getTimeSpent();
+        }
     }
 }

@@ -7,7 +7,8 @@ import com.yomahub.liteflow.flow.LiteflowResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import plus.easydo.bot.constant.LowCodeConstants;
-import plus.easydo.bot.entity.HighLevelDevelopConf;
+import plus.easydo.bot.entity.LiteFlowScript;
+import plus.easydo.bot.entity.WebhooksConf;
 import plus.easydo.bot.manager.BotNodeExecuteLogManager;
 import plus.easydo.bot.util.LiteFlowUtils;
 
@@ -15,22 +16,23 @@ import java.util.concurrent.CompletableFuture;
 
 /**
  * @author yuzhanfeng
- * @Date 2024-04-10
- * @Description 高级开发执行服务
+ * @Date 2024-04-25
+ * @Description webhook脚本执行服务
  */
 @Component
 @RequiredArgsConstructor
-public class HighLevelDevelopExecuteServer {
-
+public class WebhooksExecuteServer {
 
     private final FlowExecutor flowExecutor;
 
     private final BotNodeExecuteLogManager nodeExecuteLogManager;
 
-    public LiteflowResponse execute(HighLevelDevelopConf highLevelDevelopConf, JSONObject paramsJson) {
-        //将EL表达式
-        String elData = "THEN("+ LowCodeConstants.HIGH_LEVEL_DEVELOP+highLevelDevelopConf.getId() +");";
-        String chainName = LowCodeConstants.HIGH_LEVEL_DEVELOP+"Chain" + highLevelDevelopConf.getId();
+    public LiteflowResponse execute(WebhooksConf webhooksConf, JSONObject paramsJson) {
+        //匹配指令规则
+        LiteFlowScript script = webhooksConf.getScript();
+        //EL表达式
+        String elData = "THEN(" + script.getScriptId() + ");";
+        String chainName = LowCodeConstants.WEBHOOKS + "Chain" + webhooksConf.getId();
         LiteFlowChainELBuilder.createChain().setChainId(chainName).setEL(elData).build();
 
         //初始化上下文
@@ -38,7 +40,7 @@ public class HighLevelDevelopExecuteServer {
 
         //执行并返回结果
         LiteflowResponse res = flowExecutor.execute2Resp(chainName, "", contexts);
-        CompletableFuture.runAsync(() -> nodeExecuteLogManager.saveExecuteLog(res, highLevelDevelopConf.getId(), highLevelDevelopConf.getConfName()));
+        CompletableFuture.runAsync(() -> nodeExecuteLogManager.saveExecuteLog(res, webhooksConf.getId(), webhooksConf.getConfName()));
         return res;
     }
 

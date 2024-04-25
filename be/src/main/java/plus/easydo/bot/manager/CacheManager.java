@@ -6,6 +6,7 @@ import plus.easydo.bot.entity.HighLevelDevelopConf;
 import plus.easydo.bot.entity.LowCodeNodeConf;
 import plus.easydo.bot.entity.SimpleCmdDevelopConf;
 import plus.easydo.bot.entity.SystemConf;
+import plus.easydo.bot.entity.WebhooksConf;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -69,7 +70,10 @@ public class CacheManager {
      * 机器人与高级开发关联关系缓存
      */
     public static final Map<Long, List<Long>> BOT_HIGH_LEVEL_DEV_CONF_CACHE = new HashMap<>();
-
+    /**
+     * webhook配置缓存
+     */
+    public static final Map<Long, WebhooksConf> WEBHOOKS_CONF_CACHE = new HashMap<>();
 
     private CacheManager() {
     }

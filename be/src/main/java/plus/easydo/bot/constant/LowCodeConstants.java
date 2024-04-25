@@ -16,4 +16,6 @@ public class LowCodeConstants {
     public static final String LOWCODE_NODE = "lowcodeNode";
     public static final String HIGH_LEVEL_DEVELOP = "highLevelDevelop";
     public static final String SIMPLE_CMD_DEVELOP = "simpleCmdDevelop";
+    public static final String WEBHOOKS = "webhooks";
+    public static final String WEBHOOKS_REQUEST_HEADER = "webhooks_request_header";
 }

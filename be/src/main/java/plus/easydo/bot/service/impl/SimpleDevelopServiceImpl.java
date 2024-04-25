@@ -1,14 +1,10 @@
 package plus.easydo.bot.service.impl;
 
 
-import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import com.mybatisflex.core.paginate.Page;
-import com.yomahub.liteflow.flow.LiteflowResponse;
-import com.yomahub.liteflow.flow.entity.CmpStep;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -33,7 +29,6 @@ import plus.easydo.bot.util.MessageParseUtil;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
-import java.util.Queue;
 import java.util.stream.Collectors;
 
 /**
@@ -143,21 +138,7 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
         Assert.notNull(simpleCmdDevelopConf, "配置不存在");
         JSONObject paramsJson = JSONUtil.parseObj(debugDto.getParams());
         MessageParseUtil.parseMessage(paramsJson);
-        LiteflowResponse response = simpleCmdDevelopExecuteServer.execute(simpleCmdDevelopConf, paramsJson);
-        if(Objects.nonNull(response)){
-            Queue<CmpStep> cmpSteps = response.getExecuteStepQueue();
-            CmpStep cmpStep = cmpSteps.poll();
-            CmpStepResult cmpStepResult = BeanUtil.copyProperties(cmpStep, CmpStepResult.class);
-            cmpStepResult.setParam(paramsJson);
-            if (cmpStep != null && !cmpStep.isSuccess()) {
-                cmpStepResult.setMessage(ExceptionUtil.getMessage(cmpStep.getException()));
-            }
-            //构建可用上下文
-            LiteFlowUtils.buildContextBeanList(response, cmpStepResult);
-            return cmpStepResult;
-        }else {
-            return CmpStepResult.builder().success(false).message("执行响应为空").build();
-        }
+        return LiteFlowUtils.getCmpStepResult(paramsJson, simpleCmdDevelopExecuteServer.execute(simpleCmdDevelopConf, paramsJson));
     }
 
     @PostConstruct
