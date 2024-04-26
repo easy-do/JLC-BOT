@@ -1696,5 +1696,15 @@
             );
         </sql>
     </changeSet>
+    <changeSet author="yuzhanfeng" id="20240426" dbms="h2" failOnError="true">
+        <sql dbms="h2">
+            UPDATE
+                SYSTEM_CONF
+            SET
+                CONF_DATA = '[{"name":"首页","path":"/home"},{"name":"系统管理","path":"/systemManager","children":[{"name":"系统配置","path":"/conf"},{"name":"定时任务","path":"/systemJob"}]},{"name":"日志管理","path":"/systemLog","children":[{"name":"消息记录","path":"/botMessage"},{"name":"请求记录","path":"/botRequest"},{"name":"通知记录","path":"/botNotice"},{"name":"上报日志","path":"/botPostLog"},{"name":"节点执行日志","path":"/nodeExecuteLog"},{"name":"节点配置日志","path":"/nodeConfExecuteLog"}]},{"name":"机器人管理","path":"/platformBot"},{"name":"低代码开发","path":"/lowcodeDevelop","children":[{"name":"节点管理","path":"/sysNode"},{"name":"低代码配置","path":"/nodeConf"}]},{"name":"简单指令","path":"/simpleCmdDevelop"},{"name":"高级开发","path":"/highLevelDevelop"},{"name":"webhook","path":"/webhooks"},{"name":"沙盒工具","path":"/sandbox"}]'
+            WHERE
+                CONF_KEY = 'menu';
+        </sql>
+    </changeSet>
 
 </databaseChangeLog>

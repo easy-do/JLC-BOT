@@ -480,7 +480,7 @@ const Webhooks: React.FC = () => {
           }
           tooltip={<span>webhook请求的body参数</span>}
           initialValue={
-            '{"botNumber": "jlc-bot-sandbox","action": "started","repository": {"stargazers_count": 36}"}'
+            '{"botNumber": "jlc-bot-sandbox","action": "started"}'
           }
           rules={[
             {
