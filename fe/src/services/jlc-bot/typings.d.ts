@@ -187,6 +187,11 @@ declare namespace API {
     params?: Record<string, any>;
   };
 
+  type generateHookUrlParams = {
+    botId: number;
+    confId: number;
+  };
+
   type getBotConfParams = {
     botNumber: string;
   };
@@ -227,6 +232,10 @@ declare namespace API {
     id: Record<string, any>;
   };
 
+  type getWebhooksConfInfoParams = {
+    id: number;
+  };
+
   type HighLevelDevelopConf = {
     id?: number;
     confName?: string;
@@ -248,15 +257,10 @@ declare namespace API {
     highLevelDevelopConfQo: HighLevelDevelopConfQo;
   };
 
-  type hookGetParams = {
-    action: string;
-    secret: string;
-  };
-
   type hookPostParams = {
-    action: string;
+    action: number;
     secret: string;
-    paramJson: JSONObject;
+    paramsJson: JSONObject;
   };
 
   type infoBotParams = {
@@ -369,6 +373,10 @@ declare namespace API {
     simpleCmdDevelopConfQo: SimpleCmdDevelopConfQo;
   };
 
+  type pageWebhooksConfParams = {
+    webhooksConfQo: WebhooksConfQo;
+  };
+
   type PostLogQo = {
     current?: number;
     pageSize?: number;
@@ -453,6 +461,10 @@ declare namespace API {
 
   type removeSysNodeParams = {
     id: Record<string, any>;
+  };
+
+  type removeWebhooksConfParams = {
+    id: number;
   };
 
   type RHighLevelDevelopConf = {
@@ -608,6 +620,15 @@ declare namespace API {
     total?: number;
   };
 
+  type RListWebhooksConf = {
+    code?: number;
+    data?: WebhooksConf[];
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
   type RLiteFlowScript = {
     code?: number;
     data?: LiteFlowScript;
@@ -702,6 +723,15 @@ declare namespace API {
     id: number;
   };
 
+  type RWebhooksConf = {
+    code?: number;
+    data?: WebhooksConf;
+    message?: string;
+    errorMessage?: string;
+    success?: boolean;
+    total?: number;
+  };
+
   type SandboxMessage = {
     messageId?: string;
     isSelf?: boolean;
@@ -791,5 +821,21 @@ declare namespace API {
   type wcfPostParams = {
     postData: JSONObject;
     token: string;
+  };
+
+  type WebhooksConf = {
+    id?: number;
+    confName?: string;
+    remark?: string;
+    scriptLanguage?: string;
+    script?: LiteFlowScript;
+  };
+
+  type WebhooksConfQo = {
+    current?: number;
+    pageSize?: number;
+    id?: number;
+    confName?: string;
+    remark?: string;
   };
 }

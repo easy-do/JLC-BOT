@@ -4,7 +4,6 @@ package plus.easydo.bot.websocket;
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.text.CharSequenceUtil;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
 import org.springframework.web.socket.WebSocketMessage;
@@ -15,7 +14,6 @@ import plus.easydo.bot.enums.onebot.OneBotIntergrationPostTypeEnum;
 import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.util.OneBotWebSocketUtils;
 
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -34,7 +32,7 @@ public class OneBotWebSocketServerHandler implements WebSocketHandler {
         //鉴权
         String selfId = OneBotWebSocketUtils.getSessionParam(session,OneBotConstants.HEADER_SELF_ID);
         if (Objects.nonNull(selfId)) {
-            BotInfo botInfo = OneBotUtils.getBotInfo(selfId);
+            BotInfo botInfo = OneBotUtils.getBotInfoByNumber(selfId);
             if (Objects.nonNull(botInfo)) {
                 //判断是否指定了反向websocket
                 String postType = OneBotIntergrationPostTypeEnum.WEBSOCKET_REVERSE.getType();

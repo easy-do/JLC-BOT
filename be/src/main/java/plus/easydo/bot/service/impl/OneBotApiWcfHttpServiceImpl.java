@@ -22,13 +22,13 @@ public class OneBotApiWcfHttpServiceImpl implements OneBotApiService {
 
 
     private static String getRequest(String botNumber, String path) {
-        BotInfo bot = OneBotUtils.getBotInfo(botNumber);
+        BotInfo bot = OneBotUtils.getBotInfoByNumber(botNumber);
         return HttpRequest.get(bot.getBotUrl() + "/" + path)
                 .execute().body();
     }
 
     private static String postRequest(String botNumber, String path, JSONObject body) {
-        BotInfo bot = OneBotUtils.getBotInfo(botNumber);
+        BotInfo bot = OneBotUtils.getBotInfoByNumber(botNumber);
         return HttpRequest.post(bot.getBotUrl() + "/" + path)
                 .body(body.toStringPretty())
                 .execute().body();

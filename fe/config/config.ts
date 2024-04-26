@@ -108,6 +108,10 @@ export default defineConfig({
       component: './highLevelDevelop',
     },
     {
+      path: '/webhooks',
+      component: './webhooks',
+    },
+    {
       component: '404',
     },
   ],

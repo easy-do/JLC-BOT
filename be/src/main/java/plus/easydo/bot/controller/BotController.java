@@ -20,6 +20,7 @@ import plus.easydo.bot.qo.BotNoticeQo;
 import plus.easydo.bot.qo.BotQo;
 import plus.easydo.bot.qo.BotRequestQo;
 import plus.easydo.bot.service.BotService;
+import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
 
@@ -38,6 +39,18 @@ import java.util.List;
 public class BotController {
 
     private final BotService botService;
+
+    /**
+     * 所有bot列表
+     *
+     * @return 所有bot列表
+     */
+    @SaCheckLogin
+    @Operation(summary = "所有bot列表")
+    @GetMapping("/list")
+    public R<List<BotInfo>> listBot() {
+        return DataResult.ok(OneBotUtils.getBotInfoList());
+    }
 
     /**
      * 分页查询机器人

@@ -52,7 +52,7 @@ public class OneBotController {
 
     @PostMapping("/v11/post")
     public void v11Post(@RequestHeader("x-self-id") String selfId, @RequestHeader("x-signature") String signature, HttpServletRequest request) throws IOException {
-        BotInfo botInfo = OneBotUtils.getBotInfo(selfId);
+        BotInfo botInfo = OneBotUtils.getBotInfoByNumber(selfId);
         if (Objects.nonNull(botInfo)) {
             String postType = OneBotIntergrationPostTypeEnum.HTTP_POST.getType();
             if (!CharSequenceUtil.equals(botInfo.getPostType(), postType)) {

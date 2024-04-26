@@ -35,7 +35,7 @@ public class OneBotSimpleCmdPostHandler {
         if (CharSequenceUtil.equals(evenType, OneBotPostTypeEnum.MESSAGE.getType())) {
             //通过机器人编码找到机器人id
             String botNumber = postData.getStr(OneBotConstants.SELF_ID);
-            BotInfo botInfo = OneBotUtils.getBotInfo(botNumber);
+            BotInfo botInfo = OneBotUtils.getBotInfoByNumber(botNumber);
             if (Objects.nonNull(botInfo)) {
                 List<Long> simpleIds = CacheManager.BOT_SIMPLE_CMD_DEV_CONF_CACHE.get(botInfo.getId());
                 if (Objects.nonNull(simpleIds)) {

@@ -1,16 +1,13 @@
 package plus.easydo.bot.util;
 
-import cn.hutool.json.JSONArray;
+import cn.hutool.core.lang.Assert;
 import cn.hutool.json.JSONObject;
-import cn.hutool.json.JSONUtil;
 import plus.easydo.bot.constant.OneBotConstants;
 import plus.easydo.bot.entity.BotInfo;
 import plus.easydo.bot.entity.SystemConf;
-import plus.easydo.bot.exception.BaseException;
 import plus.easydo.bot.manager.CacheManager;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Objects;
 
 
@@ -26,31 +23,35 @@ public class OneBotUtils {
     }
 
     public static List<BotInfo> getBotInfoList() {
-        return CacheManager.BOT_CACHE.entrySet().stream().map(Map.Entry::getValue).toList();
+        return CacheManager.BOT_CACHE.values().stream().toList();
     }
 
-    public static BotInfo getBotInfo(String botNumber) {
-        BotInfo bot = CacheManager.BOT_CACHE.get(botNumber);
-        if (Objects.isNull(bot)) {
-            throw new BaseException("机器人[" + botNumber + "]不存在");
-        }
-        return bot;
-    }
-
-    public static BotInfo getBotInfoBySecret(String secret) {
-        BotInfo botInfo = CacheManager.SECRET_BOT_CACHE.get(secret);
-        if (Objects.isNull(botInfo)) {
-            throw new BaseException("机器人不存在");
-        }
+    public static BotInfo getBotInfoById(Long botId) {
+        BotInfo botInfo = CacheManager.BOT_CACHE.get(botId);
+        Assert.notNull(botInfo, "机器人不存在");
         return botInfo;
     }
 
-    public static void saveSecretBotCache(Map<String, BotInfo> secretMap) {
-        CacheManager.SECRET_BOT_CACHE.putAll(secretMap);
+
+    public static BotInfo getBotInfoByNumber(String botNumber) {
+        Long botId = CacheManager.BOT_NUMBER_CACHE.get(botNumber);
+        Assert.notNull(botId, "机器人不存在");
+        return getBotInfoById(botId);
     }
 
-    public static void saveBotNumberBotCache(Map<String, BotInfo> botMap) {
-        CacheManager.BOT_CACHE.putAll(botMap);
+    public static BotInfo getBotInfoBySecret(String secret) {
+        Long botInfo = CacheManager.BOT_SECRET_CACHE.get(secret);
+        Assert.notNull(botInfo, "机器人不存在");
+        return getBotInfoById(botInfo);
+    }
+
+    public static void cacheBotInfo(List<BotInfo> botInfos) {
+        botInfos.forEach(botInfo -> {
+            Long botId = botInfo.getId();
+            CacheManager.BOT_CACHE.put(botId, botInfo);
+            CacheManager.BOT_SECRET_CACHE.put(botInfo.getBotSecret(), botId);
+            CacheManager.BOT_NUMBER_CACHE.put(botInfo.getBotNumber(), botId);
+        });
     }
 
     public static void cacheSystemConf(List<SystemConf> confList) {
@@ -76,16 +77,5 @@ public class OneBotUtils {
         } else {
             return paramJson.getStr(OneBotConstants.SELF_ID);
         }
-    }
-
-    public static JSONArray buildMessageJson(String message) {
-        JSONArray arr = JSONUtil.createArray();
-        JSONObject obj = JSONUtil.createObj();
-        obj.set("type", "text");
-        JSONObject obj1 = JSONUtil.createObj();
-        obj1.set("text", message);
-        obj.set("data", obj1);
-        arr.add(obj);
-        return arr;
     }
 }

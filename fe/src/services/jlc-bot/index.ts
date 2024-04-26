@@ -2,6 +2,7 @@
 /* eslint-disable */
 // API 更新时间：
 // API 唯一标识：
+import * as webhook from './webhook';
 import * as yonghu from './yonghu';
 import * as dingshirenwu from './dingshirenwu';
 import * as xitongjiedian from './xitongjiedian';
@@ -16,11 +17,11 @@ import * as liteflowScript from './liteflowScript';
 import * as xitongpeizhi from './xitongpeizhi';
 import * as shangbaoxiaoxirizhi from './shangbaoxiaoxirizhi';
 import * as jiqiren from './jiqiren';
-import * as webhook from './webhook';
 import * as xitong from './xitong';
 import * as xingnengfenxi from './xingnengfenxi';
 import * as ollama from './ollama';
 export default {
+  webhook,
   yonghu,
   dingshirenwu,
   xitongjiedian,
@@ -35,7 +36,6 @@ export default {
   xitongpeizhi,
   shangbaoxiaoxirizhi,
   jiqiren,
-  webhook,
   xitong,
   xingnengfenxi,
   ollama,

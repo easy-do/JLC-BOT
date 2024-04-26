@@ -33,7 +33,7 @@ public class OneBotApiSandboxServiceImpl implements OneBotApiService {
 
     @Override
     public String getLoginInfo(String botNumber) {
-        String res = JSONUtil.toJsonStr(OneBotUtils.getBotInfo(botNumber));
+        String res = JSONUtil.toJsonStr(OneBotUtils.getBotInfoByNumber(botNumber));
         SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", res));
         return res;
     }

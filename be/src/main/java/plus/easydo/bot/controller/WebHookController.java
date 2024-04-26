@@ -2,6 +2,7 @@ package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
 import cn.hutool.core.lang.Assert;
+import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONObject;
 import cn.hutool.json.JSONUtil;
 import io.swagger.v3.oas.annotations.Operation;
@@ -56,7 +57,7 @@ public class WebHookController {
      * @author laoyu
      * @date 2024/4/5
      */
-    @GetMapping("/call/{secret}/{action}")
+    @PostMapping("/call/{secret}/{action}")
     @Operation(summary = "webhook post请求")
     public R<Object> hookPost(HttpServletRequest request, @PathVariable("action") Long action, @PathVariable("secret") String secret, @RequestBody JSONObject paramsJson) {
         BotInfo botInfo = OneBotUtils.getBotInfoBySecret(secret);
@@ -80,7 +81,7 @@ public class WebHookController {
     @SaCheckLogin
     @Operation(summary = "调试配置")
     @PostMapping("/debug")
-    public R<CmpStepResult> debugSimpleCmdDevelop(@RequestBody DebugDto debugDto) {
+    public R<CmpStepResult> debugWebhooks(@RequestBody DebugDto debugDto) {
         return DataResult.ok(webhooksConfService.debug(debugDto));
     }
 
@@ -90,7 +91,9 @@ public class WebHookController {
      * @param webhooksConf
      * @return {@code true} 添加成功，{@code false} 添加失败
      */
+    @SaCheckLogin
     @PostMapping("/save")
+    @Operation(summary = "添加")
     public R<Boolean> saveWebhooksConf(@RequestBody WebhooksConf webhooksConf) {
         return DataResult.ok(webhooksConfService.saveWebhooksConf(webhooksConf));
     }
@@ -102,7 +105,9 @@ public class WebHookController {
      * @param id 主键
      * @return {@code true} 删除成功，{@code false} 删除失败
      */
+    @SaCheckLogin
     @GetMapping("/remove/{id}")
+    @Operation(summary = "根据主键删除")
     public R<Boolean> removeWebhooksConf(@PathVariable Long id) {
         return DataResult.ok(webhooksConfService.removeWebhooksConf(id));
     }
@@ -114,7 +119,9 @@ public class WebHookController {
      * @param webhooksConf
      * @return {@code true} 更新成功，{@code false} 更新失败
      */
+    @SaCheckLogin
     @PostMapping("/update")
+    @Operation(summary = "根据主键更新")
     public R<Boolean> updateWebhooksConf(@RequestBody WebhooksConf webhooksConf) {
         return DataResult.ok(webhooksConfService.updateWebhooksConf(webhooksConf));
     }
@@ -125,7 +132,9 @@ public class WebHookController {
      *
      * @return 所有数据
      */
+    @SaCheckLogin
     @GetMapping("/list")
+    @Operation(summary = "查询所有")
     public R<List<WebhooksConf>> listWebhooksConf() {
         return DataResult.ok(webhooksConfService.listWebhooksConf());
     }
@@ -137,7 +146,9 @@ public class WebHookController {
      * @param id webhooksConf主键
      * @return 详情
      */
+    @SaCheckLogin
     @GetMapping("/getInfo/{id}")
+    @Operation(summary = "详情")
     public R<WebhooksConf> getWebhooksConfInfo(@PathVariable Long id) {
         return DataResult.ok(webhooksConfService.getWebhooksConfInfo(id));
     }
@@ -149,9 +160,31 @@ public class WebHookController {
      * @param webhooksConfQo 分页对象
      * @return 分页对象
      */
+    @SaCheckLogin
     @GetMapping("/page")
+    @Operation(summary = "分页查询")
     public R<List<WebhooksConf>> pageWebhooksConf(WebhooksConfQo webhooksConfQo) {
         return DataResult.ok(webhooksConfService.pageWebhooksConf(webhooksConfQo));
+    }
+
+    /**
+     * 生成hookUrl
+     *
+     * @param botId  botId
+     * @param confId confId
+     * @return plus.easydo.bot.vo.R<java.lang.String>
+     * @author laoyu
+     * @date 2024/4/26
+     */
+    @SaCheckLogin
+    @GetMapping("/generateHookUrl/{botId}/{confId}")
+    @Operation(summary = "生成hookUrl")
+    public R<String> generateHookUrl(@PathVariable Long botId, @PathVariable Long confId) {
+        BotInfo botInfo = OneBotUtils.getBotInfoById(botId);
+        WebhooksConf conf = CacheManager.WEBHOOKS_CONF_CACHE.get(confId);
+        Assert.notNull(conf, "配置信息不存在");
+        String pathTemplate = "/api/webhooks/call/{}/{}";
+        return DataResult.ok(CharSequenceUtil.format(pathTemplate, botInfo.getBotSecret(), confId));
     }
 
 }

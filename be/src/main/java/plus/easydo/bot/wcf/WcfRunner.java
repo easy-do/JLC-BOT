@@ -93,7 +93,7 @@ public class WcfRunner implements ApplicationRunner {
         messageJson.set("is_group", isGroup);
         messageJson.set("extra", msg.getExtra());
         messageJson.set("xml", msg.getXml());
-        BotInfo botInfo = OneBotUtils.getBotInfo(client.getSelfWxid());
+        BotInfo botInfo = OneBotUtils.getBotInfoByNumber(client.getSelfWxid());
         messageJson.set(OneBotConstants.SELF_ID, botInfo.getBotNumber());
         return messageJson;
     }

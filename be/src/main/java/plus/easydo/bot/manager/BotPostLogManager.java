@@ -25,7 +25,7 @@ import static plus.easydo.bot.entity.table.BotPostLogTableDef.BOT_POST_LOG;
 public class BotPostLogManager extends ServiceImpl<BotPostLogMapper, BotPostLog> {
 
     public void saveLog(JSONObject messageJson) {
-        BotInfo botInfo = OneBotUtils.getBotInfo(messageJson.getStr(OneBotConstants.SELF_ID));
+        BotInfo botInfo = OneBotUtils.getBotInfoByNumber(messageJson.getStr(OneBotConstants.SELF_ID));
         save(BotPostLog.builder()
                 .postTime(LocalDateTimeUtil.now())
                 .platform(botInfo.getPlatform())

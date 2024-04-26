@@ -78,6 +78,14 @@ export async function infoBot(
   });
 }
 
+/** 所有bot列表 GET /api/bot/list */
+export async function listBot(options?: { [key: string]: any }) {
+  return request<API.RListBotInfo>('/api/bot/list', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** 分页查询 POST /api/bot/page */
 export async function pageBot(body: API.BotQo, options?: { [key: string]: any }) {
   return request<API.RListBotInfo>('/api/bot/page', {

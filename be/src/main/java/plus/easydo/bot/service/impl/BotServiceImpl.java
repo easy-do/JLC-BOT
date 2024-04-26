@@ -91,10 +91,8 @@ public class BotServiceImpl implements BotService {
     @PostConstruct
     @Override
     public void initBotCache() {
-        Map<String, BotInfo> map = botInfoManager.list().stream().collect(Collectors.toMap(BotInfo::getBotNumber, (c) -> c));
-        OneBotUtils.saveBotNumberBotCache(map);
-        Map<String, BotInfo> secretMap = botInfoManager.list().stream().collect(Collectors.toMap(BotInfo::getBotSecret, (c) -> c));
-        OneBotUtils.saveSecretBotCache(secretMap);
+        List<BotInfo> list = botInfoManager.list();
+        OneBotUtils.cacheBotInfo(list);
     }
 
     @PostConstruct
@@ -196,7 +194,7 @@ public class BotServiceImpl implements BotService {
 
     @Override
     public OneBotApiService getApiServer(String botNumber) {
-        BotInfo bot = OneBotUtils.getBotInfo(botNumber);
+        BotInfo bot = OneBotUtils.getBotInfoByNumber(botNumber);
         String invokeType = bot.getInvokeType() + "_one_bot_api";
         OneBotApiService apiService = apiServiceMap.get(invokeType);
         if (Objects.isNull(apiService)) {

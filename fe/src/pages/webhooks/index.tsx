@@ -8,18 +8,19 @@ import { Button, Dropdown, Upload, message, Modal } from 'antd';
 import type { UploadProps } from 'antd';
 import { request } from 'umi';
 import {
-  debugSimpleCmdDevelop,
-  getSimpleDevelopInfo,
-  pageSimpleDevelop,
-  removeSimpleDevelop,
-  saveSimpleDevelop,
-  updateSimpleDevelop,
-} from '@/services/jlc-bot/jiandanzhilingkaifa';
+  getWebhooksConfInfo,
+  pageWebhooksConf,
+  removeWebhooksConf,
+  saveWebhooksConf,
+  updateWebhooksConf,
+  debugWebhooks,
+  generateHookUrl
+} from '@/services/jlc-bot/webhook';
 import EditLiteFlowScript from '@/components/EditLiteFlowScript';
-import Sandbox from '../sandbox';
 import OneNodeExecuteResultVivew from '../sandbox/oneNodeExecuteResultVivew';
+import { listBot } from '@/services/jlc-bot/jiqiren';
 
-const SimpleCmdDevelop: React.FC = () => {
+const Webhooks: React.FC = () => {
   const actionRef = useRef<ActionType>();
 
   const props: UploadProps = {
@@ -69,11 +70,11 @@ const SimpleCmdDevelop: React.FC = () => {
    * @param fields
    */
 
-  const handleAdd = async (fields: API.SimpleCmdDevelopConf) => {
+  const handleAdd = async (fields: API.WebhooksConf) => {
     const hide = message.loading('正在添加');
 
     try {
-      await saveSimpleDevelop({ ...fields });
+      await saveWebhooksConf({ ...fields });
       hide();
       message.success('添加成功');
       return true;
@@ -86,10 +87,10 @@ const SimpleCmdDevelop: React.FC = () => {
 
   /** 编辑窗口的弹窗 */
   const [editModalVisible, handleEditModalVisible] = useState<boolean>(false);
-  const [currentRow, setCurrentRow] = useState<API.SimpleCmdDevelopConf>();
+  const [currentRow, setCurrentRow] = useState<API.WebhooksConf>();
 
   const openEditModal = (id: number) => {
-    getSimpleDevelopInfo({ id: id }).then((res) => {
+    getWebhooksConfInfo({ id: id }).then((res) => {
       if (res.success) {
         const data = res.data;
         setCurrentRow(data);
@@ -104,11 +105,11 @@ const SimpleCmdDevelop: React.FC = () => {
    * @param fields
    */
 
-  const handleUpdate = async (fields: API.SimpleCmdDevelopConf) => {
+  const handleUpdate = async (fields: API.WebhooksConf) => {
     const hide = message.loading('正在更新');
 
     try {
-      await updateSimpleDevelop({ ...fields });
+      await updateWebhooksConf({ ...fields });
       hide();
       message.success('更新成功');
       return true;
@@ -124,7 +125,7 @@ const SimpleCmdDevelop: React.FC = () => {
   const [editScript, setEditScript] = useState<API.LiteFlowScript>();
 
   const openEditFormScriptModal = (id: number) => {
-    getSimpleDevelopInfo({ id: id }).then((res) => {
+    getWebhooksConfInfo({ id: id }).then((res) => {
       if (res.success && res.data) {
         message.success('加载脚本成功');
         setEditScript(res.data.script);
@@ -141,7 +142,7 @@ const SimpleCmdDevelop: React.FC = () => {
   const [debugResultModalVisible, handleDebugResultModalVisible] = useState<boolean>(false);
 
   const openDebugModal = (id: number) => {
-    getSimpleDevelopInfo({ id: id }).then((res) => {
+    getWebhooksConfInfo({ id: id }).then((res) => {
       if (res.success) {
         const data = res.data;
         setCurrentRow(data);
@@ -150,28 +151,25 @@ const SimpleCmdDevelop: React.FC = () => {
     });
   };
 
+  /** 生成hook地址的弹窗 */
+  const [generateHookUrlModalVisible, handleGenerateHookUrlModalVisible] = useState<boolean>(false);
 
-  // 沙盒调试弹框
-  const [sandBoxOpen, setSandBoxOpen] = useState(false);
-  const [sandBoxConfId, setSandBoxConfId] = useState<string>();
 
-  const openSandcoxModel = (confId: string) => {
-    setSandBoxConfId(confId);
-    setSandBoxOpen(true);
+  const openGenerateHookModal = (id: number) => {
+    getWebhooksConfInfo({ id: id }).then((res) => {
+      if (res.success) {
+        const data = res.data;
+        setCurrentRow(data);
+        handleGenerateHookUrlModalVisible(true);
+      }
+    });
   };
 
-  const debugModalOpenCallback = (bl: boolean) => {
-    handleDebugResultModalVisible(bl);
-  };
-  const setDebugResultBack = (data: API.CmpStepResult[]) => {
-    if(data && data.length > 0){
-      setDebugResult(data[0]);
-    }
-  };
+
 
   /** 国际化配置 */
 
-  const columns: ProColumns<API.SimpleCmdDevelopConf>[] = [
+  const columns: ProColumns<API.WebhooksConf>[] = [
     {
       title: '配置名称',
       dataIndex: 'confName',
@@ -203,10 +201,10 @@ const SimpleCmdDevelop: React.FC = () => {
                 },
               },
               {
-                key: 'sandbox',
-                label: '沙盒调试',
+                key: 'generateHookUrl',
+                label: '生成并复制hook地址',
                 onClick: (e) => {
-                  openSandcoxModel(record.id);
+                  openGenerateHookModal(record.id);
                 },
               },
               {
@@ -220,7 +218,7 @@ const SimpleCmdDevelop: React.FC = () => {
                 key: 'export',
                 label: '导出',
                 onClick: (e) => {
-                  getSimpleDevelopInfo({ id: record.id }).then((res) => {
+                  getWebhooksConfInfo({ id: record.id }).then((res) => {
                     if (res.success) {
                       const node = res.data;
                       const blob = new Blob([JSON.stringify(node)]);
@@ -241,7 +239,7 @@ const SimpleCmdDevelop: React.FC = () => {
                 key: 'remove',
                 label: '删除',
                 onClick: (e) => {
-                  removeSimpleDevelop({ id: record.id }).then((res) => {
+                  removeWebhooksConf({ id: record.id }).then((res) => {
                     actionRef.current.reload();
                   });
                 },
@@ -258,7 +256,7 @@ const SimpleCmdDevelop: React.FC = () => {
 
   return (
     <PageContainer>
-      <ProTable<API.SimpleCmdDevelopConf, API.RListSimpleCmdDevelopConf>
+      <ProTable<API.WebhooksConf, API.RListWebhooksConf>
         headerTitle="配置列表"
         actionRef={actionRef}
         rowKey="id"
@@ -269,7 +267,7 @@ const SimpleCmdDevelop: React.FC = () => {
           defaultPageSize: 10,
           showSizeChanger: true,
         }}
-        request={pageSimpleDevelop}
+        request={pageWebhooksConf}
         columns={columns}
         toolBarRender={() => [
           <Upload {...props}>
@@ -297,7 +295,7 @@ const SimpleCmdDevelop: React.FC = () => {
         visible={createModalVisible}
         onVisibleChange={handleModalVisible}
         onFinish={async (value) => {
-          const success = await handleAdd(value as API.SimpleCmdDevelopConf);
+          const success = await handleAdd(value as API.WebhooksConf);
           if (success) {
             handleModalVisible(false);
             if (actionRef.current) {
@@ -313,58 +311,6 @@ const SimpleCmdDevelop: React.FC = () => {
             {
               required: true,
               message: '请输入配置名称',
-            },
-          ]}
-        />
-        <ProFormSelect
-          name="cmdType"
-          initialValue={'equals'}
-          label="指令类型"
-          options={[
-            {
-              label: '等于',
-              value: 'equals',
-            },
-            {
-              label: '包含',
-              value: 'contains',
-            },
-            {
-              label: '开头',
-              value: 'startWith',
-            },
-            {
-              label: '结尾',
-              value: 'endWith',
-            },
-            {
-              label: '艾特_文字',
-              value: 'at_text',
-            },
-            {
-              label: '文字_艾特',
-              value: 'text_at',
-            },
-            {
-              label: '文字_艾特_文字',
-              value: 'text_at_text',
-            },
-          ]}
-          rules={[
-            {
-              required: true,
-              message: '请选择指令类型',
-            },
-          ]}
-        />
-        <ProFormText
-          name="cmd"
-          tooltip="聊天消息满足配置的指令类型触发"
-          label="指令"
-          rules={[
-            {
-              required: true,
-              message: '请输入指令',
             },
           ]}
         />
@@ -424,7 +370,7 @@ const SimpleCmdDevelop: React.FC = () => {
         visible={editModalVisible}
         onVisibleChange={handleEditModalVisible}
         onFinish={async (value) => {
-          const success = await handleUpdate(value as API.SimpleCmdDevelopConf);
+          const success = await handleUpdate(value as API.WebhooksConf);
           if (success) {
             handleEditModalVisible(false);
             if (actionRef.current) {
@@ -441,58 +387,6 @@ const SimpleCmdDevelop: React.FC = () => {
             {
               required: true,
               message: '请输入配置名称',
-            },
-          ]}
-        />
-        <ProFormSelect
-          name="cmdType"
-          label="指令类型"
-          initialValue={'equals'}
-          options={[
-            {
-              label: '等于',
-              value: 'equals',
-            },
-            {
-              label: '包含',
-              value: 'contains',
-            },
-            {
-              label: '开头',
-              value: 'startWith',
-            },
-            {
-              label: '结尾',
-              value: 'endWith',
-            },
-            {
-              label: '艾特_文字',
-              value: 'at_text',
-            },
-            {
-              label: '文字_艾特',
-              value: 'text_at',
-            },
-            {
-              label: '文字_艾特_文字',
-              value: 'text_at_text',
-            },
-          ]}
-          rules={[
-            {
-              required: true,
-              message: '请选择指令类型',
-            },
-          ]}
-        />
-        <ProFormText
-          name="cmd"
-          tooltip="聊天消息满足配置的指令类型触发"
-          label="指令"
-          rules={[
-            {
-              required: true,
-              message: '请输入指令',
             },
           ]}
         />
@@ -549,7 +443,7 @@ const SimpleCmdDevelop: React.FC = () => {
         onVisibleChange={handleDebugModalVisible}
         onFinish={(values) => {
           if (currentRow) {
-            debugSimpleCmdDevelop(values).then((res) => {
+            debugWebhooks(values).then((res) => {
               if (res.success) {
                 setDebugResult(res.data);
                 handleDebugResultModalVisible(true);
@@ -564,19 +458,29 @@ const SimpleCmdDevelop: React.FC = () => {
         <ProFormTextArea
           name="params"
           label={
-            <a
-              onClick={() => {
-                window.open('/#/botPostLog');
-              }}
-            >
-              模拟上报数据(查看上报日志)
-            </a>
+            <>
+              请求参数
+              <a>&nbsp;&nbsp;&nbsp;</a>
+              <a
+                onClick={() => {
+                  window.open('https://gitee.com/help/articles/4183');
+                }}
+              >
+                gitee
+              </a>
+              <a>&nbsp;&nbsp;&nbsp;</a>
+              <a
+                onClick={() => {
+                  window.open('https://docs.github.com/zh/webhooks');
+                }}
+              >
+                github
+              </a>
+              <a>&nbsp;&nbsp;&nbsp;</a></>
           }
-          tooltip={<span>对上报数据结构比较了解或对接非标准上报调试,建议使用此项</span>}
+          tooltip={<span>webhook请求的body参数</span>}
           initialValue={
-            '{"post_type":"message","self_id":"jlc-bot-sandbox","group_id":"jlc-bot-sandbox","message_id":114154,"message_type":"group","message":"' +
-            currentRow?.cmd +
-            '"}'
+            '{"botNumber": "jlc-bot-sandbox","action": "started","repository": {"stargazers_count": 36}"}'
           }
           rules={[
             {
@@ -586,35 +490,66 @@ const SimpleCmdDevelop: React.FC = () => {
           ]}
         />
       </ModalForm>
-      <OneNodeExecuteResultVivew visible={debugResultModalVisible} handleVisible={handleDebugResultModalVisible} debugResult={debugResult}/>
+      <OneNodeExecuteResultVivew visible={debugResultModalVisible} handleVisible={handleDebugResultModalVisible} debugResult={debugResult} />
       <EditLiteFlowScript
         visible={editFormScriptModalVisible}
         handleVisible={handleEditFormScriptModalVisible}
         script={editScript}
       />
-      <Modal
-        style={{
-          minWidth: '50%',
-          minHeight: '50%',
+      <ModalForm
+        modalProps={{
+          destroyOnClose: true,
         }}
-        keyboard={false}
-        open={sandBoxOpen}
-        onCancel={() => setSandBoxOpen(false)}
-        title="沙盒调试"
-        destroyOnClose={true}
-        maskClosable={false}
-        centered
-        footer={null}
+        initialValues={currentRow}
+        title="生成hook地址"
+        visible={generateHookUrlModalVisible}
+        onVisibleChange={handleGenerateHookUrlModalVisible}
+        onFinish={(values) => {
+          generateHookUrl({ 'confId': currentRow?.id, ...values }).then(res => {
+            if (res.success) {
+              const path = res.data;
+              let url = window.location.href + "";
+              const endIndex = url.indexOf("/#");
+              url = url.substring(0, endIndex);
+              if (url.endsWith(":8000")) {
+                url = url.replace("8000", "8888");
+              }
+              navigator.clipboard.writeText(url + path);
+              handleGenerateHookUrlModalVisible(false);
+              message.success("已复制到剪切板");
+            } else {
+              message.warning(res.errorMessage);
+            }
+          })
+        }}
       >
-        <Sandbox
-          confId={sandBoxConfId}
-          confType={'simpleCmdDevelop'}
-          setDebugResult={setDebugResultBack}
-          openDebug={debugModalOpenCallback}
+        <ProFormSelect
+          name="botId"
+          label="机器人"
+          debounceTime={10000}
+          fieldProps={{
+            suffixIcon: null,
+            showSearch: true,
+            labelInValue: false,
+            autoClearSearchValue: true,
+            fieldNames: {
+              label: 'botNumber',
+              value: 'id',
+            },
+          }}
+          rules={[
+            {
+              required: true,
+              message: '请选择机器人',
+            },
+          ]}
+          request={() => listBot({}).then(res => {
+            return res.data
+          })}
         />
-      </Modal>
+      </ModalForm>
     </PageContainer>
   );
 };
 
-export default SimpleCmdDevelop;
+export default Webhooks;

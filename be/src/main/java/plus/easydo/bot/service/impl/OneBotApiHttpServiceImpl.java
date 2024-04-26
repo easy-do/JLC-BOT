@@ -23,14 +23,14 @@ import java.util.Objects;
 public class OneBotApiHttpServiceImpl implements OneBotApiService {
 
     private static String getRequest(String botNumber, String path) {
-        BotInfo bot = OneBotUtils.getBotInfo(botNumber);
+        BotInfo bot = OneBotUtils.getBotInfoByNumber(botNumber);
         return HttpRequest.get(bot.getBotUrl() + "/" + path)
                 .header(OneBotConstants.HEADER_AUTHORIZATION, OneBotConstants.HEADER_AUTHORIZATION_VALUE_PRE + bot.getBotSecret())
                 .execute().body();
     }
 
     private static String postRequest(String botNumber, String path, JSONObject body) {
-        BotInfo bot = OneBotUtils.getBotInfo(botNumber);
+        BotInfo bot = OneBotUtils.getBotInfoByNumber(botNumber);
         return HttpRequest.post(bot.getBotUrl() + "/" + path)
                 .header(OneBotConstants.HEADER_AUTHORIZATION, OneBotConstants.HEADER_AUTHORIZATION_VALUE_PRE + bot.getBotSecret())
                 .body(body.toStringPretty())

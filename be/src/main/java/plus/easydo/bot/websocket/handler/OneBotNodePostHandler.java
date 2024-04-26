@@ -34,7 +34,7 @@ public class OneBotNodePostHandler {
     public void handler(String evenType, JSONObject postData) {
         //通过机器人编码找到机器人id
         String botNumber = postData.getStr(OneBotConstants.SELF_ID);
-        BotInfo botInfo = OneBotUtils.getBotInfo(botNumber);
+        BotInfo botInfo = OneBotUtils.getBotInfoByNumber(botNumber);
         if (Objects.nonNull(botInfo)) {
             List<Long> nodeIdList = CacheManager.BOT_NODE_CONF_CACHE.get(botInfo.getId());
             if (Objects.nonNull(nodeIdList)) {

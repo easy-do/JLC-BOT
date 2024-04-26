@@ -33,13 +33,17 @@ public class CacheManager {
      */
     public static final Map<String, SystemConf> SYSTEM_CONF_MAP = new HashMap<>();
     /**
-     * 机器人缓存
+     * 机器人number缓存
      */
-    public static final Map<String, BotInfo> BOT_CACHE = new HashMap<>();
+    public static final Map<String, Long> BOT_NUMBER_CACHE = new HashMap<>();
     /**
      * 密钥与机器人缓存
      */
-    public static final Map<String, BotInfo> SECRET_BOT_CACHE = new HashMap<>();
+    public static final Map<String, Long> BOT_SECRET_CACHE = new HashMap<>();
+    /**
+     * 机器人id缓存
+     */
+    public static final Map<Long, BotInfo> BOT_CACHE = new HashMap<>();
     /**
      * 机器人配置缓存
      */
