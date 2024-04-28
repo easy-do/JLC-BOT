@@ -162,7 +162,7 @@ const Home: React.FC = () => {
           yField: 'nodeName',
           description: {
             visible: true,
-            text: '每个节点执行耗时最长的记录',
+            text: '每个节点执行耗时最长的记录,单位毫秒',
           },
         });
         setNodeExecuteConfMaxData({

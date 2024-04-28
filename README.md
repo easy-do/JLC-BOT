@@ -13,6 +13,7 @@
 * **支持多语言开发高级功能**(java groovy python lua aviator)
 * 简单指令开发支持
 * 高级开发支持
+* webhooks支持
 * 可直接查看系统可用api
 
 * gitee https://gitee.com/yuzhanfeng/JLC-BOT
