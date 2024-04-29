@@ -67,7 +67,7 @@ public class OneBotPostMessageHandler implements OneBotPostHandler {
                     .sendUser(senderId)
                     .selfUser(selfId)
                     .selfTime(LocalDateTimeUtil.of(time))
-                    .message(oneBotMessageParse.getParseMessage())
+                    .message(message)
                     .messageFormat(oneBotMessageParse.getType())
                     .messageId(String.valueOf(messageId))
                     .build();
