@@ -14,7 +14,6 @@ services:
       - TZ=Asia/Shanghai
     volumes:
       - /data/jlc-bot:/data
-      - H2DB=/data/db/jlc_bot
     privileged: true
     restart: unless-stopped
     container_name: jlc-bot
