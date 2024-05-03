@@ -9,21 +9,15 @@
 * 实现了antvx的节点数据格式转liteflow节点数据
 * 支持节点执行详细的全链路在线网页调试、方便高级开发
 * 支持沙盒测试
-* 支持调用ollama模型聊天
-* **支持多语言开发高级功能**(java groovy python lua aviator)
-* 简单指令开发支持
-* 高级开发支持
-* webhooks支持
-* 可直接查看系统可用api
 
 * gitee https://gitee.com/yuzhanfeng/JLC-BOT
 * github https://github.com/easy-do/JLC-BOT
 
 #### 使用技术
 
-- 后端 spring-boot , sa-token , mybatis-flex , liteflow 
+- 后端 spring-boot , sa-token , mybatis-flex , liteflow
 - 前端 antd-pro 、antvx6
-- 协议端 自行发掘
+- 协议端 github查找，不方便直接贴出
 - 数据库: 默认使用H2DB、当前支持mysql和H2DB (其他数据库是否支持请查阅mybatis-flex官方文档)
 - 使用OneBotV11协议的数据格式进行对接适配、理论上所有v11协议的bot客户端可直接对接
 
@@ -36,6 +30,8 @@
 - antvx6: https://x6.antv.antgroup.com/tutorial/getting-started
 - OneBot-V11标准: https://github.com/botuniverse/onebot-11
 - ollama: https://github.com/ollama/ollama
+- 在线文档: https://doc.easydo.plus
+- 技术交流: https://bbs.easydo.plus
 
 
 #### 支持功能
@@ -44,41 +40,13 @@
 - 兼容平台 centos、windows、docker (wx只能windows)
 - 已支持全部上报事件处理
 - 低代码能力
+* 支持调用ollama模型聊天
+* **多语言功能开发**(java groovy python lua aviator)
+* 简单指令开发支持
+* 高级开发支持
+* webhooks支持
+* 可直接查看系统可用api
 
-#### 文档&更新日志
-
-https://doc.easydo.plus
-
-
-#### 快速开始
-
-##### docker命令一键启动
-
-``` shell
-  docker run -dit --name jlc-bot -p 8888:8888 -v /data/jlc-bot:/data registry.cn-hangzhou.aliyuncs.com/gebilaoyu/jlc-bot:1.0.1
-```
-* 访问地址: http://服务器或主机ip:8888
-* 接口文档: http://服务器或主机ip:8888/doc.html
-* 数据库文件存放地址: /data/jlc-bot/db
-* 账号密码：123456789/12345678
-
-##### docker编排
-
-下载docker-compose.yaml后一键启动编排 
-
-* 访问地址: http://服务器或主机ip:8888 
-* 接口文档：http://服务器或主机ip:8888/doc.html
-* 数据库文件存放地址: /data/db
-* 账号密码：123456789/12345678
-
-##### windows安装使用
-
-* https://www.123pan.com/s/DUoAjv-aBDRA.html 提取码: i4lJ
-* 下载文件解压缩到本地磁盘、双击启动.bat 
-* 访问地址：http://localhost:8888
-* 接口文档：http://localhost:8888/doc.html
-* 数据库文件存放地址: 解压目录/data/db
-* 账号密码：123456789/12345678
 
 ##### 上报地址说明
 
