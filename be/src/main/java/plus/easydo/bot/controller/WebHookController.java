@@ -1,6 +1,7 @@
 package plus.easydo.bot.controller;
 
 import cn.dev33.satoken.annotation.SaCheckLogin;
+import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.lang.Assert;
 import cn.hutool.core.text.CharSequenceUtil;
 import cn.hutool.json.JSONObject;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 import plus.easydo.bot.constant.LowCodeConstants;
 import plus.easydo.bot.dto.DebugDto;
 import plus.easydo.bot.entity.BotInfo;
@@ -27,6 +30,8 @@ import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.vo.DataResult;
 import plus.easydo.bot.vo.R;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -161,7 +166,7 @@ public class WebHookController {
      * @return 分页对象
      */
     @SaCheckLogin
-    @GetMapping("/page")
+    @PostMapping("/page")
     @Operation(summary = "分页查询")
     public R<List<WebhooksConf>> pageWebhooksConf(WebhooksConfQo webhooksConfQo) {
         return DataResult.ok(webhooksConfService.pageWebhooksConf(webhooksConfQo));
@@ -183,8 +188,30 @@ public class WebHookController {
         BotInfo botInfo = OneBotUtils.getBotInfoById(botId);
         WebhooksConf conf = CacheManager.WEBHOOKS_CONF_CACHE.get(confId);
         Assert.notNull(conf, "配置信息不存在");
-        String pathTemplate = "/api/webhooks/call/{}/{}";
-        return DataResult.ok(CharSequenceUtil.format(pathTemplate, botInfo.getBotSecret(), confId));
+        return DataResult.ok(CharSequenceUtil.format("/api/webhooks/call/{}/{}", botInfo.getBotSecret(), confId));
+    }
+
+    /**
+     * 导入配置
+     *
+     * @param file file
+     * @return plus.easydo.bot.vo.R<java.lang.Long>
+     * @author laoyu
+     * @date 2024-04-11
+     */
+    @SaCheckLogin
+    @Operation(summary = "导入配置")
+    @PostMapping("/importConf")
+    public R<Long> importWebhookConf(@RequestParam("file") MultipartFile file) throws IOException {
+        InputStream ip = file.getInputStream();
+        byte[] bytes = ip.readAllBytes();
+        String content = new String(bytes);
+        try {
+            WebhooksConf conf = JSONUtil.toBean(content, WebhooksConf.class);
+            return DataResult.ok(webhooksConfService.importConf(conf));
+        } catch (Exception e) {
+            return DataResult.fail("解析配置内容失败:"+ ExceptionUtil.getMessage(e));
+        }
     }
 
 }

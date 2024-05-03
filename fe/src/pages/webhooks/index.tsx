@@ -40,7 +40,7 @@ const Webhooks: React.FC = () => {
     customRequest: (options) => {
       const formData = new FormData();
       formData.append('file', options.file as Blob);
-      request<API.RLong>('/api/simpleCmdDevelop/importConf', {
+      request<API.RLong>('/api/webhooks/importConf', {
         method: 'POST',
         requestType: 'form',
         data: formData,
@@ -54,9 +54,9 @@ const Webhooks: React.FC = () => {
       });
     },
     beforeUpload: (file) => {
-      const isJlc = file.name.endsWith('.jlcsdev');
+      const isJlc = file.name.endsWith('.jlcwebhooks');
       if (!isJlc) {
-        message.error(`请上传.jlcsdev文件`);
+        message.error(`请上传.jlcwebhooks文件`);
       }
       return isJlc || Upload.LIST_IGNORE;
     },
@@ -224,7 +224,7 @@ const Webhooks: React.FC = () => {
                       const blob = new Blob([JSON.stringify(node)]);
                       const objectURL = URL.createObjectURL(blob);
                       let btn = document.createElement('a');
-                      btn.download = node?.confName + '.jlcsdev';
+                      btn.download = node?.confName + '.jlcwebhooks';
                       btn.href = objectURL;
                       btn.click();
                       URL.revokeObjectURL(objectURL);

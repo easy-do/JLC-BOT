@@ -260,7 +260,6 @@ declare namespace API {
   type hookPostParams = {
     action: number;
     secret: string;
-    paramsJson: JSONObject;
   };
 
   type infoBotParams = {

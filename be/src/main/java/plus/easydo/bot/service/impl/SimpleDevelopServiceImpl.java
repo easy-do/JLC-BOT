@@ -117,6 +117,7 @@ public class SimpleDevelopServiceImpl implements SimpleDevelopService {
 
     @Override
     public Long importConf(SimpleCmdDevelopConf conf) {
+        conf.setId(null);
         boolean res = simpleDevelopConfManager.save(conf);
         if (res) {
             try {

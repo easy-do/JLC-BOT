@@ -33,4 +33,6 @@ public interface WebhooksConfService {
     CmpStepResult debug(DebugDto debugDto);
 
     void execute(WebhooksConf webhooksConf, JSONObject paramsJson);
+
+    Long importConf(WebhooksConf conf);
 }

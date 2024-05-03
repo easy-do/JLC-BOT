@@ -120,6 +120,24 @@ public class WebhooksConfServiceImpl implements WebhooksConfService {
         webhooksExecuteServer.execute(webhooksConf, paramsJson);
     }
 
+    @Override
+    public Long importConf(WebhooksConf conf) {
+        conf.setId(null);
+        boolean res = webhooksConfManager.save(conf);
+        if (res) {
+            try {
+                LiteFlowScript newScript = liteFlowScriptManager.createData(conf);
+                newScript.setScriptData(conf.getScript().getScriptData());
+                liteFlowScriptManager.updateScriptData(newScript);
+                initCache();
+            }catch (Exception e){
+                webhooksConfManager.removeById(conf.getId());
+                throw new BaseException("创建脚本失败:"+e.getMessage());
+            }
+        }
+        return conf.getId();
+    }
+
 
     @PostConstruct
     private void initCache() {

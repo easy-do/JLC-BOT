@@ -118,6 +118,7 @@ public class HighLevelDevelopServiceImpl implements HighLevelDevelopService {
 
     @Override
     public Long importConf(HighLevelDevelopConf conf) {
+        conf.setId(null);
         boolean res = highLevelDevelopConfManager.save(conf);
         if(res){
             try {

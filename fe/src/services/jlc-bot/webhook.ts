@@ -2,20 +2,21 @@
 /* eslint-disable */
 import { request } from 'umi';
 
-/** webhook post请求 GET /api/webhooks/call/${param1}/${param0} */
+/** webhook post请求 POST /api/webhooks/call/${param1}/${param0} */
 export async function hookPost(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.hookPostParams,
+  body: API.JSONObject,
   options?: { [key: string]: any },
 ) {
   const { action: param0, secret: param1, ...queryParams } = params;
   return request<API.RObject>(`/api/webhooks/call/${param1}/${param0}`, {
-    method: 'GET',
-    params: {
-      ...queryParams,
-      paramsJson: undefined,
-      ...queryParams['paramsJson'],
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
+    params: { ...queryParams },
+    data: body,
     ...(options || {}),
   });
 }
@@ -60,6 +61,18 @@ export async function getWebhooksConfInfo(
   });
 }
 
+/** 导入配置 POST /api/webhooks/importConf */
+export async function importWebhookConf(body: {}, options?: { [key: string]: any }) {
+  return request<API.RLong>('/api/webhooks/importConf', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** 查询所有 GET /api/webhooks/list */
 export async function listWebhooksConf(options?: { [key: string]: any }) {
   return request<API.RListWebhooksConf>('/api/webhooks/list', {
@@ -68,14 +81,14 @@ export async function listWebhooksConf(options?: { [key: string]: any }) {
   });
 }
 
-/** 分页查询 GET /api/webhooks/page */
+/** 分页查询 POST /api/webhooks/page */
 export async function pageWebhooksConf(
   // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
   params: API.pageWebhooksConfParams,
   options?: { [key: string]: any },
 ) {
   return request<API.RListWebhooksConf>('/api/webhooks/page', {
-    method: 'GET',
+    method: 'POST',
     params: {
       ...params,
       webhooksConfQo: undefined,
