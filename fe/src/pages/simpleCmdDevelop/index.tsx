@@ -497,6 +497,7 @@ const SimpleCmdDevelop: React.FC = () => {
           ]}
         />
         <ProFormSelect
+          disabled
           name="scriptLanguage"
           label="编程语言"
           options={[
@@ -505,12 +506,16 @@ const SimpleCmdDevelop: React.FC = () => {
               value: 'java',
             },
             {
-              label: 'groovy',
-              value: 'groovy',
-            },
-            {
               label: 'python',
               value: 'python',
+            },
+            {
+              label: 'js',
+              value: 'js',
+            },
+            {
+              label: 'groovy',
+              value: 'groovy',
             },
             {
               label: 'lua',
