@@ -1,5 +1,9 @@
 # JLC-BOT
 
+#### 视频演示
+
+https://www.bilibili.com/video/BV1aT42197eW/
+
 #### 介绍
 
 * java语言实现的机器人框架，提取自dnf-admin的机器人功能独立迭代
