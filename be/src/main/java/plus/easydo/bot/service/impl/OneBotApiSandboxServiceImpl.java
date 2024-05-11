@@ -132,4 +132,10 @@ public class OneBotApiSandboxServiceImpl implements OneBotApiService {
     public void setFriendAddRequest(String botNumber, String flag, boolean approve, String remark) {
         SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "处理好友请求"+"flag:"+flag+",approve"+approve+",remark:"+remark));
     }
+
+    @Override
+    public String getMsg(String botNumber, String messageId) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "消息id:"+messageId+",消息详情："+ SandboxWebsocketHandler.getMessage(messageId)));
+        return null;
+    }
 }

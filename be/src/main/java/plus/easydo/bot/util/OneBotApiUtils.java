@@ -229,4 +229,17 @@ public class OneBotApiUtils {
     public static void setFriendAddRequest(String botNumber, String flag, boolean approve, String remark) {
         getApiServer(botNumber).setFriendAddRequest(botNumber, flag, approve, remark);
     }
+
+    /**
+     * 获取消息详情
+     *
+     * @param botNumber botNumber
+     * @param messageId messageId
+     * @author laoyu
+     * @date 2024/5/11
+     */
+    public static String getMsg(String botNumber, String messageId) {
+       return getApiServer(botNumber).getMsg(botNumber, messageId);
+
+    }
 }

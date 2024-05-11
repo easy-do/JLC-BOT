@@ -36,6 +36,11 @@ public class BotApiContext {
         OneBotApiUtils.sendMessage(botNumber, message);
     }
 
+    @ContextBeanMethodDesc("获取消息详情")
+    public String getMsg(String messageId) {
+        return OneBotApiUtils.getMsg(botNumber, messageId);
+    }
+
     @ContextBeanMethodDesc("发送私聊消息")
     public void sendPrivateMessage(String userId, String message) {
         OneBotApiUtils.sendPrivateMessage(botNumber, userId, message);

@@ -196,4 +196,11 @@ public class OneBotApiWebSocketServiceImpl implements OneBotApiService {
         sendSocket(botNumber, OneBotConstants.SET_FRIEND_ADD_REQUEST, body);
 
     }
+
+    @Override
+    public String getMsg(String botNumber, String messageId) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.MESSAGE_ID, messageId);
+        return sendSocketAwait(botNumber, OneBotConstants.GET_MSG, body);
+    }
 }

@@ -181,4 +181,15 @@ public interface OneBotApiService {
      * @param remark    备注信息
      */
     void setFriendAddRequest(String botNumber, String flag, boolean approve, String remark);
+
+    /**
+     * 获取消息详情
+     *
+     * @param botNumber botNumber
+     * @param messageId messageId
+     * @return java.lang.String
+     * @author laoyu
+     * @date 2024/5/11
+     */
+    String getMsg(String botNumber, String messageId);
 }

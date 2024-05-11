@@ -129,4 +129,9 @@ public class OneBotApiWcfHttpServiceImpl implements OneBotApiService {
     public void setFriendAddRequest(String botNumber, String flag, boolean approve, String remark) {
         throw new BaseException("暂不支持的api");
     }
+
+    @Override
+    public String getMsg(String botNumber, String messageId) {
+        throw new BaseException("暂不支持的api");
+    }
 }

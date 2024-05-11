@@ -184,4 +184,11 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
         body.set(OneBotConstants.REASON, remark);
         postRequest(botNumber, OneBotConstants.SET_FRIEND_ADD_REQUEST, body);
     }
+
+    @Override
+    public String getMsg(String botNumber, String messageId) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.MESSAGE_ID, messageId);
+        return postRequest(botNumber, OneBotConstants.GET_MSG, body);
+    }
 }

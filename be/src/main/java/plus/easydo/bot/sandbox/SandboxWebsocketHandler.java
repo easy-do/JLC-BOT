@@ -103,6 +103,13 @@ public class SandboxWebsocketHandler implements WebSocketHandler {
     public static void cacheMessage(SandboxMessage message) {
         MESSAGE_CACHE.put(message.getMessageId(), message);
     }
+    public static String getMessage(String messageId) {
+        SandboxMessage sandboxMessage = MESSAGE_CACHE.get(messageId);
+        if (Objects.nonNull(sandboxMessage)) {
+            return sandboxMessage.getMessage();
+        }
+        return "";
+    }
 
     private void saveSession(WebSocketSession session) {
         CONCURRENT_LINKED_DEQUE.add(session);

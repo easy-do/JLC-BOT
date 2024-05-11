@@ -53,6 +53,7 @@ public class OneBotConstants {
     public static final String SET_GROUP_CARD = "set_group_card";
     public static final String SET_GROUP_LEAVE = "set_group_leave";
     public static final String SET_GROUP_ADMIN = "set_group_admin";
+    public static final String GET_MSG = "get_msg";
     public static final String USER_ID = "user_id";
     public static final String REJECT_ADD_REQUEST = "reject_add_request";
     public static final String ENABLE = "enable";
