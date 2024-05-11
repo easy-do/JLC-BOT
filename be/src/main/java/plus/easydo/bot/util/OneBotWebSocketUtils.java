@@ -119,7 +119,7 @@ public class OneBotWebSocketUtils {
                 session.sendMessage(new TextMessage(message));
                 String res = MESSAGE_CACHE.get(messageId);
                 int sleepTime = 0;
-                while (Objects.isNull(res) && sleepTime < 10000) {
+                while (Objects.isNull(res) && sleepTime < 5000) {
                     try {
                         Thread.sleep(500);
                         sleepTime = sleepTime + 500;
@@ -161,5 +161,9 @@ public class OneBotWebSocketUtils {
             }
         }
         return null;
+    }
+
+    public static void cacheResponseMessage(String messageId, String message) {
+        MESSAGE_CACHE.put(messageId, message);
     }
 }

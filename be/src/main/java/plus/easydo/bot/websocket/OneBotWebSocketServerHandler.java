@@ -3,6 +3,8 @@ package plus.easydo.bot.websocket;
 
 import cn.hutool.core.exceptions.ExceptionUtil;
 import cn.hutool.core.text.CharSequenceUtil;
+import cn.hutool.json.JSONObject;
+import cn.hutool.json.JSONUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
@@ -15,6 +17,7 @@ import plus.easydo.bot.util.OneBotUtils;
 import plus.easydo.bot.util.OneBotWebSocketUtils;
 
 import java.util.Objects;
+import java.util.concurrent.CompletableFuture;
 
 /**
  * @author laoyu
@@ -74,6 +77,14 @@ public class OneBotWebSocketServerHandler implements WebSocketHandler {
     public void handleMessage(WebSocketSession session, WebSocketMessage<?> message) {
         log.debug("接收到oneBot反向websocket消息:" + message.getPayload());
         OneBotWebSocketUtils.handlerPostMessage(message);
+        //缓存响应类消息
+        CompletableFuture.runAsync(() -> {
+            JSONObject messageJson = JSONUtil.parseObj(message.getPayload());
+            String messageId = messageJson.getStr(OneBotConstants.ECHO);
+            if (CharSequenceUtil.isNotBlank(messageId)) {
+                OneBotWebSocketUtils.cacheResponseMessage(messageId, message.getPayload().toString());
+            }
+        });
     }
 
     @Override
