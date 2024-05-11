@@ -36,11 +36,6 @@ public class BotApiContext {
         OneBotApiUtils.sendMessage(botNumber, message);
     }
 
-    @ContextBeanMethodDesc("获取消息详情")
-    public String getMsg(String messageId) {
-        return OneBotApiUtils.getMsg(botNumber, messageId);
-    }
-
     @ContextBeanMethodDesc("发送私聊消息")
     public void sendPrivateMessage(String userId, String message) {
         OneBotApiUtils.sendPrivateMessage(botNumber, userId, message);
@@ -109,6 +104,46 @@ public class BotApiContext {
     @ContextBeanMethodDesc("处理好友请求")
     public void setFriendAddRequest(String flag, boolean approve, String remark) {
         OneBotApiUtils.setFriendAddRequest(botNumber, flag, approve, remark);
+    }
+
+    @ContextBeanMethodDesc("获取消息详情")
+    public String getMsg(String messageId) {
+        return OneBotApiUtils.getMsg(botNumber, messageId);
+    }
+
+    @ContextBeanMethodDesc("获取合并转发消息")
+    public String getForwardMsg(String messageId) {
+        return OneBotApiUtils.getForwardMsg(botNumber, messageId);
+    }
+
+    @ContextBeanMethodDesc("获取群成员列表")
+    public String getGroupMemberList(String groupId) {
+        return OneBotApiUtils.getGroupMemberList(botNumber, groupId);
+    }
+
+    @ContextBeanMethodDesc("获取群成员信息 no_cache:是否不使用缓存")
+    public String getGroupMemberInfo(String groupId, String userId, boolean noCache) {
+        return OneBotApiUtils.getGroupMemberInfo(botNumber, groupId, userId , noCache);
+    }
+
+    @ContextBeanMethodDesc("获取群消息历史记录 message_seq: 起始消息序号, 可通过 get_msg 获得")
+    public String getGroupMsgHistory(String groupId, Integer messageSeq ) {
+        return OneBotApiUtils.getGroupMsgHistory(botNumber, groupId, messageSeq);
+    }
+
+    @ContextBeanMethodDesc("发送合并转发消息")
+    public void sendForwardMsg(String data) {
+        OneBotApiUtils.sendForwardMsg(botNumber, data);
+    }
+
+    @ContextBeanMethodDesc("发送合并转发消息 ( 群聊 )")
+    public void sendGroupForwardMsg(String groupId, String messages) {
+        OneBotApiUtils.sendGroupForwardMsg(botNumber, groupId, messages);
+    }
+
+    @ContextBeanMethodDesc("发送合并转发消息 ( 好友 )")
+    public void sendPrivateForwardMsg(String userId, String messages) {
+        OneBotApiUtils.sendPrivateForwardMsg(botNumber, userId, messages);
     }
 
 }

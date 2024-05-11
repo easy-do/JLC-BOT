@@ -191,4 +191,57 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
         body.set(OneBotConstants.MESSAGE_ID, messageId);
         return postRequest(botNumber, OneBotConstants.GET_MSG, body);
     }
+
+    @Override
+    public String getForwardMsg(String botNumber, String messageId) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.MESSAGE_ID, messageId);
+        return postRequest(botNumber, OneBotConstants.GET_FORWARD_MSG, body);
+    }
+
+    @Override
+    public String getGroupMemberList(String botNumber, String groupId) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.GROUP_ID, groupId);
+        return postRequest(botNumber, OneBotConstants.GET_GROUP_MEMBER_LIST, body);
+    }
+
+    @Override
+    public String getGroupMemberInfo(String botNumber, String groupId, String userId, boolean noCache) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.GROUP_ID, groupId);
+        body.set(OneBotConstants.USER_ID, userId);
+        body.set(OneBotConstants.NO_CACHE, noCache);
+        return postRequest(botNumber, OneBotConstants.GET_GROUP_MEMBER_INFO, body);
+    }
+
+    @Override
+    public String getGroupMsgHistory(String botNumber, String groupId, Integer messageSeq) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.GROUP_ID, groupId);
+        body.set(OneBotConstants.MESSAGE_SEQ, messageSeq);
+        return postRequest(botNumber, OneBotConstants.GET_GROUP_MSG_HISTORY, body);
+    }
+
+    @Override
+    public void sendForwardMsg(String botNumber, String data) {
+        JSONObject body = JSONUtil.parseObj(data);
+        postRequest(botNumber, OneBotConstants.SEND_FORWARD_MSG, body);
+    }
+
+    @Override
+    public void sendGroupForwardMsg(String botNumber, String groupId, String messages) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.GROUP_ID, groupId);
+        body.set(OneBotConstants.MESSAGE, JSONUtil.parseObj(messages));
+        postRequest(botNumber, OneBotConstants.SEND_GROUP_FORWARD_MSG, body);
+    }
+
+    @Override
+    public void sendPrivateForwardMsg(String botNumber, String userId, String messages) {
+        JSONObject body = JSONUtil.createObj();
+        body.set(OneBotConstants.USER_ID, userId);
+        body.set(OneBotConstants.MESSAGE, JSONUtil.parseObj(messages));
+        postRequest(botNumber, OneBotConstants.SEND_PRIVATE_FORWARD_MSG, body);
+    }
 }

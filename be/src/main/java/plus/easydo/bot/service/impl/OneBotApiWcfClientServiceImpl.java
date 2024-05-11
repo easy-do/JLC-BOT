@@ -133,4 +133,39 @@ public class OneBotApiWcfClientServiceImpl implements OneBotApiService {
     public String getMsg(String botNumber, String messageId) {
         throw new BaseException("暂不支持的api");
     }
+
+    @Override
+    public String getForwardMsg(String botNumber, String messageId) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public String getGroupMemberList(String botNumber, String groupId) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public String getGroupMemberInfo(String botNumber, String groupId, String userId, boolean noCache) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public String getGroupMsgHistory(String botNumber, String groupId, Integer messageSeq) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void sendForwardMsg(String botNumber, String data) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void sendGroupForwardMsg(String botNumber, String groupId, String messages) {
+        throw new BaseException("暂不支持的api");
+    }
+
+    @Override
+    public void sendPrivateForwardMsg(String botNumber, String userId, String messages) {
+        throw new BaseException("暂不支持的api");
+    }
 }

@@ -54,6 +54,15 @@ public class OneBotConstants {
     public static final String SET_GROUP_LEAVE = "set_group_leave";
     public static final String SET_GROUP_ADMIN = "set_group_admin";
     public static final String GET_MSG = "get_msg";
+    public static final String GET_GROUP_MEMBER_LIST = "get_group_member_list";
+    public static final String GET_GROUP_MEMBER_INFO = "get_group_member_info";
+    public static final String GET_FORWARD_MSG = "get_forward_msg";
+    public static final String GET_GROUP_MSG_HISTORY = "get_group_msg_history";
+    public static final String SEND_FORWARD_MSG = "send_forward_msg";
+    public static final String SEND_GROUP_FORWARD_MSG = "send_group_forward_msg";
+    public static final String SEND_PRIVATE_FORWARD_MSG = "send_private_forward_msg";
+    public static final String MESSAGE_SEQ = "message_seq";
+    public static final String NO_CACHE = "no_cache";
     public static final String USER_ID = "user_id";
     public static final String REJECT_ADD_REQUEST = "reject_add_request";
     public static final String ENABLE = "enable";

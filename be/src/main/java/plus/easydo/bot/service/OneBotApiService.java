@@ -192,4 +192,80 @@ public interface OneBotApiService {
      * @date 2024/5/11
      */
     String getMsg(String botNumber, String messageId);
+
+    /**
+     * 获取合并转发消息
+     *
+     * @param botNumber botNumber
+     * @param messageId messageId
+     * @return java.lang.String
+     * @author laoyu
+     * @date 2024/5/11
+     */
+    String getForwardMsg(String botNumber, String messageId);
+
+    /**
+     * 获取群成员列表
+     * @param botNumber
+     * @param groupId
+     * @return
+     */
+    String getGroupMemberList(String botNumber, String groupId);
+
+    /**
+     * 获取群成员信息
+     *
+     * @param botNumber botNumber
+     * @param groupId groupId
+     * @param userId userId
+     * @param noCache noCache
+     * @return java.lang.String
+     * @author laoyu
+     * @date 2024/5/11
+     */
+    String getGroupMemberInfo(String botNumber, String groupId, String userId, boolean noCache);
+
+    /**
+     * 获取群消息历史记录
+     *
+     * @param botNumber botNumber
+     * @param groupId groupId
+     * @param messageSeq messageSeq
+     * @return java.lang.String
+     * @author laoyu
+     * @date 2024/5/11
+     */
+    String getGroupMsgHistory(String botNumber, String groupId, Integer messageSeq);
+
+    /**
+     * 发送合并转发消息
+     *
+     * @param botNumber botNumber
+     * @param data data
+     * @author laoyu
+     * @date 2024/5/11
+     */
+    void sendForwardMsg(String botNumber, String data);
+
+    /**
+     * 发送合并转发消息 ( 群聊 )
+     *
+     * @param botNumber botNumber
+     * @param groupId groupId
+     * @param messages messages
+     * @author laoyu
+     * @date 2024/5/11
+     */
+    void sendGroupForwardMsg(String botNumber, String groupId, String messages);
+
+    /**
+     * 发送合并转发消息 ( 好友 )
+     *
+     * @param botNumber botNumber
+     * @param userId userId
+     * @param messages messages
+     * @author laoyu
+     * @date 2024/5/11
+     */
+    void sendPrivateForwardMsg(String botNumber, String userId, String messages);
 }

@@ -136,6 +136,45 @@ public class OneBotApiSandboxServiceImpl implements OneBotApiService {
     @Override
     public String getMsg(String botNumber, String messageId) {
         SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "消息id:"+messageId+",消息详情："+ SandboxWebsocketHandler.getMessage(messageId)));
-        return null;
+        return "";
+    }
+
+    @Override
+    public String getForwardMsg(String botNumber, String messageId) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "获取合并转发消息:"+messageId+",消息详情："+ SandboxWebsocketHandler.getMessage(messageId)));
+        return "";
+    }
+
+    @Override
+    public String getGroupMemberList(String botNumber, String groupId) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "群组列表:[]"));
+        return "";
+    }
+
+    @Override
+    public String getGroupMemberInfo(String botNumber, String groupId, String userId, boolean noCache) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "群员详情:"));
+        return "";
+    }
+
+    @Override
+    public String getGroupMsgHistory(String botNumber, String groupId, Integer messageSeq) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "群历史聊天记录:"));
+        return "";
+    }
+
+    @Override
+    public void sendForwardMsg(String botNumber, String data) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "发送合并转发消息,消息详情："+ data));
+    }
+
+    @Override
+    public void sendGroupForwardMsg(String botNumber, String groupId, String messages) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "发送合并转发消息 ( 群聊 ),群："+groupId+"消息详情："+ messages));
+    }
+
+    @Override
+    public void sendPrivateForwardMsg(String botNumber, String userId, String messages) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "发送合并转发消息 ( 好友 ),用户："+userId+"消息详情："+ messages));
     }
 }
