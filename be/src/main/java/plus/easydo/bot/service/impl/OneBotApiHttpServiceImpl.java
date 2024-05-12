@@ -248,6 +248,6 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
     @Override
     public String customApi(String botNumber, String action, String data) {
         JSONObject body = JSONUtil.parseObj(data);
-       return postRequest(botNumber, body.getStr(OneBotConstants.ACTION), body);
+       return postRequest(botNumber, action, body);
     }
 }

@@ -260,6 +260,6 @@ public class OneBotApiWebSocketServiceImpl implements OneBotApiService {
     @Override
     public String customApi(String botNumber, String action, String data) {
         JSONObject body = JSONUtil.parseObj(data);
-        return sendSocketAwait(botNumber, body.getStr(OneBotConstants.ACTION), body);
+        return sendSocketAwait(botNumber, action, body);
     }
 }
