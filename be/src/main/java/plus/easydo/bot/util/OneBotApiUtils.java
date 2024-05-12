@@ -334,4 +334,18 @@ public class OneBotApiUtils {
     public static void sendPrivateForwardMsg(String botNumber, String userId, String messages) {
         getApiServer(botNumber).sendPrivateForwardMsg(botNumber, userId, messages);
     }
+
+    /**
+     * 调用自定义API
+     *
+     * @param botNumber botNumber
+     * @param action action
+     * @param data data
+     * @return java.lang.String
+     * @author laoyu
+     * @date 2024/5/12
+     */
+    public static String customApi(String botNumber, String action, String data) {
+        return getApiServer(botNumber).customApi(botNumber, action, data);
+    }
 }

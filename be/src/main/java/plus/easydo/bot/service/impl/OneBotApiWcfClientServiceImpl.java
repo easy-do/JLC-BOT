@@ -168,4 +168,9 @@ public class OneBotApiWcfClientServiceImpl implements OneBotApiService {
     public void sendPrivateForwardMsg(String botNumber, String userId, String messages) {
         throw new BaseException("暂不支持的api");
     }
+
+    @Override
+    public String customApi(String botNumber, String action, String data) {
+        throw new BaseException("暂不支持的api");
+    }
 }

@@ -177,4 +177,10 @@ public class OneBotApiSandboxServiceImpl implements OneBotApiService {
     public void sendPrivateForwardMsg(String botNumber, String userId, String messages) {
         SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "发送合并转发消息 ( 好友 ),用户："+userId+"消息详情："+ messages));
     }
+
+    @Override
+    public String customApi(String botNumber, String action, String data) {
+        SandboxWebsocketHandler.sendMessage(buildSandboxMessage("text", "自定义API,action："+action+"数据："+ data));
+        return "";
+    }
 }

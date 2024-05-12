@@ -268,4 +268,16 @@ public interface OneBotApiService {
      * @date 2024/5/11
      */
     void sendPrivateForwardMsg(String botNumber, String userId, String messages);
+
+    /**
+     * 调用自定义API
+     *
+     * @param botNumber botNumber
+     * @param action action
+     * @param data data
+     * @return java.lang.String
+     * @author laoyu
+     * @date 2024/5/12
+     */
+    String customApi(String botNumber,String action, String data);
 }

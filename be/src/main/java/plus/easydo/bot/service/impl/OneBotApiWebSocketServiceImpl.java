@@ -256,4 +256,10 @@ public class OneBotApiWebSocketServiceImpl implements OneBotApiService {
         body.set(OneBotConstants.MESSAGE, JSONUtil.parseObj(messages));
         sendSocket(botNumber, OneBotConstants.SEND_PRIVATE_FORWARD_MSG, body);
     }
+
+    @Override
+    public String customApi(String botNumber, String action, String data) {
+        JSONObject body = JSONUtil.parseObj(data);
+        return sendSocketAwait(botNumber, body.getStr(OneBotConstants.ACTION), body);
+    }
 }

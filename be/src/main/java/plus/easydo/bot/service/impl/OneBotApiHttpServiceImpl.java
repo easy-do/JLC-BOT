@@ -244,4 +244,10 @@ public class OneBotApiHttpServiceImpl implements OneBotApiService {
         body.set(OneBotConstants.MESSAGE, JSONUtil.parseObj(messages));
         postRequest(botNumber, OneBotConstants.SEND_PRIVATE_FORWARD_MSG, body);
     }
+
+    @Override
+    public String customApi(String botNumber, String action, String data) {
+        JSONObject body = JSONUtil.parseObj(data);
+       return postRequest(botNumber, body.getStr(OneBotConstants.ACTION), body);
+    }
 }

@@ -146,4 +146,10 @@ public class BotApiContext {
         OneBotApiUtils.sendPrivateForwardMsg(botNumber, userId, messages);
     }
 
+    @ContextBeanMethodDesc("调用自定义API")
+    public String customApi(String action, String data) {
+        return OneBotApiUtils.customApi(botNumber, action, data);
+    }
+
+
 }
