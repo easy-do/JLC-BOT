@@ -59,7 +59,7 @@ mybatis-flex:
 #      password: ${MYSQL_PASS:88888888}
 
 jcl:
-  current-version: 2024.05.11
+  current-version: 2024.05.13
   wcf-enable: ${WCF_ENABLE:false} # wcf开关，使用wcf客户端模式hook本地微信则设置为 true
   mode: ${MODE:default}
 
@@ -114,7 +114,7 @@ knife4j:
     language: zh_cn
 
 liteflow:
-  print-execution-log: true #关闭打印日志
+  print-execution-log: ${LITE_FLOW_PRINT_EXECUTION_LOG:false} #关闭打印日志
   parse-mode: PARSE_ONE_ON_FIRST_EXEC
   rule-source-ext-data-map:
     type: druid
@@ -149,5 +149,5 @@ liteflow:
 
 logging:
   level:
-    root: info  #debug
-    plus.easydo: info  #debug
+    root: ${ROOT_LOG_LEVEL:info}  #debug
+    plus.easydo: ${BOT_LOG_LEVEL:info}  #debug
